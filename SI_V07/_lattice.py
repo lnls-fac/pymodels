@@ -10,6 +10,13 @@ _default_optics_mode = _optics_mode_C05
 _lattice_symmetry = 10
 _harmonic_number  = 864
 _energy = 3e9 #[eV]
+_family_segmentation={
+    'b1' : 2, 'b2' : 3, 'b3' : 2, 'bc' : 12,
+    'qfa' : 1, 'qda' : 1, 'qdb2' : 1, 'qfb' : 1, 'qdb1' : 1, 'qf1' : 1, 'qf2' : 1, 'qf3' : 1, 'qf4' : 1,
+    'sda' : 1, 'sfa' : 1, 'sdb' : 1, 'sfb' : 1, 'sd1' : 1, 'sf1' : 1, 'sd2' : 1,
+    'sd3' : 1, 'sf2' : 1, 'sd6' : 1, 'sf4' : 1, 'sd5' : 1, 'sd4' : 1, 'sf3' : 1,
+    'bpm' : 1, 'cf' : 1, 'chf' : 1, 'cvf' : 1, 'qs' : 1, 'chs' : 1, 'cvs' : 1,  'qn' : 1
+    }
 
 def create_lattice():
 
@@ -255,3 +262,58 @@ def set_num_integ_steps(the_ring):
         elif the_ring[i].polynom_b[2]:
             nr_steps = int(_math.ceil(the_ring[i].length/len_sexts))
             the_ring[i].nr_steps = nr_steps
+
+
+def sirius_si_family_data(lattice):
+    latt_dict=_pyaccel.lattice.finddict(lattice,'fam_name')
+    data={}
+    for key in latt_dict.keys():
+        if key in _family_segmentation.keys():
+            data[key]={'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
+
+    # chs - slow horizontal correctors
+    data['chs']={}
+    data['chs']['index']=[]
+    data['chs']['families'] = ['sfa','sd1','sd2','sf2','sf3','sd5','sd6','sfb']
+    for family in data['chs']['families']:
+        data['chs']['index'] = data['chs']['index'] + data[family]['index']
+    data['chs']['index']=sorted(data['chs']['index'])
+
+    # cvs - slow vertical correctors
+    data['cvs']={}
+    data['cvs']['index']=[]
+    data['cvs']['families'] = ['sfa','sd1','sd3','sd4','sd6','sfb']
+    for family in data['cvs']['families']:
+        data['cvs']['index'] = data['cvs']['index'] + data[family]['index']
+    data['cvs']['index']=sorted(data['cvs']['index'])
+
+    # chf - fast horizontal correctors
+    data['chf']={}
+    data['chf']['families'] = ['cf']
+    data['chf']['index']=data['cf']['index']
+
+    # cvf - fast vertical correctors
+    data['cvf']={}
+    data['cvf']['families'] = ['cf']
+    data['cvf']['index']=data['cf']['index']
+
+    # qs - skew quad correctors
+    data['qs']={}
+    data['qs']['index']=[]
+    data['qs']['families'] = ['sda','sf1','sf4','sdb']
+    for family in data['qs']['families']:
+        data['qs']['index'] = data['qs']['index'] + data[family]['index']
+    data['qs']['index']=sorted(data['qs']['index'])
+
+    # qn - quadrupoles knobs for optics correction
+    data['qn']={}
+    data['qn']['index']=[]
+    data['qn']['families'] = ['qfa','qda','qf1','qf2','qf3','qf4','qdb1','qfb','qdb2']
+    for family in data['qn']['families']:
+        data['qn']['index'] = data['qn']['index'] + data[family]['index']
+    data['qn']['index']=sorted(data['qn']['index'])
+
+    return data
+
+_the_ring=create_lattice()
+_family_data=sirius_si_family_data(_the_ring)
