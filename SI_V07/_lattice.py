@@ -239,9 +239,12 @@ def create_lattice():
 
 def set_rf_frequency(the_ring):
 
-    _, beam_velocity, _, _, _ = _mp.beam_optics.beam_rigidity(energy=_energy)
     circumference = _pyaccel.lattice.lengthlat(the_ring)
-    rev_frequency = beam_velocity / circumference
+
+    #_, beam_velocity, _, _, _ = _mp.beam_optics.beam_rigidity(energy=_energy)
+    #velocity = beam_velocity
+    velocity = _mp.constants.light_speed
+    rev_frequency = velocity / circumference
     rf_frequency  = _harmonic_number * rev_frequency
     idx = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'cav')
     for i in idx:
