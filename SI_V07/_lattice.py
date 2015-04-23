@@ -11,11 +11,13 @@ _lattice_symmetry = 10
 _harmonic_number  = 864
 _energy = 3e9 #[eV]
 _family_segmentation={
-    'b1' : 2, 'b2' : 3, 'b3' : 2, 'bc' : 12,
-    'qfa' : 1, 'qda' : 1, 'qdb2' : 1, 'qfb' : 1, 'qdb1' : 1, 'qf1' : 1, 'qf2' : 1, 'qf3' : 1, 'qf4' : 1,
-    'sda' : 1, 'sfa' : 1, 'sdb' : 1, 'sfb' : 1, 'sd1' : 1, 'sf1' : 1, 'sd2' : 1,
-    'sd3' : 1, 'sf2' : 1, 'sd6' : 1, 'sf4' : 1, 'sd5' : 1, 'sd4' : 1, 'sf3' : 1,
-    'bpm' : 1, 'cf' : 1, 'chf' : 1, 'cvf' : 1, 'qs' : 1, 'chs' : 1, 'cvs' : 1,  'qn' : 1
+    'b1'  : 2, 'b2' : 3, 'b3'  : 2, 'bc' : 12,
+    'qfa' : 1, 'qda': 1, 'qdb2': 1, 'qfb': 1,
+    'qdb1': 1, 'qf1': 1, 'qf2' : 1, 'qf3': 1, 'qf4': 1,
+    'sda' : 1, 'sfa': 1, 'sdb' : 1, 'sfb': 1, 'sd1': 1, 'sf1': 1, 'sd2': 1,
+    'sd3' : 1, 'sf2': 1, 'sd6' : 1, 'sf4': 1, 'sd5': 1, 'sd4': 1, 'sf3': 1,
+    'bpm' : 1, 'cf' : 1,
+    'chf' : 1, 'cvf': 1, 'qs'  : 1, 'chs': 1, 'cvs': 1, 'qn' : 1
     }
 
 def create_lattice():

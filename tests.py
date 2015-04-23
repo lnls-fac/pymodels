@@ -15,20 +15,20 @@ the_ring.vchamber_on = False
 
 # aux. parameters and symbols
 # the_ring = the_ring.lattice
-num_turns, trajectory, offset = 4*512, True, 0
+num_turns, offset = 4*512, 0
 #
 # # calcs phase space at MIA
 pos = [0.001,0,0,0,0,0]
-traj, turn, offset, plane = pyaccel.tracking.ringpass(the_ring, pos, num_turns, trajectory, offset)
+traj, lost, turn, offset, plane = pyaccel.tracking.ringpass(the_ring, pos, num_turns, 'open', offset)
 plt.plot(1000*traj[0,:],1000*traj[1,:],'o')
 plt.xlabel('x[mm]'), plt.ylabel("x'[mrad]")
 # propagates from MIA to MIB
-traj, offset, plane = pyaccel.tracking.linepass(the_ring, pos, trajectory, offset)
+traj, offset, plane = pyaccel.tracking.linepass(the_ring, pos, 'open', offset)
 idx = pyaccel.lattice.findcells(the_ring, 'fam_name', 'mib')
 
 # calcs phase space at MIB
 pos = traj[:,idx[0]]
-traj, turn, offset, plane = pyaccel.tracking.ringpass(the_ring, pos, num_turns, trajectory, offset=idx[0])
+traj, lost, turn, offset, plane = pyaccel.tracking.ringpass(the_ring, pos, num_turns, 'open', idx[0])
 plt.plot(1000*traj[0,:],1000*traj[1,:],'o')
 plt.xlabel('x[mm]'), plt.ylabel("x'[mrad]")
 
