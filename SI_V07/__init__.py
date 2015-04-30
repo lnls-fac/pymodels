@@ -1,9 +1,11 @@
 from . import lattice as _lattice
 from . import accelerator as _accelerator
 from . import family_data as _family_data
+from . import process_variables as _process_variables
 
 create_accelerator = _accelerator.create_accelerator
 get_family_data = _family_data.get_family_data
+get_pv_names = _process_variables.get_pv_names
 
 # -- default accelerator values for SI_V07 --
 
