@@ -12,7 +12,7 @@ def get_record_names(family_name = None):
             'qdb1', 'qfb', 'sfb', 'qdb2', 'parameters']
         record_names_dict = {}
         for i in range(len(families)):
-            record_names_dict.update(get_pv_names(families[i]))
+            record_names_dict.update(get_record_names(families[i]))
         return record_names_dict
 
     if family_name.lower() == 'parameters':

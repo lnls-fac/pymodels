@@ -1,7 +1,7 @@
 from . import lattice as _lattice
 from . import accelerator as _accelerator
 from . import family_data as _family_data
-from . import record_names as _record_names
+from . import record_names as record_names
 
 create_accelerator = _accelerator.create_accelerator
 get_family_data = _family_data.get_family_data
