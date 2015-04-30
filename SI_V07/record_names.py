@@ -2,17 +2,40 @@
 import sirius
 
 def get_pv_names(family_name = None):
+
     family_data = sirius.SI_V07.lattice._family_data
 
     if family_name == None:
         families = ['bpm', 'bend', 'chs', 'cvs', 'chf', 'cvf', 'qs', 'sfa',
             'qfa', 'qda', 'sda', 'sd1', 'qf1', 'sf1', 'qf2', 'sd2', 'sd3',
             'qf3', 'sf2', 'qf4', 'sf3', 'sd4', 'sd5', 'sf4', 'sd6', 'sdb',
-            'qdb1', 'qfb', 'sfb', 'qdb2']
+            'qdb1', 'qfb', 'sfb', 'qdb2', 'parameters']
         pv_dict = {}
         for i in range(len(families)):
             pv_dict.update(get_pv_names(families[i]))
         return pv_dict
+
+    if family_name.lower() == 'parameters':
+        params_dict = {
+                'SIPA-TUNEH':{},
+                'SIPA-TUNEV':{},
+                'SIPA-TUNES':{},
+                'SIPA-CHROMX':{},
+                'SIPA-CHROMY':{},
+                'SIPA-TVHOUR':{},
+                'SIPA-TVMIN':{},
+                'SIPA-SIGX':{},
+                'SIPA-SIGY':{},
+                'SIPA-SIGS':{},
+                'SIPA-EMITX':{},
+                'SIPA-EMITY':{},
+                'SIPA-SIGX':{},
+                'SIPA-SIGY':{},
+                'SIPA-SIGS':{},
+                'SIPA-CURRENT':{},
+                'SIPA-BCURRENT':{},
+        }
+        return params_dict
 
     if family_name.lower() == 'bpm':
         prefix = 'SIDI-BPM-'
