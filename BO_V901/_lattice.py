@@ -144,19 +144,22 @@ def set_rf_frequency(the_ring, energy):
 
 def set_num_integ_steps(the_ring):
 
-    len_bends = 0.050
-    len_quads = 0.015
-    len_sexts = 0.015
+    bends = []
     for i in range(len(the_ring)):
         if the_ring[i].angle:
-            nr_steps = int(_math.ceil(the_ring[i].length/len_bends))
+            bends.append(i)
+
+    len_b  = 3e-2
+    len_qs = 1.5e-2
+    
+    for i in range(len(the_ring)):
+        if the_ring[i].angle:
+            nr_steps = int( _math.ceil(the_ring[i].length/len_b))
             the_ring[i].nr_steps = nr_steps
-        elif the_ring[i].polynom_b[1] or the_ring[i].fam_name == 'cf':
-            nr_steps = int(_math.ceil(the_ring[i].length/len_quads))
+        elif any(the_ring[i].polynom_b) and i not in bends:
+            nr_steps = int( _math.ceil(the_ring[i].length/len_qs))
             the_ring[i].nr_steps = nr_steps
-        elif the_ring[i].polynom_b[2]:
-            nr_steps = int(_math.ceil(the_ring[i].length/len_sexts))
-            the_ring[i].nr_steps = nr_steps
+
 
 def dipole_segmented_model():
 
