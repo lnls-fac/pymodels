@@ -1,5 +1,6 @@
 from . import _lattice
 from . import _accelerator
+from . import _record_names
 
 create_accelerator = _accelerator.create_accelerator
 

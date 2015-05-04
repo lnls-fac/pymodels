@@ -1,7 +1,7 @@
 
- import sirius
+import sirius
 
- def get_record_names(family_name = None):
+def get_record_names(family_name = None):
 
     family_data = sirius.BO_V901._lattice._family_data
 
@@ -158,7 +158,7 @@
 
     if family_name.lower() == 'qd':
         qd_dict = { 'BOPS-QD-FAM' : {'qd' : family_data['qd']['index']}}
-        return sf_dict
+        return qd_dict
 
     if family_name.lower() == 'sd':
         sd_dict = { 'BOPS-SD-FAM' : {'sd' : family_data['sd']['index']}}
@@ -169,6 +169,6 @@
         return sf_dict
 
     if family_name.lower() == 'b' or family_name.lower() == 'bend':
-        b_dict = { 'BOPS-BEND-FAM-A' : {'b' : family_data['b']['index']},
-                   'BOPS-BEND-FAM-B' : {'b' : family_data['b']['index']}}
+        b_dict = { 'BOPS-BEND-FAM-A' : {'bend' : family_data['b']['index']},
+                   'BOPS-BEND-FAM-B' : {'bend' : family_data['b']['index']}}
         return b_dict
