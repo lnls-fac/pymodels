@@ -6,7 +6,7 @@
     family_data = sirius.BO_V901._lattice._family_data
 
     if family_name == None:
-        families = ['bpm', 'ch', 'cv', 'qf', 'qd', 'sd', 'sf', 'bend','parameters']
+        families = ['bpm', 'ch', 'cv', 'qf', 'qd', 'sd', 'sf', 'bend', 'parameters']
         record_names_dict = {}
         for i in range(len(families)):
             record_names_dict.update(get_record_names(families[i]))
@@ -14,23 +14,23 @@
 
     if family_name.lower() == 'parameters':
         params_dict = {
-                'SIPA-TUNEH':{},
-                'SIPA-TUNEV':{},
-                'SIPA-TUNES':{},
-                'SIPA-CHROMX':{},
-                'SIPA-CHROMY':{},
-                'SIPA-TVHOUR':{},
-                'SIPA-TVMIN':{},
-                'SIPA-SIGX':{},
-                'SIPA-SIGY':{},
-                'SIPA-SIGS':{},
-                'SIPA-EMITX':{},
-                'SIPA-EMITY':{},
-                'SIPA-SIGX':{},
-                'SIPA-SIGY':{},
-                'SIPA-SIGS':{},
-                'SIPA-CURRENT':{},
-                'SIPA-BCURRENT':{},
+                'BOPA-TUNEH':{},
+                'BOPA-TUNEV':{},
+                'BOPA-TUNES':{},
+                'BOPA-CHROMX':{},
+                'BOPA-CHROMY':{},
+                'BOPA-TVHOUR':{},
+                'BOPA-TVMIN':{},
+                'BOPA-SIGX':{},
+                'BOPA-SIGY':{},
+                'BOPA-SIGS':{},
+                'BOPA-EMITX':{},
+                'BOPA-EMITY':{},
+                'BOPA-SIGX':{},
+                'BOPA-SIGY':{},
+                'BOPA-SIGS':{},
+                'BOPA-CURRENT':{},
+                'BOPA-BCURRENT':{},
         }
         return params_dict
 
