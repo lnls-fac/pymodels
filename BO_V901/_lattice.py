@@ -15,24 +15,31 @@ def create_lattice(**kwargs):
 
     energy = kwargs['energy'] if 'energy' in kwargs else _energy
 
+    if energy == 0.15e9:
+        rf_voltage = 150e3
+    else:
+        rf_voltage = 950e3
+
     # -- selection of optics mode --
     global _default_optics_mode
     _default_optics_mode = _optics_mode_M0
 
 
     # -- shortcut symbols --
-    marker = _pyaccel.elements.marker
-    drift = _pyaccel.elements.drift
-    quadrupole = _pyaccel.elements.quadrupole
-    sextupole = _pyaccel.elements.sextupole
+    marker       = _pyaccel.elements.marker
+    drift        = _pyaccel.elements.drift
+    quadrupole   = _pyaccel.elements.quadrupole
+    sextupole    = _pyaccel.elements.sextupole
     rbend_sirius = _pyaccel.elements.rbend
-    rfcavity = _pyaccel.elements.rfcavity
-    strengths = _default_optics_mode.strengths
+    rfcavity     = _pyaccel.elements.rfcavity
+    hcorrector   = _pyaccel.elements.hcorrector
+    vcorrector   = _pyaccel.elements.vcorrector
+    strengths    = _default_optics_mode.strengths
 
     # -- loads dipole segmented model --
-    bd, b_len_seg   = dipole_segmented_model()
-    b_len_hdedge    = 1.152; # [m]
-    half_model_diff = (b_len_seg - b_len_hdedge)/2.0
+    bd, b_len_seg, _b_model = dipole_segmented_model()
+    b_len_hdedge            = 1.152; # [m]
+    half_model_diff         = (b_len_seg - b_len_hdedge)/2.0
 
     lt       = drift('lt',      2.146000)
     lt2      = drift('lt2',     2.146000-half_model_diff)
@@ -74,13 +81,41 @@ def create_lattice(**kwargs):
     ch       = hcorrector('ch', 0)
     cv       = vcorrector('cv', 0)
 
-    rfc = rfcavity('cav', 0, rf_voltage, 0, harmonic_number, 'CavityPass'); # RF frequency will be set later.
+    rfc = rfcavity('cav', 0, rf_voltage, 0) # RF frequency will be set later.
 
+    b            = bd
+    lfree        = lt
+    lfree_2      = lt2
+    lqd_2        = [lm45, qd, l25_2]
+    lsd_2        = [lm45, sd, l25_2]
+    lsf          = [sfus, sf, sfds]
+    lch          = [lm25, ch, l25]
+    lcv_2        = [lm30, cv, l30_2]
+    lsdcv_2      = [lm70, cv, l25, sd, l25_2]
+    fodo1        = [mqf, qf, lfree, girder, lfree_2, b,       lfree_2, girder, bpm, lsf, qf]
+    fodo2        = [mqf, qf, lfree, girder, lqd_2,   b,   lcv_2[::-1], girder, bpm, lch, qf]
+    fodo2sd      = [mqf, qf, lfree, girder, lqd_2,   b, lsdcv_2[::-1], girder, bpm, lch, qf]
+    fodo1sd      = [mqf, qf, lfree, girder, lfree_2, b,   lsd_2[::-1], girder, bpm, lsf, qf]
 
+    boos         = [fodo1sd, fodo2, fodo1, fodo2, fodo1, fodo2sd, fodo1, fodo2, fodo1, fodo2]
+    lke          = [l60, kick_ex, lkk, kick_ex, lm60_kk]
+    lcvse_2      = [l36, sept_ex, lm66, cv, l30_2]
+    lmon         = [l100, bpm, lm100]
+    lsich        = [lm105, sept_in, l80, ch, l25]
+    lki          = [l60, kick_in, lm60]
+    fodo2kese    = [mqf, qf, lke,        girder, lqd_2,   b, lcvse_2[::-1], girder, lmon, qf]
+    fodo2si      = [mqf, qf, lfree,      girder, lqd_2,   b,   lcv_2[::-1], girder, bpm, lsich, qf]
+    fodo1ki      = [mqf, qf, lki,        girder, lfree_2, b,       lfree_2, girder, bpm, lsf, qf]
+    fodo1ch      = [mqf, qf, lch[::-1],  girder, lfree_2, b,       lfree_2, girder, bpm, lsf, qf]
+    fodo1rf      = [mqf, qf, lfree, rfc, girder, lfree_2, b,       lfree_2, girder, bpm, lsf, qf]
 
+    #booster   = [boos, boos, boos, boos, boos]
+    boosinj   = [fodo1sd, fodo2kese, fodo1ch, fodo2si, fodo1ki, fodo2sd, fodo1, fodo2, fodo1, fodo2]
+    boosrf    = [fodo1sd, fodo2, fodo1, fodo2, fodo1rf, fodo2sd, fodo1, fodo2, fodo1, fodo2]
+    boocor    = [start, boosinj, boos, boosrf, boos, boos, fim]
+    elist     = boocor
 
-    anel = [S01,S02,S03,S04,S05,S06,S07,S08,S09,S10,S11,S12,S13,S14,S15,S16,S17,S18,S19,S20];
-    the_ring = _pyaccel.lattice.buildlat(anel)
+    the_ring = _pyaccel.lattice.buildlat(elist)
 
     # -- shifts model to marker 'start'
     idx = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'start')
@@ -199,10 +234,9 @@ def dipole_segmented_model():
     b = [];
     for i in range(b_model.shape[0]):
         b.append(rbend('b', length=b_model[i,0], angle=b_model[i,1], polynom_b=b_model[i,2:]))
-    end
     pb = marker('pb')
     mb = marker('mb')
-    bd = [pb, fliplr(b), mb, b, pb];
+    bd = [pb, b[::-1], mb, b, pb];
     b_length_segmented = 2*sum(b_model[:,0])
 
     return (bd, b_length_segmented, b_model)
