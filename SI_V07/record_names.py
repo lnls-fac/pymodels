@@ -6,7 +6,11 @@ def get_record_names(family_name = None):
     family_data = sirius.SI_V07.lattice._family_data
 
     if family_name == None:
-        families = ['bpm', 'bend', 'chs', 'cvs', 'chf', 'cvf', 'qs', 'sfa',
+        families = [
+            'bpm', 'chs', 'cvs', 'chf', 'cvf',
+            'bend',
+            'qfa-fam',
+            'qs', 'sfa',
             'qfa', 'qda', 'sda', 'sd1', 'qf1', 'sf1', 'qf2', 'sd2', 'sd3',
             'qf3', 'sf2', 'qf4', 'sf3', 'sd4', 'sd5', 'sf4', 'sd6', 'sdb',
             'qdb1', 'qfb', 'sfb', 'qdb2', 'parameters']
@@ -37,11 +41,44 @@ def get_record_names(family_name = None):
         }
         return params_dict
 
+    if family_name.lower() == 'qfa-fam':
+        indices = family_data['qfa']['index']
+        qfa_fam_dict = {'SIPS-QFA-FAM': {'qfa': indices}}
+        return qfa_fam_dict
+
+    if family_name.lower() == 'qfa':
+        indices = family_data['qfa']['index']
+        qfa_dict = {
+            'SIPS-QFA-01M2'   : {'qfa' : [indices[19]]},
+            'SIPS-QFA-02M2'   : {'qfa' : [indices[0]]},
+            'SIPS-QFA-03M2'   : {'qfa' : [indices[1]]},
+            'SIPS-QFA-04M2'   : {'qfa' : [indices[2]]},
+            'SIPS-QFA-05M2'   : {'qfa' : [indices[3]]},
+            'SIPS-QFA-06M2'   : {'qfa' : [indices[4]]},
+            'SIPS-QFA-07M2'   : {'qfa' : [indices[5]]},
+            'SIPS-QFA-08M2'   : {'qfa' : [indices[6]]},
+            'SIPS-QFA-09M2'   : {'qfa' : [indices[7]]},
+            'SIPS-QFA-10M2'   : {'qfa' : [indices[8]]},
+            'SIPS-QFA-11M2'   : {'qfa' : [indices[9]]},
+            'SIPS-QFA-12M2'   : {'qfa' : [indices[10]]},
+            'SIPS-QFA-13M2'   : {'qfa' : [indices[11]]},
+            'SIPS-QFA-14M2'   : {'qfa' : [indices[12]]},
+            'SIPS-QFA-15M2'   : {'qfa' : [indices[13]]},
+            'SIPS-QFA-16M2'   : {'qfa' : [indices[14]]},
+            'SIPS-QFA-17M2'   : {'qfa' : [indices[15]]},
+            'SIPS-QFA-18M2'   : {'qfa' : [indices[16]]},
+            'SIPS-QFA-19M2'   : {'qfa' : [indices[17]]},
+            'SIPS-QFA-20M2'   : {'qfa' : [indices[18]]},
+        }
+        return qfa_dict
+
     if family_name.lower() == 'bpm':
+        indices = family_data['bpm']['index']
         prefix = 'SIDI-BPM-'
         bpm_dict = {
+
             #Sector 01
-            prefix + '01M1'   : {'bpm' : [family_data['bpm']['index'][179]]},
+            prefix + '01M1'   : {'bpm' : [indices[179]]},
             prefix + '01M2'   : {'bpm' : [family_data['bpm']['index'][0]]},
             prefix + '01C1-A' : {'bpm' : [family_data['bpm']['index'][1]]},
             prefix + '01C1-B' : {'bpm' : [family_data['bpm']['index'][2]]},
@@ -259,6 +296,7 @@ def get_record_names(family_name = None):
             prefix + '20C4'   : {'bpm' : [family_data['bpm']['index'][176]]},
             prefix + '20C5-A' : {'bpm' : [family_data['bpm']['index'][177]]},
             prefix + '20C5-B' : {'bpm' : [family_data['bpm']['index'][178]]},
+
         }
         return bpm_dict
 
@@ -1043,31 +1081,7 @@ def get_record_names(family_name = None):
         }
         return sfa_dict
 
-    if family_name.lower() == 'qfa':
-        prefix = 'SIPS-QFA-'
-        qfa_dict = {
-            prefix + '01M2'   : {'qfa' : [family_data['qfa']['index'][19]]},
-            prefix + '02M2'   : {'qfa' : [family_data['qfa']['index'][0]]},
-            prefix + '03M2'   : {'qfa' : [family_data['qfa']['index'][1]]},
-            prefix + '04M2'   : {'qfa' : [family_data['qfa']['index'][2]]},
-            prefix + '05M2'   : {'qfa' : [family_data['qfa']['index'][3]]},
-            prefix + '06M2'   : {'qfa' : [family_data['qfa']['index'][4]]},
-            prefix + '07M2'   : {'qfa' : [family_data['qfa']['index'][5]]},
-            prefix + '08M2'   : {'qfa' : [family_data['qfa']['index'][6]]},
-            prefix + '09M2'   : {'qfa' : [family_data['qfa']['index'][7]]},
-            prefix + '10M2'   : {'qfa' : [family_data['qfa']['index'][8]]},
-            prefix + '11M2'   : {'qfa' : [family_data['qfa']['index'][9]]},
-            prefix + '12M2'   : {'qfa' : [family_data['qfa']['index'][10]]},
-            prefix + '13M2'   : {'qfa' : [family_data['qfa']['index'][11]]},
-            prefix + '14M2'   : {'qfa' : [family_data['qfa']['index'][12]]},
-            prefix + '15M2'   : {'qfa' : [family_data['qfa']['index'][13]]},
-            prefix + '16M2'   : {'qfa' : [family_data['qfa']['index'][14]]},
-            prefix + '17M2'   : {'qfa' : [family_data['qfa']['index'][15]]},
-            prefix + '18M2'   : {'qfa' : [family_data['qfa']['index'][16]]},
-            prefix + '19M2'   : {'qfa' : [family_data['qfa']['index'][17]]},
-            prefix + '20M2'   : {'qfa' : [family_data['qfa']['index'][18]]},
-        }
-        return qfa_dict
+
 
     if family_name.lower() == 'qda':
         prefix = 'SIPS-QDA-'
