@@ -1,5 +1,5 @@
 import pyaccel as _pyaccel
-from . import _lattice
+from . import lattice as _lattice
 
 _default_cavity_on = False
 _default_radiation_on = False
