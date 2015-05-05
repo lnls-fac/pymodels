@@ -6,17 +6,14 @@ def get_record_names(family_name = None):
     family_data = sirius.BO_V901._lattice._family_data
 
     if family_name == None:
-        families = ['bpm', 'ch', 'cv', 'qf', 'qd', 'sd', 'sf', 'bend', 'parameters']
+        families = ['ch', 'cv', 'qf', 'qd', 'sd', 'sf', 'bend', 'bopa', 'bodi']
         record_names_dict = {}
         for i in range(len(families)):
             record_names_dict.update(get_record_names(families[i]))
         return record_names_dict
 
-    if family_name.lower() == 'parameters':
-        params_dict = {
-                'BOPA-TUNEH':{},
-                'BOPA-TUNEV':{},
-                'BOPA-TUNES':{},
+    if family_name.lower() == 'bopa':
+        bopa_dict = {
                 'BOPA-CHROMX':{},
                 'BOPA-CHROMY':{},
                 'BOPA-TVHOUR':{},
@@ -29,10 +26,20 @@ def get_record_names(family_name = None):
                 'BOPA-SIGX':{},
                 'BOPA-SIGY':{},
                 'BOPA-SIGS':{},
-                'BOPA-CURRENT':{},
-                'BOPA-BCURRENT':{},
         }
-        return params_dict
+        return bopa_dict
+
+    if family_name.lower() == 'bodi':
+        bodi_dict = {
+                'BODI-TUNEH':{},
+                'BODI-TUNEV':{},
+                'BODI-TUNES':{},
+                'BODI-CURRENT':{},
+                'BODI-BCURRENT':{},
+        }
+        bpm_dict = get_record_names(family_name = 'bpm')
+        bodi_dict.update(bpm_dict)
+        return bodi_dict
 
     if family_name.lower() == 'bpm':
         prefix = 'BODI-BPM-'
