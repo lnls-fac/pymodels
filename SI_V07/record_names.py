@@ -7,23 +7,20 @@ def get_record_names(family_name = None):
 
     if family_name == None:
         families = [
-            'bpm', 'chs', 'cvs', 'chf', 'cvf',
+            'chs', 'cvs', 'chf', 'cvf',
             'bend',
             'qfa-fam',
             'qs', 'sfa',
             'qfa', 'qda', 'sda', 'sd1', 'qf1', 'sf1', 'qf2', 'sd2', 'sd3',
             'qf3', 'sf2', 'qf4', 'sf3', 'sd4', 'sd5', 'sf4', 'sd6', 'sdb',
-            'qdb1', 'qfb', 'sfb', 'qdb2', 'parameters']
+            'qdb1', 'qfb', 'sfb', 'qdb2', 'sipa', 'sidi']
         record_names_dict = {}
         for i in range(len(families)):
             record_names_dict.update(get_record_names(families[i]))
         return record_names_dict
 
-    if family_name.lower() == 'parameters':
-        params_dict = {
-                'SIPA-TUNEH':{},
-                'SIPA-TUNEV':{},
-                'SIPA-TUNES':{},
+    if family_name.lower() == 'sipa':
+        p_dict = {
                 'SIPA-CHROMX':{},
                 'SIPA-CHROMY':{},
                 'SIPA-TVHOUR':{},
@@ -36,10 +33,19 @@ def get_record_names(family_name = None):
                 'SIPA-SIGX':{},
                 'SIPA-SIGY':{},
                 'SIPA-SIGS':{},
-                'SIPA-CURRENT':{},
-                'SIPA-BCURRENT':{},
         }
-        return params_dict
+        return p_dict
+    if family_name.lower() == 'sidi':
+        p_dict = {
+                'SIDI-TUNEH':{},
+                'SIDI-TUNEV':{},
+                'SIDI-TUNES':{},
+                'SIDI-CURRENT':{},
+                'SIDI-BCURRENT':{},
+        }
+        bpm_dict = get_record_names(family_name = 'bpm')
+        p_dict.update(bpm_dict)
+        return p_dict
 
     if family_name.lower() == 'qfa-fam':
         indices = family_data['qfa']['index']
