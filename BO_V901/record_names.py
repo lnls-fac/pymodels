@@ -6,21 +6,17 @@ def get_record_names(family_name = None):
     family_data = sirius.BO_V901._lattice._family_data
 
     if family_name == None:
-        families = ['bpm', 'ch', 'cv', 'qf', 'qd', 'sd', 'sf', 'bend', 'parameters']
+        families = ['ch', 'cv', 'qf-fam', 'qd-fam', 'sd-fam', 'sf-fam', 'bend-fam', 'bopa', 'bodi']
         record_names_dict = {}
         for i in range(len(families)):
             record_names_dict.update(get_record_names(families[i]))
         return record_names_dict
 
-    if family_name.lower() == 'parameters':
-        params_dict = {
-                'BOPA-TUNEH':{},
-                'BOPA-TUNEV':{},
-                'BOPA-TUNES':{},
+    if family_name.lower() == 'bopa':
+        _dict = {
                 'BOPA-CHROMX':{},
                 'BOPA-CHROMY':{},
-                'BOPA-TVHOUR':{},
-                'BOPA-TVMIN':{},
+                'BOPA-LIFETIME':{},
                 'BOPA-SIGX':{},
                 'BOPA-SIGY':{},
                 'BOPA-SIGS':{},
@@ -29,10 +25,20 @@ def get_record_names(family_name = None):
                 'BOPA-SIGX':{},
                 'BOPA-SIGY':{},
                 'BOPA-SIGS':{},
-                'BOPA-CURRENT':{},
-                'BOPA-BCURRENT':{},
         }
-        return params_dict
+        return _dict
+
+    if family_name.lower() == 'bodi':
+        _dict = {
+                'BODI-TUNEH':{},
+                'BODI-TUNEV':{},
+                'BODI-TUNES':{},
+                'BODI-CURRENT':{},
+                'BODI-BCURRENT':{},
+        }
+        bpm_dict = get_record_names(family_name = 'bpm')
+        _dict.update(bpm_dict)
+        return _dict
 
     if family_name.lower() == 'bpm':
         prefix = 'BODI-BPM-'
@@ -152,23 +158,26 @@ def get_record_names(family_name = None):
         }
         return cv_dict
 
-    if family_name.lower() == 'qf':
+    if family_name.lower() == 'qf-fam':
         qf_dict = { 'BOPS-QF-FAM' : {'qf' : family_data['qf']['index']}}
         return qf_dict
 
-    if family_name.lower() == 'qd':
+    if family_name.lower() == 'qd-fam':
         qd_dict = { 'BOPS-QD-FAM' : {'qd' : family_data['qd']['index']}}
         return qd_dict
 
-    if family_name.lower() == 'sd':
+    if family_name.lower() == 'sd-fam':
         sd_dict = { 'BOPS-SD-FAM' : {'sd' : family_data['sd']['index']}}
         return sd_dict
 
-    if family_name.lower() == 'sf':
+    if family_name.lower() == 'sf-fam':
         sf_dict = { 'BOPS-SF-FAM' : {'sf' : family_data['sf']['index']}}
         return sf_dict
 
-    if family_name.lower() == 'b' or family_name.lower() == 'bend':
+    if family_name.lower() == 'b-fam' or family_name.lower() == 'bend-fam':
         b_dict = { 'BOPS-BEND-FAM-A' : {'bend' : family_data['b']['index']},
                    'BOPS-BEND-FAM-B' : {'bend' : family_data['b']['index']}}
         return b_dict
+
+    else:
+        raise Exception('Family name %s not found'%family_name)
