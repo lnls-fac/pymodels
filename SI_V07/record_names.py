@@ -9,7 +9,9 @@ def get_record_names(family_name = None):
         families = [
             'chs', 'cvs', 'chf', 'cvf',
             'bend',
-            'qfa-fam',
+            'qfa-fam', 'qda-fam', 'qfb-fam', 'qdb1-fam', 'qdb2-fam', 'qf1-fam', 'qf2-fam', 'qf3-fam', 'qf4-fam',
+            'sfa-fam', 'sda-fam', 'sd1-fam', 'sf1-fam',  'sd2-fam',  'sd3-fam', 'sf2-fam',
+            'sf3-fam', 'sd4-fam', 'sd5-fam', 'sf4-fam',  'sd6-fam',  'sdb-fam', 'sfb-fam',
             'qs', 'sfa',
             'qfa', 'qda', 'sda', 'sd1', 'qf1', 'sf1', 'qf2', 'sd2', 'sd3',
             'qf3', 'sf2', 'qf4', 'sf3', 'sd4', 'sd5', 'sf4', 'sd6', 'sdb',
@@ -20,7 +22,7 @@ def get_record_names(family_name = None):
         return record_names_dict
 
     if family_name.lower() == 'sipa':
-        p_dict = {
+        _dict = {
                 'SIPA-CHROMX':{},
                 'SIPA-CHROMY':{},
                 'SIPA-TVHOUR':{},
@@ -34,9 +36,10 @@ def get_record_names(family_name = None):
                 'SIPA-SIGY':{},
                 'SIPA-SIGS':{},
         }
-        return p_dict
+        return _dict
+
     if family_name.lower() == 'sidi':
-        p_dict = {
+        _dict = {
                 'SIDI-TUNEH':{},
                 'SIDI-TUNEV':{},
                 'SIDI-TUNES':{},
@@ -44,13 +47,123 @@ def get_record_names(family_name = None):
                 'SIDI-BCURRENT':{},
         }
         bpm_dict = get_record_names(family_name = 'bpm')
-        p_dict.update(bpm_dict)
-        return p_dict
+        _dict.update(bpm_dict)
+        return _dict
 
     if family_name.lower() == 'qfa-fam':
         indices = family_data['qfa']['index']
-        qfa_fam_dict = {'SIPS-QFA-FAM': {'qfa': indices}}
-        return qfa_fam_dict
+        _dict = {'SIPS-QFA-FAM': {'qfa': indices}}
+        return _dict
+
+    if family_name.lower() == 'qda-fam':
+        indices = family_data['qda']['index']
+        _dict = {'SIPS-QDA-FAM': {'qda': indices}}
+        return _dict
+
+    if family_name.lower() == 'qfb-fam':
+        indices = family_data['qfb']['index']
+        _dict = {'SIPS-QFB-FAM': {'qfb': indices}}
+        return _dict
+
+    if family_name.lower() == 'qdb1-fam':
+        indices = family_data['qdb1']['index']
+        _dict = {'SIPS-QDB1-FAM': {'qdb1': indices}}
+        return _dict
+
+    if family_name.lower() == 'qdb2-fam':
+        indices = family_data['qdb2']['index']
+        _dict = {'SIPS-QDB2-FAM': {'qdb2': indices}}
+        return _dict
+
+    if family_name.lower() == 'qf1-fam':
+        indices = family_data['qf1']['index']
+        _dict = {'SIPS-QF1-FAM': {'qf1': indices}}
+        return _dict
+
+    if family_name.lower() == 'qf2-fam':
+        indices = family_data['qf2']['index']
+        _dict = {'SIPS-QF2-FAM': {'qf2': indices}}
+        return _dict
+
+    if family_name.lower() == 'qf3-fam':
+        indices = family_data['qf3']['index']
+        _dict = {'SIPS-QF3-FAM': {'qf3': indices}}
+        return _dict
+
+    if family_name.lower() == 'qf4-fam':
+        indices = family_data['qf4']['index']
+        _dict = {'SIPS-QF4-FAM': {'qf4': indices}}
+        return _dict
+
+    if family_name.lower() == 'sfa-fam':
+        indices = family_data['sfa']['index']
+        _dict = {'SIPS-SFA-FAM': {'sfa': indices}}
+        return _dict
+
+    if family_name.lower() == 'sda-fam':
+        indices = family_data['sda']['index']
+        _dict = {'SIPS-SDA-FAM': {'sda': indices}}
+        return _dict
+
+    if family_name.lower() == 'sd1-fam':
+        indices = family_data['sd1']['index']
+        _dict = {'SIPS-SD1-FAM': {'sd1': indices}}
+        return _dict
+
+    if family_name.lower() == 'sf1-fam':
+        indices = family_data['sf1']['index']
+        _dict = {'SIPS-SF1-FAM': {'sf1': indices}}
+        return _dict
+
+    if family_name.lower() == 'sd2-fam':
+        indices = family_data['sd2']['index']
+        _dict = {'SIPS-SD2-FAM': {'sd2': indices}}
+        return _dict
+
+    if family_name.lower() == 'sd3-fam':
+        indices = family_data['sd3']['index']
+        _dict = {'SIPS-SD3-FAM': {'sd3': indices}}
+        return _dict
+
+    if family_name.lower() == 'sf2-fam':
+        indices = family_data['sf2']['index']
+        _dict = {'SIPS-SF2-FAM': {'sf2': indices}}
+        return _dict
+
+    if family_name.lower() == 'sf3-fam':
+        indices = family_data['sf3']['index']
+        _dict = {'SIPS-SF3-FAM': {'sf3': indices}}
+        return _dict
+
+    if family_name.lower() == 'sd4-fam':
+        indices = family_data['sd4']['index']
+        _dict = {'SIPS-SD4-FAM': {'sd4': indices}}
+        return _dict
+
+    if family_name.lower() == 'sd5-fam':
+        indices = family_data['sd5']['index']
+        _dict = {'SIPS-SD5-FAM': {'sd5': indices}}
+        return _dict
+
+    if family_name.lower() == 'sf4-fam':
+        indices = family_data['sf4']['index']
+        _dict = {'SIPS-SF4-FAM': {'sf4': indices}}
+        return _dict
+
+    if family_name.lower() == 'sd6-fam':
+        indices = family_data['sd6']['index']
+        _dict = {'SIPS-SD6-FAM': {'sd6': indices}}
+        return _dict
+
+    if family_name.lower() == 'sdb-fam':
+        indices = family_data['sdb']['index']
+        _dict = {'SIPS-SDB-FAM': {'sdb': indices}}
+        return _dict
+
+    if family_name.lower() == 'sfb-fam':
+        indices = family_data['sfb']['index']
+        _dict = {'SIPS-SFB-FAM': {'sfb': indices}}
+        return _dict
 
     if family_name.lower() == 'qfa':
         indices = family_data['qfa']['index']
@@ -1713,3 +1826,6 @@ def get_record_names(family_name = None):
             prefix + '20M1'   : {'qdb2' : [family_data['qdb2']['index'][18]]},
         }
         return qdb2_dict
+
+    else:
+        raise Exception('Family name %s not found'%family_name)
