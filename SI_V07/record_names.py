@@ -26,6 +26,7 @@ def get_record_names(family_name = None):
                 'SIPA-CHROMX':{},
                 'SIPA-CHROMY':{},
                 'SIPA-LIFETIME':{},
+                'SIPA-BLIFETIME':{},
                 'SIPA-SIGX':{},
                 'SIPA-SIGY':{},
                 'SIPA-SIGS':{},
