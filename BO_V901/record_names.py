@@ -17,6 +17,7 @@ def get_record_names(family_name = None):
                 'BOPA-CHROMX':{},
                 'BOPA-CHROMY':{},
                 'BOPA-LIFETIME':{},
+                'BOPA-BLIFETIME':{},
                 'BOPA-SIGX':{},
                 'BOPA-SIGY':{},
                 'BOPA-SIGS':{},
