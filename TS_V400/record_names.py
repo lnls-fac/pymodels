@@ -23,19 +23,9 @@ def get_record_names(family_name = None):
     if family_name.lower() == 'sidi':
         _dict = {
                 'TSDI-CURRENT':{},
-                'TSDI-BCURRENT':{},
         }
         bpm_dict = get_record_names(family_name = 'bpm')
         _dict.update(bpm_dict)
-        bpm_fam_dict = get_record_names(family_name = 'bpm-fam')
-        _dict.update(bpm_fam_dict)
-        return _dict
-
-    if family_name.lower() == 'bpm-fam':
-        indices = family_data['bpm']['index']
-        _dict = {'TSDI-BPM-FAM-X': {'bpm': indices},
-                 'TSDI-BPM-FAM-Y': {'bpm': indices},
-                }
         return _dict
 
     if family_name.lower() == 'bpm':

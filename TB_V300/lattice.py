@@ -153,7 +153,7 @@ def create_lattice():
     # sets number of integration steps
     set_num_integ_steps(the_line)
 
-    # Define Camara de Vacuo
+    # -- define vacuum chamber for all elements
     set_vacuum_chamber(the_line)
 
     return the_line
@@ -180,11 +180,11 @@ def set_num_integ_steps(the_line):
 
 
 def set_vacuum_chamber(the_line):
-    vchamber_h = 0.014
-    vchamber_v = 0.014
+    vchamber = [0.014, 0.014]
+
     for i in range(len(the_line)):
-        the_line[i].hmax = vchamber_h
-        the_line[i].vmax = vchamber_v
+        the_line[i].hmax = vchamber[0]
+        the_line[i].vmax = vchamber[1]
 
 
 def sirius_tb_family_data(lattice):

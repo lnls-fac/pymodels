@@ -26,7 +26,6 @@ def create_lattice(**kwargs):
     global _default_optics_mode
     _default_optics_mode = _optics_mode_M0
 
-
     # -- shortcut symbols --
     marker       = _pyaccel.elements.marker
     drift        = _pyaccel.elements.drift
@@ -129,7 +128,11 @@ def create_lattice(**kwargs):
     # -- sets number of integration steps
     set_num_integ_steps(the_ring)
 
+    # -- define vacuum chamber for all elements
+    set_vacuum_chamber(the_ring)
+
     return the_ring
+
 
 def set_rf_frequency(the_ring, energy):
 
@@ -143,6 +146,7 @@ def set_rf_frequency(the_ring, energy):
     idx = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'cav')
     for i in idx:
         the_ring[i].frequency = rf_frequency
+
 
 def set_num_integ_steps(the_ring):
 
@@ -161,6 +165,20 @@ def set_num_integ_steps(the_ring):
         elif any(the_ring[i].polynom_b) and i not in bends:
             nr_steps = int( _math.ceil(the_ring[i].length/len_qs))
             the_ring[i].nr_steps = nr_steps
+
+
+def set_vacuum_chamber(the_ring):
+
+    bends_vchamber = [0.0117, 0.0117]
+    other_vchamber = [0.018,   0.018]
+
+    for i in range(len(the_ring)):
+        if the_ring[i].angle:
+            the_ring[i].hmax = bends_vchamber[0]
+            the_ring[i].vmax = bends_vchamber[1]
+        else:
+            the_ring[i].hmax = other_vchamber[0]
+            the_ring[i].vmax = other_vchamber[1]
 
 
 def dipole_segmented_model():
@@ -245,6 +263,7 @@ def dipole_segmented_model():
     b_length_segmented = 2*sum(b_model[:,0])
 
     return (bd, b_length_segmented, b_model)
+
 
 def sirius_bo_family_data(lattice):
     latt_dict=_pyaccel.lattice.finddict(lattice,'fam_name')

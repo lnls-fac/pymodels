@@ -237,7 +237,11 @@ def create_lattice():
     # -- sets number of integration steps
     set_num_integ_steps(the_ring)
 
+    # -- define vacuum chamber for all elements
+    set_vacuum_chamber(the_ring)
+
     return the_ring
+
 
 def set_rf_frequency(the_ring):
 
@@ -251,6 +255,7 @@ def set_rf_frequency(the_ring):
     idx = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'cav')
     for i in idx:
         the_ring[i].frequency = rf_frequency
+
 
 def set_num_integ_steps(the_ring):
 
@@ -267,6 +272,32 @@ def set_num_integ_steps(the_ring):
         elif the_ring[i].polynom_b[2]:
             nr_steps = int(_math.ceil(the_ring[i].length/len_sexts))
             the_ring[i].nr_steps = nr_steps
+
+
+def set_vacuum_chamber(the_ring):
+
+    other_vchamber = [0.0117, 0.0117]
+    ivu_vchamber   = [0.0117, 0.00225]
+    ovu_vchamber   = [0.0117, 0.004]
+
+    ivu  = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'id_endb')
+    ivu += _pyaccel.lattice.findcells(the_ring, 'fam_name', 'mib')
+
+    ovu  = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'id_enda')
+    ovu += _pyaccel.lattice.findcells(the_ring, 'fam_name', 'mia')[2:]
+
+    for idx in ivu:
+        the_ring[idx].hmax = ivu_vchamber[0]
+        the_ring[idx].vmax = ivu_vchamber[1]
+
+    for idx in ovu:
+        the_ring[idx].hmax = ovu_vchamber[0]
+        the_ring[idx].vmax = ovu_vchamber[1]
+
+    for i in range(len(the_ring)):
+        if i not in ovu+ivu:
+            the_ring[i].hmax = other_vchamber[0]
+            the_ring[i].vmax = other_vchamber[1]
 
 
 def sirius_si_family_data(lattice):
