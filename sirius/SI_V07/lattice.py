@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 import math as _math
 import pyaccel as _pyaccel

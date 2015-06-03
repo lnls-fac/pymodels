@@ -7,19 +7,38 @@ def get_record_names(family_name = None):
 
     if family_name == None:
         families = [
-            'chs', 'cvs', 'chf', 'cvf',
-            'bend',
-            'qfa-fam', 'qda-fam', 'qfb-fam', 'qdb1-fam', 'qdb2-fam', 'qf1-fam', 'qf2-fam', 'qf3-fam', 'qf4-fam',
-            'sfa-fam', 'sda-fam', 'sd1-fam', 'sf1-fam',  'sd2-fam',  'sd3-fam', 'sf2-fam',
-            'sf3-fam', 'sd4-fam', 'sd5-fam', 'sf4-fam',  'sd6-fam',  'sdb-fam', 'sfb-fam',
-            'qs', 'sfa',
-            'qfa', 'qda', 'sda', 'sd1', 'qf1', 'sf1', 'qf2', 'sd2', 'sd3',
-            'qf3', 'sf2', 'qf4', 'sf3', 'sd4', 'sd5', 'sf4', 'sd6', 'sdb',
-            'qdb1', 'qfb', 'sfb', 'qdb2', 'sipa', 'sidi']
+            # magnet families
+            'qfa-fam', 'qda-fam', 'qfb-fam', 'qdb1-fam', 'qdb2-fam',
+            'qf1-fam', 'qf2-fam', 'qf3-fam', 'qf4-fam',
+            'sfa-fam', 'sda-fam', 'sfb-fam', 'sdb-fam',
+            'sd1-fam', 'sd2-fam', 'sd3-fam', 'sd4-fam', 'sd5-fam', 'sd6-fam',
+            'sf1-fam', 'sf2-fam', 'sf3-fam',  'sf4-fam',
+            'bend-fam',
+            # individual magnets
+            'qfa', 'qda', 'qfb', 'qdb1', 'qdb2',
+            'qf1', 'qf2', 'qf3', 'qf4',
+            'sfa', 'sda', 'sfb', 'sdb',
+            'sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6',
+            'sf1', 'sf2', 'sf3',  'sf4',
+            'chf', 'cvf',
+            # functions implemented in other individual magnets
+            'chs', 'cvs', 'qs',
+            # other subsystems
+            'sipa', 'sidi', 'sirf']
+            
         record_names_dict = {}
         for i in range(len(families)):
             record_names_dict.update(get_record_names(families[i]))
         return record_names_dict
+
+    if family_name.lower() == 'sirf':
+        #indices = family_data['cav']['index']
+        #_dict = {'SIRF-FREQUENCY': {'cav': indices}}
+        #return _dict
+        _dict = {
+            'SIRF-FREQUENCY':{},
+        }
+        return _dict
 
     if family_name.lower() == 'sipa':
         _dict = {
@@ -428,7 +447,7 @@ def get_record_names(family_name = None):
         }
         return bpm_dict
 
-    if family_name.lower() == 'bend':
+    if family_name.lower() == 'bend-fam':
         bend_dict = { 'SIPS-BEND-FAM' :
             {'b1' : family_data['b1']['index'],
              'b2' : family_data['b2']['index'],

@@ -21,9 +21,7 @@ def get_record_names(family_name = None):
         return _dict
 
     if family_name.lower() == 'sidi':
-        _dict = {
-                'TSDI-CURRENT':{},
-        }
+        _dict = {}
         bpm_dict = get_record_names(family_name = 'bpm')
         _dict.update(bpm_dict)
         return _dict
