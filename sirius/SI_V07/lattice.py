@@ -359,5 +359,54 @@ def sirius_si_family_data(lattice):
 
     return data
 
+
+def get_family_mapping():
+    mapping = {
+        'b1': 'dipole',
+        'b2': 'dipole',
+        'b3': 'dipole',
+        'bc': 'dipole',
+
+        'qfa': 'quadrupole',
+        'qda': 'quadrupole',
+        'qdb2': 'quadrupole',
+        'qfb': 'quadrupole',
+        'qdb1': 'quadrupole',
+        'qf1': 'quadrupole',
+        'qf2': 'quadrupole',
+        'qf3': 'quadrupole',
+        'qf4': 'quadrupole',
+
+        'sda': 'sextupole',
+        'sfa': 'sextupole',
+        'sdb': 'sextupole',
+        'sfb': 'sextupole',
+        'sd1': 'sextupole',
+        'sf1': 'sextupole',
+        'sd2': 'sextupole',
+        'sd3': 'sextupole',
+        'sf2': 'sextupole',
+        'sd6': 'sextupole',
+        'sf4': 'sextupole',
+        'sd5': 'sextupole',
+        'sd4': 'sextupole',
+        'sf3': 'sextupole',
+
+        'bpm': 'bpm',
+
+        'cf': 'fast_corrector',
+        'chf': 'fast_horizontal_corrector',
+        'cvf': 'fast_horizontal_corrector',
+
+        'chs': 'slow_horizontal_corrector',
+        'cvs': 'slow_vertical_corrector',
+
+        'qs': 'skew_quadrupole',
+    }
+
+    return mapping
+
+
 _the_ring=create_lattice()
 _family_data=sirius_si_family_data(_the_ring)
+_family_mapping=get_family_mapping()
