@@ -17,3 +17,4 @@ default_optics_mode = _lattice._default_optics_mode.label
 lattice_version  = 'SI_V07'
 lattice_symmetry = _lattice._lattice_symmetry
 family_data = _lattice._family_data
+family_mapping = _lattice._family_mapping
