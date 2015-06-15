@@ -8,6 +8,7 @@ from . import optics_mode_M0 as _optics_mode_M0
 
 _default_optics_mode = _optics_mode_M0
 _energy = 0.15e9 #[eV]
+_emittance = 170.3329758677203e-09 #[m rad]
 _family_segmentation = { }
 
 def create_lattice(**kwargs):

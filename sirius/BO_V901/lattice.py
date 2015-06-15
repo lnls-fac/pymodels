@@ -37,16 +37,22 @@ def create_lattice(**kwargs):
     vcorrector   = _pyaccel.elements.vcorrector
     strengths    = _default_optics_mode.strengths
 
+    #correctors length
+    c_length = 0.1 #Verificar tamanho real
+
+    #kickers length
+    k_length = 0.5
+
     # -- loads dipole segmented model --
     bd, b_len_seg, _b_model = dipole_segmented_model()
     b_len_hdedge            = 1.152; # [m]
     half_model_diff         = (b_len_seg - b_len_hdedge)/2.0
 
     lt       = drift('lt',      2.146000)
-    lt2      = drift('lt2',     2.146000-half_model_diff)
+    lt2      = drift('lt2',     2.146000 - half_model_diff)
     l25      = drift('l25',     0.250000)
-    l25_2    = drift('l25_2',   0.250000-half_model_diff)
-    l30_2    = drift('l30_2',   0.300000-half_model_diff)
+    l25_2    = drift('l25_2',   0.250000 - half_model_diff)
+    l30_2    = drift('l30_2',   0.300000 - half_model_diff)
     l36      = drift('l36',     0.360000)
     l60      = drift('l60',     0.600000)
     l80      = drift('l80',     0.800000)
@@ -59,16 +65,25 @@ def create_lattice(**kwargs):
     lm70     = drift('lm70',    1.446000)
     lm100    = drift('lm100',   1.146000)
     lm105    = drift('lm105',   1.096000)
-    lkk      = drift('lkk',     0.741000)
-    lm60_kk  = drift('lm60_kk', 0.805000)
     sfus     = drift('sfus',    1.746000+0.05)
     sfds     = drift('sfds',    0.200000-0.05)
+
+    l25c     = drift('l25c',    0.250000 - c_length/2.0)
+    l30_2c   = drift('l30_2c',  0.300000 - half_model_diff - c_length/2.0)
+    l80c     = drift('l80c',    0.800000 - c_length/2.0)
+    lm25c    = drift('lm25c',   1.896000 - c_length/2.0)
+    lm30c    = drift('lm30c',   1.846000 - c_length/2.0)
+    lm66c    = drift('lm66c',   1.486000 - c_length/2.0)
+    lm70c    = drift('lm70c',   1.446000 - c_length/2.0)
+
+    l60k     = drift('l60k',    0.600000 - k_length/2.0)
+    lm60k    = drift('lm60k',   1.546000 - k_length/2.0)
+    lkk      = drift('lkk',     0.741000 - k_length)
+    lm60_kk  = drift('lm60_kk', 0.805000 - k_length/2.0)
 
     start    = marker('start')   # start of the model
     fim      = marker('end')     # end of the model
     girder   = marker('girder')
-    kick_in  = marker('kick_in')
-    kick_ex  = marker('kick_ex')
     sept_in  = marker('sept_in')
     sept_ex  = marker('sept_ex')
     mqf      = marker('mqf')
@@ -79,8 +94,10 @@ def create_lattice(**kwargs):
     sd       = sextupole ('sd', 0.200000, strengths['sd'])
 
     bpm      = marker('bpm')
-    ch       = hcorrector('ch', 0)
-    cv       = vcorrector('cv', 0)
+    ch       = quadrupole('ch', c_length, 0.0)
+    cv       = quadrupole('cv', c_length, 0.0)
+    kick_in  = quadrupole('kick_in', k_length, 0.0)
+    kick_ex  = quadrupole('kick_ex', k_length, 0.0)
 
     rfc = rfcavity('cav', 0, rf_voltage, 0) # RF frequency will be set later.
 
@@ -90,20 +107,20 @@ def create_lattice(**kwargs):
     lqd_2        = [lm45, qd, l25_2]
     lsd_2        = [lm45, sd, l25_2]
     lsf          = [sfus, sf, sfds]
-    lch          = [lm25, ch, l25]
-    lcv_2        = [lm30, cv, l30_2]
-    lsdcv_2      = [lm70, cv, l25, sd, l25_2]
+    lch          = [lm25c, ch, l25c]
+    lcv_2        = [lm30c, cv, l30_2c]
+    lsdcv_2      = [lm70c, cv, l25c, sd, l25_2]
     fodo1        = [mqf, qf, lfree, girder, lfree_2, b,       lfree_2, girder, bpm, lsf, qf]
     fodo2        = [mqf, qf, lfree, girder, lqd_2,   b,   lcv_2[::-1], girder, bpm, lch, qf]
     fodo2sd      = [mqf, qf, lfree, girder, lqd_2,   b, lsdcv_2[::-1], girder, bpm, lch, qf]
     fodo1sd      = [mqf, qf, lfree, girder, lfree_2, b,   lsd_2[::-1], girder, bpm, lsf, qf]
 
     boos         = [fodo1sd, fodo2, fodo1, fodo2, fodo1, fodo2sd, fodo1, fodo2, fodo1, fodo2]
-    lke          = [l60, kick_ex, lkk, kick_ex, lm60_kk]
-    lcvse_2      = [l36, sept_ex, lm66, cv, l30_2]
+    lke          = [l60k, kick_ex, lkk, kick_ex, lm60_kk]
+    lcvse_2      = [l36, sept_ex, lm66c, cv, l30_2c]
     lmon         = [l100, bpm, lm100]
-    lsich        = [lm105, sept_in, l80, ch, l25]
-    lki          = [l60, kick_in, lm60]
+    lsich        = [lm105, sept_in, l80c, ch, l25c]
+    lki          = [l60k, kick_in, lm60k]
     fodo2kese    = [mqf, qf, lke,        girder, lqd_2,   b, lcvse_2[::-1], girder, lmon, qf]
     fodo2si      = [mqf, qf, lfree,      girder, lqd_2,   b,   lcv_2[::-1], girder, bpm, lsich, qf]
     fodo1ki      = [mqf, qf, lki,        girder, lfree_2, b,       lfree_2, girder, bpm, lsf, qf]

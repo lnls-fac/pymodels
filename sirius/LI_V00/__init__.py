@@ -10,3 +10,4 @@ energy = _lattice._energy
 default_optics_mode  = _lattice._default_optics_mode.label
 lattice_version      = 'LI_V00'
 family_data          = _lattice._family_data
+emittance = _lattice._emittance
