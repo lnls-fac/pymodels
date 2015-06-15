@@ -1,30 +1,43 @@
 
 import sirius
 
+def families_dipoles():
+    return ('bend',)
+
+def families_quadrupoles():
+    return ('qfa', 'qda', 'qfb', 'qdb1', 'qdb2','qf1', 'qf2', 'qf3', 'qf4',)
+
+def families_sextupoles():
+    return ('sfa', 'sda', 'sfb', 'sdb','sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6','sf1', 'sf2', 'sf3', 'sf4',)
+
+def families_horizontal_correctors():
+    return ('chf', 'chs',)
+
+def families_vertical_correctors():
+    return ('cvf', 'cvs',)
+
+def families_skew_correctors():
+    return ('qs',)
+
 def get_record_names(family_name = None):
 
     family_data = sirius.SI_V07.lattice._family_data
 
     if family_name == None:
-        families = [
-            # magnet families
-            'qfa-fam', 'qda-fam', 'qfb-fam', 'qdb1-fam', 'qdb2-fam',
-            'qf1-fam', 'qf2-fam', 'qf3-fam', 'qf4-fam',
-            'sfa-fam', 'sda-fam', 'sfb-fam', 'sdb-fam',
-            'sd1-fam', 'sd2-fam', 'sd3-fam', 'sd4-fam', 'sd5-fam', 'sd6-fam',
-            'sf1-fam', 'sf2-fam', 'sf3-fam',  'sf4-fam',
-            'bend-fam',
-            # individual magnets
-            'qfa', 'qda', 'qfb', 'qdb1', 'qdb2',
-            'qf1', 'qf2', 'qf3', 'qf4',
-            'sfa', 'sda', 'sfb', 'sdb',
-            'sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6',
-            'sf1', 'sf2', 'sf3',  'sf4',
-            'chf', 'cvf',
-            # functions implemented in other individual magnets
-            'chs', 'cvs', 'qs',
-            # other subsystems
-            'sipa', 'sidi', 'sirf']
+
+        families = ['sipa', 'sidi', 'sirf']
+
+        # record_name groups for individual magnets
+        families.extend(families_quadrupoles())
+        families.extend(families_sextupoles())
+        families.extend(families_horizontal_correctors())
+        families.extend(families_vertical_correctors())
+        families.extend(families_skew_correctors())
+        # record_name groups for families
+        families.extend([name+'-fam' for name in families_dipoles()])
+        families.extend([name+'-fam' for name in families_quadrupoles()])
+        families.extend([name+'-fam' for name in families_sextupoles()])
+
 
         record_names_dict = {}
         for i in range(len(families)):

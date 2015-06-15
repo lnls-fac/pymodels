@@ -10,6 +10,9 @@ _default_optics_mode = _optics_mode_M0
 _energy = 0.15e9 #[eV]
 _emittance = 170.3329758677203e-09 #[m rad]
 _family_segmentation = { }
+_single_bunch_charge = 1e-9 #[Coulomb]
+_multi_bunch_charge  = 3e-9 #[Coulomb]
+_pulse_duration_interval = [150e-9,300e-9] #[seconds]
 
 def create_lattice(**kwargs):
 
