@@ -19,6 +19,9 @@ def families_vertical_correctors():
 def families_skew_correctors():
     return ('qs',)
 
+def families_rf():
+    return ('cav',)
+
 def get_record_names(family_name = None):
 
     family_data = sirius.SI_V07.lattice._family_data
@@ -45,11 +48,12 @@ def get_record_names(family_name = None):
         return record_names_dict
 
     if family_name.lower() == 'sirf':
-        #indices = family_data['cav']['index']
+        indices = family_data['cav']['index']
         #_dict = {'SIRF-FREQUENCY': {'cav': indices}}
         #return _dict
         _dict = {
-            'SIRF-FREQUENCY':{},
+            'SIRF-FREQUENCY':{'cav':indices},
+            'SIRF-VOLTAGE':{'cav':indices},
         }
         return _dict
 

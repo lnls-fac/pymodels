@@ -6,7 +6,7 @@ def get_record_names(family_name = None):
     family_data = sirius.BO_V901._lattice._family_data
 
     if family_name == None:
-        families = ['ch', 'cv', 'qf-fam', 'qd-fam', 'sd-fam', 'sf-fam', 'bend-fam', 'bopa', 'bodi']
+        families = ['ch', 'cv', 'qf-fam', 'qd-fam', 'sd-fam', 'sf-fam', 'bend-fam', 'bopa', 'bodi', 'bpm-fam']
         record_names_dict = {}
         for i in range(len(families)):
             record_names_dict.update(get_record_names(families[i]))
@@ -39,6 +39,13 @@ def get_record_names(family_name = None):
         }
         bpm_dict = get_record_names(family_name = 'bpm')
         _dict.update(bpm_dict)
+        return _dict
+
+    if family_name.lower() == 'bpm-fam':
+        indices = family_data['bpm']['index']
+        _dict = {'BODI-BPM-FAM-X': {'bpm': indices},
+                 'BODI-BPM-FAM-Y': {'bpm': indices}
+                }
         return _dict
 
     if family_name.lower() == 'bpm':
