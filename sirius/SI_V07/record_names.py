@@ -1,26 +1,34 @@
 
 import sirius
 
+
 def families_dipoles():
     return ('bend',)
+
 
 def families_quadrupoles():
     return ('qfa', 'qda', 'qfb', 'qdb1', 'qdb2','qf1', 'qf2', 'qf3', 'qf4',)
 
+
 def families_sextupoles():
     return ('sfa', 'sda', 'sfb', 'sdb','sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6','sf1', 'sf2', 'sf3', 'sf4',)
+
 
 def families_horizontal_correctors():
     return ('chf', 'chs',)
 
+
 def families_vertical_correctors():
     return ('cvf', 'cvs',)
+
 
 def families_skew_correctors():
     return ('qs',)
 
+
 def families_rf():
     return ('cav',)
+
 
 def get_record_names(family_name = None):
 
