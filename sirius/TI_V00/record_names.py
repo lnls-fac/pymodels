@@ -14,13 +14,13 @@ def get_record_names(family_name = None):
     if family_name.lower() == 'ti':
         _dict = {
                 'TI-CYCLE':{},               # when set starts entire injection cycle
-                #'TI-BO-KICKIN-ON':{},
-                #'TI-BO-KICKIN-DELAY':{},
-                #'TI-BO-KICKEX-ON':{},
-                #'TI-BO-KICKEX-DELAY':{},     
-                'TI-DELAY-BO2SI':{},         # current time delay of ring relative to booster [s]
-                'TI-DELAY-BO2SI-DELTA':{},   # delta time: should be set to inverse of RF frequency
-                'TI-DELAY-BO2SI-INC':{}      # when set DELAY-BO2SI-DELTA is added to DELAY-BO2SI
+                'TI-BO-KICKIN-ON':{},        # whether to pulse BO injection kicker
+                'TI-BO-KICKIN-DELAY':{},     # when to pulse BO injection kickes
+                'TI-BO-KICKEX-ON':{},        # whether to pulse BO extraction kicker
+                'TI-BO-KICKEX-DELAY':{},     # when to pulse BO extraction kicker
+                'TI-SI-KICKIN-ON':{} ,       # whether to pulse SI injection kicker
+                'TI-SI-KICKIN-DELAY':{},     # when to pulse SI injection kicker
+                'TI-SI-KICKIN-INC':{},       # increment to SI injection kicker delay
         }
         return _dict
 
