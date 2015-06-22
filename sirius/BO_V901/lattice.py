@@ -133,11 +133,11 @@ def create_lattice(**kwargs):
     boocor    = [start, boosinj, boos, boosrf, boos, boos, fim]
     elist     = boocor
 
-    the_ring = _pyaccel.lattice.buildlat(elist)
+    the_ring = _pyaccel.lattice.build(elist)
 
     # -- shifts model to marker 'start'
-    idx = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'start')
-    the_ring = _pyaccel.lattice.shiftlat(the_ring, idx[0])
+    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'start')
+    the_ring = _pyaccel.lattice.shift(the_ring, idx[0])
 
     # -- sets rf frequency
     set_rf_frequency(the_ring, energy)
@@ -153,14 +153,14 @@ def create_lattice(**kwargs):
 
 def set_rf_frequency(the_ring, energy):
 
-    circumference = _pyaccel.lattice.lengthlat(the_ring)
+    circumference = _pyaccel.lattice.length(the_ring)
 
     #_, beam_velocity, _, _, _ = _mp.beam_optics.beam_rigidity(energy=_energy)
     #velocity = beam_velocity
     velocity = _mp.constants.light_speed
     rev_frequency = velocity / circumference
     rf_frequency  = _harmonic_number * rev_frequency
-    idx = _pyaccel.lattice.findcells(the_ring, 'fam_name', 'cav')
+    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'cav')
     for i in idx:
         the_ring[i].frequency = rf_frequency
 
@@ -286,7 +286,7 @@ def dipole_segmented_model():
 
 
 def sirius_bo_family_data(lattice):
-    latt_dict=_pyaccel.lattice.finddict(lattice,'fam_name')
+    latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
     data={}
 
     for key in latt_dict.keys():

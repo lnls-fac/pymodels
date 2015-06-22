@@ -18,13 +18,13 @@ def create_lattice(**kwargs):
     marker = _pyaccel.elements.marker
     linac = marker('linac')
     elist = [linac]
-    the_line = _pyaccel.lattice.buildlat(elist)
+    the_line = _pyaccel.lattice.build(elist)
 
     return the_line
 
 
 def sirius_li_family_data(lattice):
-    latt_dict=_pyaccel.lattice.finddict(lattice,'fam_name')
+    latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
     data={}
     for key in latt_dict.keys():
         if key in _family_segmentation.keys():
