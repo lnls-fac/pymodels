@@ -144,11 +144,11 @@ def create_lattice():
 
     # finalization
     elist = ltba
-    the_line = _pyaccel.lattice.buildlat(elist)
+    the_line = _pyaccel.lattice.build(elist)
 
     # shifts model to marker 'start'
-    idx = _pyaccel.lattice.findcells(the_line, 'fam_name', 'start')
-    the_line = _pyaccel.lattice.shiftlat(the_line, idx[0])
+    idx = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'start')
+    the_line = _pyaccel.lattice.shift(the_line, idx[0])
 
     # sets number of integration steps
     set_num_integ_steps(the_line)
@@ -188,7 +188,7 @@ def set_vacuum_chamber(the_line):
 
 
 def sirius_ts_family_data(lattice):
-    latt_dict=_pyaccel.lattice.finddict(lattice,'fam_name')
+    latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
     data={}
 
     for key in latt_dict.keys():
