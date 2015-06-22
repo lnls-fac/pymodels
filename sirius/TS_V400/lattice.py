@@ -60,6 +60,8 @@ def create_lattice():
     msf   = marker('msf')
     msg   = marker('msg')
     mseb  = marker('mseb')
+    sseb  = marker('sseb')
+    esef  = marker('esef')
     start = marker('start')
     end   = marker('end')
 
@@ -97,7 +99,7 @@ def create_lattice():
     # -- sep booster --
     h1 = rbend_sirius('seb', 0.85/2, -3.6*deg2rad/2, -3.6*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
     h2 = rbend_sirius('seb', 0.85/2, -3.6*deg2rad/2, 0, -3.6*deg2rad/2, 0, 0, 0, [0, 0, 0], [0, 0, 0])
-    septex = [h1, mseb, h2]
+    septex = [sseb, h1, mseb, h2]
 
     # -- sep grosso --
     h1 = rbend_sirius('seg', 1.10/2, 6.2*deg2rad/2, 6.2*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
@@ -107,7 +109,7 @@ def create_lattice():
     # -- sep fino --
     h1 = rbend_sirius('sef', 0.925/2, 3.13*deg2rad/2, 3.13*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
     h2 = rbend_sirius('sef', 0.925/2, 3.13*deg2rad/2, 0, 3.13*deg2rad/2, 0, 0, 0, [0, 0, 0], [0, 0, 0])
-    septfi = [h1, msf, h2]
+    septfi = [h1, msf, h2, esef]
 
     # -- lines --
     la1   = [la1p, l20c, cv, l20c, l40, l40]

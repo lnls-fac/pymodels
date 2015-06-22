@@ -193,6 +193,9 @@ def set_vacuum_chamber(the_ring):
         if the_ring[i].angle:
             the_ring[i].hmax = bends_vchamber[0]
             the_ring[i].vmax = bends_vchamber[1]
+        elif the_ring[i].fam_name in ['mb', 'pb']:
+            the_ring[i].hmax = bends_vchamber[0]
+            the_ring[i].vmax = bends_vchamber[1]
         else:
             the_ring[i].hmax = other_vchamber[0]
             the_ring[i].vmax = other_vchamber[1]

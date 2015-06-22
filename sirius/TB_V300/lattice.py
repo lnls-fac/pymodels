@@ -66,7 +66,8 @@ def create_lattice():
     mbn    = marker('mbn')
     mbp    = marker('mbp')
     msep   = marker('msep')
-    start = marker('start')
+    esep   = marker('esep')
+    start  = marker('start')
     end    = marker('end')
     fenda  = marker('fenda')
 
@@ -96,22 +97,22 @@ def create_lattice():
 
     # -- bspec --
     bspech = rbend_sirius('bspec', 0.45003/2, -15*deg2rad/2, 0, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
-    bspec  = [bspech, bspech]
+    bspec  = [bspech, mbspec, bspech]
 
     # -- bn --
     bne = rbend_sirius('bn', 0.300858/2, -15*deg2rad/2, -15*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
     bns = rbend_sirius('bn', 0.300858/2, -15*deg2rad/2, 0, -15*deg2rad/2, 0, 0, 0, [0, 0, 0], [0, 0, 0])
-    bn  = [bne, bns]
+    bn  = [bne, mbn, bns]
 
     # -- bp --
     bpe = rbend_sirius('bp', 0.300858/2, 15*deg2rad/2, 15*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
     bps = rbend_sirius('bp', 0.300858/2, 15*deg2rad/2, 0, 15*deg2rad/2, 0, 0, 0, [0, 0, 0], [0, 0, 0])
-    bp  = [bpe, bps]
+    bp  = [bpe, mbp, bps]
 
     # -- sep --
     sepe = rbend_sirius('sep', 0.50/2, 21.75*deg2rad/2, 21.75*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
     seps = rbend_sirius('sep', 0.50/2, 21.75*deg2rad/2, 0, 21.75*deg2rad/2, 0, 0, 0, [0, 0, 0], [0, 0, 0])
-    sep  = [sepe, seps]
+    sep  = [sepe, msep, seps, esep]
 
     #booster
     l800    = drift('l800', 0.80)
@@ -185,6 +186,7 @@ def set_vacuum_chamber(the_line):
     for i in range(len(the_line)):
         the_line[i].hmax = vchamber[0]
         the_line[i].vmax = vchamber[1]
+
 
 
 def sirius_tb_family_data(lattice):
