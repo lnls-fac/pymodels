@@ -18,9 +18,10 @@ def get_record_names(family_name = None):
                 'TI-BO-KICKIN-DELAY':{},     # when to pulse BO injection kickes
                 'TI-BO-KICKEX-ON':{},        # whether to pulse BO extraction kicker
                 'TI-BO-KICKEX-DELAY':{},     # when to pulse BO extraction kicker
+                'TI-BO-KICKEX-INC':{},       # increment to SI injection kicker delay
                 'TI-SI-KICKIN-ON':{} ,       # whether to pulse SI injection kicker
                 'TI-SI-KICKIN-DELAY':{},     # when to pulse SI injection kicker
-                'TI-SI-KICKIN-INC':{},       # increment to SI injection kicker delay
+                #'TI-SI-KICKIN-INC':{},       # increment to SI injection kicker delay
         }
         return _dict
 

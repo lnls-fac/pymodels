@@ -6,9 +6,22 @@ import mathphys as _mp
 from . import optics_mode_M2 as _optics_mode_M2
 
 _energy = 0.15e9 #[eV]
+
 _default_optics_mode = _optics_mode_M2
-_family_segmentation={ 'qd'  : 1,   'qf'  : 1, 'bpm' : 1, 'ch' : 1, 'cv'  : 1,
-                       'sep' : 2, 'bspec' : 2, 'bn'  : 2, 'bp' : 2 }
+
+_family_segmentation = { 'qd'  : 1,   'qf'  : 1, 'bpm' : 1, 'ch' : 1, 'cv'  : 1,
+                         'sep' : 2, 'bspec' : 2, 'bn'  : 2, 'bp' : 2 }
+
+_initial_twiss = _pyaccel.optics.Twiss.make_new(spos=0.0,
+                                                fixed_point=[0,0,0,0,0,0], # nominal orbit of LI w.r.t. TB coord. sys.
+                                                mu=[0.0,0.0],
+                                                beta=[7.0,7.0],
+                                                alpha=[-1.0,-1.0],
+                                                eta=[0,0],
+                                                etal=[0,0])
+                                                
+_ejection_fixed_point  = (-0.030,0.0143,0,0,0,0) # nominal orbit of TB w.r.t. BO coord. sys.
+
 
 def create_lattice():
 
