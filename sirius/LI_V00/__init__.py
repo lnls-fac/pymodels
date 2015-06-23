@@ -13,4 +13,5 @@ pulse_duration_interval = _lattice._pulse_duration_interval
 default_optics_mode  = _lattice._default_optics_mode.label
 lattice_version      = 'LI_V00'
 family_data          = _lattice._family_data
-emittance = _lattice._emittance
+emittance            = _lattice._emittance
+global_coupling      = 1.0 # "round" beam
