@@ -1,5 +1,5 @@
 # sirius
-Sirius python models for
+Sirius parameters and pyaccel models for
 - SI
 - BO
 - TS
