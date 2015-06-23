@@ -5,7 +5,7 @@ def get_record_names(family_name = None):
     family_data = sirius.TS_V400.lattice._family_data
 
     if family_name == None:
-        families = ['bend', 'sidi', 'qf',
+        families = ['bend', 'tsdi', 'qf',
                     'qd', 'ch', 'cv', 'sep']
         record_names_dict = {}
         for family in families:
@@ -20,7 +20,7 @@ def get_record_names(family_name = None):
         }
         return _dict
 
-    if family_name.lower() == 'sidi':
+    if family_name.lower() == 'tsdi':
         _dict = {}
         bpm_dict = get_record_names(family_name = 'bpm')
         _dict.update(bpm_dict)
