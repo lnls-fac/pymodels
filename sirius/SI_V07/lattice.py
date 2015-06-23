@@ -5,6 +5,7 @@ import mathphys as _mp
 from . import optics_mode_C04 as _optics_mode_C04
 from . import optics_mode_C05 as _optics_mode_C05
 
+
 _default_optics_mode = _optics_mode_C05
 _lattice_symmetry = 10
 _harmonic_number  = 864
@@ -20,8 +21,8 @@ _family_segmentation={
     'cav' : 1,
     }
 
-def create_lattice():
 
+def create_lattice():
     # -- selection of optics mode --
     global _default_optics_mode
     _default_optics_mode = _optics_mode_C05
@@ -134,7 +135,6 @@ def create_lattice():
     RFC = rfcavity('cav', 0, 2.5e6, 500e6)
 
     # -- transport lines --
-
     M2A = [GIRDER,CF,L11,SFA,L12,BPM,L14,QFA,L24,QDA,L15,SDA,L19,GIRDER]               # high beta xxM2 girder
     M1A = M2A[::-1]                                                                    # high beta xxM1 girder
     IDA = [GIRDER,LIA,MIDA,L50,L50,MIA,MOMACCEP,L50,L50,MIDA,LIA,GIRDER]               # high beta ID straight section
@@ -201,7 +201,6 @@ def create_lattice():
     GIRDER_19C1 = C1A; GIRDER_19C2 = C2A; GIRDER_19C3 = C3; GIRDER_19C4 = C4A; GIRDER_19C5 = C5A;
     GIRDER_20C1 = C1B; GIRDER_20C2 = C2B; GIRDER_20C3 = C3; GIRDER_20C4 = C4B; GIRDER_20C5 = C5B;
 
-
     # SECTORS # 01..20
     S01 = [GIRDER_01M1, GIRDER_01S, GIRDER_01M2, B1, GIRDER_01C1, B2, GIRDER_01C2, B3, GIRDER_01C3, B3, GIRDER_01C4, B2, GIRDER_01C5, B1];
     S02 = [GIRDER_02M1, GIRDER_02S, GIRDER_02M2, B1, GIRDER_02C1, B2, GIRDER_02C2, B3, GIRDER_02C3, B3, GIRDER_02C4, B2, GIRDER_02C5, B1];
@@ -244,7 +243,6 @@ def create_lattice():
 
 
 def set_rf_frequency(the_ring):
-
     circumference = _pyaccel.lattice.length(the_ring)
 
     #_, beam_velocity, _, _, _ = _mp.beam_optics.beam_rigidity(energy=_energy)
@@ -258,7 +256,6 @@ def set_rf_frequency(the_ring):
 
 
 def set_num_integ_steps(the_ring):
-
     len_bends = 0.050
     len_quads = 0.015
     len_sexts = 0.015
@@ -275,7 +272,6 @@ def set_num_integ_steps(the_ring):
 
 
 def set_vacuum_chamber(the_ring):
-
     other_vchamber = [0.0117, 0.0117]
     ivu_vchamber   = [0.0117, 0.00225]
     ovu_vchamber   = [0.0117, 0.004]
@@ -411,6 +407,6 @@ def get_family_mapping():
     return mapping
 
 
-_the_ring=create_lattice()
-_family_data=sirius_si_family_data(_the_ring)
-_family_mapping=get_family_mapping()
+_the_ring = create_lattice()
+_family_data = sirius_si_family_data(_the_ring)
+_family_mapping = get_family_mapping()
