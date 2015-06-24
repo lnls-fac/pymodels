@@ -74,6 +74,19 @@ def get_record_names(subsystem = None):
         _dict.update(family_dict)
         return _dict
 
+    if subsystem.lower() == 'sima':
+        prefix = 'SIMA-'
+
+        element_dict = {}
+        element_dict.update(get_element_names(element = 'bend', prefix = prefix))
+        element_dict.update(get_element_names(element = 'quad', prefix = prefix))
+        element_dict.update(get_element_names(element = 'sext', prefix = prefix))
+        element_dict.update(get_element_names(element = 'ch', prefix = prefix))
+        element_dict.update(get_element_names(element = 'cv', prefix = prefix))
+        element_dict.update(get_element_names(element = 'qs', prefix = prefix))
+
+        return element_dict
+
     else:
         raise Exception('Subsystem %s not found'%subsystem)
 
