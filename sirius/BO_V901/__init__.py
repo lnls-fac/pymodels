@@ -17,7 +17,5 @@ default_optics_mode  = _lattice._default_optics_mode.label
 lattice_symmetry     = _lattice._lattice_symmetry
 lattice_version      = accelerator_data['lattice_version']
 family_data          = _families._family_data
-# global_coupling      = 0.0002 # expected corrected value
-# average_pressure     = 1.5e-8 # average pressure [mbar]
 set_rf_voltage       = _lattice.set_rf_voltage
 set_rf_frequency     = _lattice.set_rf_frequency

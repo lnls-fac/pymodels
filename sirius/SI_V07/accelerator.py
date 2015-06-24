@@ -32,4 +32,4 @@ accelerator_data['dirs'] = {
     'excitation_curves': _os.path.join(_folder_code, 'sirius', 'excitation_curves'),
 }
 accelerator_data['global_coupling'] = 0.01 # expected corrected value
-accelerator_data['pressure_profile'] = _np.array([0, 1.333e-9]) # [s [m], p [mbar]]
+accelerator_data['pressure_profile'] = _np.array([[0, 518.396],[1.333e-9]*2]) # [s [m], p [mbar]]

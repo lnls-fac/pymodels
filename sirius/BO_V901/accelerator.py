@@ -27,4 +27,4 @@ accelerator_data['lattice_version'] = 'BO_V901'
 #     'excitation_curves': _os.path.join(_folder_code, 'sirius', 'excitation_curves'),
 # }
 accelerator_data['global_coupling'] = 0.0002 # expected corrected value
-accelerator_data['pressure_profile'] = _np.array([0, 1.5e-8]) # [s [m], p [mbar]]
+accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8]*2]) # [s [m], p [mbar]]

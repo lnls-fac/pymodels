@@ -1,9 +1,9 @@
 
-import sirius
+from . import families as _families
 
 def get_record_names(family_name = None):
 
-    family_data = sirius.BO_V901._lattice._family_data
+    family_data = _families._family_data
 
     if family_name == None:
         families = ['ch', 'cv', 'qf-fam', 'qd-fam', 'sd-fam', 'sf-fam', 'bend-fam', 'bopa', 'bodi', 'bpm-fam']
