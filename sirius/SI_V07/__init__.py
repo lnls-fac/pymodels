@@ -3,6 +3,7 @@ from . import lattice as _lattice
 from . import accelerator as _accelerator
 from . import families as _families
 from . import record_names
+from . import excitation_curves
 
 
 accelerator_data = _accelerator.accelerator_data
@@ -19,5 +20,3 @@ lattice_symmetry     = _lattice._lattice_symmetry
 lattice_version      = accelerator_data['lattice_version']
 family_data          = _families._family_data
 family_mapping       = _families._family_mapping
-# global_coupling      = 0.01     # expected corrected value
-# average_pressure     = 1.333e-9 # average pressure [mbar]
