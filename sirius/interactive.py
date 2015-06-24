@@ -8,8 +8,8 @@ using
 """
 
 from pyaccel.interactive import *
-import sirius.SI_V07 as si_model
-import sirius.BO_V901 as bo_model
+import sirius.SI_V07 as si
+import sirius.BO_V901 as bo
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

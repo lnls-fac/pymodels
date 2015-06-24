@@ -1,54 +1,51 @@
 
-import sirius
+from . import families as _families
 
 
-def families_dipoles():
-    return ('bend',)
+# def families_dipoles():
+#     return ('bend',)
+#
+#
+# def families_quadrupoles():
+#     return ('qfa', 'qda', 'qfb', 'qdb1', 'qdb2','qf1', 'qf2', 'qf3', 'qf4',)
+#
+#
+# def families_sextupoles():
+#     return ('sfa', 'sda', 'sfb', 'sdb','sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6','sf1', 'sf2', 'sf3', 'sf4',)
+#
+#
+# def families_horizontal_correctors():
+#     return ('chf', 'chs',)
+#
+#
+# def families_vertical_correctors():
+#     return ('cvf', 'cvs',)
+#
+#
+# def families_skew_correctors():
+#     return ('qs',)
+#
+#
+# def families_rf():
+#     return ('cav',)
 
 
-def families_quadrupoles():
-    return ('qfa', 'qda', 'qfb', 'qdb1', 'qdb2','qf1', 'qf2', 'qf3', 'qf4',)
-
-
-def families_sextupoles():
-    return ('sfa', 'sda', 'sfb', 'sdb','sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6','sf1', 'sf2', 'sf3', 'sf4',)
-
-
-def families_horizontal_correctors():
-    return ('chf', 'chs',)
-
-
-def families_vertical_correctors():
-    return ('cvf', 'cvs',)
-
-
-def families_skew_correctors():
-    return ('qs',)
-
-
-def families_rf():
-    return ('cav',)
-
-
-def get_record_names(family_name = None):
-
-    family_data = sirius.SI_V07.lattice._family_data
+def get_record_names(family_name=None):
+    family_data = _families._family_data
 
     if family_name == None:
-
         families = ['sipa', 'sidi', 'sirf']
 
         # record_name groups for individual magnets
-        families.extend(families_quadrupoles())
-        families.extend(families_sextupoles())
-        families.extend(families_horizontal_correctors())
-        families.extend(families_vertical_correctors())
-        families.extend(families_skew_correctors())
+        families.extend(_families.families_quadrupoles())
+        families.extend(_families.families_sextupoles())
+        families.extend(_families.families_horizontal_correctors())
+        families.extend(_families.families_vertical_correctors())
+        families.extend(_families.families_skew_correctors())
         # record_name groups for families
-        families.extend([name+'-fam' for name in families_dipoles()])
-        families.extend([name+'-fam' for name in families_quadrupoles()])
-        families.extend([name+'-fam' for name in families_sextupoles()])
-
+        families.extend([name+'-fam' for name in _families.families_dipoles()])
+        families.extend([name+'-fam' for name in _families.families_quadrupoles()])
+        families.extend([name+'-fam' for name in _families.families_sextupoles()])
 
         record_names_dict = {}
         for i in range(len(families)):
@@ -1694,7 +1691,8 @@ def get_record_names(family_name = None):
             prefix + '17C5'   : {'sd5' : [family_data['sd5']['index'][15]]},
             prefix + '18C5'   : {'sd5' : [family_data['sd5']['index'][16]]},
             prefix + '19C5'   : {'sd5' : [family_data['sd5']['index'][17]]},
-            prefix + '20C5'   : {'sd5' : [family_data['sd5']['index'][18]]},        }
+            prefix + '20C5'   : {'sd5' : [family_data['sd5']['index'][18]]},
+        }
         return sd5_dict
 
     if family_name.lower() == 'sf4':

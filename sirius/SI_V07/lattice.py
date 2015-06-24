@@ -10,23 +10,12 @@ _default_optics_mode = _optics_mode_C05
 _lattice_symmetry = 10
 _harmonic_number  = 864
 _energy = 3e9 #[eV]
-_family_segmentation={
-    'b1'  : 2, 'b2' : 3, 'b3'  : 2, 'bc' : 12,
-    'qfa' : 1, 'qda': 1, 'qdb2': 1, 'qfb': 1,
-    'qdb1': 1, 'qf1': 1, 'qf2' : 1, 'qf3': 1, 'qf4': 1,
-    'sda' : 1, 'sfa': 1, 'sdb' : 1, 'sfb': 1, 'sd1': 1, 'sf1': 1, 'sd2': 1,
-    'sd3' : 1, 'sf2': 1, 'sd6' : 1, 'sf4': 1, 'sd5': 1, 'sd4': 1, 'sf3': 1,
-    'bpm' : 1, 'cf' : 1,
-    'chf' : 1, 'cvf': 1, 'qs'  : 1, 'chs': 1, 'cvs': 1, 'qn' : 1,
-    'cav' : 1,
-    }
 
 
 def create_lattice():
     # -- selection of optics mode --
     global _default_optics_mode
     _default_optics_mode = _optics_mode_C05
-
 
     # -- shortcut symbols --
     marker = _pyaccel.elements.marker
@@ -65,11 +54,10 @@ def create_lattice():
     END      = marker('end')            # end of the model
     MIA      = marker('mia')            # center of long straight sections (even-numbered)
     MIB      = marker('mib')            # center of short straight sections (odd-numbered)
-    GIRDER   = marker('girder')         # marker used to delimitate girders. one marker at begin and another at end of girder.
+    GIRDER   = marker('girder')         # marker used to delimit girders. one marker at begin and another at end of girder
     MIDA     = marker('id_enda')        # marker for the extremities of IDs in long straight sections
     MIDB     = marker('id_endb')        # marker for the extremities of IDs in short straight sections
     MOMACCEP = marker('calc_mom_accep') # marker to define points where momentum acceptance will be calculated
-
 
     # -- dipoles --
     deg2rad = _math.pi/180.0
@@ -296,117 +284,4 @@ def set_vacuum_chamber(the_ring):
             the_ring[i].vmax = other_vchamber[1]
 
 
-def sirius_si_family_data(lattice):
-    latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
-    data={}
-    for key in latt_dict.keys():
-        if key in _family_segmentation.keys():
-            data[key]={'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
-
-    for key in data.keys():
-        if data[key]['nr_segs'] != 1:
-            new_index=[]
-            j=0
-            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
-                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
-                j += data[key]['nr_segs']
-            data[key]['index']=new_index
-
-    # chs - slow horizontal correctors
-    data['chs']={}
-    data['chs']['index']=[]
-    data['chs']['families'] = ['sfa','sd1','sd2','sf2','sf3','sd5','sd6','sfb']
-    for family in data['chs']['families']:
-        data['chs']['index'] = data['chs']['index'] + data[family]['index']
-    data['chs']['index']=sorted(data['chs']['index'])
-
-    # cvs - slow vertical correctors
-    data['cvs']={}
-    data['cvs']['index']=[]
-    data['cvs']['families'] = ['sfa','sd1','sd3','sd4','sd6','sfb']
-    for family in data['cvs']['families']:
-        data['cvs']['index'] = data['cvs']['index'] + data[family]['index']
-    data['cvs']['index']=sorted(data['cvs']['index'])
-
-    # chf - fast horizontal correctors
-    data['chf']={}
-    data['chf']['families'] = ['cf']
-    data['chf']['index']=data['cf']['index']
-
-    # cvf - fast vertical correctors
-    data['cvf']={}
-    data['cvf']['families'] = ['cf']
-    data['cvf']['index']=data['cf']['index']
-
-    # qs - skew quad correctors
-    data['qs']={}
-    data['qs']['index']=[]
-    data['qs']['families'] = ['sda','sf1','sf4','sdb']
-    for family in data['qs']['families']:
-        data['qs']['index'] = data['qs']['index'] + data[family]['index']
-    data['qs']['index']=sorted(data['qs']['index'])
-
-    # qn - quadrupoles knobs for optics correction
-    data['qn']={}
-    data['qn']['index']=[]
-    data['qn']['families'] = ['qfa','qda','qf1','qf2','qf3','qf4','qdb1','qfb','qdb2']
-    for family in data['qn']['families']:
-        data['qn']['index'] = data['qn']['index'] + data[family]['index']
-    data['qn']['index']=sorted(data['qn']['index'])
-
-    # rf cavity
-    data['cav']
-
-    return data
-
-
-def get_family_mapping():
-    mapping = {
-        'b1': 'dipole',
-        'b2': 'dipole',
-        'b3': 'dipole',
-        'bc': 'dipole',
-
-        'qfa': 'quadrupole',
-        'qda': 'quadrupole',
-        'qdb2': 'quadrupole',
-        'qfb': 'quadrupole',
-        'qdb1': 'quadrupole',
-        'qf1': 'quadrupole',
-        'qf2': 'quadrupole',
-        'qf3': 'quadrupole',
-        'qf4': 'quadrupole',
-
-        'sda': 'sextupole',
-        'sfa': 'sextupole',
-        'sdb': 'sextupole',
-        'sfb': 'sextupole',
-        'sd1': 'sextupole',
-        'sf1': 'sextupole',
-        'sd2': 'sextupole',
-        'sd3': 'sextupole',
-        'sf2': 'sextupole',
-        'sd6': 'sextupole',
-        'sf4': 'sextupole',
-        'sd5': 'sextupole',
-        'sd4': 'sextupole',
-        'sf3': 'sextupole',
-
-        'bpm': 'bpm',
-
-        'cf': 'fast_corrector',
-        'chf': 'fast_horizontal_corrector',
-        'cvf': 'fast_horizontal_corrector',
-
-        'chs': 'slow_horizontal_corrector',
-        'cvs': 'slow_vertical_corrector',
-
-        'qs': 'skew_quadrupole',
-    }
-
-    return mapping
-
-
 _the_ring = create_lattice()
-_family_data = sirius_si_family_data(_the_ring)
-_family_mapping = get_family_mapping()
