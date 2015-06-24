@@ -2,67 +2,26 @@
 from . import families as _families
 
 
-# def families_dipoles():
-#     return ('bend',)
-#
-#
-# def families_quadrupoles():
-#     return ('qfa', 'qda', 'qfb', 'qdb1', 'qdb2','qf1', 'qf2', 'qf3', 'qf4',)
-#
-#
-# def families_sextupoles():
-#     return ('sfa', 'sda', 'sfb', 'sdb','sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6','sf1', 'sf2', 'sf3', 'sf4',)
-#
-#
-# def families_horizontal_correctors():
-#     return ('chf', 'chs',)
-#
-#
-# def families_vertical_correctors():
-#     return ('cvf', 'cvs',)
-#
-#
-# def families_skew_correctors():
-#     return ('qs',)
-#
-#
-# def families_rf():
-#     return ('cav',)
+def get_record_names(subsystem = None):
 
-
-def get_record_names(family_name=None):
     family_data = _families._family_data
 
-    if family_name == None:
-        families = ['sipa', 'sidi', 'sirf']
-
-        # record_name groups for individual magnets
-        families.extend(_families.families_quadrupoles())
-        families.extend(_families.families_sextupoles())
-        families.extend(_families.families_horizontal_correctors())
-        families.extend(_families.families_vertical_correctors())
-        families.extend(_families.families_skew_correctors())
-        # record_name groups for families
-        families.extend([name+'-fam' for name in _families.families_dipoles()])
-        families.extend([name+'-fam' for name in _families.families_quadrupoles()])
-        families.extend([name+'-fam' for name in _families.families_sextupoles()])
-
+    if subsystem == None:
+        subsystems = ['sipa', 'sidi', 'sirf', 'sips']
         record_names_dict = {}
-        for i in range(len(families)):
-            record_names_dict.update(get_record_names(families[i]))
+        for subsystem in subsystems:
+            record_names_dict.update(get_record_names(subsystem))
         return record_names_dict
 
-    if family_name.lower() == 'sirf':
+    if subsystem.lower() == 'sirf' or subsystem.lower() == 'cav':
         indices = family_data['cav']['index']
-        #_dict = {'SIRF-FREQUENCY': {'cav': indices}}
-        #return _dict
         _dict = {
             'SIRF-FREQUENCY':{'cav':indices},
             'SIRF-VOLTAGE':{'cav':indices},
         }
         return _dict
 
-    if family_name.lower() == 'sipa':
+    if subsystem.lower() == 'sipa':
         _dict = {
                 'SIPA-CHROMX':{},
                 'SIPA-CHROMY':{},
@@ -79,7 +38,9 @@ def get_record_names(family_name=None):
         }
         return _dict
 
-    if family_name.lower() == 'sidi':
+    if subsystem.lower() == 'sidi':
+        prefix = 'SIDI-'
+
         _dict = {
                 'SIDI-TUNEH':{},
                 'SIDI-TUNEV':{},
@@ -87,141 +48,285 @@ def get_record_names(family_name=None):
                 'SIDI-CURRENT':{},
                 'SIDI-BCURRENT':{},
         }
-        bpm_dict = get_record_names(family_name = 'bpm')
+        bpm_dict = get_element_names(element = 'bpm', prefix = prefix)
         _dict.update(bpm_dict)
-        bpm_fam_dict = get_record_names(family_name = 'bpm-fam')
+        bpm_fam_dict = get_family_names(family = 'bpm', prefix = prefix)
         _dict.update(bpm_fam_dict)
         return _dict
 
-    if family_name.lower() == 'bpm-fam':
+    if subsystem.lower() == 'sips':
+        prefix = 'SIPS-'
+
+        element_dict = {}
+        element_dict.update(get_element_names(element = 'quad', prefix = prefix))
+        element_dict.update(get_element_names(element = 'sext', prefix = prefix))
+        element_dict.update(get_element_names(element = 'ch', prefix = prefix))
+        element_dict.update(get_element_names(element = 'cv', prefix = prefix))
+        element_dict.update(get_element_names(element = 'qs', prefix = prefix))
+
+        family_dict = {}
+        family_dict.update(get_family_names(family = 'bend', prefix = prefix))
+        family_dict.update(get_family_names(family = 'quad', prefix = prefix))
+        family_dict.update(get_family_names(family = 'sext', prefix = prefix))
+
+        _dict = {}
+        _dict.update(element_dict)
+        _dict.update(family_dict)
+        return _dict
+
+    if subsystem.lower() == 'sima':
+        prefix = 'SIMA-'
+
+        element_dict = {}
+        element_dict.update(get_element_names(element = 'bend', prefix = prefix))
+        element_dict.update(get_element_names(element = 'quad', prefix = prefix))
+        element_dict.update(get_element_names(element = 'sext', prefix = prefix))
+        element_dict.update(get_element_names(element = 'ch', prefix = prefix))
+        element_dict.update(get_element_names(element = 'cv', prefix = prefix))
+        element_dict.update(get_element_names(element = 'qs', prefix = prefix))
+
+        return element_dict
+
+    else:
+        raise Exception('Subsystem %s not found'%subsystem)
+
+
+def get_family_names(family = None, prefix = ''):
+
+    family_data = _families._family_data
+
+    if family == None:
+
+        family_names = []
+        family_names += _families.families_dipoles()
+        family_names += _families.families_quadrupoles()
+        family_names += _families.families_sextupoles()
+        family_names += ['bpm']
+
+        _dict = {}
+        for family in family_names:
+            _dict.update(get_family_names(family, prefix = prefix))
+        return _dict
+
+    if family.lower() == 'bend':
+        _dict = { prefix + 'BEND-FAM' :
+            {'b1' : family_data['b1']['index'],
+             'b2' : family_data['b2']['index'],
+             'b3' : family_data['b3']['index'],
+             'bc' : family_data['bc']['index'],
+            }
+        }
+        return _dict
+
+    if family.lower() == 'quad':
+        family_names = _families.families_quadrupoles()
+        _dict = {}
+        for family in family_names:
+            _dict.update(get_family_names(family, prefix = prefix))
+        return _dict
+
+    if family.lower() == 'sext':
+        family_names = _families.families_sextupoles()
+        _dict = {}
+        for family in family_names:
+            _dict.update(get_family_names(family, prefix = prefix))
+        return _dict
+
+    if family.lower() == 'bpm':
         indices = family_data['bpm']['index']
-        _dict = {'SIDI-BPM-FAM-X': {'bpm': indices},
-                 'SIDI-BPM-FAM-Y': {'bpm': indices}
+        _dict = {prefix + 'BPM-FAM-X': {'bpm': indices},
+                 prefix + 'BPM-FAM-Y': {'bpm': indices},
                 }
         return _dict
 
-    if family_name.lower() == 'qfa-fam':
+    if family.lower() == 'qfa':
         indices = family_data['qfa']['index']
-        _dict = {'SIPS-QFA-FAM': {'qfa': indices}}
+        _dict = {prefix + 'QFA-FAM': {'qfa': indices}}
         return _dict
 
-    if family_name.lower() == 'qda-fam':
+    if family.lower() == 'qda':
         indices = family_data['qda']['index']
-        _dict = {'SIPS-QDA-FAM': {'qda': indices}}
+        _dict = {prefix + 'QDA-FAM': {'qda': indices}}
         return _dict
 
-    if family_name.lower() == 'qfb-fam':
+    if family.lower() == 'qfb':
         indices = family_data['qfb']['index']
-        _dict = {'SIPS-QFB-FAM': {'qfb': indices}}
+        _dict = {prefix + 'QFB-FAM': {'qfb': indices}}
         return _dict
 
-    if family_name.lower() == 'qdb1-fam':
+    if family.lower() == 'qdb1':
         indices = family_data['qdb1']['index']
-        _dict = {'SIPS-QDB1-FAM': {'qdb1': indices}}
+        _dict = {prefix + 'QDB1-FAM': {'qdb1': indices}}
         return _dict
 
-    if family_name.lower() == 'qdb2-fam':
+    if family.lower() == 'qdb2':
         indices = family_data['qdb2']['index']
-        _dict = {'SIPS-QDB2-FAM': {'qdb2': indices}}
+        _dict = {prefix + 'QDB2-FAM': {'qdb2': indices}}
         return _dict
 
-    if family_name.lower() == 'qf1-fam':
+    if family.lower() == 'qf1':
         indices = family_data['qf1']['index']
-        _dict = {'SIPS-QF1-FAM': {'qf1': indices}}
+        _dict = {prefix + 'QF1-FAM': {'qf1': indices}}
         return _dict
 
-    if family_name.lower() == 'qf2-fam':
+    if family.lower() == 'qf2':
         indices = family_data['qf2']['index']
-        _dict = {'SIPS-QF2-FAM': {'qf2': indices}}
+        _dict = {prefix + 'QF2-FAM': {'qf2': indices}}
         return _dict
 
-    if family_name.lower() == 'qf3-fam':
+    if family.lower() == 'qf3':
         indices = family_data['qf3']['index']
-        _dict = {'SIPS-QF3-FAM': {'qf3': indices}}
+        _dict = {prefix + 'QF3-FAM': {'qf3': indices}}
         return _dict
 
-    if family_name.lower() == 'qf4-fam':
+    if family.lower() == 'qf4':
         indices = family_data['qf4']['index']
-        _dict = {'SIPS-QF4-FAM': {'qf4': indices}}
+        _dict = {prefix + 'QF4-FAM': {'qf4': indices}}
         return _dict
 
-    if family_name.lower() == 'sfa-fam':
+    if family.lower() == 'sfa':
         indices = family_data['sfa']['index']
-        _dict = {'SIPS-SFA-FAM': {'sfa': indices}}
+        _dict = {prefix + 'SFA-FAM': {'sfa': indices}}
         return _dict
 
-    if family_name.lower() == 'sda-fam':
+    if family.lower() == 'sda':
         indices = family_data['sda']['index']
-        _dict = {'SIPS-SDA-FAM': {'sda': indices}}
+        _dict = {prefix + 'SDA-FAM': {'sda': indices}}
         return _dict
 
-    if family_name.lower() == 'sd1-fam':
+    if family.lower() == 'sd1':
         indices = family_data['sd1']['index']
-        _dict = {'SIPS-SD1-FAM': {'sd1': indices}}
+        _dict = {prefix + 'SD1-FAM': {'sd1': indices}}
         return _dict
 
-    if family_name.lower() == 'sf1-fam':
+    if family.lower() == 'sf1':
         indices = family_data['sf1']['index']
-        _dict = {'SIPS-SF1-FAM': {'sf1': indices}}
+        _dict = {prefix + 'SF1-FAM': {'sf1': indices}}
         return _dict
 
-    if family_name.lower() == 'sd2-fam':
+    if family.lower() == 'sd2':
         indices = family_data['sd2']['index']
-        _dict = {'SIPS-SD2-FAM': {'sd2': indices}}
+        _dict = {prefix + 'SD2-FAM': {'sd2': indices}}
         return _dict
 
-    if family_name.lower() == 'sd3-fam':
+    if family.lower() == 'sd3':
         indices = family_data['sd3']['index']
-        _dict = {'SIPS-SD3-FAM': {'sd3': indices}}
+        _dict = {prefix + 'SD3-FAM': {'sd3': indices}}
         return _dict
 
-    if family_name.lower() == 'sf2-fam':
+    if family.lower() == 'sf2':
         indices = family_data['sf2']['index']
-        _dict = {'SIPS-SF2-FAM': {'sf2': indices}}
+        _dict = {prefix + 'SF2-FAM': {'sf2': indices}}
         return _dict
 
-    if family_name.lower() == 'sf3-fam':
+    if family.lower() == 'sf3':
         indices = family_data['sf3']['index']
-        _dict = {'SIPS-SF3-FAM': {'sf3': indices}}
+        _dict = {prefix + 'SF3-FAM': {'sf3': indices}}
         return _dict
 
-    if family_name.lower() == 'sd4-fam':
+    if family.lower() == 'sd4':
         indices = family_data['sd4']['index']
-        _dict = {'SIPS-SD4-FAM': {'sd4': indices}}
+        _dict = {prefix + 'SD4-FAM': {'sd4': indices}}
         return _dict
 
-    if family_name.lower() == 'sd5-fam':
+    if family.lower() == 'sd5':
         indices = family_data['sd5']['index']
-        _dict = {'SIPS-SD5-FAM': {'sd5': indices}}
+        _dict = {prefix + 'SD5-FAM': {'sd5': indices}}
         return _dict
 
-    if family_name.lower() == 'sf4-fam':
+    if family.lower() == 'sf4':
         indices = family_data['sf4']['index']
-        _dict = {'SIPS-SF4-FAM': {'sf4': indices}}
+        _dict = {prefix + 'SF4-FAM': {'sf4': indices}}
         return _dict
 
-    if family_name.lower() == 'sd6-fam':
+    if family.lower() == 'sd6':
         indices = family_data['sd6']['index']
-        _dict = {'SIPS-SD6-FAM': {'sd6': indices}}
+        _dict = {prefix + 'SD6-FAM': {'sd6': indices}}
         return _dict
 
-    if family_name.lower() == 'sdb-fam':
+    if family.lower() == 'sdb':
         indices = family_data['sdb']['index']
-        _dict = {'SIPS-SDB-FAM': {'sdb': indices}}
+        _dict = {prefix + 'SDB-FAM': {'sdb': indices}}
         return _dict
 
-    if family_name.lower() == 'sfb-fam':
+    if family.lower() == 'sfb':
         indices = family_data['sfb']['index']
-        _dict = {'SIPS-SFB-FAM': {'sfb': indices}}
+        _dict = {prefix + 'SFB-FAM': {'sfb': indices}}
         return _dict
 
-    if family_name.lower() == 'bpm':
-        indices = family_data['bpm']['index']
-        prefix = 'SIDI-BPM-'
-        bpm_dict = {
+    else:
+        raise Exception('Family %s not found'%family)
+
+
+def get_element_names(element = None, prefix = ''):
+
+    family_data = _families._family_data
+
+    if element == None:
+        elements = []
+        elements += _families.families_dipoles()
+        elements += _families.families_quadrupoles()
+        elements += _families.families_sextupoles()
+        elements += _families.families_horizontal_correctors()
+        elements += _families.families_vertical_correctors()
+        elements += _families.families_skew_correctors()
+        elements += ['bpm']
+
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(element, prefix = prefix))
+        return _dict
+
+    if element.lower() == 'bend':
+        _dict = {}
+        _dict.update(get_element_names('b1', prefix = prefix))
+        _dict.update(get_element_names('b2', prefix = prefix))
+        _dict.update(get_element_names('b3', prefix = prefix))
+        _dict.update(get_element_names('bc', prefix = prefix))
+        return _dict
+
+    if element.lower() == 'quad':
+        elements = _families.families_quadrupoles()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(element, prefix = prefix))
+        return _dict
+
+    if element.lower() == 'sext':
+        elements = _families.families_sextupoles()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(element, prefix = prefix))
+        return _dict
+
+    if element.lower() == 'corr':
+        elements = _families.families_horizontal_correctors()
+        elements += _families.families_vertical_correctors()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(element, prefix = prefix))
+        return _dict
+
+    if element.lower() == 'ch':
+        elements = _families.families_horizontal_correctors()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(element, prefix = prefix))
+        return _dict
+
+    if element.lower() == 'cv':
+        elements = _families.families_vertical_correctors()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(element, prefix = prefix))
+        return _dict
+
+    if element.lower() == 'bpm':
+        prefix = prefix + 'BPM-'
+        _dict = {
 
             #Sector 01
-            prefix + '01M1'   : {'bpm' : [indices[179]]},
+            prefix + '01M1'   : {'bpm' : [family_data['bpm']['index'][179]]},
             prefix + '01M2'   : {'bpm' : [family_data['bpm']['index'][0]]},
             prefix + '01C1-A' : {'bpm' : [family_data['bpm']['index'][1]]},
             prefix + '01C1-B' : {'bpm' : [family_data['bpm']['index'][2]]},
@@ -441,21 +546,300 @@ def get_record_names(family_name=None):
             prefix + '20C5-B' : {'bpm' : [family_data['bpm']['index'][178]]},
 
         }
-        return bpm_dict
+        return _dict
 
-    if family_name.lower() == 'bend-fam':
-        bend_dict = { 'SIPS-BEND-FAM' :
-            {'b1' : family_data['b1']['index'],
-             'b2' : family_data['b2']['index'],
-             'b3' : family_data['b3']['index'],
-             'bc' : family_data['bc']['index'],
-            }
+    if element.lower() == 'qs':
+        prefix = prefix + 'QS-'
+        _dict = {
+            #Sector 1
+            prefix + '01M1'   : {'qs' : [family_data['qs']['index'][79]]},
+            prefix + '01M2'   : {'qs' : [family_data['qs']['index'][0]]},
+            prefix + '01C1'   : {'qs' : [family_data['qs']['index'][1]]},
+            prefix + '01C5'   : {'qs' : [family_data['qs']['index'][2]]},
+
+            #Sector 2
+            prefix + '02M1'   : {'qs' : [family_data['qs']['index'][3]]},
+            prefix + '02M2'   : {'qs' : [family_data['qs']['index'][4]]},
+            prefix + '02C1'   : {'qs' : [family_data['qs']['index'][5]]},
+            prefix + '02C5'   : {'qs' : [family_data['qs']['index'][6]]},
+
+            #Sector 3
+            prefix + '03M1'   : {'qs' : [family_data['qs']['index'][7]]},
+            prefix + '03M2'   : {'qs' : [family_data['qs']['index'][8]]},
+            prefix + '03C1'   : {'qs' : [family_data['qs']['index'][9]]},
+            prefix + '03C5'   : {'qs' : [family_data['qs']['index'][10]]},
+
+            #Sector 4
+            prefix + '04M1'   : {'qs' : [family_data['qs']['index'][11]]},
+            prefix + '04M2'   : {'qs' : [family_data['qs']['index'][12]]},
+            prefix + '04C1'   : {'qs' : [family_data['qs']['index'][13]]},
+            prefix + '04C5'   : {'qs' : [family_data['qs']['index'][14]]},
+
+            #Sector 5
+            prefix + '05M1'   : {'qs' : [family_data['qs']['index'][15]]},
+            prefix + '05M2'   : {'qs' : [family_data['qs']['index'][16]]},
+            prefix + '05C1'   : {'qs' : [family_data['qs']['index'][17]]},
+            prefix + '05C5'   : {'qs' : [family_data['qs']['index'][18]]},
+
+            #Sector 6
+            prefix + '06M1'   : {'qs' : [family_data['qs']['index'][19]]},
+            prefix + '06M2'   : {'qs' : [family_data['qs']['index'][20]]},
+            prefix + '06C1'   : {'qs' : [family_data['qs']['index'][21]]},
+            prefix + '06C5'   : {'qs' : [family_data['qs']['index'][22]]},
+
+            #Sector 7
+            prefix + '07M1'   : {'qs' : [family_data['qs']['index'][23]]},
+            prefix + '07M2'   : {'qs' : [family_data['qs']['index'][24]]},
+            prefix + '07C1'   : {'qs' : [family_data['qs']['index'][25]]},
+            prefix + '07C5'   : {'qs' : [family_data['qs']['index'][26]]},
+
+            #Sector 8
+            prefix + '08M1'   : {'qs' : [family_data['qs']['index'][27]]},
+            prefix + '08M2'   : {'qs' : [family_data['qs']['index'][28]]},
+            prefix + '08C1'   : {'qs' : [family_data['qs']['index'][29]]},
+            prefix + '08C5'   : {'qs' : [family_data['qs']['index'][30]]},
+
+            #Sector 9
+            prefix + '09M1'   : {'qs' : [family_data['qs']['index'][31]]},
+            prefix + '09M2'   : {'qs' : [family_data['qs']['index'][32]]},
+            prefix + '09C1'   : {'qs' : [family_data['qs']['index'][33]]},
+            prefix + '09C5'   : {'qs' : [family_data['qs']['index'][34]]},
+
+            #Sector 10
+            prefix + '10M1'   : {'qs' : [family_data['qs']['index'][35]]},
+            prefix + '10M2'   : {'qs' : [family_data['qs']['index'][36]]},
+            prefix + '10C1'   : {'qs' : [family_data['qs']['index'][37]]},
+            prefix + '10C5'   : {'qs' : [family_data['qs']['index'][38]]},
+
+            #Sector 11
+            prefix + '11M1'   : {'qs' : [family_data['qs']['index'][39]]},
+            prefix + '11M2'   : {'qs' : [family_data['qs']['index'][40]]},
+            prefix + '11C1'   : {'qs' : [family_data['qs']['index'][41]]},
+            prefix + '11C5'   : {'qs' : [family_data['qs']['index'][42]]},
+
+            #Sector 12
+            prefix + '12M1'   : {'qs' : [family_data['qs']['index'][43]]},
+            prefix + '12M2'   : {'qs' : [family_data['qs']['index'][44]]},
+            prefix + '12C1'   : {'qs' : [family_data['qs']['index'][45]]},
+            prefix + '12C5'   : {'qs' : [family_data['qs']['index'][46]]},
+
+            #Sector 13
+            prefix + '13M1'   : {'qs' : [family_data['qs']['index'][47]]},
+            prefix + '13M2'   : {'qs' : [family_data['qs']['index'][48]]},
+            prefix + '13C1'   : {'qs' : [family_data['qs']['index'][49]]},
+            prefix + '13C5'   : {'qs' : [family_data['qs']['index'][50]]},
+
+            #Sector 14
+            prefix + '14M1'   : {'qs' : [family_data['qs']['index'][51]]},
+            prefix + '14M2'   : {'qs' : [family_data['qs']['index'][52]]},
+            prefix + '14C1'   : {'qs' : [family_data['qs']['index'][53]]},
+            prefix + '14C5'   : {'qs' : [family_data['qs']['index'][54]]},
+
+            #Sector 15
+            prefix + '15M1'   : {'qs' : [family_data['qs']['index'][55]]},
+            prefix + '15M2'   : {'qs' : [family_data['qs']['index'][56]]},
+            prefix + '15C1'   : {'qs' : [family_data['qs']['index'][57]]},
+            prefix + '15C5'   : {'qs' : [family_data['qs']['index'][58]]},
+
+            #Sector 16
+            prefix + '16M1'   : {'qs' : [family_data['qs']['index'][59]]},
+            prefix + '16M2'   : {'qs' : [family_data['qs']['index'][60]]},
+            prefix + '16C1'   : {'qs' : [family_data['qs']['index'][61]]},
+            prefix + '16C5'   : {'qs' : [family_data['qs']['index'][62]]},
+
+            #Sector 17
+            prefix + '17M1'   : {'qs' : [family_data['qs']['index'][63]]},
+            prefix + '17M2'   : {'qs' : [family_data['qs']['index'][64]]},
+            prefix + '17C1'   : {'qs' : [family_data['qs']['index'][65]]},
+            prefix + '17C5'   : {'qs' : [family_data['qs']['index'][66]]},
+
+            #Sector 18
+            prefix + '18M1'   : {'qs' : [family_data['qs']['index'][67]]},
+            prefix + '18M2'   : {'qs' : [family_data['qs']['index'][68]]},
+            prefix + '18C1'   : {'qs' : [family_data['qs']['index'][69]]},
+            prefix + '18C5'   : {'qs' : [family_data['qs']['index'][70]]},
+
+            #Sector 19
+            prefix + '19M1'   : {'qs' : [family_data['qs']['index'][71]]},
+            prefix + '19M2'   : {'qs' : [family_data['qs']['index'][72]]},
+            prefix + '19C1'   : {'qs' : [family_data['qs']['index'][73]]},
+            prefix + '19C5'   : {'qs' : [family_data['qs']['index'][74]]},
+
+            #Sector 20
+            prefix + '20M1'   : {'qs' : [family_data['qs']['index'][75]]},
+            prefix + '20M2'   : {'qs' : [family_data['qs']['index'][76]]},
+            prefix + '20C1'   : {'qs' : [family_data['qs']['index'][77]]},
+            prefix + '20C5'   : {'qs' : [family_data['qs']['index'][78]]},
         }
-        return bend_dict
+        return _dict
 
-    if family_name.lower() == 'chs':
-        prefix = 'SIPS-CHS-'
-        chs_dict = {
+    if element.lower() == 'b1':
+        prefix = prefix + 'B1-'
+        _dict = {
+            prefix + '01A'   : {'b1' : [family_data['b1']['index'][0]]},
+            prefix + '01B'   : {'b1' : [family_data['b1']['index'][1]]},
+            prefix + '02A'   : {'b1' : [family_data['b1']['index'][2]]},
+            prefix + '02B'   : {'b1' : [family_data['b1']['index'][3]]},
+            prefix + '03A'   : {'b1' : [family_data['b1']['index'][4]]},
+            prefix + '03B'   : {'b1' : [family_data['b1']['index'][5]]},
+            prefix + '04A'   : {'b1' : [family_data['b1']['index'][6]]},
+            prefix + '04B'   : {'b1' : [family_data['b1']['index'][7]]},
+            prefix + '05A'   : {'b1' : [family_data['b1']['index'][8]]},
+            prefix + '05B'   : {'b1' : [family_data['b1']['index'][9]]},
+            prefix + '06A'   : {'b1' : [family_data['b1']['index'][10]]},
+            prefix + '06B'   : {'b1' : [family_data['b1']['index'][11]]},
+            prefix + '07A'   : {'b1' : [family_data['b1']['index'][12]]},
+            prefix + '07B'   : {'b1' : [family_data['b1']['index'][13]]},
+            prefix + '08A'   : {'b1' : [family_data['b1']['index'][14]]},
+            prefix + '08B'   : {'b1' : [family_data['b1']['index'][15]]},
+            prefix + '09A'   : {'b1' : [family_data['b1']['index'][16]]},
+            prefix + '09B'   : {'b1' : [family_data['b1']['index'][17]]},
+            prefix + '10A'   : {'b1' : [family_data['b1']['index'][18]]},
+            prefix + '10B'   : {'b1' : [family_data['b1']['index'][19]]},
+            prefix + '11A'   : {'b1' : [family_data['b1']['index'][20]]},
+            prefix + '11B'   : {'b1' : [family_data['b1']['index'][21]]},
+            prefix + '12A'   : {'b1' : [family_data['b1']['index'][22]]},
+            prefix + '12B'   : {'b1' : [family_data['b1']['index'][23]]},
+            prefix + '13A'   : {'b1' : [family_data['b1']['index'][24]]},
+            prefix + '13B'   : {'b1' : [family_data['b1']['index'][25]]},
+            prefix + '14A'   : {'b1' : [family_data['b1']['index'][26]]},
+            prefix + '14B'   : {'b1' : [family_data['b1']['index'][27]]},
+            prefix + '15A'   : {'b1' : [family_data['b1']['index'][28]]},
+            prefix + '15B'   : {'b1' : [family_data['b1']['index'][29]]},
+            prefix + '16A'   : {'b1' : [family_data['b1']['index'][30]]},
+            prefix + '16B'   : {'b1' : [family_data['b1']['index'][31]]},
+            prefix + '17A'   : {'b1' : [family_data['b1']['index'][32]]},
+            prefix + '17B'   : {'b1' : [family_data['b1']['index'][33]]},
+            prefix + '18A'   : {'b1' : [family_data['b1']['index'][34]]},
+            prefix + '18B'   : {'b1' : [family_data['b1']['index'][35]]},
+            prefix + '19A'   : {'b1' : [family_data['b1']['index'][36]]},
+            prefix + '19B'   : {'b1' : [family_data['b1']['index'][37]]},
+            prefix + '20A'   : {'b1' : [family_data['b1']['index'][38]]},
+            prefix + '20B'   : {'b1' : [family_data['b1']['index'][39]]},
+        }
+        return _dict
+
+    if element.lower() == 'b2':
+        prefix = prefix + 'B2-'
+        _dict = {
+            prefix + '01A'   : {'b2' : [family_data['b2']['index'][0]]},
+            prefix + '01B'   : {'b2' : [family_data['b2']['index'][1]]},
+            prefix + '02A'   : {'b2' : [family_data['b2']['index'][2]]},
+            prefix + '02B'   : {'b2' : [family_data['b2']['index'][3]]},
+            prefix + '03A'   : {'b2' : [family_data['b2']['index'][4]]},
+            prefix + '03B'   : {'b2' : [family_data['b2']['index'][5]]},
+            prefix + '04A'   : {'b2' : [family_data['b2']['index'][6]]},
+            prefix + '04B'   : {'b2' : [family_data['b2']['index'][7]]},
+            prefix + '05A'   : {'b2' : [family_data['b2']['index'][8]]},
+            prefix + '05B'   : {'b2' : [family_data['b2']['index'][9]]},
+            prefix + '06A'   : {'b2' : [family_data['b2']['index'][10]]},
+            prefix + '06B'   : {'b2' : [family_data['b2']['index'][11]]},
+            prefix + '07A'   : {'b2' : [family_data['b2']['index'][12]]},
+            prefix + '07B'   : {'b2' : [family_data['b2']['index'][13]]},
+            prefix + '08A'   : {'b2' : [family_data['b2']['index'][14]]},
+            prefix + '08B'   : {'b2' : [family_data['b2']['index'][15]]},
+            prefix + '09A'   : {'b2' : [family_data['b2']['index'][16]]},
+            prefix + '09B'   : {'b2' : [family_data['b2']['index'][17]]},
+            prefix + '10A'   : {'b2' : [family_data['b2']['index'][18]]},
+            prefix + '10B'   : {'b2' : [family_data['b2']['index'][19]]},
+            prefix + '11A'   : {'b2' : [family_data['b2']['index'][20]]},
+            prefix + '11B'   : {'b2' : [family_data['b2']['index'][21]]},
+            prefix + '12A'   : {'b2' : [family_data['b2']['index'][22]]},
+            prefix + '12B'   : {'b2' : [family_data['b2']['index'][23]]},
+            prefix + '13A'   : {'b2' : [family_data['b2']['index'][24]]},
+            prefix + '13B'   : {'b2' : [family_data['b2']['index'][25]]},
+            prefix + '14A'   : {'b2' : [family_data['b2']['index'][26]]},
+            prefix + '14B'   : {'b2' : [family_data['b2']['index'][27]]},
+            prefix + '15A'   : {'b2' : [family_data['b2']['index'][28]]},
+            prefix + '15B'   : {'b2' : [family_data['b2']['index'][29]]},
+            prefix + '16A'   : {'b2' : [family_data['b2']['index'][30]]},
+            prefix + '16B'   : {'b2' : [family_data['b2']['index'][31]]},
+            prefix + '17A'   : {'b2' : [family_data['b2']['index'][32]]},
+            prefix + '17B'   : {'b2' : [family_data['b2']['index'][33]]},
+            prefix + '18A'   : {'b2' : [family_data['b2']['index'][34]]},
+            prefix + '18B'   : {'b2' : [family_data['b2']['index'][35]]},
+            prefix + '19A'   : {'b2' : [family_data['b2']['index'][36]]},
+            prefix + '19B'   : {'b2' : [family_data['b2']['index'][37]]},
+            prefix + '20A'   : {'b2' : [family_data['b2']['index'][38]]},
+            prefix + '20B'   : {'b2' : [family_data['b2']['index'][39]]},
+        }
+        return _dict
+
+    if element.lower() == 'b3':
+        prefix = prefix + 'B3-'
+        _dict = {
+            prefix + '01A'   : {'b3' : [family_data['b3']['index'][0]]},
+            prefix + '01B'   : {'b3' : [family_data['b3']['index'][1]]},
+            prefix + '02A'   : {'b3' : [family_data['b3']['index'][2]]},
+            prefix + '02B'   : {'b3' : [family_data['b3']['index'][3]]},
+            prefix + '03A'   : {'b3' : [family_data['b3']['index'][4]]},
+            prefix + '03B'   : {'b3' : [family_data['b3']['index'][5]]},
+            prefix + '04A'   : {'b3' : [family_data['b3']['index'][6]]},
+            prefix + '04B'   : {'b3' : [family_data['b3']['index'][7]]},
+            prefix + '05A'   : {'b3' : [family_data['b3']['index'][8]]},
+            prefix + '05B'   : {'b3' : [family_data['b3']['index'][9]]},
+            prefix + '06A'   : {'b3' : [family_data['b3']['index'][10]]},
+            prefix + '06B'   : {'b3' : [family_data['b3']['index'][11]]},
+            prefix + '07A'   : {'b3' : [family_data['b3']['index'][12]]},
+            prefix + '07B'   : {'b3' : [family_data['b3']['index'][13]]},
+            prefix + '08A'   : {'b3' : [family_data['b3']['index'][14]]},
+            prefix + '08B'   : {'b3' : [family_data['b3']['index'][15]]},
+            prefix + '09A'   : {'b3' : [family_data['b3']['index'][16]]},
+            prefix + '09B'   : {'b3' : [family_data['b3']['index'][17]]},
+            prefix + '10A'   : {'b3' : [family_data['b3']['index'][18]]},
+            prefix + '10B'   : {'b3' : [family_data['b3']['index'][19]]},
+            prefix + '11A'   : {'b3' : [family_data['b3']['index'][20]]},
+            prefix + '11B'   : {'b3' : [family_data['b3']['index'][21]]},
+            prefix + '12A'   : {'b3' : [family_data['b3']['index'][22]]},
+            prefix + '12B'   : {'b3' : [family_data['b3']['index'][23]]},
+            prefix + '13A'   : {'b3' : [family_data['b3']['index'][24]]},
+            prefix + '13B'   : {'b3' : [family_data['b3']['index'][25]]},
+            prefix + '14A'   : {'b3' : [family_data['b3']['index'][26]]},
+            prefix + '14B'   : {'b3' : [family_data['b3']['index'][27]]},
+            prefix + '15A'   : {'b3' : [family_data['b3']['index'][28]]},
+            prefix + '15B'   : {'b3' : [family_data['b3']['index'][29]]},
+            prefix + '16A'   : {'b3' : [family_data['b3']['index'][30]]},
+            prefix + '16B'   : {'b3' : [family_data['b3']['index'][31]]},
+            prefix + '17A'   : {'b3' : [family_data['b3']['index'][32]]},
+            prefix + '17B'   : {'b3' : [family_data['b3']['index'][33]]},
+            prefix + '18A'   : {'b3' : [family_data['b3']['index'][34]]},
+            prefix + '18B'   : {'b3' : [family_data['b3']['index'][35]]},
+            prefix + '19A'   : {'b3' : [family_data['b3']['index'][36]]},
+            prefix + '19B'   : {'b3' : [family_data['b3']['index'][37]]},
+            prefix + '20A'   : {'b3' : [family_data['b3']['index'][38]]},
+            prefix + '20B'   : {'b3' : [family_data['b3']['index'][39]]},
+        }
+        return _dict
+
+    if element.lower() == 'bc':
+        prefix = prefix + 'BC-'
+        _dict = {
+            prefix + '01'   : {'bc' : [family_data['bc']['index'][0]]},
+            prefix + '02'   : {'bc' : [family_data['bc']['index'][1]]},
+            prefix + '03'   : {'bc' : [family_data['bc']['index'][2]]},
+            prefix + '04'   : {'bc' : [family_data['bc']['index'][3]]},
+            prefix + '05'   : {'bc' : [family_data['bc']['index'][4]]},
+            prefix + '06'   : {'bc' : [family_data['bc']['index'][5]]},
+            prefix + '07'   : {'bc' : [family_data['bc']['index'][6]]},
+            prefix + '08'   : {'bc' : [family_data['bc']['index'][7]]},
+            prefix + '09'   : {'bc' : [family_data['bc']['index'][8]]},
+            prefix + '10'   : {'bc' : [family_data['bc']['index'][9]]},
+            prefix + '11'   : {'bc' : [family_data['bc']['index'][10]]},
+            prefix + '12'   : {'bc' : [family_data['bc']['index'][11]]},
+            prefix + '13'   : {'bc' : [family_data['bc']['index'][12]]},
+            prefix + '14'   : {'bc' : [family_data['bc']['index'][13]]},
+            prefix + '15'   : {'bc' : [family_data['bc']['index'][14]]},
+            prefix + '16'   : {'bc' : [family_data['bc']['index'][15]]},
+            prefix + '17'   : {'bc' : [family_data['bc']['index'][16]]},
+            prefix + '18'   : {'bc' : [family_data['bc']['index'][17]]},
+            prefix + '19'   : {'bc' : [family_data['bc']['index'][18]]},
+            prefix + '20'   : {'bc' : [family_data['bc']['index'][19]]},
+        }
+        return _dict
+
+    if element.lower() == 'chs':
+        prefix = prefix + 'CHS-'
+        _dict = {
             #Sector 1
             prefix + '01M1'   : {'chs' : [family_data['chs']['index'][159]]},
             prefix + '01M2'   : {'chs' : [family_data['chs']['index'][0]]},
@@ -656,11 +1040,11 @@ def get_record_names(family_name=None):
             prefix + '20C5-A' : {'chs' : [family_data['chs']['index'][157]]},
             prefix + '20C5-B' : {'chs' : [family_data['chs']['index'][158]]},
         }
-        return chs_dict
+        return _dict
 
-    if family_name.lower() == 'cvs':
-        prefix = 'SIPS-CVS-'
-        cvs_dict = {
+    if element.lower() == 'cvs':
+        prefix = prefix + 'CVS-'
+        _dict = {
             #Sector 1
             prefix + '01M1'   : {'cvs' : [family_data['cvs']['index'][119]]},
             prefix + '01M2'   : {'cvs' : [family_data['cvs']['index'][0]]},
@@ -821,11 +1205,11 @@ def get_record_names(family_name=None):
             prefix + '20C4'   : {'cvs' : [family_data['cvs']['index'][117]]},
             prefix + '20C5'   : {'cvs' : [family_data['cvs']['index'][118]]},
         }
-        return cvs_dict
+        return _dict
 
-    if family_name.lower() == 'chf':
-        prefix = 'SIPS-CHF-'
-        chf_dict = {
+    if element.lower() == 'chf':
+        prefix = prefix + 'CHF-'
+        _dict = {
             #Sector 1
             prefix + '01M1'   : {'chf' : [family_data['chf']['index'][79]]},
             prefix + '01M2'   : {'chf' : [family_data['chf']['index'][0]]},
@@ -946,11 +1330,11 @@ def get_record_names(family_name=None):
             prefix + '20C2'   : {'chf' : [family_data['chf']['index'][77]]},
             prefix + '20C4'   : {'chf' : [family_data['chf']['index'][78]]},
         }
-        return chf_dict
+        return _dict
 
-    if family_name.lower() == 'cvf':
-        prefix = 'SIPS-CVF-'
-        cvf_dict = {
+    if element.lower() == 'cvf':
+        prefix = prefix + 'CVF-'
+        _dict = {
             #Sector 1
             prefix + '01M1'   : {'cvf' : [family_data['cvf']['index'][79]]},
             prefix + '01M2'   : {'cvf' : [family_data['cvf']['index'][0]]},
@@ -1071,136 +1455,11 @@ def get_record_names(family_name=None):
             prefix + '20C2'   : {'cvf' : [family_data['cvf']['index'][77]]},
             prefix + '20C4'   : {'cvf' : [family_data['cvf']['index'][78]]},
         }
-        return cvf_dict
+        return _dict
 
-    if family_name.lower() == 'qs':
-        prefix = 'SIPS-QS-'
-        qs_dict = {
-            #Sector 1
-            prefix + '01M1'   : {'qs' : [family_data['qs']['index'][79]]},
-            prefix + '01M2'   : {'qs' : [family_data['qs']['index'][0]]},
-            prefix + '01C1'   : {'qs' : [family_data['qs']['index'][1]]},
-            prefix + '01C5'   : {'qs' : [family_data['qs']['index'][2]]},
-
-            #Sector 2
-            prefix + '02M1'   : {'qs' : [family_data['qs']['index'][3]]},
-            prefix + '02M2'   : {'qs' : [family_data['qs']['index'][4]]},
-            prefix + '02C1'   : {'qs' : [family_data['qs']['index'][5]]},
-            prefix + '02C5'   : {'qs' : [family_data['qs']['index'][6]]},
-
-            #Sector 3
-            prefix + '03M1'   : {'qs' : [family_data['qs']['index'][7]]},
-            prefix + '03M2'   : {'qs' : [family_data['qs']['index'][8]]},
-            prefix + '03C1'   : {'qs' : [family_data['qs']['index'][9]]},
-            prefix + '03C5'   : {'qs' : [family_data['qs']['index'][10]]},
-
-            #Sector 4
-            prefix + '04M1'   : {'qs' : [family_data['qs']['index'][11]]},
-            prefix + '04M2'   : {'qs' : [family_data['qs']['index'][12]]},
-            prefix + '04C1'   : {'qs' : [family_data['qs']['index'][13]]},
-            prefix + '04C5'   : {'qs' : [family_data['qs']['index'][14]]},
-
-            #Sector 5
-            prefix + '05M1'   : {'qs' : [family_data['qs']['index'][15]]},
-            prefix + '05M2'   : {'qs' : [family_data['qs']['index'][16]]},
-            prefix + '05C1'   : {'qs' : [family_data['qs']['index'][17]]},
-            prefix + '05C5'   : {'qs' : [family_data['qs']['index'][18]]},
-
-            #Sector 6
-            prefix + '06M1'   : {'qs' : [family_data['qs']['index'][19]]},
-            prefix + '06M2'   : {'qs' : [family_data['qs']['index'][20]]},
-            prefix + '06C1'   : {'qs' : [family_data['qs']['index'][21]]},
-            prefix + '06C5'   : {'qs' : [family_data['qs']['index'][22]]},
-
-            #Sector 7
-            prefix + '07M1'   : {'qs' : [family_data['qs']['index'][23]]},
-            prefix + '07M2'   : {'qs' : [family_data['qs']['index'][24]]},
-            prefix + '07C1'   : {'qs' : [family_data['qs']['index'][25]]},
-            prefix + '07C5'   : {'qs' : [family_data['qs']['index'][26]]},
-
-            #Sector 8
-            prefix + '08M1'   : {'qs' : [family_data['qs']['index'][27]]},
-            prefix + '08M2'   : {'qs' : [family_data['qs']['index'][28]]},
-            prefix + '08C1'   : {'qs' : [family_data['qs']['index'][29]]},
-            prefix + '08C5'   : {'qs' : [family_data['qs']['index'][30]]},
-
-            #Sector 9
-            prefix + '09M1'   : {'qs' : [family_data['qs']['index'][31]]},
-            prefix + '09M2'   : {'qs' : [family_data['qs']['index'][32]]},
-            prefix + '09C1'   : {'qs' : [family_data['qs']['index'][33]]},
-            prefix + '09C5'   : {'qs' : [family_data['qs']['index'][34]]},
-
-            #Sector 10
-            prefix + '10M1'   : {'qs' : [family_data['qs']['index'][35]]},
-            prefix + '10M2'   : {'qs' : [family_data['qs']['index'][36]]},
-            prefix + '10C1'   : {'qs' : [family_data['qs']['index'][37]]},
-            prefix + '10C5'   : {'qs' : [family_data['qs']['index'][38]]},
-
-            #Sector 11
-            prefix + '11M1'   : {'qs' : [family_data['qs']['index'][39]]},
-            prefix + '11M2'   : {'qs' : [family_data['qs']['index'][40]]},
-            prefix + '11C1'   : {'qs' : [family_data['qs']['index'][41]]},
-            prefix + '11C5'   : {'qs' : [family_data['qs']['index'][42]]},
-
-            #Sector 12
-            prefix + '12M1'   : {'qs' : [family_data['qs']['index'][43]]},
-            prefix + '12M2'   : {'qs' : [family_data['qs']['index'][44]]},
-            prefix + '12C1'   : {'qs' : [family_data['qs']['index'][45]]},
-            prefix + '12C5'   : {'qs' : [family_data['qs']['index'][46]]},
-
-            #Sector 13
-            prefix + '13M1'   : {'qs' : [family_data['qs']['index'][47]]},
-            prefix + '13M2'   : {'qs' : [family_data['qs']['index'][48]]},
-            prefix + '13C1'   : {'qs' : [family_data['qs']['index'][49]]},
-            prefix + '13C5'   : {'qs' : [family_data['qs']['index'][50]]},
-
-            #Sector 14
-            prefix + '14M1'   : {'qs' : [family_data['qs']['index'][51]]},
-            prefix + '14M2'   : {'qs' : [family_data['qs']['index'][52]]},
-            prefix + '14C1'   : {'qs' : [family_data['qs']['index'][53]]},
-            prefix + '14C5'   : {'qs' : [family_data['qs']['index'][54]]},
-
-            #Sector 15
-            prefix + '15M1'   : {'qs' : [family_data['qs']['index'][55]]},
-            prefix + '15M2'   : {'qs' : [family_data['qs']['index'][56]]},
-            prefix + '15C1'   : {'qs' : [family_data['qs']['index'][57]]},
-            prefix + '15C5'   : {'qs' : [family_data['qs']['index'][58]]},
-
-            #Sector 16
-            prefix + '16M1'   : {'qs' : [family_data['qs']['index'][59]]},
-            prefix + '16M2'   : {'qs' : [family_data['qs']['index'][60]]},
-            prefix + '16C1'   : {'qs' : [family_data['qs']['index'][61]]},
-            prefix + '16C5'   : {'qs' : [family_data['qs']['index'][62]]},
-
-            #Sector 17
-            prefix + '17M1'   : {'qs' : [family_data['qs']['index'][63]]},
-            prefix + '17M2'   : {'qs' : [family_data['qs']['index'][64]]},
-            prefix + '17C1'   : {'qs' : [family_data['qs']['index'][65]]},
-            prefix + '17C5'   : {'qs' : [family_data['qs']['index'][66]]},
-
-            #Sector 18
-            prefix + '18M1'   : {'qs' : [family_data['qs']['index'][67]]},
-            prefix + '18M2'   : {'qs' : [family_data['qs']['index'][68]]},
-            prefix + '18C1'   : {'qs' : [family_data['qs']['index'][69]]},
-            prefix + '18C5'   : {'qs' : [family_data['qs']['index'][70]]},
-
-            #Sector 19
-            prefix + '19M1'   : {'qs' : [family_data['qs']['index'][71]]},
-            prefix + '19M2'   : {'qs' : [family_data['qs']['index'][72]]},
-            prefix + '19C1'   : {'qs' : [family_data['qs']['index'][73]]},
-            prefix + '19C5'   : {'qs' : [family_data['qs']['index'][74]]},
-
-            #Sector 20
-            prefix + '20M1'   : {'qs' : [family_data['qs']['index'][75]]},
-            prefix + '20M2'   : {'qs' : [family_data['qs']['index'][76]]},
-            prefix + '20C1'   : {'qs' : [family_data['qs']['index'][77]]},
-            prefix + '20C5'   : {'qs' : [family_data['qs']['index'][78]]},
-        }
-        return qs_dict
-
-    if family_name.lower() == 'sfa':
-        prefix = 'SIPS-SFA-'
-        sfa_dict = {
+    if element.lower() == 'sfa':
+        prefix = prefix + 'SFA-'
+        _dict = {
             prefix + '01M2'   : {'sfa' : [family_data['sfa']['index'][19]]},
             prefix + '02M2'   : {'sfa' : [family_data['sfa']['index'][0]]},
             prefix + '03M2'   : {'sfa' : [family_data['sfa']['index'][1]]},
@@ -1222,38 +1481,37 @@ def get_record_names(family_name=None):
             prefix + '19M2'   : {'sfa' : [family_data['sfa']['index'][17]]},
             prefix + '20M2'   : {'sfa' : [family_data['sfa']['index'][18]]},
         }
-        return sfa_dict
+        return _dict
 
-
-    if family_name.lower() == 'qfa':
-        indices = family_data['qfa']['index']
-        qfa_dict = {
-            'SIPS-QFA-01M2'   : {'qfa' : [indices[19]]},
-            'SIPS-QFA-02M2'   : {'qfa' : [indices[0]]},
-            'SIPS-QFA-03M2'   : {'qfa' : [indices[1]]},
-            'SIPS-QFA-04M2'   : {'qfa' : [indices[2]]},
-            'SIPS-QFA-05M2'   : {'qfa' : [indices[3]]},
-            'SIPS-QFA-06M2'   : {'qfa' : [indices[4]]},
-            'SIPS-QFA-07M2'   : {'qfa' : [indices[5]]},
-            'SIPS-QFA-08M2'   : {'qfa' : [indices[6]]},
-            'SIPS-QFA-09M2'   : {'qfa' : [indices[7]]},
-            'SIPS-QFA-10M2'   : {'qfa' : [indices[8]]},
-            'SIPS-QFA-11M2'   : {'qfa' : [indices[9]]},
-            'SIPS-QFA-12M2'   : {'qfa' : [indices[10]]},
-            'SIPS-QFA-13M2'   : {'qfa' : [indices[11]]},
-            'SIPS-QFA-14M2'   : {'qfa' : [indices[12]]},
-            'SIPS-QFA-15M2'   : {'qfa' : [indices[13]]},
-            'SIPS-QFA-16M2'   : {'qfa' : [indices[14]]},
-            'SIPS-QFA-17M2'   : {'qfa' : [indices[15]]},
-            'SIPS-QFA-18M2'   : {'qfa' : [indices[16]]},
-            'SIPS-QFA-19M2'   : {'qfa' : [indices[17]]},
-            'SIPS-QFA-20M2'   : {'qfa' : [indices[18]]},
+    if element.lower() == 'qfa':
+        prefix = prefix + 'QFA-'
+        _dict = {
+            prefix + '01M2'   : {'qfa' : [family_data['qfa']['index'][19]]},
+            prefix + '02M2'   : {'qfa' : [family_data['qfa']['index'][0]]},
+            prefix + '03M2'   : {'qfa' : [family_data['qfa']['index'][1]]},
+            prefix + '04M2'   : {'qfa' : [family_data['qfa']['index'][2]]},
+            prefix + '05M2'   : {'qfa' : [family_data['qfa']['index'][3]]},
+            prefix + '06M2'   : {'qfa' : [family_data['qfa']['index'][4]]},
+            prefix + '07M2'   : {'qfa' : [family_data['qfa']['index'][5]]},
+            prefix + '08M2'   : {'qfa' : [family_data['qfa']['index'][6]]},
+            prefix + '09M2'   : {'qfa' : [family_data['qfa']['index'][7]]},
+            prefix + '10M2'   : {'qfa' : [family_data['qfa']['index'][8]]},
+            prefix + '11M2'   : {'qfa' : [family_data['qfa']['index'][9]]},
+            prefix + '12M2'   : {'qfa' : [family_data['qfa']['index'][10]]},
+            prefix + '13M2'   : {'qfa' : [family_data['qfa']['index'][11]]},
+            prefix + '14M2'   : {'qfa' : [family_data['qfa']['index'][12]]},
+            prefix + '15M2'   : {'qfa' : [family_data['qfa']['index'][13]]},
+            prefix + '16M2'   : {'qfa' : [family_data['qfa']['index'][14]]},
+            prefix + '17M2'   : {'qfa' : [family_data['qfa']['index'][15]]},
+            prefix + '18M2'   : {'qfa' : [family_data['qfa']['index'][16]]},
+            prefix + '19M2'   : {'qfa' : [family_data['qfa']['index'][17]]},
+            prefix + '20M2'   : {'qfa' : [family_data['qfa']['index'][18]]},
         }
-        return qfa_dict
+        return _dict
 
-    if family_name.lower() == 'qda':
-        prefix = 'SIPS-QDA-'
-        qda_dict = {
+    if element.lower() == 'qda':
+        prefix = prefix + 'QDA-'
+        _dict = {
             prefix + '01M2'   : {'qda' : [family_data['qda']['index'][19]]},
             prefix + '02M2'   : {'qda' : [family_data['qda']['index'][0]]},
             prefix + '03M2'   : {'qda' : [family_data['qda']['index'][1]]},
@@ -1275,11 +1533,11 @@ def get_record_names(family_name=None):
             prefix + '19M2'   : {'qda' : [family_data['qda']['index'][17]]},
             prefix + '20M2'   : {'qda' : [family_data['qda']['index'][18]]},
         }
-        return qda_dict
+        return _dict
 
-    if family_name.lower() == 'sda':
-        prefix = 'SIPS-SDA-'
-        sda_dict = {
+    if element.lower() == 'sda':
+        prefix = prefix + 'SDA-'
+        _dict = {
             prefix + '01M2'   : {'sda' : [family_data['sda']['index'][19]]},
             prefix + '02M2'   : {'sda' : [family_data['sda']['index'][0]]},
             prefix + '03M2'   : {'sda' : [family_data['sda']['index'][1]]},
@@ -1301,581 +1559,580 @@ def get_record_names(family_name=None):
             prefix + '19M2'   : {'sda' : [family_data['sda']['index'][17]]},
             prefix + '20M2'   : {'sda' : [family_data['sda']['index'][18]]},
         }
-        return sda_dict
+        return _dict
 
-    if family_name.lower() == 'sd1':
-        prefix = 'SIPS-SD1-'
-        sd1_dict = {
-            prefix + '01C1'   : {'sd1' : [family_data['sd1']['index'][19]]},
-            prefix + '02C1'   : {'sd1' : [family_data['sd1']['index'][0]]},
-            prefix + '03C1'   : {'sd1' : [family_data['sd1']['index'][1]]},
-            prefix + '04C1'   : {'sd1' : [family_data['sd1']['index'][2]]},
-            prefix + '05C1'   : {'sd1' : [family_data['sd1']['index'][3]]},
-            prefix + '06C1'   : {'sd1' : [family_data['sd1']['index'][4]]},
-            prefix + '07C1'   : {'sd1' : [family_data['sd1']['index'][5]]},
-            prefix + '08C1'   : {'sd1' : [family_data['sd1']['index'][6]]},
-            prefix + '09C1'   : {'sd1' : [family_data['sd1']['index'][7]]},
-            prefix + '10C1'   : {'sd1' : [family_data['sd1']['index'][8]]},
-            prefix + '11C1'   : {'sd1' : [family_data['sd1']['index'][9]]},
-            prefix + '12C1'   : {'sd1' : [family_data['sd1']['index'][10]]},
-            prefix + '13C1'   : {'sd1' : [family_data['sd1']['index'][11]]},
-            prefix + '14C1'   : {'sd1' : [family_data['sd1']['index'][12]]},
-            prefix + '15C1'   : {'sd1' : [family_data['sd1']['index'][13]]},
-            prefix + '16C1'   : {'sd1' : [family_data['sd1']['index'][14]]},
-            prefix + '17C1'   : {'sd1' : [family_data['sd1']['index'][15]]},
-            prefix + '18C1'   : {'sd1' : [family_data['sd1']['index'][16]]},
-            prefix + '19C1'   : {'sd1' : [family_data['sd1']['index'][17]]},
-            prefix + '20C1'   : {'sd1' : [family_data['sd1']['index'][18]]},
+    if element.lower() == 'sd1':
+        prefix = prefix + 'SD1-'
+        _dict = {
+            prefix + '01C1'   : {'sd1' : [family_data['sd1']['index'][0]]},
+            prefix + '02C1'   : {'sd1' : [family_data['sd1']['index'][1]]},
+            prefix + '03C1'   : {'sd1' : [family_data['sd1']['index'][2]]},
+            prefix + '04C1'   : {'sd1' : [family_data['sd1']['index'][3]]},
+            prefix + '05C1'   : {'sd1' : [family_data['sd1']['index'][4]]},
+            prefix + '06C1'   : {'sd1' : [family_data['sd1']['index'][5]]},
+            prefix + '07C1'   : {'sd1' : [family_data['sd1']['index'][6]]},
+            prefix + '08C1'   : {'sd1' : [family_data['sd1']['index'][7]]},
+            prefix + '09C1'   : {'sd1' : [family_data['sd1']['index'][8]]},
+            prefix + '10C1'   : {'sd1' : [family_data['sd1']['index'][9]]},
+            prefix + '11C1'   : {'sd1' : [family_data['sd1']['index'][10]]},
+            prefix + '12C1'   : {'sd1' : [family_data['sd1']['index'][11]]},
+            prefix + '13C1'   : {'sd1' : [family_data['sd1']['index'][12]]},
+            prefix + '14C1'   : {'sd1' : [family_data['sd1']['index'][13]]},
+            prefix + '15C1'   : {'sd1' : [family_data['sd1']['index'][14]]},
+            prefix + '16C1'   : {'sd1' : [family_data['sd1']['index'][15]]},
+            prefix + '17C1'   : {'sd1' : [family_data['sd1']['index'][16]]},
+            prefix + '18C1'   : {'sd1' : [family_data['sd1']['index'][17]]},
+            prefix + '19C1'   : {'sd1' : [family_data['sd1']['index'][18]]},
+            prefix + '20C1'   : {'sd1' : [family_data['sd1']['index'][19]]},
         }
-        return sd1_dict
+        return _dict
 
-    if family_name.lower() == 'qf1':
-        prefix = 'SIPS-QF1-'
-        qf1_dict = {
-            prefix + '01C1'   : {'qf1' : [family_data['qf1']['index'][39]]},
-            prefix + '01C5'   : {'qf1' : [family_data['qf1']['index'][0]]},
-            prefix + '02C1'   : {'qf1' : [family_data['qf1']['index'][1]]},
-            prefix + '02C5'   : {'qf1' : [family_data['qf1']['index'][2]]},
-            prefix + '03C1'   : {'qf1' : [family_data['qf1']['index'][3]]},
-            prefix + '03C5'   : {'qf1' : [family_data['qf1']['index'][4]]},
-            prefix + '04C1'   : {'qf1' : [family_data['qf1']['index'][5]]},
-            prefix + '04C5'   : {'qf1' : [family_data['qf1']['index'][6]]},
-            prefix + '05C1'   : {'qf1' : [family_data['qf1']['index'][7]]},
-            prefix + '05C5'   : {'qf1' : [family_data['qf1']['index'][8]]},
-            prefix + '06C1'   : {'qf1' : [family_data['qf1']['index'][9]]},
-            prefix + '06C5'   : {'qf1' : [family_data['qf1']['index'][10]]},
-            prefix + '07C1'   : {'qf1' : [family_data['qf1']['index'][11]]},
-            prefix + '07C5'   : {'qf1' : [family_data['qf1']['index'][12]]},
-            prefix + '08C1'   : {'qf1' : [family_data['qf1']['index'][13]]},
-            prefix + '08C5'   : {'qf1' : [family_data['qf1']['index'][14]]},
-            prefix + '09C1'   : {'qf1' : [family_data['qf1']['index'][15]]},
-            prefix + '09C5'   : {'qf1' : [family_data['qf1']['index'][16]]},
-            prefix + '10C1'   : {'qf1' : [family_data['qf1']['index'][17]]},
-            prefix + '10C5'   : {'qf1' : [family_data['qf1']['index'][18]]},
-            prefix + '11C1'   : {'qf1' : [family_data['qf1']['index'][19]]},
-            prefix + '11C5'   : {'qf1' : [family_data['qf1']['index'][20]]},
-            prefix + '12C1'   : {'qf1' : [family_data['qf1']['index'][21]]},
-            prefix + '12C5'   : {'qf1' : [family_data['qf1']['index'][22]]},
-            prefix + '13C1'   : {'qf1' : [family_data['qf1']['index'][23]]},
-            prefix + '13C5'   : {'qf1' : [family_data['qf1']['index'][24]]},
-            prefix + '14C1'   : {'qf1' : [family_data['qf1']['index'][25]]},
-            prefix + '14C5'   : {'qf1' : [family_data['qf1']['index'][26]]},
-            prefix + '15C1'   : {'qf1' : [family_data['qf1']['index'][27]]},
-            prefix + '15C5'   : {'qf1' : [family_data['qf1']['index'][28]]},
-            prefix + '16C1'   : {'qf1' : [family_data['qf1']['index'][29]]},
-            prefix + '16C5'   : {'qf1' : [family_data['qf1']['index'][30]]},
-            prefix + '17C1'   : {'qf1' : [family_data['qf1']['index'][31]]},
-            prefix + '17C5'   : {'qf1' : [family_data['qf1']['index'][32]]},
-            prefix + '18C1'   : {'qf1' : [family_data['qf1']['index'][33]]},
-            prefix + '18C5'   : {'qf1' : [family_data['qf1']['index'][34]]},
-            prefix + '19C1'   : {'qf1' : [family_data['qf1']['index'][35]]},
-            prefix + '19C5'   : {'qf1' : [family_data['qf1']['index'][36]]},
-            prefix + '20C1'   : {'qf1' : [family_data['qf1']['index'][37]]},
-            prefix + '20C5'   : {'qf1' : [family_data['qf1']['index'][38]]},
+    if element.lower() == 'qf1':
+        prefix = prefix + 'QF1-'
+        _dict = {
+            prefix + '01C1'   : {'qf1' : [family_data['qf1']['index'][0]]},
+            prefix + '01C5'   : {'qf1' : [family_data['qf1']['index'][1]]},
+            prefix + '02C1'   : {'qf1' : [family_data['qf1']['index'][2]]},
+            prefix + '02C5'   : {'qf1' : [family_data['qf1']['index'][3]]},
+            prefix + '03C1'   : {'qf1' : [family_data['qf1']['index'][4]]},
+            prefix + '03C5'   : {'qf1' : [family_data['qf1']['index'][5]]},
+            prefix + '04C1'   : {'qf1' : [family_data['qf1']['index'][6]]},
+            prefix + '04C5'   : {'qf1' : [family_data['qf1']['index'][7]]},
+            prefix + '05C1'   : {'qf1' : [family_data['qf1']['index'][8]]},
+            prefix + '05C5'   : {'qf1' : [family_data['qf1']['index'][9]]},
+            prefix + '06C1'   : {'qf1' : [family_data['qf1']['index'][10]]},
+            prefix + '06C5'   : {'qf1' : [family_data['qf1']['index'][11]]},
+            prefix + '07C1'   : {'qf1' : [family_data['qf1']['index'][12]]},
+            prefix + '07C5'   : {'qf1' : [family_data['qf1']['index'][13]]},
+            prefix + '08C1'   : {'qf1' : [family_data['qf1']['index'][14]]},
+            prefix + '08C5'   : {'qf1' : [family_data['qf1']['index'][15]]},
+            prefix + '09C1'   : {'qf1' : [family_data['qf1']['index'][16]]},
+            prefix + '09C5'   : {'qf1' : [family_data['qf1']['index'][17]]},
+            prefix + '10C1'   : {'qf1' : [family_data['qf1']['index'][18]]},
+            prefix + '10C5'   : {'qf1' : [family_data['qf1']['index'][19]]},
+            prefix + '11C1'   : {'qf1' : [family_data['qf1']['index'][20]]},
+            prefix + '11C5'   : {'qf1' : [family_data['qf1']['index'][21]]},
+            prefix + '12C1'   : {'qf1' : [family_data['qf1']['index'][22]]},
+            prefix + '12C5'   : {'qf1' : [family_data['qf1']['index'][23]]},
+            prefix + '13C1'   : {'qf1' : [family_data['qf1']['index'][24]]},
+            prefix + '13C5'   : {'qf1' : [family_data['qf1']['index'][25]]},
+            prefix + '14C1'   : {'qf1' : [family_data['qf1']['index'][26]]},
+            prefix + '14C5'   : {'qf1' : [family_data['qf1']['index'][27]]},
+            prefix + '15C1'   : {'qf1' : [family_data['qf1']['index'][28]]},
+            prefix + '15C5'   : {'qf1' : [family_data['qf1']['index'][29]]},
+            prefix + '16C1'   : {'qf1' : [family_data['qf1']['index'][30]]},
+            prefix + '16C5'   : {'qf1' : [family_data['qf1']['index'][31]]},
+            prefix + '17C1'   : {'qf1' : [family_data['qf1']['index'][32]]},
+            prefix + '17C5'   : {'qf1' : [family_data['qf1']['index'][33]]},
+            prefix + '18C1'   : {'qf1' : [family_data['qf1']['index'][34]]},
+            prefix + '18C5'   : {'qf1' : [family_data['qf1']['index'][35]]},
+            prefix + '19C1'   : {'qf1' : [family_data['qf1']['index'][36]]},
+            prefix + '19C5'   : {'qf1' : [family_data['qf1']['index'][37]]},
+            prefix + '20C1'   : {'qf1' : [family_data['qf1']['index'][38]]},
+            prefix + '20C5'   : {'qf1' : [family_data['qf1']['index'][39]]},
         }
-        return qf1_dict
+        return _dict
 
-    if family_name.lower() == 'sf1':
-        prefix = 'SIPS-SF1-'
-        sf1_dict = {
-            prefix + '01C1'   : {'sf1' : [family_data['sf1']['index'][19]]},
-            prefix + '02C1'   : {'sf1' : [family_data['sf1']['index'][0]]},
-            prefix + '03C1'   : {'sf1' : [family_data['sf1']['index'][1]]},
-            prefix + '04C1'   : {'sf1' : [family_data['sf1']['index'][2]]},
-            prefix + '05C1'   : {'sf1' : [family_data['sf1']['index'][3]]},
-            prefix + '06C1'   : {'sf1' : [family_data['sf1']['index'][4]]},
-            prefix + '07C1'   : {'sf1' : [family_data['sf1']['index'][5]]},
-            prefix + '08C1'   : {'sf1' : [family_data['sf1']['index'][6]]},
-            prefix + '09C1'   : {'sf1' : [family_data['sf1']['index'][7]]},
-            prefix + '10C1'   : {'sf1' : [family_data['sf1']['index'][8]]},
-            prefix + '11C1'   : {'sf1' : [family_data['sf1']['index'][9]]},
-            prefix + '12C1'   : {'sf1' : [family_data['sf1']['index'][10]]},
-            prefix + '13C1'   : {'sf1' : [family_data['sf1']['index'][11]]},
-            prefix + '14C1'   : {'sf1' : [family_data['sf1']['index'][12]]},
-            prefix + '15C1'   : {'sf1' : [family_data['sf1']['index'][13]]},
-            prefix + '16C1'   : {'sf1' : [family_data['sf1']['index'][14]]},
-            prefix + '17C1'   : {'sf1' : [family_data['sf1']['index'][15]]},
-            prefix + '18C1'   : {'sf1' : [family_data['sf1']['index'][16]]},
-            prefix + '19C1'   : {'sf1' : [family_data['sf1']['index'][17]]},
-            prefix + '20C1'   : {'sf1' : [family_data['sf1']['index'][18]]},
+    if element.lower() == 'sf1':
+        prefix = prefix + 'SF1-'
+        _dict = {
+            prefix + '01C1'   : {'sf1' : [family_data['sf1']['index'][0]]},
+            prefix + '02C1'   : {'sf1' : [family_data['sf1']['index'][1]]},
+            prefix + '03C1'   : {'sf1' : [family_data['sf1']['index'][2]]},
+            prefix + '04C1'   : {'sf1' : [family_data['sf1']['index'][3]]},
+            prefix + '05C1'   : {'sf1' : [family_data['sf1']['index'][4]]},
+            prefix + '06C1'   : {'sf1' : [family_data['sf1']['index'][5]]},
+            prefix + '07C1'   : {'sf1' : [family_data['sf1']['index'][6]]},
+            prefix + '08C1'   : {'sf1' : [family_data['sf1']['index'][7]]},
+            prefix + '09C1'   : {'sf1' : [family_data['sf1']['index'][8]]},
+            prefix + '10C1'   : {'sf1' : [family_data['sf1']['index'][9]]},
+            prefix + '11C1'   : {'sf1' : [family_data['sf1']['index'][10]]},
+            prefix + '12C1'   : {'sf1' : [family_data['sf1']['index'][11]]},
+            prefix + '13C1'   : {'sf1' : [family_data['sf1']['index'][12]]},
+            prefix + '14C1'   : {'sf1' : [family_data['sf1']['index'][13]]},
+            prefix + '15C1'   : {'sf1' : [family_data['sf1']['index'][14]]},
+            prefix + '16C1'   : {'sf1' : [family_data['sf1']['index'][15]]},
+            prefix + '17C1'   : {'sf1' : [family_data['sf1']['index'][16]]},
+            prefix + '18C1'   : {'sf1' : [family_data['sf1']['index'][17]]},
+            prefix + '19C1'   : {'sf1' : [family_data['sf1']['index'][18]]},
+            prefix + '20C1'   : {'sf1' : [family_data['sf1']['index'][19]]},
         }
-        return sf1_dict
+        return _dict
 
-    if family_name.lower() == 'qf2':
-        prefix = 'SIPS-QF2-'
-        qf2_dict = {
-            prefix + '01C1'   : {'qf2' : [family_data['qf2']['index'][39]]},
-            prefix + '01C5'   : {'qf2' : [family_data['qf2']['index'][0]]},
-            prefix + '02C1'   : {'qf2' : [family_data['qf2']['index'][1]]},
-            prefix + '02C5'   : {'qf2' : [family_data['qf2']['index'][2]]},
-            prefix + '03C1'   : {'qf2' : [family_data['qf2']['index'][3]]},
-            prefix + '03C5'   : {'qf2' : [family_data['qf2']['index'][4]]},
-            prefix + '04C1'   : {'qf2' : [family_data['qf2']['index'][5]]},
-            prefix + '04C5'   : {'qf2' : [family_data['qf2']['index'][6]]},
-            prefix + '05C1'   : {'qf2' : [family_data['qf2']['index'][7]]},
-            prefix + '05C5'   : {'qf2' : [family_data['qf2']['index'][8]]},
-            prefix + '06C1'   : {'qf2' : [family_data['qf2']['index'][9]]},
-            prefix + '06C5'   : {'qf2' : [family_data['qf2']['index'][10]]},
-            prefix + '07C1'   : {'qf2' : [family_data['qf2']['index'][11]]},
-            prefix + '07C5'   : {'qf2' : [family_data['qf2']['index'][12]]},
-            prefix + '08C1'   : {'qf2' : [family_data['qf2']['index'][13]]},
-            prefix + '08C5'   : {'qf2' : [family_data['qf2']['index'][14]]},
-            prefix + '09C1'   : {'qf2' : [family_data['qf2']['index'][15]]},
-            prefix + '09C5'   : {'qf2' : [family_data['qf2']['index'][16]]},
-            prefix + '10C1'   : {'qf2' : [family_data['qf2']['index'][17]]},
-            prefix + '10C5'   : {'qf2' : [family_data['qf2']['index'][18]]},
-            prefix + '11C1'   : {'qf2' : [family_data['qf2']['index'][19]]},
-            prefix + '11C5'   : {'qf2' : [family_data['qf2']['index'][20]]},
-            prefix + '12C1'   : {'qf2' : [family_data['qf2']['index'][21]]},
-            prefix + '12C5'   : {'qf2' : [family_data['qf2']['index'][22]]},
-            prefix + '13C1'   : {'qf2' : [family_data['qf2']['index'][23]]},
-            prefix + '13C5'   : {'qf2' : [family_data['qf2']['index'][24]]},
-            prefix + '14C1'   : {'qf2' : [family_data['qf2']['index'][25]]},
-            prefix + '14C5'   : {'qf2' : [family_data['qf2']['index'][26]]},
-            prefix + '15C1'   : {'qf2' : [family_data['qf2']['index'][27]]},
-            prefix + '15C5'   : {'qf2' : [family_data['qf2']['index'][28]]},
-            prefix + '16C1'   : {'qf2' : [family_data['qf2']['index'][29]]},
-            prefix + '16C5'   : {'qf2' : [family_data['qf2']['index'][30]]},
-            prefix + '17C1'   : {'qf2' : [family_data['qf2']['index'][31]]},
-            prefix + '17C5'   : {'qf2' : [family_data['qf2']['index'][32]]},
-            prefix + '18C1'   : {'qf2' : [family_data['qf2']['index'][33]]},
-            prefix + '18C5'   : {'qf2' : [family_data['qf2']['index'][34]]},
-            prefix + '19C1'   : {'qf2' : [family_data['qf2']['index'][35]]},
-            prefix + '19C5'   : {'qf2' : [family_data['qf2']['index'][36]]},
-            prefix + '20C1'   : {'qf2' : [family_data['qf2']['index'][37]]},
-            prefix + '20C5'   : {'qf2' : [family_data['qf2']['index'][38]]},
+    if element.lower() == 'qf2':
+        prefix = prefix + 'QF2-'
+        _dict = {
+            prefix + '01C1'   : {'qf2' : [family_data['qf2']['index'][0]]},
+            prefix + '01C5'   : {'qf2' : [family_data['qf2']['index'][1]]},
+            prefix + '02C1'   : {'qf2' : [family_data['qf2']['index'][2]]},
+            prefix + '02C5'   : {'qf2' : [family_data['qf2']['index'][3]]},
+            prefix + '03C1'   : {'qf2' : [family_data['qf2']['index'][4]]},
+            prefix + '03C5'   : {'qf2' : [family_data['qf2']['index'][5]]},
+            prefix + '04C1'   : {'qf2' : [family_data['qf2']['index'][6]]},
+            prefix + '04C5'   : {'qf2' : [family_data['qf2']['index'][7]]},
+            prefix + '05C1'   : {'qf2' : [family_data['qf2']['index'][8]]},
+            prefix + '05C5'   : {'qf2' : [family_data['qf2']['index'][9]]},
+            prefix + '06C1'   : {'qf2' : [family_data['qf2']['index'][10]]},
+            prefix + '06C5'   : {'qf2' : [family_data['qf2']['index'][11]]},
+            prefix + '07C1'   : {'qf2' : [family_data['qf2']['index'][12]]},
+            prefix + '07C5'   : {'qf2' : [family_data['qf2']['index'][13]]},
+            prefix + '08C1'   : {'qf2' : [family_data['qf2']['index'][14]]},
+            prefix + '08C5'   : {'qf2' : [family_data['qf2']['index'][15]]},
+            prefix + '09C1'   : {'qf2' : [family_data['qf2']['index'][16]]},
+            prefix + '09C5'   : {'qf2' : [family_data['qf2']['index'][17]]},
+            prefix + '10C1'   : {'qf2' : [family_data['qf2']['index'][18]]},
+            prefix + '10C5'   : {'qf2' : [family_data['qf2']['index'][19]]},
+            prefix + '11C1'   : {'qf2' : [family_data['qf2']['index'][20]]},
+            prefix + '11C5'   : {'qf2' : [family_data['qf2']['index'][21]]},
+            prefix + '12C1'   : {'qf2' : [family_data['qf2']['index'][22]]},
+            prefix + '12C5'   : {'qf2' : [family_data['qf2']['index'][23]]},
+            prefix + '13C1'   : {'qf2' : [family_data['qf2']['index'][24]]},
+            prefix + '13C5'   : {'qf2' : [family_data['qf2']['index'][25]]},
+            prefix + '14C1'   : {'qf2' : [family_data['qf2']['index'][26]]},
+            prefix + '14C5'   : {'qf2' : [family_data['qf2']['index'][27]]},
+            prefix + '15C1'   : {'qf2' : [family_data['qf2']['index'][28]]},
+            prefix + '15C5'   : {'qf2' : [family_data['qf2']['index'][29]]},
+            prefix + '16C1'   : {'qf2' : [family_data['qf2']['index'][30]]},
+            prefix + '16C5'   : {'qf2' : [family_data['qf2']['index'][31]]},
+            prefix + '17C1'   : {'qf2' : [family_data['qf2']['index'][32]]},
+            prefix + '17C5'   : {'qf2' : [family_data['qf2']['index'][33]]},
+            prefix + '18C1'   : {'qf2' : [family_data['qf2']['index'][34]]},
+            prefix + '18C5'   : {'qf2' : [family_data['qf2']['index'][35]]},
+            prefix + '19C1'   : {'qf2' : [family_data['qf2']['index'][36]]},
+            prefix + '19C5'   : {'qf2' : [family_data['qf2']['index'][37]]},
+            prefix + '20C1'   : {'qf2' : [family_data['qf2']['index'][38]]},
+            prefix + '20C5'   : {'qf2' : [family_data['qf2']['index'][39]]},
         }
-        return qf2_dict
+        return _dict
 
-    if family_name.lower() == 'sd2':
-        prefix = 'SIPS-SD2-'
-        sd2_dict = {
-            prefix + '01C1'   : {'sd2' : [family_data['sd2']['index'][19]]},
-            prefix + '02C1'   : {'sd2' : [family_data['sd2']['index'][0]]},
-            prefix + '03C1'   : {'sd2' : [family_data['sd2']['index'][1]]},
-            prefix + '04C1'   : {'sd2' : [family_data['sd2']['index'][2]]},
-            prefix + '05C1'   : {'sd2' : [family_data['sd2']['index'][3]]},
-            prefix + '06C1'   : {'sd2' : [family_data['sd2']['index'][4]]},
-            prefix + '07C1'   : {'sd2' : [family_data['sd2']['index'][5]]},
-            prefix + '08C1'   : {'sd2' : [family_data['sd2']['index'][6]]},
-            prefix + '09C1'   : {'sd2' : [family_data['sd2']['index'][7]]},
-            prefix + '10C1'   : {'sd2' : [family_data['sd2']['index'][8]]},
-            prefix + '11C1'   : {'sd2' : [family_data['sd2']['index'][9]]},
-            prefix + '12C1'   : {'sd2' : [family_data['sd2']['index'][10]]},
-            prefix + '13C1'   : {'sd2' : [family_data['sd2']['index'][11]]},
-            prefix + '14C1'   : {'sd2' : [family_data['sd2']['index'][12]]},
-            prefix + '15C1'   : {'sd2' : [family_data['sd2']['index'][13]]},
-            prefix + '16C1'   : {'sd2' : [family_data['sd2']['index'][14]]},
-            prefix + '17C1'   : {'sd2' : [family_data['sd2']['index'][15]]},
-            prefix + '18C1'   : {'sd2' : [family_data['sd2']['index'][16]]},
-            prefix + '19C1'   : {'sd2' : [family_data['sd2']['index'][17]]},
-            prefix + '20C1'   : {'sd2' : [family_data['sd2']['index'][18]]},
+    if element.lower() == 'sd2':
+        prefix = prefix + 'SD2-'
+        _dict = {
+            prefix + '01C1'   : {'sd2' : [family_data['sd2']['index'][0]]},
+            prefix + '02C1'   : {'sd2' : [family_data['sd2']['index'][1]]},
+            prefix + '03C1'   : {'sd2' : [family_data['sd2']['index'][2]]},
+            prefix + '04C1'   : {'sd2' : [family_data['sd2']['index'][3]]},
+            prefix + '05C1'   : {'sd2' : [family_data['sd2']['index'][4]]},
+            prefix + '06C1'   : {'sd2' : [family_data['sd2']['index'][5]]},
+            prefix + '07C1'   : {'sd2' : [family_data['sd2']['index'][6]]},
+            prefix + '08C1'   : {'sd2' : [family_data['sd2']['index'][7]]},
+            prefix + '09C1'   : {'sd2' : [family_data['sd2']['index'][8]]},
+            prefix + '10C1'   : {'sd2' : [family_data['sd2']['index'][9]]},
+            prefix + '11C1'   : {'sd2' : [family_data['sd2']['index'][10]]},
+            prefix + '12C1'   : {'sd2' : [family_data['sd2']['index'][11]]},
+            prefix + '13C1'   : {'sd2' : [family_data['sd2']['index'][12]]},
+            prefix + '14C1'   : {'sd2' : [family_data['sd2']['index'][13]]},
+            prefix + '15C1'   : {'sd2' : [family_data['sd2']['index'][14]]},
+            prefix + '16C1'   : {'sd2' : [family_data['sd2']['index'][15]]},
+            prefix + '17C1'   : {'sd2' : [family_data['sd2']['index'][16]]},
+            prefix + '18C1'   : {'sd2' : [family_data['sd2']['index'][17]]},
+            prefix + '19C1'   : {'sd2' : [family_data['sd2']['index'][18]]},
+            prefix + '20C1'   : {'sd2' : [family_data['sd2']['index'][19]]},
         }
-        return sd2_dict
+        return _dict
 
-    if family_name.lower() == 'sd3':
-        prefix = 'SIPS-SD3-'
-        sd3_dict = {
-            prefix + '01C2'   : {'sd3' : [family_data['sd3']['index'][19]]},
-            prefix + '02C2'   : {'sd3' : [family_data['sd3']['index'][0]]},
-            prefix + '03C2'   : {'sd3' : [family_data['sd3']['index'][1]]},
-            prefix + '04C2'   : {'sd3' : [family_data['sd3']['index'][2]]},
-            prefix + '05C2'   : {'sd3' : [family_data['sd3']['index'][3]]},
-            prefix + '06C2'   : {'sd3' : [family_data['sd3']['index'][4]]},
-            prefix + '07C2'   : {'sd3' : [family_data['sd3']['index'][5]]},
-            prefix + '08C2'   : {'sd3' : [family_data['sd3']['index'][6]]},
-            prefix + '09C2'   : {'sd3' : [family_data['sd3']['index'][7]]},
-            prefix + '10C2'   : {'sd3' : [family_data['sd3']['index'][8]]},
-            prefix + '11C2'   : {'sd3' : [family_data['sd3']['index'][9]]},
-            prefix + '12C2'   : {'sd3' : [family_data['sd3']['index'][10]]},
-            prefix + '13C2'   : {'sd3' : [family_data['sd3']['index'][11]]},
-            prefix + '14C2'   : {'sd3' : [family_data['sd3']['index'][12]]},
-            prefix + '15C2'   : {'sd3' : [family_data['sd3']['index'][13]]},
-            prefix + '16C2'   : {'sd3' : [family_data['sd3']['index'][14]]},
-            prefix + '17C2'   : {'sd3' : [family_data['sd3']['index'][15]]},
-            prefix + '18C2'   : {'sd3' : [family_data['sd3']['index'][16]]},
-            prefix + '19C2'   : {'sd3' : [family_data['sd3']['index'][17]]},
-            prefix + '20C2'   : {'sd3' : [family_data['sd3']['index'][18]]},
+    if element.lower() == 'sd3':
+        prefix = prefix + 'SD3-'
+        _dict = {
+            prefix + '01C2'   : {'sd3' : [family_data['sd3']['index'][0]]},
+            prefix + '02C2'   : {'sd3' : [family_data['sd3']['index'][1]]},
+            prefix + '03C2'   : {'sd3' : [family_data['sd3']['index'][2]]},
+            prefix + '04C2'   : {'sd3' : [family_data['sd3']['index'][3]]},
+            prefix + '05C2'   : {'sd3' : [family_data['sd3']['index'][4]]},
+            prefix + '06C2'   : {'sd3' : [family_data['sd3']['index'][5]]},
+            prefix + '07C2'   : {'sd3' : [family_data['sd3']['index'][6]]},
+            prefix + '08C2'   : {'sd3' : [family_data['sd3']['index'][7]]},
+            prefix + '09C2'   : {'sd3' : [family_data['sd3']['index'][8]]},
+            prefix + '10C2'   : {'sd3' : [family_data['sd3']['index'][9]]},
+            prefix + '11C2'   : {'sd3' : [family_data['sd3']['index'][10]]},
+            prefix + '12C2'   : {'sd3' : [family_data['sd3']['index'][11]]},
+            prefix + '13C2'   : {'sd3' : [family_data['sd3']['index'][12]]},
+            prefix + '14C2'   : {'sd3' : [family_data['sd3']['index'][13]]},
+            prefix + '15C2'   : {'sd3' : [family_data['sd3']['index'][14]]},
+            prefix + '16C2'   : {'sd3' : [family_data['sd3']['index'][15]]},
+            prefix + '17C2'   : {'sd3' : [family_data['sd3']['index'][16]]},
+            prefix + '18C2'   : {'sd3' : [family_data['sd3']['index'][17]]},
+            prefix + '19C2'   : {'sd3' : [family_data['sd3']['index'][18]]},
+            prefix + '20C2'   : {'sd3' : [family_data['sd3']['index'][19]]},
         }
-        return sd3_dict
+        return _dict
 
-    if family_name.lower() == 'qf3':
-        prefix = 'SIPS-QF3-'
-        qf3_dict = {
-            prefix + '01C2'   : {'qf3' : [family_data['qf3']['index'][39]]},
-            prefix + '01C4'   : {'qf3' : [family_data['qf3']['index'][0]]},
-            prefix + '02C2'   : {'qf3' : [family_data['qf3']['index'][1]]},
-            prefix + '02C4'   : {'qf3' : [family_data['qf3']['index'][2]]},
-            prefix + '03C2'   : {'qf3' : [family_data['qf3']['index'][3]]},
-            prefix + '03C4'   : {'qf3' : [family_data['qf3']['index'][4]]},
-            prefix + '04C2'   : {'qf3' : [family_data['qf3']['index'][5]]},
-            prefix + '04C4'   : {'qf3' : [family_data['qf3']['index'][6]]},
-            prefix + '05C2'   : {'qf3' : [family_data['qf3']['index'][7]]},
-            prefix + '05C4'   : {'qf3' : [family_data['qf3']['index'][8]]},
-            prefix + '06C2'   : {'qf3' : [family_data['qf3']['index'][9]]},
-            prefix + '06C4'   : {'qf3' : [family_data['qf3']['index'][10]]},
-            prefix + '07C2'   : {'qf3' : [family_data['qf3']['index'][11]]},
-            prefix + '07C4'   : {'qf3' : [family_data['qf3']['index'][12]]},
-            prefix + '08C2'   : {'qf3' : [family_data['qf3']['index'][13]]},
-            prefix + '08C4'   : {'qf3' : [family_data['qf3']['index'][14]]},
-            prefix + '09C2'   : {'qf3' : [family_data['qf3']['index'][15]]},
-            prefix + '09C4'   : {'qf3' : [family_data['qf3']['index'][16]]},
-            prefix + '10C2'   : {'qf3' : [family_data['qf3']['index'][17]]},
-            prefix + '10C4'   : {'qf3' : [family_data['qf3']['index'][18]]},
-            prefix + '11C2'   : {'qf3' : [family_data['qf3']['index'][19]]},
-            prefix + '11C4'   : {'qf3' : [family_data['qf3']['index'][20]]},
-            prefix + '12C2'   : {'qf3' : [family_data['qf3']['index'][21]]},
-            prefix + '12C4'   : {'qf3' : [family_data['qf3']['index'][22]]},
-            prefix + '13C2'   : {'qf3' : [family_data['qf3']['index'][23]]},
-            prefix + '13C4'   : {'qf3' : [family_data['qf3']['index'][24]]},
-            prefix + '14C2'   : {'qf3' : [family_data['qf3']['index'][25]]},
-            prefix + '14C4'   : {'qf3' : [family_data['qf3']['index'][26]]},
-            prefix + '15C2'   : {'qf3' : [family_data['qf3']['index'][27]]},
-            prefix + '15C4'   : {'qf3' : [family_data['qf3']['index'][28]]},
-            prefix + '16C2'   : {'qf3' : [family_data['qf3']['index'][29]]},
-            prefix + '16C4'   : {'qf3' : [family_data['qf3']['index'][30]]},
-            prefix + '17C2'   : {'qf3' : [family_data['qf3']['index'][31]]},
-            prefix + '17C4'   : {'qf3' : [family_data['qf3']['index'][32]]},
-            prefix + '18C2'   : {'qf3' : [family_data['qf3']['index'][33]]},
-            prefix + '18C4'   : {'qf3' : [family_data['qf3']['index'][34]]},
-            prefix + '19C2'   : {'qf3' : [family_data['qf3']['index'][35]]},
-            prefix + '19C4'   : {'qf3' : [family_data['qf3']['index'][36]]},
-            prefix + '20C2'   : {'qf3' : [family_data['qf3']['index'][37]]},
-            prefix + '20C4'   : {'qf3' : [family_data['qf3']['index'][38]]},
+    if element.lower() == 'qf3':
+        prefix = prefix + 'QF3-'
+        _dict = {
+            prefix + '01C2'   : {'qf3' : [family_data['qf3']['index'][0]]},
+            prefix + '01C4'   : {'qf3' : [family_data['qf3']['index'][1]]},
+            prefix + '02C2'   : {'qf3' : [family_data['qf3']['index'][2]]},
+            prefix + '02C4'   : {'qf3' : [family_data['qf3']['index'][3]]},
+            prefix + '03C2'   : {'qf3' : [family_data['qf3']['index'][4]]},
+            prefix + '03C4'   : {'qf3' : [family_data['qf3']['index'][5]]},
+            prefix + '04C2'   : {'qf3' : [family_data['qf3']['index'][6]]},
+            prefix + '04C4'   : {'qf3' : [family_data['qf3']['index'][7]]},
+            prefix + '05C2'   : {'qf3' : [family_data['qf3']['index'][8]]},
+            prefix + '05C4'   : {'qf3' : [family_data['qf3']['index'][9]]},
+            prefix + '06C2'   : {'qf3' : [family_data['qf3']['index'][10]]},
+            prefix + '06C4'   : {'qf3' : [family_data['qf3']['index'][11]]},
+            prefix + '07C2'   : {'qf3' : [family_data['qf3']['index'][12]]},
+            prefix + '07C4'   : {'qf3' : [family_data['qf3']['index'][13]]},
+            prefix + '08C2'   : {'qf3' : [family_data['qf3']['index'][14]]},
+            prefix + '08C4'   : {'qf3' : [family_data['qf3']['index'][15]]},
+            prefix + '09C2'   : {'qf3' : [family_data['qf3']['index'][16]]},
+            prefix + '09C4'   : {'qf3' : [family_data['qf3']['index'][17]]},
+            prefix + '10C2'   : {'qf3' : [family_data['qf3']['index'][18]]},
+            prefix + '10C4'   : {'qf3' : [family_data['qf3']['index'][19]]},
+            prefix + '11C2'   : {'qf3' : [family_data['qf3']['index'][20]]},
+            prefix + '11C4'   : {'qf3' : [family_data['qf3']['index'][21]]},
+            prefix + '12C2'   : {'qf3' : [family_data['qf3']['index'][22]]},
+            prefix + '12C4'   : {'qf3' : [family_data['qf3']['index'][23]]},
+            prefix + '13C2'   : {'qf3' : [family_data['qf3']['index'][24]]},
+            prefix + '13C4'   : {'qf3' : [family_data['qf3']['index'][25]]},
+            prefix + '14C2'   : {'qf3' : [family_data['qf3']['index'][26]]},
+            prefix + '14C4'   : {'qf3' : [family_data['qf3']['index'][27]]},
+            prefix + '15C2'   : {'qf3' : [family_data['qf3']['index'][28]]},
+            prefix + '15C4'   : {'qf3' : [family_data['qf3']['index'][29]]},
+            prefix + '16C2'   : {'qf3' : [family_data['qf3']['index'][30]]},
+            prefix + '16C4'   : {'qf3' : [family_data['qf3']['index'][31]]},
+            prefix + '17C2'   : {'qf3' : [family_data['qf3']['index'][32]]},
+            prefix + '17C4'   : {'qf3' : [family_data['qf3']['index'][33]]},
+            prefix + '18C2'   : {'qf3' : [family_data['qf3']['index'][34]]},
+            prefix + '18C4'   : {'qf3' : [family_data['qf3']['index'][35]]},
+            prefix + '19C2'   : {'qf3' : [family_data['qf3']['index'][36]]},
+            prefix + '19C4'   : {'qf3' : [family_data['qf3']['index'][37]]},
+            prefix + '20C2'   : {'qf3' : [family_data['qf3']['index'][38]]},
+            prefix + '20C4'   : {'qf3' : [family_data['qf3']['index'][39]]},
         }
-        return qf3_dict
+        return _dict
 
-    if family_name.lower() == 'sf2':
-        prefix = 'SIPS-SF2-'
-        sf2_dict = {
-            prefix + '01C2'   : {'sf2' : [family_data['sf2']['index'][19]]},
-            prefix + '02C2'   : {'sf2' : [family_data['sf2']['index'][0]]},
-            prefix + '03C2'   : {'sf2' : [family_data['sf2']['index'][1]]},
-            prefix + '04C2'   : {'sf2' : [family_data['sf2']['index'][2]]},
-            prefix + '05C2'   : {'sf2' : [family_data['sf2']['index'][3]]},
-            prefix + '06C2'   : {'sf2' : [family_data['sf2']['index'][4]]},
-            prefix + '07C2'   : {'sf2' : [family_data['sf2']['index'][5]]},
-            prefix + '08C2'   : {'sf2' : [family_data['sf2']['index'][6]]},
-            prefix + '09C2'   : {'sf2' : [family_data['sf2']['index'][7]]},
-            prefix + '10C2'   : {'sf2' : [family_data['sf2']['index'][8]]},
-            prefix + '11C2'   : {'sf2' : [family_data['sf2']['index'][9]]},
-            prefix + '12C2'   : {'sf2' : [family_data['sf2']['index'][10]]},
-            prefix + '13C2'   : {'sf2' : [family_data['sf2']['index'][11]]},
-            prefix + '14C2'   : {'sf2' : [family_data['sf2']['index'][12]]},
-            prefix + '15C2'   : {'sf2' : [family_data['sf2']['index'][13]]},
-            prefix + '16C2'   : {'sf2' : [family_data['sf2']['index'][14]]},
-            prefix + '17C2'   : {'sf2' : [family_data['sf2']['index'][15]]},
-            prefix + '18C2'   : {'sf2' : [family_data['sf2']['index'][16]]},
-            prefix + '19C2'   : {'sf2' : [family_data['sf2']['index'][17]]},
-            prefix + '20C2'   : {'sf2' : [family_data['sf2']['index'][18]]},
+    if element.lower() == 'sf2':
+        prefix = prefix + 'SF2-'
+        _dict = {
+            prefix + '01C2'   : {'sf2' : [family_data['sf2']['index'][0]]},
+            prefix + '02C2'   : {'sf2' : [family_data['sf2']['index'][1]]},
+            prefix + '03C2'   : {'sf2' : [family_data['sf2']['index'][2]]},
+            prefix + '04C2'   : {'sf2' : [family_data['sf2']['index'][3]]},
+            prefix + '05C2'   : {'sf2' : [family_data['sf2']['index'][4]]},
+            prefix + '06C2'   : {'sf2' : [family_data['sf2']['index'][5]]},
+            prefix + '07C2'   : {'sf2' : [family_data['sf2']['index'][6]]},
+            prefix + '08C2'   : {'sf2' : [family_data['sf2']['index'][7]]},
+            prefix + '09C2'   : {'sf2' : [family_data['sf2']['index'][8]]},
+            prefix + '10C2'   : {'sf2' : [family_data['sf2']['index'][9]]},
+            prefix + '11C2'   : {'sf2' : [family_data['sf2']['index'][10]]},
+            prefix + '12C2'   : {'sf2' : [family_data['sf2']['index'][11]]},
+            prefix + '13C2'   : {'sf2' : [family_data['sf2']['index'][12]]},
+            prefix + '14C2'   : {'sf2' : [family_data['sf2']['index'][13]]},
+            prefix + '15C2'   : {'sf2' : [family_data['sf2']['index'][14]]},
+            prefix + '16C2'   : {'sf2' : [family_data['sf2']['index'][15]]},
+            prefix + '17C2'   : {'sf2' : [family_data['sf2']['index'][16]]},
+            prefix + '18C2'   : {'sf2' : [family_data['sf2']['index'][17]]},
+            prefix + '19C2'   : {'sf2' : [family_data['sf2']['index'][18]]},
+            prefix + '20C2'   : {'sf2' : [family_data['sf2']['index'][19]]},
         }
-        return sf2_dict
+        return _dict
 
-    if family_name.lower() == 'qf4':
-        prefix = 'SIPS-QF4-'
-        qf4_dict = {
-            prefix + '01C2'   : {'qf4' : [family_data['qf4']['index'][39]]},
-            prefix + '01C4'   : {'qf4' : [family_data['qf4']['index'][0]]},
-            prefix + '02C2'   : {'qf4' : [family_data['qf4']['index'][1]]},
-            prefix + '02C4'   : {'qf4' : [family_data['qf4']['index'][2]]},
-            prefix + '03C2'   : {'qf4' : [family_data['qf4']['index'][3]]},
-            prefix + '03C4'   : {'qf4' : [family_data['qf4']['index'][4]]},
-            prefix + '04C2'   : {'qf4' : [family_data['qf4']['index'][5]]},
-            prefix + '04C4'   : {'qf4' : [family_data['qf4']['index'][6]]},
-            prefix + '05C2'   : {'qf4' : [family_data['qf4']['index'][7]]},
-            prefix + '05C4'   : {'qf4' : [family_data['qf4']['index'][8]]},
-            prefix + '06C2'   : {'qf4' : [family_data['qf4']['index'][9]]},
-            prefix + '06C4'   : {'qf4' : [family_data['qf4']['index'][10]]},
-            prefix + '07C2'   : {'qf4' : [family_data['qf4']['index'][11]]},
-            prefix + '07C4'   : {'qf4' : [family_data['qf4']['index'][12]]},
-            prefix + '08C2'   : {'qf4' : [family_data['qf4']['index'][13]]},
-            prefix + '08C4'   : {'qf4' : [family_data['qf4']['index'][14]]},
-            prefix + '09C2'   : {'qf4' : [family_data['qf4']['index'][15]]},
-            prefix + '09C4'   : {'qf4' : [family_data['qf4']['index'][16]]},
-            prefix + '10C2'   : {'qf4' : [family_data['qf4']['index'][17]]},
-            prefix + '10C4'   : {'qf4' : [family_data['qf4']['index'][18]]},
-            prefix + '11C2'   : {'qf4' : [family_data['qf4']['index'][19]]},
-            prefix + '11C4'   : {'qf4' : [family_data['qf4']['index'][20]]},
-            prefix + '12C2'   : {'qf4' : [family_data['qf4']['index'][21]]},
-            prefix + '12C4'   : {'qf4' : [family_data['qf4']['index'][22]]},
-            prefix + '13C2'   : {'qf4' : [family_data['qf4']['index'][23]]},
-            prefix + '13C4'   : {'qf4' : [family_data['qf4']['index'][24]]},
-            prefix + '14C2'   : {'qf4' : [family_data['qf4']['index'][25]]},
-            prefix + '14C4'   : {'qf4' : [family_data['qf4']['index'][26]]},
-            prefix + '15C2'   : {'qf4' : [family_data['qf4']['index'][27]]},
-            prefix + '15C4'   : {'qf4' : [family_data['qf4']['index'][28]]},
-            prefix + '16C2'   : {'qf4' : [family_data['qf4']['index'][29]]},
-            prefix + '16C4'   : {'qf4' : [family_data['qf4']['index'][30]]},
-            prefix + '17C2'   : {'qf4' : [family_data['qf4']['index'][31]]},
-            prefix + '17C4'   : {'qf4' : [family_data['qf4']['index'][32]]},
-            prefix + '18C2'   : {'qf4' : [family_data['qf4']['index'][33]]},
-            prefix + '18C4'   : {'qf4' : [family_data['qf4']['index'][34]]},
-            prefix + '19C2'   : {'qf4' : [family_data['qf4']['index'][35]]},
-            prefix + '19C4'   : {'qf4' : [family_data['qf4']['index'][36]]},
-            prefix + '20C2'   : {'qf4' : [family_data['qf4']['index'][37]]},
-            prefix + '20C4'   : {'qf4' : [family_data['qf4']['index'][38]]},
+    if element.lower() == 'qf4':
+        prefix = prefix + 'QF4-'
+        _dict = {
+            prefix + '01C2'   : {'qf4' : [family_data['qf4']['index'][0]]},
+            prefix + '01C4'   : {'qf4' : [family_data['qf4']['index'][1]]},
+            prefix + '02C2'   : {'qf4' : [family_data['qf4']['index'][2]]},
+            prefix + '02C4'   : {'qf4' : [family_data['qf4']['index'][3]]},
+            prefix + '03C2'   : {'qf4' : [family_data['qf4']['index'][4]]},
+            prefix + '03C4'   : {'qf4' : [family_data['qf4']['index'][5]]},
+            prefix + '04C2'   : {'qf4' : [family_data['qf4']['index'][6]]},
+            prefix + '04C4'   : {'qf4' : [family_data['qf4']['index'][7]]},
+            prefix + '05C2'   : {'qf4' : [family_data['qf4']['index'][8]]},
+            prefix + '05C4'   : {'qf4' : [family_data['qf4']['index'][9]]},
+            prefix + '06C2'   : {'qf4' : [family_data['qf4']['index'][10]]},
+            prefix + '06C4'   : {'qf4' : [family_data['qf4']['index'][11]]},
+            prefix + '07C2'   : {'qf4' : [family_data['qf4']['index'][12]]},
+            prefix + '07C4'   : {'qf4' : [family_data['qf4']['index'][13]]},
+            prefix + '08C2'   : {'qf4' : [family_data['qf4']['index'][14]]},
+            prefix + '08C4'   : {'qf4' : [family_data['qf4']['index'][15]]},
+            prefix + '09C2'   : {'qf4' : [family_data['qf4']['index'][16]]},
+            prefix + '09C4'   : {'qf4' : [family_data['qf4']['index'][17]]},
+            prefix + '10C2'   : {'qf4' : [family_data['qf4']['index'][18]]},
+            prefix + '10C4'   : {'qf4' : [family_data['qf4']['index'][19]]},
+            prefix + '11C2'   : {'qf4' : [family_data['qf4']['index'][20]]},
+            prefix + '11C4'   : {'qf4' : [family_data['qf4']['index'][21]]},
+            prefix + '12C2'   : {'qf4' : [family_data['qf4']['index'][22]]},
+            prefix + '12C4'   : {'qf4' : [family_data['qf4']['index'][23]]},
+            prefix + '13C2'   : {'qf4' : [family_data['qf4']['index'][24]]},
+            prefix + '13C4'   : {'qf4' : [family_data['qf4']['index'][25]]},
+            prefix + '14C2'   : {'qf4' : [family_data['qf4']['index'][26]]},
+            prefix + '14C4'   : {'qf4' : [family_data['qf4']['index'][27]]},
+            prefix + '15C2'   : {'qf4' : [family_data['qf4']['index'][28]]},
+            prefix + '15C4'   : {'qf4' : [family_data['qf4']['index'][29]]},
+            prefix + '16C2'   : {'qf4' : [family_data['qf4']['index'][30]]},
+            prefix + '16C4'   : {'qf4' : [family_data['qf4']['index'][31]]},
+            prefix + '17C2'   : {'qf4' : [family_data['qf4']['index'][32]]},
+            prefix + '17C4'   : {'qf4' : [family_data['qf4']['index'][33]]},
+            prefix + '18C2'   : {'qf4' : [family_data['qf4']['index'][34]]},
+            prefix + '18C4'   : {'qf4' : [family_data['qf4']['index'][35]]},
+            prefix + '19C2'   : {'qf4' : [family_data['qf4']['index'][36]]},
+            prefix + '19C4'   : {'qf4' : [family_data['qf4']['index'][37]]},
+            prefix + '20C2'   : {'qf4' : [family_data['qf4']['index'][38]]},
+            prefix + '20C4'   : {'qf4' : [family_data['qf4']['index'][39]]},
         }
-        return qf4_dict
+        return _dict
 
-    if family_name.lower() == 'sf3':
-        prefix = 'SIPS-SF3-'
-        sf3_dict = {
-            prefix + '01C4'   : {'sf3' : [family_data['sf3']['index'][19]]},
-            prefix + '02C4'   : {'sf3' : [family_data['sf3']['index'][0]]},
-            prefix + '03C4'   : {'sf3' : [family_data['sf3']['index'][1]]},
-            prefix + '04C4'   : {'sf3' : [family_data['sf3']['index'][2]]},
-            prefix + '05C4'   : {'sf3' : [family_data['sf3']['index'][3]]},
-            prefix + '06C4'   : {'sf3' : [family_data['sf3']['index'][4]]},
-            prefix + '07C4'   : {'sf3' : [family_data['sf3']['index'][5]]},
-            prefix + '08C4'   : {'sf3' : [family_data['sf3']['index'][6]]},
-            prefix + '09C4'   : {'sf3' : [family_data['sf3']['index'][7]]},
-            prefix + '10C4'   : {'sf3' : [family_data['sf3']['index'][8]]},
-            prefix + '11C4'   : {'sf3' : [family_data['sf3']['index'][9]]},
-            prefix + '12C4'   : {'sf3' : [family_data['sf3']['index'][10]]},
-            prefix + '13C4'   : {'sf3' : [family_data['sf3']['index'][11]]},
-            prefix + '14C4'   : {'sf3' : [family_data['sf3']['index'][12]]},
-            prefix + '15C4'   : {'sf3' : [family_data['sf3']['index'][13]]},
-            prefix + '16C4'   : {'sf3' : [family_data['sf3']['index'][14]]},
-            prefix + '17C4'   : {'sf3' : [family_data['sf3']['index'][15]]},
-            prefix + '18C4'   : {'sf3' : [family_data['sf3']['index'][16]]},
-            prefix + '19C4'   : {'sf3' : [family_data['sf3']['index'][17]]},
-            prefix + '20C4'   : {'sf3' : [family_data['sf3']['index'][18]]},
+    if element.lower() == 'sf3':
+        prefix = prefix + 'SF3-'
+        _dict = {
+            prefix + '01C4'   : {'sf3' : [family_data['sf3']['index'][0]]},
+            prefix + '02C4'   : {'sf3' : [family_data['sf3']['index'][1]]},
+            prefix + '03C4'   : {'sf3' : [family_data['sf3']['index'][2]]},
+            prefix + '04C4'   : {'sf3' : [family_data['sf3']['index'][3]]},
+            prefix + '05C4'   : {'sf3' : [family_data['sf3']['index'][4]]},
+            prefix + '06C4'   : {'sf3' : [family_data['sf3']['index'][5]]},
+            prefix + '07C4'   : {'sf3' : [family_data['sf3']['index'][6]]},
+            prefix + '08C4'   : {'sf3' : [family_data['sf3']['index'][7]]},
+            prefix + '09C4'   : {'sf3' : [family_data['sf3']['index'][8]]},
+            prefix + '10C4'   : {'sf3' : [family_data['sf3']['index'][9]]},
+            prefix + '11C4'   : {'sf3' : [family_data['sf3']['index'][10]]},
+            prefix + '12C4'   : {'sf3' : [family_data['sf3']['index'][11]]},
+            prefix + '13C4'   : {'sf3' : [family_data['sf3']['index'][12]]},
+            prefix + '14C4'   : {'sf3' : [family_data['sf3']['index'][13]]},
+            prefix + '15C4'   : {'sf3' : [family_data['sf3']['index'][14]]},
+            prefix + '16C4'   : {'sf3' : [family_data['sf3']['index'][15]]},
+            prefix + '17C4'   : {'sf3' : [family_data['sf3']['index'][16]]},
+            prefix + '18C4'   : {'sf3' : [family_data['sf3']['index'][17]]},
+            prefix + '19C4'   : {'sf3' : [family_data['sf3']['index'][18]]},
+            prefix + '20C4'   : {'sf3' : [family_data['sf3']['index'][19]]},
         }
-        return sf3_dict
+        return _dict
 
-    if family_name.lower() == 'sd4':
-        prefix = 'SIPS-SD4-'
-        sd4_dict = {
-            prefix + '01C4'   : {'sd4' : [family_data['sd4']['index'][19]]},
-            prefix + '02C4'   : {'sd4' : [family_data['sd4']['index'][0]]},
-            prefix + '03C4'   : {'sd4' : [family_data['sd4']['index'][1]]},
-            prefix + '04C4'   : {'sd4' : [family_data['sd4']['index'][2]]},
-            prefix + '05C4'   : {'sd4' : [family_data['sd4']['index'][3]]},
-            prefix + '06C4'   : {'sd4' : [family_data['sd4']['index'][4]]},
-            prefix + '07C4'   : {'sd4' : [family_data['sd4']['index'][5]]},
-            prefix + '08C4'   : {'sd4' : [family_data['sd4']['index'][6]]},
-            prefix + '09C4'   : {'sd4' : [family_data['sd4']['index'][7]]},
-            prefix + '10C4'   : {'sd4' : [family_data['sd4']['index'][8]]},
-            prefix + '11C4'   : {'sd4' : [family_data['sd4']['index'][9]]},
-            prefix + '12C4'   : {'sd4' : [family_data['sd4']['index'][10]]},
-            prefix + '13C4'   : {'sd4' : [family_data['sd4']['index'][11]]},
-            prefix + '14C4'   : {'sd4' : [family_data['sd4']['index'][12]]},
-            prefix + '15C4'   : {'sd4' : [family_data['sd4']['index'][13]]},
-            prefix + '16C4'   : {'sd4' : [family_data['sd4']['index'][14]]},
-            prefix + '17C4'   : {'sd4' : [family_data['sd4']['index'][15]]},
-            prefix + '18C4'   : {'sd4' : [family_data['sd4']['index'][16]]},
-            prefix + '19C4'   : {'sd4' : [family_data['sd4']['index'][17]]},
-            prefix + '20C4'   : {'sd4' : [family_data['sd4']['index'][18]]},
+    if element.lower() == 'sd4':
+        prefix = prefix + 'SD4-'
+        _dict = {
+            prefix + '01C4'   : {'sd4' : [family_data['sd4']['index'][0]]},
+            prefix + '02C4'   : {'sd4' : [family_data['sd4']['index'][1]]},
+            prefix + '03C4'   : {'sd4' : [family_data['sd4']['index'][2]]},
+            prefix + '04C4'   : {'sd4' : [family_data['sd4']['index'][3]]},
+            prefix + '05C4'   : {'sd4' : [family_data['sd4']['index'][4]]},
+            prefix + '06C4'   : {'sd4' : [family_data['sd4']['index'][5]]},
+            prefix + '07C4'   : {'sd4' : [family_data['sd4']['index'][6]]},
+            prefix + '08C4'   : {'sd4' : [family_data['sd4']['index'][7]]},
+            prefix + '09C4'   : {'sd4' : [family_data['sd4']['index'][8]]},
+            prefix + '10C4'   : {'sd4' : [family_data['sd4']['index'][9]]},
+            prefix + '11C4'   : {'sd4' : [family_data['sd4']['index'][10]]},
+            prefix + '12C4'   : {'sd4' : [family_data['sd4']['index'][11]]},
+            prefix + '13C4'   : {'sd4' : [family_data['sd4']['index'][12]]},
+            prefix + '14C4'   : {'sd4' : [family_data['sd4']['index'][13]]},
+            prefix + '15C4'   : {'sd4' : [family_data['sd4']['index'][14]]},
+            prefix + '16C4'   : {'sd4' : [family_data['sd4']['index'][15]]},
+            prefix + '17C4'   : {'sd4' : [family_data['sd4']['index'][16]]},
+            prefix + '18C4'   : {'sd4' : [family_data['sd4']['index'][17]]},
+            prefix + '19C4'   : {'sd4' : [family_data['sd4']['index'][18]]},
+            prefix + '20C4'   : {'sd4' : [family_data['sd4']['index'][19]]},
         }
-        return sd4_dict
+        return _dict
 
-    if family_name.lower() == 'sd5':
-        prefix = 'SIPS-SD5-'
-        sd5_dict = {
-            prefix + '01C5'   : {'sd5' : [family_data['sd5']['index'][19]]},
-            prefix + '02C5'   : {'sd5' : [family_data['sd5']['index'][0]]},
-            prefix + '03C5'   : {'sd5' : [family_data['sd5']['index'][1]]},
-            prefix + '04C5'   : {'sd5' : [family_data['sd5']['index'][2]]},
-            prefix + '05C5'   : {'sd5' : [family_data['sd5']['index'][3]]},
-            prefix + '06C5'   : {'sd5' : [family_data['sd5']['index'][4]]},
-            prefix + '07C5'   : {'sd5' : [family_data['sd5']['index'][5]]},
-            prefix + '08C5'   : {'sd5' : [family_data['sd5']['index'][6]]},
-            prefix + '09C5'   : {'sd5' : [family_data['sd5']['index'][7]]},
-            prefix + '10C5'   : {'sd5' : [family_data['sd5']['index'][8]]},
-            prefix + '11C5'   : {'sd5' : [family_data['sd5']['index'][9]]},
-            prefix + '12C5'   : {'sd5' : [family_data['sd5']['index'][10]]},
-            prefix + '13C5'   : {'sd5' : [family_data['sd5']['index'][11]]},
-            prefix + '14C5'   : {'sd5' : [family_data['sd5']['index'][12]]},
-            prefix + '15C5'   : {'sd5' : [family_data['sd5']['index'][13]]},
-            prefix + '16C5'   : {'sd5' : [family_data['sd5']['index'][14]]},
-            prefix + '17C5'   : {'sd5' : [family_data['sd5']['index'][15]]},
-            prefix + '18C5'   : {'sd5' : [family_data['sd5']['index'][16]]},
-            prefix + '19C5'   : {'sd5' : [family_data['sd5']['index'][17]]},
-            prefix + '20C5'   : {'sd5' : [family_data['sd5']['index'][18]]},
-        }
-        return sd5_dict
+    if element.lower() == 'sd5':
+        prefix = prefix + 'SD5-'
+        _dict = {
+            prefix + '01C5'   : {'sd5' : [family_data['sd5']['index'][0]]},
+            prefix + '02C5'   : {'sd5' : [family_data['sd5']['index'][1]]},
+            prefix + '03C5'   : {'sd5' : [family_data['sd5']['index'][2]]},
+            prefix + '04C5'   : {'sd5' : [family_data['sd5']['index'][3]]},
+            prefix + '05C5'   : {'sd5' : [family_data['sd5']['index'][4]]},
+            prefix + '06C5'   : {'sd5' : [family_data['sd5']['index'][5]]},
+            prefix + '07C5'   : {'sd5' : [family_data['sd5']['index'][6]]},
+            prefix + '08C5'   : {'sd5' : [family_data['sd5']['index'][7]]},
+            prefix + '09C5'   : {'sd5' : [family_data['sd5']['index'][8]]},
+            prefix + '10C5'   : {'sd5' : [family_data['sd5']['index'][9]]},
+            prefix + '11C5'   : {'sd5' : [family_data['sd5']['index'][10]]},
+            prefix + '12C5'   : {'sd5' : [family_data['sd5']['index'][11]]},
+            prefix + '13C5'   : {'sd5' : [family_data['sd5']['index'][12]]},
+            prefix + '14C5'   : {'sd5' : [family_data['sd5']['index'][13]]},
+            prefix + '15C5'   : {'sd5' : [family_data['sd5']['index'][14]]},
+            prefix + '16C5'   : {'sd5' : [family_data['sd5']['index'][15]]},
+            prefix + '17C5'   : {'sd5' : [family_data['sd5']['index'][16]]},
+            prefix + '18C5'   : {'sd5' : [family_data['sd5']['index'][17]]},
+            prefix + '19C5'   : {'sd5' : [family_data['sd5']['index'][18]]},
+            prefix + '20C5'   : {'sd5' : [family_data['sd5']['index'][19]]},     }
+        return _dict
 
-    if family_name.lower() == 'sf4':
-        prefix = 'SIPS-SF4-'
-        sf4_dict = {
-            prefix + '01C5'   : {'sf4' : [family_data['sf4']['index'][19]]},
-            prefix + '02C5'   : {'sf4' : [family_data['sf4']['index'][0]]},
-            prefix + '03C5'   : {'sf4' : [family_data['sf4']['index'][1]]},
-            prefix + '04C5'   : {'sf4' : [family_data['sf4']['index'][2]]},
-            prefix + '05C5'   : {'sf4' : [family_data['sf4']['index'][3]]},
-            prefix + '06C5'   : {'sf4' : [family_data['sf4']['index'][4]]},
-            prefix + '07C5'   : {'sf4' : [family_data['sf4']['index'][5]]},
-            prefix + '08C5'   : {'sf4' : [family_data['sf4']['index'][6]]},
-            prefix + '09C5'   : {'sf4' : [family_data['sf4']['index'][7]]},
-            prefix + '10C5'   : {'sf4' : [family_data['sf4']['index'][8]]},
-            prefix + '11C5'   : {'sf4' : [family_data['sf4']['index'][9]]},
-            prefix + '12C5'   : {'sf4' : [family_data['sf4']['index'][10]]},
-            prefix + '13C5'   : {'sf4' : [family_data['sf4']['index'][11]]},
-            prefix + '14C5'   : {'sf4' : [family_data['sf4']['index'][12]]},
-            prefix + '15C5'   : {'sf4' : [family_data['sf4']['index'][13]]},
-            prefix + '16C5'   : {'sf4' : [family_data['sf4']['index'][14]]},
-            prefix + '17C5'   : {'sf4' : [family_data['sf4']['index'][15]]},
-            prefix + '18C5'   : {'sf4' : [family_data['sf4']['index'][16]]},
-            prefix + '19C5'   : {'sf4' : [family_data['sf4']['index'][17]]},
-            prefix + '20C5'   : {'sf4' : [family_data['sf4']['index'][18]]},
+    if element.lower() == 'sf4':
+        prefix = prefix + 'SF4-'
+        _dict = {
+            prefix + '01C5'   : {'sf4' : [family_data['sf4']['index'][0]]},
+            prefix + '02C5'   : {'sf4' : [family_data['sf4']['index'][1]]},
+            prefix + '03C5'   : {'sf4' : [family_data['sf4']['index'][2]]},
+            prefix + '04C5'   : {'sf4' : [family_data['sf4']['index'][3]]},
+            prefix + '05C5'   : {'sf4' : [family_data['sf4']['index'][4]]},
+            prefix + '06C5'   : {'sf4' : [family_data['sf4']['index'][5]]},
+            prefix + '07C5'   : {'sf4' : [family_data['sf4']['index'][6]]},
+            prefix + '08C5'   : {'sf4' : [family_data['sf4']['index'][7]]},
+            prefix + '09C5'   : {'sf4' : [family_data['sf4']['index'][8]]},
+            prefix + '10C5'   : {'sf4' : [family_data['sf4']['index'][9]]},
+            prefix + '11C5'   : {'sf4' : [family_data['sf4']['index'][10]]},
+            prefix + '12C5'   : {'sf4' : [family_data['sf4']['index'][11]]},
+            prefix + '13C5'   : {'sf4' : [family_data['sf4']['index'][12]]},
+            prefix + '14C5'   : {'sf4' : [family_data['sf4']['index'][13]]},
+            prefix + '15C5'   : {'sf4' : [family_data['sf4']['index'][14]]},
+            prefix + '16C5'   : {'sf4' : [family_data['sf4']['index'][15]]},
+            prefix + '17C5'   : {'sf4' : [family_data['sf4']['index'][16]]},
+            prefix + '18C5'   : {'sf4' : [family_data['sf4']['index'][17]]},
+            prefix + '19C5'   : {'sf4' : [family_data['sf4']['index'][18]]},
+            prefix + '20C5'   : {'sf4' : [family_data['sf4']['index'][19]]},
         }
-        return sf4_dict
+        return _dict
 
-    if family_name.lower() == 'sd6':
-        prefix = 'SIPS-SD6-'
-        sd6_dict = {
-            prefix + '01C5'   : {'sd6' : [family_data['sd6']['index'][19]]},
-            prefix + '02C5'   : {'sd6' : [family_data['sd6']['index'][0]]},
-            prefix + '03C5'   : {'sd6' : [family_data['sd6']['index'][1]]},
-            prefix + '04C5'   : {'sd6' : [family_data['sd6']['index'][2]]},
-            prefix + '05C5'   : {'sd6' : [family_data['sd6']['index'][3]]},
-            prefix + '06C5'   : {'sd6' : [family_data['sd6']['index'][4]]},
-            prefix + '07C5'   : {'sd6' : [family_data['sd6']['index'][5]]},
-            prefix + '08C5'   : {'sd6' : [family_data['sd6']['index'][6]]},
-            prefix + '09C5'   : {'sd6' : [family_data['sd6']['index'][7]]},
-            prefix + '10C5'   : {'sd6' : [family_data['sd6']['index'][8]]},
-            prefix + '11C5'   : {'sd6' : [family_data['sd6']['index'][9]]},
-            prefix + '12C5'   : {'sd6' : [family_data['sd6']['index'][10]]},
-            prefix + '13C5'   : {'sd6' : [family_data['sd6']['index'][11]]},
-            prefix + '14C5'   : {'sd6' : [family_data['sd6']['index'][12]]},
-            prefix + '15C5'   : {'sd6' : [family_data['sd6']['index'][13]]},
-            prefix + '16C5'   : {'sd6' : [family_data['sd6']['index'][14]]},
-            prefix + '17C5'   : {'sd6' : [family_data['sd6']['index'][15]]},
-            prefix + '18C5'   : {'sd6' : [family_data['sd6']['index'][16]]},
-            prefix + '19C5'   : {'sd6' : [family_data['sd6']['index'][17]]},
-            prefix + '20C5'   : {'sd6' : [family_data['sd6']['index'][18]]},
+    if element.lower() == 'sd6':
+        prefix = prefix + 'SD6-'
+        _dict = {
+            prefix + '01C5'   : {'sd6' : [family_data['sd6']['index'][0]]},
+            prefix + '02C5'   : {'sd6' : [family_data['sd6']['index'][1]]},
+            prefix + '03C5'   : {'sd6' : [family_data['sd6']['index'][2]]},
+            prefix + '04C5'   : {'sd6' : [family_data['sd6']['index'][3]]},
+            prefix + '05C5'   : {'sd6' : [family_data['sd6']['index'][4]]},
+            prefix + '06C5'   : {'sd6' : [family_data['sd6']['index'][5]]},
+            prefix + '07C5'   : {'sd6' : [family_data['sd6']['index'][6]]},
+            prefix + '08C5'   : {'sd6' : [family_data['sd6']['index'][7]]},
+            prefix + '09C5'   : {'sd6' : [family_data['sd6']['index'][8]]},
+            prefix + '10C5'   : {'sd6' : [family_data['sd6']['index'][9]]},
+            prefix + '11C5'   : {'sd6' : [family_data['sd6']['index'][10]]},
+            prefix + '12C5'   : {'sd6' : [family_data['sd6']['index'][11]]},
+            prefix + '13C5'   : {'sd6' : [family_data['sd6']['index'][12]]},
+            prefix + '14C5'   : {'sd6' : [family_data['sd6']['index'][13]]},
+            prefix + '15C5'   : {'sd6' : [family_data['sd6']['index'][14]]},
+            prefix + '16C5'   : {'sd6' : [family_data['sd6']['index'][15]]},
+            prefix + '17C5'   : {'sd6' : [family_data['sd6']['index'][16]]},
+            prefix + '18C5'   : {'sd6' : [family_data['sd6']['index'][17]]},
+            prefix + '19C5'   : {'sd6' : [family_data['sd6']['index'][18]]},
+            prefix + '20C5'   : {'sd6' : [family_data['sd6']['index'][19]]},
         }
-        return sd6_dict
+        return _dict
 
-    if family_name.lower() == 'sdb':
-        prefix = 'SIPS-SDB-'
-        sdb_dict = {
-            prefix + '01M1'   : {'sdb' : [family_data['sdb']['index'][19]]},
-            prefix + '02M1'   : {'sdb' : [family_data['sdb']['index'][0]]},
-            prefix + '03M1'   : {'sdb' : [family_data['sdb']['index'][1]]},
-            prefix + '04M1'   : {'sdb' : [family_data['sdb']['index'][2]]},
-            prefix + '05M1'   : {'sdb' : [family_data['sdb']['index'][3]]},
-            prefix + '06M1'   : {'sdb' : [family_data['sdb']['index'][4]]},
-            prefix + '07M1'   : {'sdb' : [family_data['sdb']['index'][5]]},
-            prefix + '08M1'   : {'sdb' : [family_data['sdb']['index'][6]]},
-            prefix + '09M1'   : {'sdb' : [family_data['sdb']['index'][7]]},
-            prefix + '10M1'   : {'sdb' : [family_data['sdb']['index'][8]]},
-            prefix + '11M1'   : {'sdb' : [family_data['sdb']['index'][9]]},
-            prefix + '12M1'   : {'sdb' : [family_data['sdb']['index'][10]]},
-            prefix + '13M1'   : {'sdb' : [family_data['sdb']['index'][11]]},
-            prefix + '14M1'   : {'sdb' : [family_data['sdb']['index'][12]]},
-            prefix + '15M1'   : {'sdb' : [family_data['sdb']['index'][13]]},
-            prefix + '16M1'   : {'sdb' : [family_data['sdb']['index'][14]]},
-            prefix + '17M1'   : {'sdb' : [family_data['sdb']['index'][15]]},
-            prefix + '18M1'   : {'sdb' : [family_data['sdb']['index'][16]]},
-            prefix + '19M1'   : {'sdb' : [family_data['sdb']['index'][17]]},
-            prefix + '20M1'   : {'sdb' : [family_data['sdb']['index'][18]]},
+    if element.lower() == 'sdb':
+        prefix = prefix + 'SDB-'
+        _dict = {
+            prefix + '01M1'   : {'sdb' : [family_data['sdb']['index'][0]]},
+            prefix + '02M1'   : {'sdb' : [family_data['sdb']['index'][1]]},
+            prefix + '03M1'   : {'sdb' : [family_data['sdb']['index'][2]]},
+            prefix + '04M1'   : {'sdb' : [family_data['sdb']['index'][3]]},
+            prefix + '05M1'   : {'sdb' : [family_data['sdb']['index'][4]]},
+            prefix + '06M1'   : {'sdb' : [family_data['sdb']['index'][5]]},
+            prefix + '07M1'   : {'sdb' : [family_data['sdb']['index'][6]]},
+            prefix + '08M1'   : {'sdb' : [family_data['sdb']['index'][7]]},
+            prefix + '09M1'   : {'sdb' : [family_data['sdb']['index'][8]]},
+            prefix + '10M1'   : {'sdb' : [family_data['sdb']['index'][9]]},
+            prefix + '11M1'   : {'sdb' : [family_data['sdb']['index'][10]]},
+            prefix + '12M1'   : {'sdb' : [family_data['sdb']['index'][11]]},
+            prefix + '13M1'   : {'sdb' : [family_data['sdb']['index'][12]]},
+            prefix + '14M1'   : {'sdb' : [family_data['sdb']['index'][13]]},
+            prefix + '15M1'   : {'sdb' : [family_data['sdb']['index'][14]]},
+            prefix + '16M1'   : {'sdb' : [family_data['sdb']['index'][15]]},
+            prefix + '17M1'   : {'sdb' : [family_data['sdb']['index'][16]]},
+            prefix + '18M1'   : {'sdb' : [family_data['sdb']['index'][17]]},
+            prefix + '19M1'   : {'sdb' : [family_data['sdb']['index'][18]]},
+            prefix + '20M1'   : {'sdb' : [family_data['sdb']['index'][19]]},
         }
-        return sdb_dict
+        return _dict
 
-    if family_name.lower() == 'qdb1':
-        prefix = 'SIPS-QDB1-'
-        qdb1_dict = {
-            prefix + '01M1'   : {'qdb1' : [family_data['qdb1']['index'][19]]},
-            prefix + '02M1'   : {'qdb1' : [family_data['qdb1']['index'][0]]},
-            prefix + '03M1'   : {'qdb1' : [family_data['qdb1']['index'][1]]},
-            prefix + '04M1'   : {'qdb1' : [family_data['qdb1']['index'][2]]},
-            prefix + '05M1'   : {'qdb1' : [family_data['qdb1']['index'][3]]},
-            prefix + '06M1'   : {'qdb1' : [family_data['qdb1']['index'][4]]},
-            prefix + '07M1'   : {'qdb1' : [family_data['qdb1']['index'][5]]},
-            prefix + '08M1'   : {'qdb1' : [family_data['qdb1']['index'][6]]},
-            prefix + '09M1'   : {'qdb1' : [family_data['qdb1']['index'][7]]},
-            prefix + '10M1'   : {'qdb1' : [family_data['qdb1']['index'][8]]},
-            prefix + '11M1'   : {'qdb1' : [family_data['qdb1']['index'][9]]},
-            prefix + '12M1'   : {'qdb1' : [family_data['qdb1']['index'][10]]},
-            prefix + '13M1'   : {'qdb1' : [family_data['qdb1']['index'][11]]},
-            prefix + '14M1'   : {'qdb1' : [family_data['qdb1']['index'][12]]},
-            prefix + '15M1'   : {'qdb1' : [family_data['qdb1']['index'][13]]},
-            prefix + '16M1'   : {'qdb1' : [family_data['qdb1']['index'][14]]},
-            prefix + '17M1'   : {'qdb1' : [family_data['qdb1']['index'][15]]},
-            prefix + '18M1'   : {'qdb1' : [family_data['qdb1']['index'][16]]},
-            prefix + '19M1'   : {'qdb1' : [family_data['qdb1']['index'][17]]},
-            prefix + '20M1'   : {'qdb1' : [family_data['qdb1']['index'][18]]},
+    if element.lower() == 'qdb1':
+        prefix = prefix + 'QDB1-'
+        _dict = {
+            prefix + '01M1'   : {'qdb1' : [family_data['qdb1']['index'][0]]},
+            prefix + '02M1'   : {'qdb1' : [family_data['qdb1']['index'][1]]},
+            prefix + '03M1'   : {'qdb1' : [family_data['qdb1']['index'][2]]},
+            prefix + '04M1'   : {'qdb1' : [family_data['qdb1']['index'][3]]},
+            prefix + '05M1'   : {'qdb1' : [family_data['qdb1']['index'][4]]},
+            prefix + '06M1'   : {'qdb1' : [family_data['qdb1']['index'][5]]},
+            prefix + '07M1'   : {'qdb1' : [family_data['qdb1']['index'][6]]},
+            prefix + '08M1'   : {'qdb1' : [family_data['qdb1']['index'][7]]},
+            prefix + '09M1'   : {'qdb1' : [family_data['qdb1']['index'][8]]},
+            prefix + '10M1'   : {'qdb1' : [family_data['qdb1']['index'][9]]},
+            prefix + '11M1'   : {'qdb1' : [family_data['qdb1']['index'][10]]},
+            prefix + '12M1'   : {'qdb1' : [family_data['qdb1']['index'][11]]},
+            prefix + '13M1'   : {'qdb1' : [family_data['qdb1']['index'][12]]},
+            prefix + '14M1'   : {'qdb1' : [family_data['qdb1']['index'][13]]},
+            prefix + '15M1'   : {'qdb1' : [family_data['qdb1']['index'][14]]},
+            prefix + '16M1'   : {'qdb1' : [family_data['qdb1']['index'][15]]},
+            prefix + '17M1'   : {'qdb1' : [family_data['qdb1']['index'][16]]},
+            prefix + '18M1'   : {'qdb1' : [family_data['qdb1']['index'][17]]},
+            prefix + '19M1'   : {'qdb1' : [family_data['qdb1']['index'][18]]},
+            prefix + '20M1'   : {'qdb1' : [family_data['qdb1']['index'][19]]},
         }
-        return qdb1_dict
+        return _dict
 
-    if family_name.lower() == 'qfb':
-        prefix = 'SIPS-QFB-'
-        qfb_dict = {
-            prefix + '01M1'   : {'qfb' : [family_data['qfb']['index'][19]]},
-            prefix + '02M1'   : {'qfb' : [family_data['qfb']['index'][0]]},
-            prefix + '03M1'   : {'qfb' : [family_data['qfb']['index'][1]]},
-            prefix + '04M1'   : {'qfb' : [family_data['qfb']['index'][2]]},
-            prefix + '05M1'   : {'qfb' : [family_data['qfb']['index'][3]]},
-            prefix + '06M1'   : {'qfb' : [family_data['qfb']['index'][4]]},
-            prefix + '07M1'   : {'qfb' : [family_data['qfb']['index'][5]]},
-            prefix + '08M1'   : {'qfb' : [family_data['qfb']['index'][6]]},
-            prefix + '09M1'   : {'qfb' : [family_data['qfb']['index'][7]]},
-            prefix + '10M1'   : {'qfb' : [family_data['qfb']['index'][8]]},
-            prefix + '11M1'   : {'qfb' : [family_data['qfb']['index'][9]]},
-            prefix + '12M1'   : {'qfb' : [family_data['qfb']['index'][10]]},
-            prefix + '13M1'   : {'qfb' : [family_data['qfb']['index'][11]]},
-            prefix + '14M1'   : {'qfb' : [family_data['qfb']['index'][12]]},
-            prefix + '15M1'   : {'qfb' : [family_data['qfb']['index'][13]]},
-            prefix + '16M1'   : {'qfb' : [family_data['qfb']['index'][14]]},
-            prefix + '17M1'   : {'qfb' : [family_data['qfb']['index'][15]]},
-            prefix + '18M1'   : {'qfb' : [family_data['qfb']['index'][16]]},
-            prefix + '19M1'   : {'qfb' : [family_data['qfb']['index'][17]]},
-            prefix + '20M1'   : {'qfb' : [family_data['qfb']['index'][18]]},
+    if element.lower() == 'qfb':
+        prefix = prefix + 'QFB-'
+        _dict = {
+            prefix + '01M1'   : {'qfb' : [family_data['qfb']['index'][0]]},
+            prefix + '02M1'   : {'qfb' : [family_data['qfb']['index'][1]]},
+            prefix + '03M1'   : {'qfb' : [family_data['qfb']['index'][2]]},
+            prefix + '04M1'   : {'qfb' : [family_data['qfb']['index'][3]]},
+            prefix + '05M1'   : {'qfb' : [family_data['qfb']['index'][4]]},
+            prefix + '06M1'   : {'qfb' : [family_data['qfb']['index'][5]]},
+            prefix + '07M1'   : {'qfb' : [family_data['qfb']['index'][6]]},
+            prefix + '08M1'   : {'qfb' : [family_data['qfb']['index'][7]]},
+            prefix + '09M1'   : {'qfb' : [family_data['qfb']['index'][8]]},
+            prefix + '10M1'   : {'qfb' : [family_data['qfb']['index'][9]]},
+            prefix + '11M1'   : {'qfb' : [family_data['qfb']['index'][10]]},
+            prefix + '12M1'   : {'qfb' : [family_data['qfb']['index'][11]]},
+            prefix + '13M1'   : {'qfb' : [family_data['qfb']['index'][12]]},
+            prefix + '14M1'   : {'qfb' : [family_data['qfb']['index'][13]]},
+            prefix + '15M1'   : {'qfb' : [family_data['qfb']['index'][14]]},
+            prefix + '16M1'   : {'qfb' : [family_data['qfb']['index'][15]]},
+            prefix + '17M1'   : {'qfb' : [family_data['qfb']['index'][16]]},
+            prefix + '18M1'   : {'qfb' : [family_data['qfb']['index'][17]]},
+            prefix + '19M1'   : {'qfb' : [family_data['qfb']['index'][18]]},
+            prefix + '20M1'   : {'qfb' : [family_data['qfb']['index'][19]]},
         }
-        return qfb_dict
+        return _dict
 
-    if family_name.lower() == 'sfb':
-        prefix = 'SIPS-SFB-'
-        sfb_dict = {
-            prefix + '01M1'   : {'sfb' : [family_data['sfb']['index'][19]]},
-            prefix + '02M1'   : {'sfb' : [family_data['sfb']['index'][0]]},
-            prefix + '03M1'   : {'sfb' : [family_data['sfb']['index'][1]]},
-            prefix + '04M1'   : {'sfb' : [family_data['sfb']['index'][2]]},
-            prefix + '05M1'   : {'sfb' : [family_data['sfb']['index'][3]]},
-            prefix + '06M1'   : {'sfb' : [family_data['sfb']['index'][4]]},
-            prefix + '07M1'   : {'sfb' : [family_data['sfb']['index'][5]]},
-            prefix + '08M1'   : {'sfb' : [family_data['sfb']['index'][6]]},
-            prefix + '09M1'   : {'sfb' : [family_data['sfb']['index'][7]]},
-            prefix + '10M1'   : {'sfb' : [family_data['sfb']['index'][8]]},
-            prefix + '11M1'   : {'sfb' : [family_data['sfb']['index'][9]]},
-            prefix + '12M1'   : {'sfb' : [family_data['sfb']['index'][10]]},
-            prefix + '13M1'   : {'sfb' : [family_data['sfb']['index'][11]]},
-            prefix + '14M1'   : {'sfb' : [family_data['sfb']['index'][12]]},
-            prefix + '15M1'   : {'sfb' : [family_data['sfb']['index'][13]]},
-            prefix + '16M1'   : {'sfb' : [family_data['sfb']['index'][14]]},
-            prefix + '17M1'   : {'sfb' : [family_data['sfb']['index'][15]]},
-            prefix + '18M1'   : {'sfb' : [family_data['sfb']['index'][16]]},
-            prefix + '19M1'   : {'sfb' : [family_data['sfb']['index'][17]]},
-            prefix + '20M1'   : {'sfb' : [family_data['sfb']['index'][18]]},
+    if element.lower() == 'sfb':
+        prefix = prefix + 'SFB-'
+        _dict = {
+            prefix + '01M1'   : {'sfb' : [family_data['sfb']['index'][0]]},
+            prefix + '02M1'   : {'sfb' : [family_data['sfb']['index'][1]]},
+            prefix + '03M1'   : {'sfb' : [family_data['sfb']['index'][2]]},
+            prefix + '04M1'   : {'sfb' : [family_data['sfb']['index'][3]]},
+            prefix + '05M1'   : {'sfb' : [family_data['sfb']['index'][4]]},
+            prefix + '06M1'   : {'sfb' : [family_data['sfb']['index'][5]]},
+            prefix + '07M1'   : {'sfb' : [family_data['sfb']['index'][6]]},
+            prefix + '08M1'   : {'sfb' : [family_data['sfb']['index'][7]]},
+            prefix + '09M1'   : {'sfb' : [family_data['sfb']['index'][8]]},
+            prefix + '10M1'   : {'sfb' : [family_data['sfb']['index'][9]]},
+            prefix + '11M1'   : {'sfb' : [family_data['sfb']['index'][10]]},
+            prefix + '12M1'   : {'sfb' : [family_data['sfb']['index'][11]]},
+            prefix + '13M1'   : {'sfb' : [family_data['sfb']['index'][12]]},
+            prefix + '14M1'   : {'sfb' : [family_data['sfb']['index'][13]]},
+            prefix + '15M1'   : {'sfb' : [family_data['sfb']['index'][14]]},
+            prefix + '16M1'   : {'sfb' : [family_data['sfb']['index'][15]]},
+            prefix + '17M1'   : {'sfb' : [family_data['sfb']['index'][16]]},
+            prefix + '18M1'   : {'sfb' : [family_data['sfb']['index'][17]]},
+            prefix + '19M1'   : {'sfb' : [family_data['sfb']['index'][18]]},
+            prefix + '20M1'   : {'sfb' : [family_data['sfb']['index'][19]]},
         }
-        return sfb_dict
+        return _dict
 
-    if family_name.lower() == 'qdb2':
-        prefix = 'SIPS-QDB2-'
-        qdb2_dict = {
-            prefix + '01M1'   : {'qdb2' : [family_data['qdb2']['index'][19]]},
-            prefix + '02M1'   : {'qdb2' : [family_data['qdb2']['index'][0]]},
-            prefix + '03M1'   : {'qdb2' : [family_data['qdb2']['index'][1]]},
-            prefix + '04M1'   : {'qdb2' : [family_data['qdb2']['index'][2]]},
-            prefix + '05M1'   : {'qdb2' : [family_data['qdb2']['index'][3]]},
-            prefix + '06M1'   : {'qdb2' : [family_data['qdb2']['index'][4]]},
-            prefix + '07M1'   : {'qdb2' : [family_data['qdb2']['index'][5]]},
-            prefix + '08M1'   : {'qdb2' : [family_data['qdb2']['index'][6]]},
-            prefix + '09M1'   : {'qdb2' : [family_data['qdb2']['index'][7]]},
-            prefix + '10M1'   : {'qdb2' : [family_data['qdb2']['index'][8]]},
-            prefix + '11M1'   : {'qdb2' : [family_data['qdb2']['index'][9]]},
-            prefix + '12M1'   : {'qdb2' : [family_data['qdb2']['index'][10]]},
-            prefix + '13M1'   : {'qdb2' : [family_data['qdb2']['index'][11]]},
-            prefix + '14M1'   : {'qdb2' : [family_data['qdb2']['index'][12]]},
-            prefix + '15M1'   : {'qdb2' : [family_data['qdb2']['index'][13]]},
-            prefix + '16M1'   : {'qdb2' : [family_data['qdb2']['index'][14]]},
-            prefix + '17M1'   : {'qdb2' : [family_data['qdb2']['index'][15]]},
-            prefix + '18M1'   : {'qdb2' : [family_data['qdb2']['index'][16]]},
-            prefix + '19M1'   : {'qdb2' : [family_data['qdb2']['index'][17]]},
-            prefix + '20M1'   : {'qdb2' : [family_data['qdb2']['index'][18]]},
+    if element.lower() == 'qdb2':
+        prefix = prefix + 'QDB2-'
+        _dict = {
+            prefix + '01M1'   : {'qdb2' : [family_data['qdb2']['index'][0]]},
+            prefix + '02M1'   : {'qdb2' : [family_data['qdb2']['index'][1]]},
+            prefix + '03M1'   : {'qdb2' : [family_data['qdb2']['index'][2]]},
+            prefix + '04M1'   : {'qdb2' : [family_data['qdb2']['index'][3]]},
+            prefix + '05M1'   : {'qdb2' : [family_data['qdb2']['index'][4]]},
+            prefix + '06M1'   : {'qdb2' : [family_data['qdb2']['index'][5]]},
+            prefix + '07M1'   : {'qdb2' : [family_data['qdb2']['index'][6]]},
+            prefix + '08M1'   : {'qdb2' : [family_data['qdb2']['index'][7]]},
+            prefix + '09M1'   : {'qdb2' : [family_data['qdb2']['index'][8]]},
+            prefix + '10M1'   : {'qdb2' : [family_data['qdb2']['index'][9]]},
+            prefix + '11M1'   : {'qdb2' : [family_data['qdb2']['index'][10]]},
+            prefix + '12M1'   : {'qdb2' : [family_data['qdb2']['index'][11]]},
+            prefix + '13M1'   : {'qdb2' : [family_data['qdb2']['index'][12]]},
+            prefix + '14M1'   : {'qdb2' : [family_data['qdb2']['index'][13]]},
+            prefix + '15M1'   : {'qdb2' : [family_data['qdb2']['index'][14]]},
+            prefix + '16M1'   : {'qdb2' : [family_data['qdb2']['index'][15]]},
+            prefix + '17M1'   : {'qdb2' : [family_data['qdb2']['index'][16]]},
+            prefix + '18M1'   : {'qdb2' : [family_data['qdb2']['index'][17]]},
+            prefix + '19M1'   : {'qdb2' : [family_data['qdb2']['index'][18]]},
+            prefix + '20M1'   : {'qdb2' : [family_data['qdb2']['index'][19]]},
         }
-        return qdb2_dict
+        return _dict
 
     else:
-        raise Exception('Family name %s not found'%family_name)
+        raise Exception('Element %s not found'%element)
