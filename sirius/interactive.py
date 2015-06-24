@@ -10,6 +10,8 @@ using
 from pyaccel.interactive import *
 import sirius.SI_V07 as si_model
 import sirius.BO_V901 as bo_model
+import sirius.TB_V300 as tb_model
+import sirius.TS_V400 as ts_model
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
