@@ -266,10 +266,10 @@ def get_element_names(element = None, prefix = ''):
 
     if element.lower() == 'bend':
         _dict = {}
-        _dict.update(get_element_names('b1'))
-        _dict.update(get_element_names('b2'))
-        _dict.update(get_element_names('b3'))
-        _dict.update(get_element_names('bc'))
+        _dict.update(get_element_names('b1', prefix = prefix))
+        _dict.update(get_element_names('b2', prefix = prefix))
+        _dict.update(get_element_names('b3', prefix = prefix))
+        _dict.update(get_element_names('bc', prefix = prefix))
         return _dict
 
     if element.lower() == 'quad':
