@@ -1,5 +1,6 @@
 
 import os as _os
+import numpy as _np
 import lnls as _lnls
 import pyaccel as _pyaccel
 from . import lattice as _lattice
@@ -31,4 +32,4 @@ accelerator_data['dirs'] = {
     'excitation_curves': _os.path.join(_folder_code, 'sirius', 'excitation_curves'),
 }
 accelerator_data['global_coupling'] = 0.01 # expected corrected value
-accelerator_data['average_pressure'] = 1.333e-9 # average pressure [mbar]
+accelerator_data['pressure_profile'] = _np.array([0, 1.333e-9]) # [s [m], p [mbar]]
