@@ -2,8 +2,31 @@
 import pyaccel as _pyaccel
 from . import lattice as _lattice
 
+def families_dipoles():
+    return ['bend']
 
-def sirius_bo_family_data(lattice):
+
+def families_quadrupoles():
+    return ['qf', 'qd']
+
+
+def families_sextupoles():
+    return ['sf', 'sd']
+
+
+def families_horizontal_correctors():
+    return ['ch']
+
+
+def families_vertical_correctors():
+    return ['cv']
+
+
+def families_rf():
+    return ['cav']
+
+
+def get_family_data(lattice):
     latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
     data={}
 
@@ -28,5 +51,6 @@ def sirius_bo_family_data(lattice):
 
 
 _family_segmentation={ 'b'  : 14, 'qf' : 2, 'qd' : 1, 'sd' : 1,
-                       'sf' : 1, 'bpm' : 1, 'ch' : 1, 'cv' : 1 }
-_family_data = sirius_bo_family_data(_lattice._the_ring)
+                       'sf' : 1, 'bpm' : 1, 'ch' : 1, 'cv' : 1,
+                       'cav' : 1 }
+_family_data = get_family_data(_lattice._the_ring)

@@ -4,31 +4,31 @@ import pyaccel as _pyaccel
 
 
 def families_dipoles():
-    return ('bend',)
+    return ['bend',]
 
 
 def families_quadrupoles():
-    return ('qfa', 'qda', 'qfb', 'qdb1', 'qdb2', 'qf1', 'qf2', 'qf3', 'qf4',)
+    return ['qfa', 'qda', 'qfb', 'qdb1', 'qdb2', 'qf1', 'qf2', 'qf3', 'qf4',]
 
 
 def families_sextupoles():
-    return ('sfa', 'sda', 'sfb', 'sdb', 'sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6', 'sf1', 'sf2', 'sf3', 'sf4',)
+    return ['sfa', 'sda', 'sfb', 'sdb', 'sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6', 'sf1', 'sf2', 'sf3', 'sf4',]
 
 
 def families_horizontal_correctors():
-    return ('chf', 'chs',)
+    return ['chf', 'chs',]
 
 
 def families_vertical_correctors():
-    return ('cvf', 'cvs',)
+    return ['cvf', 'cvs',]
 
 
 def families_skew_correctors():
-    return ('qs',)
+    return ['qs',]
 
 
 def families_rf():
-    return ('cav',)
+    return ['cav',]
 
 
 def get_family_data(lattice):
