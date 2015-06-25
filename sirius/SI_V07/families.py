@@ -1,3 +1,4 @@
+"""Element family definitions"""
 
 from . import lattice as _lattice
 import pyaccel as _pyaccel
