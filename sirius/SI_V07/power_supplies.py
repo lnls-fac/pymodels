@@ -8,24 +8,26 @@ _name_split_char = '-'
 
 
 def get_magnet_mapping():
-    """Get mapping from power supply to magnet names
+    """Get mapping from power supply to magnet names and inverse mapping
 
-    Returns dict.
+    Returns mapping, inverse_mapping.
     """
-    prefix = 'SIMA-'
+    magnet_prefix = 'SIMA-'
+    ps_prefix = 'SIPS-'
     mapping = dict()
 
     # Add family power supplies
-    bend_family = _record_names.get_family_names('bend', prefix)
-    bend_magnets = _record_names.get_element_names('bend', prefix)
+    bend_magnets = _record_names.get_element_names('bend', magnet_prefix)
+    bend_family = _record_names.get_family_names('bend', ps_prefix)
     bend_family_name = list(bend_family.keys())[0]
     for magnet_name in bend_magnets.keys():
-        s = set()
-        s.add(bend_family_name)
-        mapping[magnet_name] = s
+        if _re.match('SIMA-BC-.*', magnet_name) is None:
+            s = set()
+            s.add(bend_family_name)
+            mapping[magnet_name] = s
 
-    quad_families = _record_names.get_family_names('quad', prefix)
-    quad_magnets = _record_names.get_element_names('quad', prefix)
+    quad_magnets = _record_names.get_element_names('quad', magnet_prefix)
+    quad_families = _record_names.get_family_names('quad', ps_prefix)
     for family_name in quad_families.keys():
         family_prefix = family_name[:-4]
         for magnet_name in quad_magnets.keys():
@@ -34,8 +36,8 @@ def get_magnet_mapping():
                 s.add(family_name)
                 mapping[magnet_name] = s
 
-    sext_families = _record_names.get_family_names('sext', prefix)
-    sext_magnets = _record_names.get_element_names('sext', prefix)
+    sext_magnets = _record_names.get_element_names('sext', magnet_prefix)
+    sext_families = _record_names.get_family_names('sext', ps_prefix)
     for family_name in sext_families.keys():
         family_prefix = family_name[:-4]
         for magnet_name in sext_magnets.keys():
@@ -58,4 +60,15 @@ def get_magnet_mapping():
                 s.add(ps_name)
                 mapping[ps_magnet_name] = s
 
-    return mapping
+    inverse_mapping = dict()
+    for item in mapping.items():
+        key, value = item
+        for v in value:
+            if v in inverse_mapping:
+                inverse_mapping[v].add(key)
+            else:
+                s = set()
+                s.add(key)
+                inverse_mapping[v] = s
+
+    return mapping, inverse_mapping
