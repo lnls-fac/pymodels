@@ -13,7 +13,7 @@ def get_record_names(subsystem = None):
             record_names_dict.update(get_record_names(subsystem))
         return record_names_dict
 
-    if subsystem.lower() == 'sirf' or subsystem.lower() == 'cav':
+    if subsystem.lower() == 'sirf':
         indices = family_data['cav']['index']
         _dict = {
             'SIRF-FREQUENCY':{'cav':indices},

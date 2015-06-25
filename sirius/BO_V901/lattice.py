@@ -122,8 +122,8 @@ def create_lattice(**kwargs):
     fodo1rf      = [mqf, qf, lfree, rfc, girder, lfree_2, b,       lfree_2, girder, bpm, lsf, qf]
 
     #booster   = [boos, boos, boos, boos, boos]
-    boosinj   = [fodo1sd, fodo2kese, fodo1ch, fodo2si, fodo1ki, fodo2sd, fodo1, fodo2, fodo1, fodo2]
-    boosrf    = [fodo1sd, fodo2, fodo1, fodo2, fodo1rf, fodo2sd, fodo1, fodo2, fodo1, fodo2]
+    boosinj   = [fodo1sd, fodo2kese, fodo1ch, fodo2si, fodo1ki, fodo2sd, fodo1, fodo2, fodo1rf, fodo2]
+    boosrf    = [fodo1sd, fodo2, fodo1, fodo2, fodo1, fodo2sd, fodo1, fodo2, fodo1, fodo2]
     boocor    = [start, boosinj, boos, boosrf, boos, boos, fim]
     elist     = boocor
 
@@ -212,14 +212,12 @@ def set_vacuum_chamber(the_ring):
 
 
 def dipole_segmented_model():
-
     # dipole model 2014-12-01
     # =======================
     # this model is based on the same approved model6 dipole
     # new python script was used to derived integrated multipoles around
     # trajectory centered in good-field region. init_rx is set to +9.045 mm
     # falled back to 'solve' method for polynomial interpolation.
-
     b_model = _np.array([
         # len  angle                PolynomB[1]          PolynomB[2] ...
         [0.1960, +2.019543e-02, +0.000000e+00, -2.272773e-01, -1.983148e+00, -5.887754e+00, -3.025835e+02, -2.317689e+04, -7.875649e+05],
@@ -230,7 +228,6 @@ def dipole_segmented_model():
         [0.1580, +1.179063e-03, +0.000000e+00, +4.997853e-03, -7.327753e-01, +3.067168e+00, +6.866808e+01, -7.770617e+02, -2.591275e+05],
         [0.0010, +1.403307e-05, +9.722121e-07, +9.781965e-03, -6.822178e-01, +2.200638e+00, +5.710292e+02, -4.725951e+03, -1.263824e+06],
     ])
-
     marker, rbend = _pyaccel.elements.marker, _pyaccel.elements.rbend
 
     b = [];
