@@ -1,5 +1,7 @@
+
 from . import lattice as _lattice
 from . import accelerator as _accelerator
+from . import families as _families
 from . import record_names
 
 accelerator_data = _accelerator.accelerator_data
@@ -13,5 +15,5 @@ multi_bunch_charge      = _lattice._multi_bunch_charge
 pulse_duration_interval = _lattice._pulse_duration_interval
 default_optics_mode     = _lattice._default_optics_mode.label
 lattice_version         = accelerator_data['lattice_version']
-family_data             = _lattice._family_data
+family_data             = _families._family_data
 emittance               = _lattice._emittance

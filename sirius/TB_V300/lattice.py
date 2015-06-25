@@ -6,12 +6,7 @@ import mathphys as _mp
 from . import optics_mode_M2 as _optics_mode_M2
 
 _energy = 0.15e9 #[eV]
-
 _default_optics_mode = _optics_mode_M2
-
-_family_segmentation = { 'qd'  : 1,   'qf'  : 1, 'bpm' : 1, 'ch' : 1, 'cv'  : 1,
-                         'sep' : 2, 'bspec' : 2, 'bn'  : 2, 'bp' : 2 }
-
 _initial_twiss = _pyaccel.optics.Twiss.make_new(spos=0.0,
                                                 fixed_point=[0,0,0,0,0,0], # nominal orbit of LI w.r.t. TB coord. sys.
                                                 mu=[0.0,0.0],
@@ -19,7 +14,6 @@ _initial_twiss = _pyaccel.optics.Twiss.make_new(spos=0.0,
                                                 alpha=[-1.0,-1.0],
                                                 eta=[0,0],
                                                 etal=[0,0])
-                                                
 _ejection_fixed_point  = (-0.030,0.0143,0,0,0,0) # nominal orbit of TB w.r.t. BO coord. sys.
 
 
@@ -200,47 +194,4 @@ def set_vacuum_chamber(the_line):
         the_line[i].hmax = vchamber[0]
         the_line[i].vmax = vchamber[1]
 
-
-
-def sirius_tb_family_data(lattice):
-    latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
-    data={}
-
-    for key in latt_dict.keys():
-        if key in _family_segmentation.keys():
-            data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
-
-    #bpm
-    data['bpm']['index'].pop()
-
-    # qf
-    data['qf']={}
-    data['qf']['index'] = []
-    data['qf']['nr_segs'] = _family_segmentation['qf']
-    data['qf']['families'] = ['qa2', 'qa3', 'qb2', 'qc1', 'qc3', 'qd2', 'qe2']
-    for family in data['qf']['families']:
-        data['qf']['index'] = data['qf']['index'] + latt_dict[family]
-    data['qf']['index']=sorted(data['qf']['index'])
-
-    # qd
-    data['qd']={}
-    data['qd']['index'] = []
-    data['qd']['nr_segs'] = _family_segmentation['qd']
-    data['qd']['families'] = ['qa1', 'qb1', 'qc2', 'qd1', 'qe1']
-    for family in data['qd']['families']:
-        data['qd']['index'] = data['qd']['index'] + latt_dict[family]
-    data['qd']['index']=sorted(data['qd']['index'])
-
-    for key in data.keys():
-        if data[key]['nr_segs'] != 1:
-            new_index = []
-            j = 0
-            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
-                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
-                j += data[key]['nr_segs']
-            data[key]['index'] = new_index
-
-    return data
-
 _the_line = create_lattice()
-_family_data = sirius_tb_family_data(_the_line)

@@ -7,9 +7,7 @@ from . import optics_mode_M0 as _optics_mode_M0
 
 _default_optics_mode = _optics_mode_M0
 _energy = 3e9 #[eV]
-_family_segmentation={ 'qd'  : 1, 'qf'  : 1, 'bpm' : 1, 'ch'  : 1,
-                       'cv'  : 1, 'seb' : 2, 'seg' : 2, 'sef' : 2,
-                       'bf'  : 2, 'bd'  : 2}
+
 
 def create_lattice():
 
@@ -99,7 +97,7 @@ def create_lattice():
     # -- sep booster --
     h1 = rbend_sirius('seb', 0.85/2, -3.6*deg2rad/2, -3.6*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
     h2 = rbend_sirius('seb', 0.85/2, -3.6*deg2rad/2, 0, -3.6*deg2rad/2, 0, 0, 0, [0, 0, 0], [0, 0, 0])
-    septex = [sseb, h1, mseb, h2]
+    septex = [ h1, mseb, h2]
 
     # -- sep grosso --
     h1 = rbend_sirius('seg', 1.10/2, 6.2*deg2rad/2, 6.2*deg2rad/2, 0, 0, 0, 0, [0, 0, 0], [0, 0, 0])
@@ -124,7 +122,7 @@ def create_lattice():
     ld2   = [ld2p, l40, l40, bpm, l20c, ch, l25cc, cv, l20c]
     ld4   = [ld4p, l40]
     ld5   = [ld5p, l20, l40, l40, l40, bpm, l20c, cv, l25c]
-    linea = [septex, l20, septex, la1, qa1, la2, qa2, la3]
+    linea = [sseb, septex, l20, septex, la1, qa1, la2, qa2, la3]
     lineb = [bf, lb1, qb1, lb2]
     linec = [bd, lc1, qc1, lc2, qc2, lc3]
     lined = [bd, ld1, qd1, ld2, qd2, ld3, qd3, ld4, qd4, ld5]
@@ -186,46 +184,4 @@ def set_vacuum_chamber(the_line):
         the_line[i].hmax = vchamber[0]
         the_line[i].vmax = vchamber[1]
 
-
-def sirius_ts_family_data(lattice):
-    latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
-    data={}
-
-    for key in latt_dict.keys():
-        if key in _family_segmentation.keys():
-            data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
-
-    #bpm
-    data['bpm']['index'].pop()
-
-    # qf
-    data['qf']={}
-    data['qf']['index'] = []
-    data['qf']['nr_segs'] = _family_segmentation['qf']
-    data['qf']['families'] = ['qa1', 'qc1', 'qc2', 'qd2', 'qd3']
-    for family in data['qf']['families']:
-        data['qf']['index'] = data['qf']['index'] + latt_dict[family]
-    data['qf']['index']=sorted(data['qf']['index'])
-
-    # qd
-    data['qd']={}
-    data['qd']['index'] = []
-    data['qd']['nr_segs'] = _family_segmentation['qd']
-    data['qd']['families'] = ['qa2', 'qb1', 'qd1', 'qd4']
-    for family in data['qd']['families']:
-        data['qd']['index'] = data['qd']['index'] + latt_dict[family]
-    data['qd']['index']=sorted(data['qd']['index'])
-
-    for key in data.keys():
-        if data[key]['nr_segs'] != 1:
-            new_index = []
-            j = 0
-            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
-                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
-                j += data[key]['nr_segs']
-            data[key]['index'] = new_index
-
-    return data
-
 _the_line=create_lattice()
-_family_data=sirius_ts_family_data(_the_line)
