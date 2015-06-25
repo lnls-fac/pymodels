@@ -29,9 +29,10 @@ def get_magnet_mapping():
     quad_magnets = _record_names.get_element_names('quad', magnet_prefix)
     quad_families = _record_names.get_family_names('quad', ps_prefix)
     for family_name in quad_families.keys():
-        family_prefix = family_name[:-4]
+        element_name = family_name[5:-4]
         for magnet_name in quad_magnets.keys():
-            if _re.match(family_prefix+'.*', magnet_name) is not None:
+            template = magnet_prefix + element_name + '.*'
+            if _re.match(template, magnet_name) is not None:
                 s = set()
                 s.add(family_name)
                 mapping[magnet_name] = s
@@ -39,9 +40,10 @@ def get_magnet_mapping():
     sext_magnets = _record_names.get_element_names('sext', magnet_prefix)
     sext_families = _record_names.get_family_names('sext', ps_prefix)
     for family_name in sext_families.keys():
-        family_prefix = family_name[:-4]
+        element_name = family_name[5:-4]
         for magnet_name in sext_magnets.keys():
-            if _re.match(family_prefix+'.*', magnet_name) is not None:
+            template = magnet_prefix + element_name + '.*'
+            if _re.match(template, magnet_name) is not None:
                 s = set()
                 s.add(family_name)
                 mapping[magnet_name] = s
