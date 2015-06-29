@@ -280,6 +280,9 @@ def set_vacuum_chamber(the_ring):
     ovu  = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'id_enda')
     ovu += _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'mia')[2:]
 
+    sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'sept_in')[0]
+    kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'kick_in')[0]
+
     for idx in ivu:
         the_ring[idx].hmin = ivu_vchamber[0]
         the_ring[idx].hmax = ivu_vchamber[1]
@@ -299,5 +302,10 @@ def set_vacuum_chamber(the_ring):
             the_ring[i].vmin = other_vchamber[2]
             the_ring[i].vmax = other_vchamber[3]
 
+    for i in range(sept_in, len(the_ring)):
+        the_ring[i].hmin = -0.05 # Verificar valor real
+
+    for i in range(kick_in +1):
+        the_ring[i].hmin = -0.05 # Verificar valor real
 
 _the_ring = create_lattice()

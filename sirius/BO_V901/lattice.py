@@ -201,6 +201,7 @@ def set_vacuum_chamber(the_ring):
 
     sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'sept_in')[0]
     kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'kick_in')[0]
+    
     sept_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'sept_ex')[0]
     kick_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'kick_ex')[0]
 

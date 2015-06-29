@@ -188,7 +188,7 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = vchamber[3]
 
         if the_line[i].fam_name == 'sseb': # vacuum chamber at the beginning of extraction septum
-            the_line[i].hmin = 0.0015
+            the_line[i].hmin = -0.0015
 
         if the_line[i].fam_name == 'esef': # vacuum chamber at the end of injection septum
             the_line[i].hmax = 0.0015
