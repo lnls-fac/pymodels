@@ -195,21 +195,38 @@ def set_num_integ_steps(the_ring):
 
 
 def set_vacuum_chamber(the_ring):
+    #vchamber = [hmin, hmax, vmin, vmax]
+    bends_vchamber = [-0.0117, 0.0117, -0.0117, 0.0117]
+    other_vchamber = [-0.018,   0.018,  -0.018,  0.018]
 
-    bends_vchamber = [0.0117, 0.0117]
-    other_vchamber = [0.018,   0.018]
+    sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'sept_in')[0]
+    kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'kick_in')[0]
+    
+    sept_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'sept_ex')[0]
+    kick_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'kick_ex')[0]
 
     for i in range(len(the_ring)):
         if the_ring[i].angle:
-            the_ring[i].hmax = bends_vchamber[0]
-            the_ring[i].vmax = bends_vchamber[1]
+            the_ring[i].hmin = bends_vchamber[0]
+            the_ring[i].hmax = bends_vchamber[1]
+            the_ring[i].vmin = bends_vchamber[2]
+            the_ring[i].vmax = bends_vchamber[3]
         elif the_ring[i].fam_name in ['mb', 'pb']:
-            the_ring[i].hmax = bends_vchamber[0]
-            the_ring[i].vmax = bends_vchamber[1]
+            the_ring[i].hmin = bends_vchamber[0]
+            the_ring[i].hmax = bends_vchamber[1]
+            the_ring[i].vmin = bends_vchamber[2]
+            the_ring[i].vmax = bends_vchamber[3]
         else:
-            the_ring[i].hmax = other_vchamber[0]
-            the_ring[i].vmax = other_vchamber[1]
+            the_ring[i].hmin = other_vchamber[0]
+            the_ring[i].hmax = other_vchamber[1]
+            the_ring[i].vmin = other_vchamber[2]
+            the_ring[i].vmax = other_vchamber[3]
 
+    for i in range(sept_in, kick_in +1):
+        the_ring[i].hmin = -0.05 # Verificar valor real
+
+    for i in range(kick_ex, sept_ex+1):
+        the_ring[i].hmax = 0.05 # Verificar valor real
 
 def dipole_segmented_model():
     # dipole model 2014-12-01

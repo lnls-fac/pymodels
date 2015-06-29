@@ -3,6 +3,11 @@ from . import families as _families
 
 
 def get_record_names(subsystem = None):
+    """Return a dictionary of record names for given subsystem
+    each entry is another dictionary of model families whose
+    values are the indices in the pyaccel model of the magnets
+    that belong to the family. The magnet models ca be segmented,
+    in which case the value is a python list of lists."""
 
     family_data = _families._family_data
 
@@ -39,10 +44,14 @@ def get_record_names(subsystem = None):
 
         _dict ={}
         _dict.update(get_element_names(element = 'bend', prefix = prefix))
-        _dict.update(get_element_names(element = 'sep', prefix = prefix))
         _dict.update(get_element_names(element = 'quad', prefix = prefix))
         _dict.update(get_element_names(element = 'ch', prefix = prefix))
         _dict.update(get_element_names(element = 'cv', prefix = prefix))
+        return _dict
+
+    if subsystem.lower() == 'tbpm':
+        prefix = 'TBPM-'
+        _dict = get_element_names(element = 'sep', prefix = prefix)
         return _dict
 
     else:
