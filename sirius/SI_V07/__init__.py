@@ -4,6 +4,7 @@ from . import accelerator as _accelerator
 from . import families as _families
 from . import record_names
 from . import excitation_curves
+from . import power_supplies
 
 
 accelerator_data = _accelerator.accelerator_data

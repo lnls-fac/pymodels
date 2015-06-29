@@ -500,3 +500,7 @@ def get_element_names(element = None, prefix = ''):
 
     else:
         raise Exception('Element %s not found'%element)
+
+
+def get_magnet_names():
+    return get_record_names('boma')

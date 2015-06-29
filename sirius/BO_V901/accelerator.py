@@ -1,5 +1,7 @@
 
+import os as _os
 import numpy as _np
+import lnls as _lnls
 import pyaccel as _pyaccel
 from . import lattice as _lattice
 
@@ -16,15 +18,18 @@ def create_accelerator():
         harmonic_number=_lattice._harmonic_number,
         cavity_on=_default_cavity_on,
         radiation_on=_default_radiation_on,
-        vchamber_on=_default_vchamber_on)
+        vchamber_on=_default_vchamber_on
+    )
 
     return accelerator
 
 
+_folder_code = _lnls.system.folder_code
+
 accelerator_data = dict()
 accelerator_data['lattice_version'] = 'BO_V901'
-# accelerator_data['dirs'] = {
-#     'excitation_curves': _os.path.join(_folder_code, 'sirius', 'excitation_curves'),
-# }
+accelerator_data['dirs'] = {
+    'excitation_curves': _os.path.join(_folder_code, 'sirius', 'excitation_curves'),
+}
 accelerator_data['global_coupling'] = 0.0002 # expected corrected value
 accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8]*2]) # [s [m], p [mbar]]
