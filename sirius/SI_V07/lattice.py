@@ -269,9 +269,10 @@ def set_num_integ_steps(the_ring):
 
 
 def set_vacuum_chamber(the_ring):
-    other_vchamber = [0.0117, 0.0117]
-    ivu_vchamber   = [0.0117, 0.00225]
-    ovu_vchamber   = [0.0117, 0.004]
+    #vchamber = [hmin, hmax, vmin, vmax]
+    other_vchamber = [-0.0117, 0.0117, -0.0117, 0.0117]
+    ivu_vchamber   = [-0.0117, 0.0117, -0.00225, 0.00225]
+    ovu_vchamber   = [-0.0117, 0.0117, -0.004, 0.004]
 
     ivu  = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'id_endb')
     ivu += _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'mib')
@@ -280,17 +281,23 @@ def set_vacuum_chamber(the_ring):
     ovu += _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'mia')[2:]
 
     for idx in ivu:
-        the_ring[idx].hmax = ivu_vchamber[0]
-        the_ring[idx].vmax = ivu_vchamber[1]
+        the_ring[idx].hmin = ivu_vchamber[0]
+        the_ring[idx].hmax = ivu_vchamber[1]
+        the_ring[idx].vmin = ivu_vchamber[2]
+        the_ring[idx].vmax = ivu_vchamber[3]
 
     for idx in ovu:
-        the_ring[idx].hmax = ovu_vchamber[0]
-        the_ring[idx].vmax = ovu_vchamber[1]
+        the_ring[idx].hmin = ovu_vchamber[0]
+        the_ring[idx].hmax = ovu_vchamber[1]
+        the_ring[idx].vmin = ovu_vchamber[2]
+        the_ring[idx].vmax = ovu_vchamber[3]
 
     for i in range(len(the_ring)):
         if i not in ovu+ivu:
-            the_ring[i].hmax = other_vchamber[0]
-            the_ring[i].vmax = other_vchamber[1]
+            the_ring[i].hmin = other_vchamber[0]
+            the_ring[i].hmax = other_vchamber[1]
+            the_ring[i].vmin = other_vchamber[2]
+            the_ring[i].vmax = other_vchamber[3]
 
 
 _the_ring = create_lattice()
