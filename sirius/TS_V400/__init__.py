@@ -4,6 +4,7 @@ from . import accelerator as _accelerator
 from . import families as _families
 from . import record_names
 
+accelerator_data = _accelerator.accelerator_data
 create_accelerator = accelerator.create_accelerator
 
 # -- default accelerator values for TS_V400 --

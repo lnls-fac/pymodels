@@ -25,5 +25,7 @@ accelerator_data['lattice_version'] = 'LI_V00'
 accelerator_data['dirs'] = {
     'excitation_curves': _os.path.join(_folder_code, 'sirius', 'excitation_curves'),
 }
-accelerator_data['global_coupling'] = 1.00 # expected corrected value
+accelerator_data['global_coupling']  = 1.00 # expected corrected value
+accelerator_data['emittance']        = 170.3329758677203e-09 #[m rad]
+accelerator_data['energy_spread']    = 0.005
 accelerator_data['pressure_profile'] = None
