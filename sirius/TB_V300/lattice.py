@@ -188,10 +188,17 @@ def set_num_integ_steps(the_line):
 
 
 def set_vacuum_chamber(the_line):
-    vchamber = [0.014, 0.014]
+    #vchamber = [hmin, hmax, vmin, vmax]
+    vchamber = [-0.014, 0.014, -0.014, 0.014]
 
     for i in range(len(the_line)):
-        the_line[i].hmax = vchamber[0]
-        the_line[i].vmax = vchamber[1]
+        the_line[i].hmin = vchamber[0]
+        the_line[i].hmax = vchamber[1]
+        the_line[i].vmin = vchamber[2]
+        the_line[i].vmax = vchamber[3]
+
+        if the_line[i].fam_name == 'esep': # vacuum chamber at the end of injection septum
+            the_line[i].hmax = 0.0075
+
 
 _the_line = create_lattice()
