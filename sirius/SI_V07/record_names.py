@@ -8,7 +8,7 @@ def get_record_names(subsystem = None):
     values are the indices in the pyaccel model of the magnets
     that belong to the family. The magnet models ca be segmented,
     in which case the value is a python list of lists."""
-    
+
     family_data = _families._family_data
 
     if subsystem == None:

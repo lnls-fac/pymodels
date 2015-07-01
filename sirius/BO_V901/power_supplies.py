@@ -18,13 +18,12 @@ def get_magnet_mapping():
 
     # Add family power supplies
     bend_magnets = _record_names.get_element_names('bend', magnet_prefix)
-    bend_family = _record_names.get_family_names('bend', ps_prefix)
-    bend_family_name = list(bend_family.keys())[0]
+    bend_families = _record_names.get_family_names('bend', ps_prefix)
+    family_list = []
+    for family_name in bend_families.keys():
+        family_list.append(family_name)
     for magnet_name in bend_magnets.keys():
-        if _re.match('SIMA-BC-.*', magnet_name) is None:
-            s = set()
-            s.add(bend_family_name)
-            mapping[magnet_name] = s
+        mapping[magnet_name] = set(family_list)
 
     quad_magnets = _record_names.get_element_names('quad', magnet_prefix)
     quad_families = _record_names.get_family_names('quad', ps_prefix)
