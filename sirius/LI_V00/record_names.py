@@ -2,7 +2,7 @@
 from . import families as _families
 
 
-def get_record_names(subsystem = None):
+def get_record_names(subsystem=None):
     """Return a dictionary of record names for given subsystem
     each entry is another dictionary of model families whose
     values are the indices in the pyaccel model of the magnets
@@ -12,11 +12,17 @@ def get_record_names(subsystem = None):
     return _dict
 
 
-def get_family_names(family = None, prefix = ''):
+def get_family_names(family=None, prefix=''):
     _dict = {}
     return _dict
 
 
-def get_element_names(element = None, prefix = ''):
+def get_element_names(element=None, prefix=''):
+    _dict = {}
+    return _dict
+
+
+def get_magnet_names():
+    # return get_record_names('boma')
     _dict = {}
     return _dict

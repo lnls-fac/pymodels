@@ -1,6 +1,7 @@
 
 from . import families as _families
 
+
 def get_record_names(subsystem = None):
     """Return a dictionary of record names for given subsystem
     each entry is another dictionary of model families whose
@@ -216,3 +217,7 @@ def get_element_names(element = None, prefix = ''):
 
     else:
         raise Exception('Element %s not found'%element)
+
+
+def get_magnet_names():
+    return get_record_names('tsma')

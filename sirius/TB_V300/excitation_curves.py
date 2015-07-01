@@ -3,9 +3,9 @@ import re as _re
 from . import record_names as _record_names
 
 
-_bend_re = _re.compile('BOMA-B.*')
-_quad_re = _re.compile('BOMA-Q.*')
-_corr_re = _re.compile('MOMA-C.*')
+_bend_re = _re.compile('TBMA-B.*')
+_quad_re = _re.compile('TBMA-Q.*')
+_corr_re = _re.compile('TBMA-C.*')
 
 
 def get_excitation_curve_mapping():
@@ -18,12 +18,12 @@ def get_excitation_curve_mapping():
     ec = dict()
     for name in magnets:
         if _bend_re.match(name) is not None:
-            ec[name] = 'boma-b-i2e.txt'
+            ec[name] = 'tbma-b-i2e.txt'
         elif _quad_re.match(name) is not None:
-            ec[name] = 'boma-q-i2gl.txt'
+            ec[name] = 'tbma-q-i2gl.txt'
         elif _corr_re.match(name) is not None:
-            ec[name] = 'boma-c-i2bl.txt'
+            ec[name] = 'tbma-c-i2bl.txt'
         else:
-            ec[name] = 'boma-q-i2gl.txt'
+            ec[name] = 'tbma-q-i2gl.txt'
 
     return ec

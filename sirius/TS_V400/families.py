@@ -1,3 +1,4 @@
+"""Element family definitions"""
 
 from . import lattice as _lattice
 import pyaccel as _pyaccel
@@ -6,14 +7,18 @@ import pyaccel as _pyaccel
 def families_dipoles():
     return ['bf', 'bd']
 
+
 def families_septa():
     return ['seb', 'seg', 'sef']
+
 
 def families_quadrupoles():
     return ['qf', 'qd']
 
+
 def families_horizontal_correctors():
     return ['ch']
+
 
 def families_vertical_correctors():
     return ['cv']
@@ -66,9 +71,35 @@ def get_family_data(lattice):
 
     return data
 
+
 _family_segmentation={ 'bf'  : 2, 'bd'  : 2, 'seb' : 2, 'seg' : 2, 'sef' : 2,
                        'qf'  : 1, 'qa1' : 1, 'qc1' : 1, 'qc2' : 1,  'qd2': 1, 'qd3' : 1,
                        'qd'  : 1, 'qa2' : 1, 'qb1' : 1, 'qd1' : 1, 'qd4' : 1,
                        'bpm' : 1, 'ch'  : 1, 'cv'  : 1,
                        }
 _family_data = get_family_data(_lattice._the_line)
+_family_mapping = {
+    'bf': 'dipole',
+    'bd': 'dipole',
+
+    'seb': 'septum',
+    'seg': 'septum',
+    'sef': 'septum',
+
+    'qf': 'quadrupole',
+    'qa1': 'quadrupole',
+    'qc1': 'quadrupole',
+    'qc2': 'quadrupole',
+    'qd2': 'quadrupole',
+    'qd3': 'quadrupole',
+    'qd': 'quadrupole',
+    'qa2': 'quadrupole',
+    'qb1': 'quadrupole',
+    'qd1': 'quadrupole',
+    'qd4': 'quadrupole',
+
+    'bpm': 'bpm',
+
+    'ch': 'horizontal_corrector',
+    'cv': 'vertical_corrector',
+}

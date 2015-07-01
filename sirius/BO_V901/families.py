@@ -2,6 +2,7 @@
 import pyaccel as _pyaccel
 from . import lattice as _lattice
 
+
 def families_dipoles():
     return ['bend']
 
