@@ -13,6 +13,7 @@ _qf4_re = _re.compile('SIMA-QF4.*')
 _qda_re = _re.compile('SIMA-QDA.*')
 _qdb1_re = _re.compile('SIMA-QDB1.*')
 _qdb2_re = _re.compile('SIMA-QDB2.*')
+_qs_re = _re.compile('SIMA-QS.*')
 _s_re = _re.compile('SIMA-S.*')
 _c_re = _re.compile('SIMA-C.*')
 
@@ -26,17 +27,18 @@ def get_excitation_curve_mapping():
 
     ec = dict()
     for name in magnets:
-        if _bend_re.match(name) is not None: ec[name] = 'sima-bend-m.txt'
-        elif _qda_re.match(name) is not None: ec[name] = 'sima-q14-b.txt'
-        elif _qdb1_re.match(name) is not None: ec[name] = 'sima-q14-b.txt'
-        elif _qdb2_re.match(name) is not None: ec[name] = 'sima-q14-b.txt'
-        elif _qf1_re.match(name) is not None: ec[name] = 'sima-q20-mp.txt'
-        elif _qf2_re.match(name) is not None: ec[name] = 'sima-q20-mp.txt'
-        elif _qf3_re.match(name) is not None: ec[name] = 'sima-q20-mp.txt'
-        elif _qf4_re.match(name) is not None: ec[name] = 'sima-q20-mp.txt'
-        elif _qfb_re.match(name) is not None: ec[name] = 'sima-q30-mp.txt'
-        elif _s_re.match(name) is not None: ec[name] = 'sima-s-b.txt'
-        elif _c_re.match(name) is not None: ec[name] = 'sima-c-b.txt'
-        else: ec[name] = 'sima-q14-b.txt'
+        if _bend_re.match(name) is not None: ec[name] = 'sima-bend.txt'
+        elif _qda_re.match(name) is not None: ec[name] = 'sima-q14.txt'
+        elif _qdb1_re.match(name) is not None: ec[name] = 'sima-q14.txt'
+        elif _qdb2_re.match(name) is not None: ec[name] = 'sima-q14.txt'
+        elif _qf1_re.match(name) is not None: ec[name] = 'sima-q20.txt'
+        elif _qf2_re.match(name) is not None: ec[name] = 'sima-q20.txt'
+        elif _qf3_re.match(name) is not None: ec[name] = 'sima-q20.txt'
+        elif _qf4_re.match(name) is not None: ec[name] = 'sima-q20.txt'
+        elif _qfb_re.match(name) is not None: ec[name] = 'sima-q30.txt'
+        elif _qs_re.match(name) is not None: ec[name] = 'sima-qs.txt'
+        elif _s_re.match(name) is not None: ec[name] = 'sima-s.txt'
+        elif _c_re.match(name) is not None: ec[name] = 'sima-c.txt'
+        else: ec[name] = 'sima-q14.txt'
 
     return ec
