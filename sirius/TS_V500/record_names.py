@@ -107,7 +107,7 @@ def get_element_names(element = None, prefix = ''):
         }
         return _dict
 
-    if element.lower() == 'septa':
+    if element.lower() == 'septa' or element.lower() == 'sep':
         _dict ={
             prefix + 'SEPTUMEXT-01'   : {'septex'  :  family_data['septex']['index']},
             prefix + 'SEPTUMTHICK-04' : {'septing' : [family_data['septing']['index'][0]]},
@@ -177,3 +177,6 @@ def get_element_names(element = None, prefix = ''):
 
 def get_magnet_names():
     return get_record_names('tsma')
+
+def get_pulsed_magnet_names():
+    return get_record_names('tspm')

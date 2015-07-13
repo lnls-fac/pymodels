@@ -163,10 +163,10 @@ def set_rf_voltage(the_ring, energy):
 
     overvoltage = 1.525
     energy0 = 0.15e9
-    rho0   = 1.152*50/2/_math.pi
-    U0 = 88.5*((energy*1e-9)**4/rho0)*1e3
+    rho0   = 1.152*50/(2*_math.pi)
+    U0 = (_mp.constants.rad_cgamma*((energy*1e-9)**4)/rho0)*1e9
 
-    voltage_inj = 150e3 - overvoltage*(((88.5*(energy0*1e-9)**4)/rho0)*1e3)
+    voltage_inj = 150e3 - overvoltage*((_mp.constants.rad_cgamma*((energy0*1e-9)**4)/rho0)*1e9)
     voltage_eje = 950e3
     voltage = min([(overvoltage*U0 + voltage_inj), voltage_eje])
 
@@ -201,7 +201,7 @@ def set_vacuum_chamber(the_ring):
 
     sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'sept_in')[0]
     kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'kick_in')[0]
-    
+
     sept_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'sept_ex')[0]
     kick_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'kick_ex')[0]
 

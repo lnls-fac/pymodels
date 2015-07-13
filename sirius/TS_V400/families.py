@@ -81,6 +81,7 @@ _family_data = get_family_data(_lattice._the_line)
 _family_mapping = {
     'bf': 'dipole',
     'bd': 'dipole',
+    'bend': 'dipole',
 
     'seb': 'septum',
     'seg': 'septum',
