@@ -6,13 +6,13 @@ from . import optics_mode_M0 as _optics_mode_M0
 
 _default_optics_mode = _optics_mode_M0
 _energy = 3e9 #[eV]
-_initial_twiss = _pyaccel.optics.Twiss.make_new(spos=0.0,
-                                                fixed_point=[0,0,0,0,0,0], # nominal orbit of LI w.r.t. TB coord. sys.
-                                                mu=[0.0,0.0],
-                                                beta=[6.57, 15.30],
-                                                alpha=[-2.155, 2.22],
-                                                eta=[0.191,0],
-                                                etal=[0.0689,0])
+# _initial_twiss = _pyaccel.optics.Twiss.make_new(spos=0.0,
+#                                                 fixed_point=[0,0,0,0,0,0], # nominal orbit of LI w.r.t. TB coord. sys.
+#                                                 mu=[0.0,0.0],
+#                                                 beta=[6.57, 15.30],
+#                                                 alpha=[-2.155, 2.22],
+#                                                 eta=[0.191,0],
+#                                                 etal=[0.0689,0])
 
 
 def create_lattice():

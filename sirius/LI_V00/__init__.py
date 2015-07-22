@@ -18,7 +18,5 @@ pulse_duration_interval = _lattice._pulse_duration_interval
 frequency               = _lattice._frequency
 default_optics_mode     = _lattice._default_optics_mode.label
 lattice_version         = accelerator_data['lattice_version']
-#emittance               = accelerator_data['emittance']
-#energy_spread           = accelerator_data['energy_spread']
 family_data             = _families._family_data
 family_mapping          = _families._family_mapping
