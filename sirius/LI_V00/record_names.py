@@ -26,3 +26,8 @@ def get_magnet_names():
     # return get_record_names('boma')
     _dict = {}
     return _dict
+
+def get_pulsed_magnet_names():
+    # return get_record_names('boma')
+    _dict = {}
+    return _dict

@@ -221,3 +221,6 @@ def get_element_names(element = None, prefix = ''):
 
 def get_magnet_names():
     return get_record_names('tsma')
+
+def get_pulsed_magnet_names():
+    return get_record_names('tspm')

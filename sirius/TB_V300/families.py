@@ -82,6 +82,7 @@ _family_mapping = {
     'bspec': 'dipole',
     'bn': 'dipole',
     'bp': 'dipole',
+    'bend': 'dipole',
 
     'sep': 'septum',
 

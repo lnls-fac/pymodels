@@ -101,10 +101,10 @@ def get_element_names(element = None, prefix = ''):
 
     if element.lower() == 'bend':
         _dict = {
-            prefix + 'BEND-01' : {'bend'  :  family_data['bspec']['index']},
-            prefix + 'BEND-02' : {'bend ' :  family_data['bn']['index']},
-            prefix + 'BEND-03' : {'bend ' : [family_data['bp']['index'][0]]},
-            prefix + 'BEND-04' : {'bend ' : [family_data['bp']['index'][1]]},
+            prefix + 'BEND-01' : {'bend' :  family_data['bspec']['index']},
+            prefix + 'BEND-02' : {'bend' :  family_data['bn']['index']},
+            prefix + 'BEND-03' : {'bend' : [family_data['bp']['index'][0]]},
+            prefix + 'BEND-04' : {'bend' : [family_data['bp']['index'][1]]},
         }
         return _dict
 
@@ -188,3 +188,6 @@ def get_element_names(element = None, prefix = ''):
 
 def get_magnet_names():
     return get_record_names('tbma')
+
+def get_pulsed_magnet_names():
+    return get_record_names('tbpm')
