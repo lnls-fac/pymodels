@@ -47,6 +47,11 @@ def create_lattice():
     lc3p = drift('lc3p', 0.13615)
     ld2p = drift('ld2p', 0.13933)
 
+    l18c  = drift('l18c', 0.18 - c_length/2.0)
+    l20c  = drift('l20c', 0.20 - c_length/2.0)
+    l25c  = drift('l25c', 0.25 - c_length/2.0)
+    l25cc = drift('l25cc', 0.25 - c_length)
+
     # -- lattice markers --
     start   = marker('start')
     end     = marker('end')
@@ -66,8 +71,8 @@ def create_lattice():
     bpm = marker('bpm')
 
     # -- correctors --
-    ch = marker('hcm')
-    cv = marker('vcm')
+    ch = quadrupole('hcm', c_length, 0.0)
+    cv = quadrupole('vcm', c_length, 0.0)
 
     # -- bending magnets --
     deg2rad = _math.pi/180.0
@@ -100,19 +105,19 @@ def create_lattice():
     septfi = [h1, mseptin_b, h2, eseptin_b]
 
     # -- lines --
-    la1   = [l20, l18, cv, l20, l40, l40]
-    la2   = [la2p, l20, l40, l40, l40, l40, l40, bpm, l20, ch, l25, cv, l20]
+    la1   = [l20, l18c, cv, l20c, l40, l40]
+    la2   = [la2p, l20, l40, l40, l40, l40, l40, bpm, l20c, ch, l25cc, cv, l20c]
     la3   = [l16, l16]
     lb1   = [l20, l40]
     lb2   = [l20, l40]
-    lb3   = [lb3p, l40, l40, l40, l40, l40, l40, l40, l40, l40, bpm, l20, ch, l25, cv, l25]
+    lb3   = [lb3p, l40, l40, l40, l40, l40, l40, l40, l40, l40, bpm, l20c, ch, l25cc, cv, l25c]
     lc1   = [l15, l20, l40, l40]
     lc2   = [l22, l20, l40]
-    lc3   = [lc3p, bpm, l20,ch, l25, cv, l25]
+    lc3   = [lc3p, bpm, l20c, ch, l25cc, cv, l25c]
     ld1   = [l20, l40, l40, l15, l15]
-    ld2   = [ld2p, l40, bpm, l20, cv, l25, ch, l20]
+    ld2   = [ld2p, l40, bpm, l20c, cv, l25cc, ch, l20c]
     ld3   = [l15, l15]
-    ld4   = [l15, l20, l40, l40, l40, bpm, l20, cv, l25]
+    ld4   = [l15, l20, l40, l40, l40, bpm, l20c, cv, l25c]
     linea = [septex, la1, qa1, la2, qa2, la3]
     lineb = [bend, lb1, qb1, lb2, qb2, lb3]
     linec = [bend, lc1, qc1, lc2, qc2, lc3]

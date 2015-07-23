@@ -11,7 +11,7 @@ from pyaccel.interactive import *
 import sirius.SI_V07 as si
 import sirius.BO_V901 as bo
 import sirius.TB_V300 as tb
-import sirius.TS_V400 as ts
+import sirius.TS_V500 as ts
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
