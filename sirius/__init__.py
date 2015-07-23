@@ -5,6 +5,7 @@ from . import SI_V07
 from . import TI_V00
 from . import TS_V500
 from . import TB_V300
+from . import coordinate_system
 
 with open(_os.path.join(__path__[0], 'VERSION'), 'r') as _f:
     __version__ = _f.read().strip()
