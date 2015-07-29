@@ -32,6 +32,3 @@ def get_record_names(family_name = None):
 
     else:
         raise Exception('Family name %s not found'%family_name)
-
-
- -
