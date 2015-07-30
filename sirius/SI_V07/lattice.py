@@ -63,9 +63,9 @@ def create_lattice():
     MIDA     = marker('id_enda')        # marker for the extremities of IDs in long straight sections
     MIDB     = marker('id_endb')        # marker for the extremities of IDs in short straight sections
     MOMACCEP = marker('calc_mom_accep') # marker to define points where momentum acceptance will be calculated
-    SEPT_IN = marker('sept_in')
-    KICK_IN = marker('kick_in')
-    PMM     = marker('pmm')
+    SEPT_IN  = marker('sept_in')
+    KICK_IN  = marker('kick_in')
+    PMM      = marker('pmm')
 
 
     # -- dipoles --
