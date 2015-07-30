@@ -26,6 +26,9 @@ def create_lattice():
     rfcavity = _pyaccel.elements.rfcavity
     strengths = _default_optics_mode.strengths
 
+    #kickers length
+    k_length = 0.5
+
     # -- drifts --
     LIA  = drift('lia', 2.4129)
     LIB  = drift('lib', 2.0429)
@@ -50,9 +53,9 @@ def create_lattice():
     L50  = drift('l50', 0.5000)
     L61  = drift('l61', 0.6100)
     L73  = drift('l73', 0.7300)
-    LKK  = drift('lkk', 2.2700)
-    LPMM = drift('lpmm',0.8100)
-    LCF  = drift('lcf', 0.3329)
+    LKK  = drift('lkk', 2.2700 - k_length/2.0)
+    LPMM = drift('lpmm',0.8100 - k_length)
+    LCF  = drift('lcf', 0.3329 - k_length/2.0)
 
     # -- lattice markers --
     START    = marker('start')          # start of the model
@@ -64,9 +67,9 @@ def create_lattice():
     MIDB     = marker('id_endb')        # marker for the extremities of IDs in short straight sections
     MOMACCEP = marker('calc_mom_accep') # marker to define points where momentum acceptance will be calculated
     SEPT_IN  = marker('sept_in')
-    KICK_IN  = marker('kick_in')
-    PMM      = marker('pmm')
 
+    KICK_IN  = quadrupole('kick_in', k_length, 0.0)
+    PMM      = quadrupole('pmm', k_length, 0.0)
 
     # -- dipoles --
     deg2rad = _math.pi/180.0
