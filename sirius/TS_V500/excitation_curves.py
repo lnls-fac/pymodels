@@ -14,7 +14,6 @@ def get_excitation_curve_mapping():
     Returns dict.
     """
     magnets = _record_names.get_magnet_names()
-    magnets.update(_record_names.get_pulsed_magnet_names())
 
     ec = dict()
     for name in magnets:

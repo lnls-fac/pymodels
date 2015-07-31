@@ -12,7 +12,7 @@ def get_record_names(subsystem = None):
     family_data = _families._family_data
 
     if subsystem == None:
-        subsystems = ['tbdi', 'tbps', 'tbpu']
+        subsystems = ['tbdi', 'tbps', 'tbpu', 'tbti']
         record_names_dict = {}
         for subsystem in subsystems:
             record_names_dict.update(get_record_names(subsystem))
@@ -52,6 +52,15 @@ def get_record_names(subsystem = None):
     if subsystem.lower() == 'tbpm':
         prefix = 'TBPM-'
         _dict = get_element_names(element = 'sep', prefix = prefix)
+        return _dict
+
+    if subsystem.lower() == 'tbti':
+        _dict = {
+                'TBTI-SEPTUMINJ-ENABLED':{},
+                'TBTI-SEPTUMINJ-DELAY':{},
+                'TBTI-SEPTUMEX-ENABLED':{},
+                'TBTI-SEPTUMEX-DELAY':{},
+        }
         return _dict
 
     else:
@@ -187,7 +196,6 @@ def get_element_names(element = None, prefix = ''):
 
 
 def get_magnet_names():
-    return get_record_names('tbma')
-
-def get_pulsed_magnet_names():
-    return get_record_names('tbpm')
+    _dict = get_record_names('tbma')
+    _dict.update(get_record_names('tbpm'))
+    return _dict
