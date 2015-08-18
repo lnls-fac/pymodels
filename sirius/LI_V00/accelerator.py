@@ -1,5 +1,4 @@
 
-import os as _os
 import numpy as _np
 import lnls as _lnls
 import pyaccel as _pyaccel
@@ -27,7 +26,7 @@ _folder_code = _lnls.system.folder_code
 accelerator_data = dict()
 accelerator_data['lattice_version'] = 'LI_V00'
 accelerator_data['dirs'] = {
-    'excitation_curves': _os.path.join(_folder_code, 'sirius', 'excitation_curves'),
+    'excitation_curves': _lnls.system.folder_excitation_curves,
 }
 accelerator_data['global_coupling']  = 1.00 # expected corrected value
 accelerator_data['emittance']        = 170.3329758677203e-09 # [m·rad]
