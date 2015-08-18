@@ -12,7 +12,7 @@ def get_record_names(subsystem = None):
     family_data = _families._family_data
 
     if subsystem == None:
-        subsystems = ['sipa', 'sidi', 'sirf', 'sips']
+        subsystems = ['sipa', 'sidi', 'sirf', 'sips', 'siti']
         record_names_dict = {}
         for subsystem in subsystems:
             record_names_dict.update(get_record_names(subsystem))
@@ -91,6 +91,15 @@ def get_record_names(subsystem = None):
         element_dict.update(get_element_names(element = 'qs', prefix = prefix))
 
         return element_dict
+
+    if subsystem.lower() == 'siti':
+        _dict = {
+                'SITI-KICKINJ-ENABLED':{},
+                'SITI-KICKINJ-DELAY':{},
+                'SITI-PMM-ENABLED':{},
+                'SITI-PMM-DELAY':{},
+        }
+        return _dict
 
     else:
         raise Exception('Subsystem %s not found'%subsystem)
