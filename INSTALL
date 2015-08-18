@@ -10,6 +10,7 @@ REQUIREMENTS
 ============
 
 - numpy 1.8 (>=1.8.2)
+- lnls 0.4 (>=0.4.0)
 - mathphys 0.3 (>=0.3.0)
 - pyaccel 0.5 (>=0.5.0)
 
