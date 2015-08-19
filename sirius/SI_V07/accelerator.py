@@ -33,5 +33,6 @@ accelerator_data['dirs'] = {
 }
 accelerator_data['global_coupling'] = 0.01 # expected corrected value
 accelerator_data['pressure_profile'] = _np.array([[0, 518.396],[1.333e-9]*2]) # [s [m], p [mbar]]
-accelerator_data['on_axis_kicker_nominal_deflection']  = -0.00720 # [rad]
-accelerator_data['pmm_nominal_deflection'] =  0.00283 # [rad]
+accelerator_data['on_axis_kicker_nominal_deflection']  = -0.00537 # [rad]
+accelerator_data['pmm_integ_polynom_b'] = [0.0, 0.0, 1.783421291201796e-12, -1.381477177995143e+04, -4.429672105977303e-08,
+                                  1.876651541471924e+08, 2.355070967964111e-04, -6.583350601500055e+11]
