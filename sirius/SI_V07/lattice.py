@@ -53,9 +53,10 @@ def create_lattice():
     L50  = drift('l50', 0.5000)
     L61  = drift('l61', 0.6100)
     L73  = drift('l73', 0.7300)
-    LKK  = drift('lkk', 2.2700 - k_length/2.0)
-    LPMM = drift('lpmm',0.8100 - k_length)
-    LCF  = drift('lcf', 0.3329 - k_length/2.0)
+    L80  = drift('l80', 0.8000)
+    LKK  = drift('lkk', 2.2750 - k_length/2.0)
+    LPMM = drift('lpmm',0.8070 - k_length)
+    LCF  = drift('lcf', 0.3309 - k_length/2.0)
 
     # -- lattice markers --
     START    = marker('start')          # start of the model
@@ -139,7 +140,7 @@ def create_lattice():
     M1A = M2A[::-1]                                                                                 # high beta xxM1 girder
     IDA = [GIRDER,LIA,MIDA,L50,L50,MIA,MOMACCEP,L50,L50,MIDA,LIA,GIRDER]                            # high beta ID straight section
     CAV = [GIRDER,LIA,L50,L50,MIA,MOMACCEP,RFC,L50,L50,LIA,GIRDER]                                  # high beta RF cavity straight section
-    INJ = [GIRDER,LIA,L50,L40,SEPT_IN,L10,END,START,MIA,MOMACCEP,LKK,KICK_IN,LPMM,PMM,LCF,GIRDER]   # high beta INJ straight section
+    INJ = [GIRDER,LIA,L10,L10,SEPT_IN,L80,END,START,MIA,MOMACCEP,LKK,KICK_IN,LPMM,PMM,LCF,GIRDER]   # high beta INJ straight section
     M1B = [GIRDER,L19,SDB,L15,QDB1,L24,QFB,L14,BPM,L12,SFB,L11,CF,L13,QDB2,GIRDER]                  # low beta xxM1 girder
     M2B = M1B[::-1]                                                                                 # low beta xxM2 girder
     IDB = [GIRDER,LIB,MIDB,L50,L50,MIB,MOMACCEP,L50,L50,MIDB,LIB,GIRDER]                            # low beta ID straight section
