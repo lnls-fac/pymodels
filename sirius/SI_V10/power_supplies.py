@@ -39,7 +39,6 @@ def get_magnet_mapping():
 
     sext_magnets = _record_names.get_element_names('sext', magnet_prefix)
     sext_families = _record_names.get_family_names('sext', ps_prefix)
-    print(sext_families)
     for family_name in sext_families.keys():
         element_name = family_name[5:-4]
         for magnet_name in sext_magnets.keys():

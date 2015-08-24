@@ -1770,7 +1770,7 @@ def get_element_names(element = None, prefix = ''):
         return _dict
 
     if element.lower() == 'sf2j':
-        prefix = prefix + 'SF2-'
+        prefix = prefix + 'SF2J-'
         _dict = {
             prefix + '01C2'   : {'sf2j' : [family_data['sf2j']['index'][0]]},
             prefix + '02C2'   : {'sf2j' : [family_data['sf2j']['index'][1]]},
@@ -1842,7 +1842,7 @@ def get_element_names(element = None, prefix = ''):
         return _dict
 
     if element.lower() == 'sf2k':
-        prefix = prefix + 'SF3K-'
+        prefix = prefix + 'SF2K-'
         _dict = {
             prefix + '01C4'   : {'sf2k' : [family_data['sf2k']['index'][0]]},
             prefix + '02C4'   : {'sf2k' : [family_data['sf2k']['index'][1]]},
