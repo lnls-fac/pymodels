@@ -53,7 +53,7 @@ def get_family_data(lattice):
     # chs - slow horizontal correctors
     data['chs']={}
     data['chs']['index']=[]
-    data['chs']['families'] = ['sfa','sfb','sd1j','sd2j','sf2j','sd1k','sd2k','sf2k']
+    data['chs']['families'] = ['sfa','sfb','sd1j','sd2j','sd1k','sd2k']
     for family in data['chs']['families']:
         data['chs']['index'] = data['chs']['index'] + data[family]['index']
     data['chs']['index']=sorted(data['chs']['index'])
