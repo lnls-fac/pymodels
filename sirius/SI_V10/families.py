@@ -145,7 +145,7 @@ _family_mapping = {
 
     'cf' : 'fast_corrector',
     'chf': 'fast_horizontal_corrector',
-    'cvf': 'fast_horizontal_corrector',
+    'cvf': 'fast_vertical_corrector',
 
     'chs': 'slow_horizontal_corrector',
     'cvs': 'slow_vertical_corrector',
