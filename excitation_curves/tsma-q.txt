@@ -1,7 +1,7 @@
-# Excitation curve - current to integrated gradient
-# 2015-07-02
+# Qradupole
+# harmonics       2
+# main_harmonic   2
+# units           Ampere T T
 #
-# I [A]                    GL [T]
-# ===============================================
-  -1.000000000000000e+10   -1.000000000000000e+10
-  +1.000000000000000e+10   +1.000000000000000e+10
+-1000 -1000	0
++1000 +1000	0

@@ -1,7 +1,7 @@
-# Excitation curve - current to integrated sextupolar gradient
-# 2015-07-02
+# Sextupole
+# harmonics       3
+# main_harmonic   3
+# units           Ampere T/m T/m
 #
-# I [A]                    SL [T/m]
-# ===============================================
-  -1.000000000000000e+10   -1.000000000000000e+10
-  +1.000000000000000e+10   +1.000000000000000e+10
+-1000 -1000	0
++1000 +1000	0

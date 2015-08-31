@@ -1,7 +1,7 @@
-# Excitation curve - current to deflection angle
-# 2015-07-13
+# Septum
+# harmonics       1
+# main_harmonic   1
+# units           Ampere Tm Tm
 #
-# I [A]                    Angle [rad]
-# ===============================================
-  -1.000000000000000e+10   -1.000000000000000e+10
-  +1.000000000000000e+10   +1.000000000000000e+10
+-1000	+1000	0
++1000	-1000	0
