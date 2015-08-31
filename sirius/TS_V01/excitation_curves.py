@@ -3,10 +3,11 @@ import re as _re
 from . import record_names as _record_names
 
 
-_bend_re = _re.compile('TSMA-B.*')
-_quad_re = _re.compile('TSMA-Q.*')
-_corr_re = _re.compile('TSMA-C.*')
-_sept_re = _re.compile('TSPM-S.*')
+_bend_re  = _re.compile('TSMA-B.*')
+_quad_re  = _re.compile('TSMA-Q.*')
+_hcorr_re = _re.compile('TSMA-CH.*')
+_vcorr_re = _re.compile('TSMA-CV.*')
+_sept_re  = _re.compile('TSPM-S.*')
 
 def get_excitation_curve_mapping():
     """Get mapping from magnet to excitation curve file names
@@ -18,14 +19,16 @@ def get_excitation_curve_mapping():
     ec = dict()
     for name in magnets:
         if _bend_re.match(name) is not None:
-            ec[name] = 'tsma-b-i2e.txt'
+            ec[name] = 'tsma-bend.txt'
         elif _quad_re.match(name) is not None:
-            ec[name] = 'tsma-q-i2gl.txt'
-        elif _corr_re.match(name) is not None:
-            ec[name] = 'tsma-c-i2bl.txt'
+            ec[name] = 'tsma-q.txt'
+        elif _hcorr_re.match(name) is not None:
+            ec[name] = 'tsma-ch.txt'
+        elif _vcorr_re.match(name) is not None:
+            ec[name] = 'tsma-cv.txt'
         elif _sept_re.match(name) is not None:
             ec[name] = 'tspm-sep.txt'
         else:
-            ec[name] = 'tsma-q-i2gl.txt'
+            ec[name] = 'tsma-q.txt'
 
     return ec
