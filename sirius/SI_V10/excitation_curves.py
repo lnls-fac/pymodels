@@ -2,8 +2,9 @@
 import re as _re
 from . import record_names as _record_names
 
-
-_bend_re = _re.compile('SIMA-B.*')
+_bc_re = _re.compile('SIMA-BC.*')
+_b1_re = _re.compile('SIMA-B1.*')
+_b2_re = _re.compile('SIMA-B2.*')
 _qfa_re = _re.compile('SIMA-QFA.*')
 _qfb_re = _re.compile('SIMA-QFB.*')
 _qf1_re = _re.compile('SIMA-QF1.*')
@@ -15,7 +16,8 @@ _qdb1_re = _re.compile('SIMA-QDB1.*')
 _qdb2_re = _re.compile('SIMA-QDB2.*')
 _qs_re = _re.compile('SIMA-QS.*')
 _s_re = _re.compile('SIMA-S.*')
-_c_re = _re.compile('SIMA-C.*')
+_ch_re = _re.compile('SIMA-CH.*')
+_cv_re = _re.compile('SIMA-CV.*')
 
 
 def get_excitation_curve_mapping():
@@ -27,10 +29,13 @@ def get_excitation_curve_mapping():
 
     ec = dict()
     for name in magnets:
-        if _bend_re.match(name) is not None: ec[name] = 'sima-bend.txt'
+        if _b1_re.match(name) is not None: ec[name] = 'sima-b1.txt'
+        elif _b2_re.match(name) is not None: ec[name] = 'sima-b2.txt'
+        elif _bc_re.match(name) is not None: ec[name] = 'sima-bend.txt'
         elif _qda_re.match(name) is not None: ec[name] = 'sima-q14.txt'
         elif _qdb1_re.match(name) is not None: ec[name] = 'sima-q14.txt'
         elif _qdb2_re.match(name) is not None: ec[name] = 'sima-q14.txt'
+        elif _qfa_re.match(name) is not None: ec[name] = 'sima-q20.txt'
         elif _qf1_re.match(name) is not None: ec[name] = 'sima-q20.txt'
         elif _qf2_re.match(name) is not None: ec[name] = 'sima-q20.txt'
         elif _qf3_re.match(name) is not None: ec[name] = 'sima-q20.txt'
@@ -38,7 +43,7 @@ def get_excitation_curve_mapping():
         elif _qfb_re.match(name) is not None: ec[name] = 'sima-q30.txt'
         elif _qs_re.match(name) is not None: ec[name] = 'sima-qs.txt'
         elif _s_re.match(name) is not None: ec[name] = 'sima-s.txt'
-        elif _c_re.match(name) is not None: ec[name] = 'sima-c.txt'
-        else: ec[name] = 'sima-q14.txt'
+        elif _ch_re.match(name) is not None: ec[name] = 'sima-ch.txt'
+        elif _cv_re.match(name) is not None: ec[name] = 'sima-cv.txt'
 
     return ec
