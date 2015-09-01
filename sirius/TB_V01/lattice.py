@@ -11,7 +11,7 @@ from . import optics_mode_M6 as _optics_mode_M6
 
 
 _energy = 0.15e9 #[eV]
-_default_optics_mode = _optics_mode_M6
+_default_optics_mode = _optics_mode_M1
 
 def create_lattice(optics_mode = _default_optics_mode.label):
 
@@ -191,7 +191,7 @@ def set_num_integ_steps(the_line):
     for i in range(len(the_line)):
         if the_line[i].angle:
             length = the_line[i].length
-            the_line[i].nr_steps = int(_math.ceil(length/0.035))
+            the_line[i].nr_steps = max(10, int(_math.ceil(length/0.035)))
         elif the_line[i].polynom_b[1]:
             the_line[i].nr_steps = 10
         elif the_line[i].polynom_b[2]:
