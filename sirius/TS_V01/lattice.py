@@ -30,7 +30,7 @@ def create_lattice(optics_mode = _default_optics_mode.label):
     # --- drift spaces ---
     l15      = drift('l15', 0.15)
     l16      = drift('l16', 0.16)
-    l17      = drift('l17', 0.18)
+    l17      = drift('l17', 0.17)
     l18      = drift('l18', 0.18)
     l20      = drift('l20', 0.20)
     l22      = drift('l22', 0.22)
