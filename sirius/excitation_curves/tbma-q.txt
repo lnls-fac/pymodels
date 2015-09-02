@@ -1,0 +1,7 @@
+# Qradupole
+# harmonics       2
+# main_harmonic   2
+# units           Ampere T T
+#
+-1000 -1000	0
++1000 +1000	0

@@ -71,7 +71,7 @@ def create_lattice():
     MIDA     = marker('id_enda')        # marker for the extremities of IDs in long straight sections
     MIDB     = marker('id_endb')        # marker for the extremities of IDs in short straight sections
     MOMACCEP = marker('calc_mom_accep') # marker to define points where momentum acceptance will be calculated
-    SEPT_IN  = marker('sept_in')
+    SEPT_IN  = marker('eseptinf')       # end of thin injection septum
 
     # -- dipoles --
     deg2rad = _math.pi/180.0
