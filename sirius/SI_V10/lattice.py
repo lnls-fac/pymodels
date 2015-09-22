@@ -304,12 +304,15 @@ def set_num_integ_steps(the_ring):
         if the_ring[i].angle:
             nr_steps = int(_math.ceil(the_ring[i].length/len_bends))
             the_ring[i].nr_steps = nr_steps
-        elif the_ring[i].polynom_b[1] or the_ring[i].fam_name == 'cf':
-            nr_steps = int(_math.ceil(the_ring[i].length/len_quads))
-            the_ring[i].nr_steps = nr_steps
         elif the_ring[i].polynom_b[2]:
             nr_steps = int(_math.ceil(the_ring[i].length/len_sexts))
             the_ring[i].nr_steps = nr_steps
+        elif the_ring[i].polynom_b[1] or the_ring[i].fam_name in ['cf','kick_in']:
+            nr_steps = int(_math.ceil(the_ring[i].length/len_quads))
+            #if the_ring[i].fam_name == 'kick_in':
+            #    print(nr_steps)
+            the_ring[i].nr_steps = nr_steps
+
 
 
 def set_vacuum_chamber(the_ring):
