@@ -127,6 +127,9 @@ def create_lattice(**kwargs):
     boocor    = [start, boosinj, boos, boosrf, boos, boos, fim]
     elist     = boocor
 
+    # -- remove girder
+    elist = set_girders(elist)
+
     the_ring = _pyaccel.lattice.build(elist)
 
     # -- shifts model to marker 'start'
@@ -257,5 +260,12 @@ def dipole_segmented_model():
 
     return (bd, b_length_segmented, b_model)
 
+def set_girders(the_ring):
+    the_ring = _mp.utils.flatten(the_ring)
+    new_ring = []
+    for elem in the_ring:
+        if elem.fam_name != 'girder':
+            new_ring.append(elem)
+    return new_ring
 
 _the_ring = create_lattice()
