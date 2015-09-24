@@ -267,5 +267,3 @@ def set_girders(the_ring):
         if elem.fam_name != 'girder':
             new_ring.append(elem)
     return new_ring
-
-_the_ring = create_lattice()

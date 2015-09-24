@@ -54,7 +54,6 @@ def get_family_data(lattice):
 _family_segmentation={ 'b'  : 14, 'qf' : 2, 'qd' : 1, 'sd' : 1,
                        'sf' : 1, 'bpm' : 1, 'ch' : 1, 'cv' : 1,
                        'cav' : 1 }
-_family_data = get_family_data(_lattice._the_ring)
 _family_mapping = {
     'b': 'dipole',
     'bend': 'dipole',

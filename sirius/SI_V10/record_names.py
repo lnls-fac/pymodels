@@ -2,20 +2,23 @@
 from . import families as _families
 
 
-def get_record_names(subsystem = None):
+def get_record_names(accelerator, subsystem = None):
     """Return a dictionary of record names for given subsystem
     each entry is another dictionary of model families whose
     values are the indices in the pyaccel model of the magnets
     that belong to the family. The magnet models ca be segmented,
     in which case the value is a python list of lists."""
 
-    family_data = _families._family_data
+    if not isinstance(accelerator, dict):
+        family_data = _families.get_family_data(accelerator)
+    else:
+        family_data = accelerator
 
     if subsystem == None:
         subsystems = ['sipa', 'sidi', 'sirf', 'sips', 'siti']
         record_names_dict = {}
         for subsystem in subsystems:
-            record_names_dict.update(get_record_names(subsystem))
+            record_names_dict.update(get_record_names(family_data, subsystem))
         return record_names_dict
 
     if subsystem.lower() == 'sirf':
@@ -53,9 +56,9 @@ def get_record_names(subsystem = None):
                 'SIDI-CURRENT':{},
                 'SIDI-BCURRENT':{},
         }
-        bpm_dict = get_element_names(element = 'bpm', prefix = prefix)
+        bpm_dict = get_element_names(family_data, element = 'bpm', prefix = prefix)
         _dict.update(bpm_dict)
-        bpm_fam_dict = get_family_names(family = 'bpm', prefix = prefix)
+        bpm_fam_dict = get_family_names(family_data, family = 'bpm', prefix = prefix)
         _dict.update(bpm_fam_dict)
         return _dict
 
@@ -63,16 +66,16 @@ def get_record_names(subsystem = None):
         prefix = 'SIPS-'
 
         element_dict = {}
-        element_dict.update(get_element_names(element = 'quad', prefix = prefix))
-        element_dict.update(get_element_names(element = 'sext', prefix = prefix))
-        element_dict.update(get_element_names(element = 'ch', prefix = prefix))
-        element_dict.update(get_element_names(element = 'cv', prefix = prefix))
-        element_dict.update(get_element_names(element = 'qs', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'quad', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'sext', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'ch', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'cv', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'qs', prefix = prefix))
 
         family_dict = {}
-        family_dict.update(get_family_names(family = 'bend', prefix = prefix))
-        family_dict.update(get_family_names(family = 'quad', prefix = prefix))
-        family_dict.update(get_family_names(family = 'sext', prefix = prefix))
+        family_dict.update(get_family_names(family_data, family = 'bend', prefix = prefix))
+        family_dict.update(get_family_names(family_data, family = 'quad', prefix = prefix))
+        family_dict.update(get_family_names(family_data, family = 'sext', prefix = prefix))
 
         _dict = {}
         _dict.update(element_dict)
@@ -83,12 +86,12 @@ def get_record_names(subsystem = None):
         prefix = 'SIMA-'
 
         element_dict = {}
-        element_dict.update(get_element_names(element = 'bend', prefix = prefix))
-        element_dict.update(get_element_names(element = 'quad', prefix = prefix))
-        element_dict.update(get_element_names(element = 'sext', prefix = prefix))
-        element_dict.update(get_element_names(element = 'ch', prefix = prefix))
-        element_dict.update(get_element_names(element = 'cv', prefix = prefix))
-        element_dict.update(get_element_names(element = 'qs', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'bend', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'quad', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'sext', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'ch', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'cv', prefix = prefix))
+        element_dict.update(get_element_names(family_data, element = 'qs', prefix = prefix))
 
         return element_dict
 
@@ -105,9 +108,12 @@ def get_record_names(subsystem = None):
         raise Exception('Subsystem %s not found'%subsystem)
 
 
-def get_family_names(family = None, prefix = ''):
+def get_family_names(accelerator, family = None, prefix = ''):
 
-    family_data = _families._family_data
+    if not isinstance(accelerator, dict):
+        family_data = _families.get_family_data(accelerator)
+    else:
+        family_data = accelerator
 
     if family == None:
 
@@ -119,7 +125,7 @@ def get_family_names(family = None, prefix = ''):
 
         _dict = {}
         for family in family_names:
-            _dict.update(get_family_names(family, prefix = prefix))
+            _dict.update(get_family_names(family_data, family, prefix = prefix))
         return _dict
 
     if family.lower() == 'bend':
@@ -135,14 +141,14 @@ def get_family_names(family = None, prefix = ''):
         family_names = _families.families_quadrupoles()
         _dict = {}
         for family in family_names:
-            _dict.update(get_family_names(family, prefix = prefix))
+            _dict.update(get_family_names(family_data, family, prefix = prefix))
         return _dict
 
     if family.lower() == 'sext':
         family_names = _families.families_sextupoles()
         _dict = {}
         for family in family_names:
-            _dict.update(get_family_names(family, prefix = prefix))
+            _dict.update(get_family_names(family_data, family, prefix = prefix))
         return _dict
 
     if family.lower() == 'bpm':
@@ -271,9 +277,12 @@ def get_family_names(family = None, prefix = ''):
         raise Exception('Family %s not found'%family)
 
 
-def get_element_names(element = None, prefix = ''):
+def get_element_names(accelerator, element = None, prefix = ''):
 
-    family_data = _families._family_data
+    if not isinstance(accelerator, dict):
+        family_data = _families.get_family_data(accelerator)
+    else:
+        family_data = accelerator
 
     if element == None:
         elements = []
@@ -287,28 +296,28 @@ def get_element_names(element = None, prefix = ''):
 
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'bend':
         _dict = {}
-        _dict.update(get_element_names('b1', prefix = prefix))
-        _dict.update(get_element_names('b2', prefix = prefix))
-        _dict.update(get_element_names('bc', prefix = prefix))
+        _dict.update(get_element_names(family_data, 'b1', prefix = prefix))
+        _dict.update(get_element_names(family_data, 'b2', prefix = prefix))
+        _dict.update(get_element_names(family_data, 'bc', prefix = prefix))
         return _dict
 
     if element.lower() == 'quad':
         elements = _families.families_quadrupoles()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'sext':
         elements = _families.families_sextupoles()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'corr':
@@ -316,21 +325,21 @@ def get_element_names(element = None, prefix = ''):
         elements += _families.families_vertical_correctors()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'ch':
         elements = _families.families_horizontal_correctors()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'cv':
         elements = _families.families_vertical_correctors()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'bpm':
@@ -1910,5 +1919,5 @@ def get_element_names(element = None, prefix = ''):
         raise Exception('Element %s not found'%element)
 
 
-def get_magnet_names():
-    return get_record_names('sima')
+def get_magnet_names(accelerator):
+    return get_record_names(accelerator, 'sima')

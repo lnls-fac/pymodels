@@ -311,5 +311,3 @@ def set_vacuum_chamber(the_ring):
 
     for i in range(kick_in +1):
         the_ring[i].hmin = -0.05 # Verificar valor real
-
-_the_ring = create_lattice()

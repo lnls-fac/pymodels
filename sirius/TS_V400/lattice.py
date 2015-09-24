@@ -192,5 +192,3 @@ def set_vacuum_chamber(the_line):
 
         if the_line[i].fam_name == 'esef': # vacuum chamber at the end of injection septum
             the_line[i].hmax = 0.0015
-
-_the_line=create_lattice()

@@ -113,7 +113,7 @@ _family_segmentation={
     'chf' : 1, 'cvf': 1, 'qs'  : 1, 'chs': 1, 'cvs': 1, 'qn' : 1,
     'cav' : 1,
 }
-_family_data = get_family_data(_lattice._the_ring)
+
 _family_mapping = {
     'b1': 'dipole',
     'b2': 'dipole',

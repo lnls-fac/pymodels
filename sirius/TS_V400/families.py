@@ -39,6 +39,15 @@ def get_family_data(lattice):
         if key in _family_segmentation.keys():
             data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
 
+    for key in data.keys():
+        if data[key]['nr_segs'] != 1:
+            new_index=[]
+            j=0
+            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
+                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
+                j += data[key]['nr_segs']
+            data[key]['index']=new_index
+
     #bpm
     data['bpm']['index'].pop()
 
@@ -60,15 +69,6 @@ def get_family_data(lattice):
         data['qd']['index'] = data['qd']['index'] + latt_dict[family]
     data['qd']['index']=sorted(data['qd']['index'])
 
-    for key in data.keys():
-        if data[key]['nr_segs'] != 1:
-            new_index = []
-            j = 0
-            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
-                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
-                j += data[key]['nr_segs']
-            data[key]['index'] = new_index
-
     return data
 
 
@@ -77,7 +77,7 @@ _family_segmentation={ 'bf'  : 2, 'bd'  : 2, 'seb' : 2, 'seg' : 2, 'sef' : 2,
                        'qd'  : 1, 'qa2' : 1, 'qb1' : 1, 'qd1' : 1, 'qd4' : 1,
                        'bpm' : 1, 'ch'  : 1, 'cv'  : 1,
                        }
-_family_data = get_family_data(_lattice._the_line)
+
 _family_mapping = {
     'bf': 'dipole',
     'bd': 'dipole',

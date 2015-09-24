@@ -22,5 +22,3 @@ def create_lattice(**kwargs):
     the_line = _pyaccel.lattice.build(elist)
 
     return the_line
-
-_the_line = create_lattice()

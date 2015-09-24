@@ -217,8 +217,3 @@ def set_vacuum_chamber(the_line):
         the_line[i].hmax = +0.0015
         the_line[i].vmin = -0.0035
         the_line[i].vmax = +0.0035
-
-
-
-
-_the_line=create_lattice()

@@ -37,12 +37,13 @@ def get_family_data(lattice):
             data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
 
     for key in data.keys():
-        dat = data[key]
-        nr_segments, nr_elements = dat['nr_segs'], len(dat['index']) // dat['nr_segs']
-        np_index = _np.reshape(dat['index'], (nr_elements, nr_segments))
-        dat['index'] = np_index.tolist()
-        #print(key)
-        #print(np_index)
+        if data[key]['nr_segs'] != 1:
+            new_index=[]
+            j=0
+            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
+                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
+                j += data[key]['nr_segs']
+            data[key]['index']=new_index
 
     return data
 
@@ -53,8 +54,6 @@ _family_segmentation={ 'bend'    : 2, 'septex'  : 2,
                        'qd4b'    : 1,
                        'bpm'     : 1, 'hcm'   : 1, 'vcm'  : 1,
                        }
-
-_family_data = get_family_data(_lattice._the_line)
 
 _family_mapping = {
     'bend'    : 'dipole',

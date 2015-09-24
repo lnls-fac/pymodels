@@ -2,72 +2,78 @@
 from . import families as _families
 
 
-def get_record_names(subsystem = None):
+def get_record_names(accelerator, subsystem = None):
     """Return a dictionary of record names for given subsystem
     each entry is another dictionary of model families whose
     values are the indices in the pyaccel model of the magnets
     that belong to the family. The magnet models ca be segmented,
     in which case the value is a python list of lists."""
 
-    family_data = _families._family_data
+    if not isinstance(accelerator, dict):
+        family_data = _families.get_family_data(accelerator)
+    else:
+        family_data = accelerator
 
     if subsystem == None:
         subsystems = ['tsdi', 'tsps', 'tspu']
         record_names_dict = {}
         for subsystem in subsystems:
-            record_names_dict.update(get_record_names(subsystem))
+            record_names_dict.update(get_record_names(family_data, subsystem))
         return record_names_dict
 
     if subsystem.lower() == 'tsdi':
         prefix = 'TSDI-'
-        _dict = get_element_names(element = 'bpm', prefix = prefix)
-        _dict.update(get_family_names(family = 'bpm', prefix = prefix))
+        _dict = get_element_names(family_data, element = 'bpm', prefix = prefix)
+        _dict.update(get_family_names(family_data, family = 'bpm', prefix = prefix))
         return _dict
 
     if subsystem.lower() == 'tsps':
         prefix = 'TSPS-'
 
         _dict ={}
-        _dict.update(get_element_names(element = 'bend', prefix = prefix))
-        _dict.update(get_element_names(element = 'quad', prefix = prefix))
-        _dict.update(get_element_names(element = 'ch', prefix = prefix))
-        _dict.update(get_element_names(element = 'cv', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'bend', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'quad', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'ch', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'cv', prefix = prefix))
         return _dict
 
     if subsystem.lower() == 'tspu':
         prefix = 'TSPU-'
-        _dict = get_element_names(element = 'sep', prefix = prefix)
+        _dict = get_element_names(family_data, element = 'sep', prefix = prefix)
         return _dict
 
     if subsystem.lower() == 'tsma':
         prefix = 'TSMA-'
 
         _dict ={}
-        _dict.update(get_element_names(element = 'bend', prefix = prefix))
-        _dict.update(get_element_names(element = 'quad', prefix = prefix))
-        _dict.update(get_element_names(element = 'ch', prefix = prefix))
-        _dict.update(get_element_names(element = 'cv', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'bend', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'quad', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'ch', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'cv', prefix = prefix))
         return _dict
 
     if subsystem.lower() == 'tspm':
         prefix = 'TSPM-'
-        _dict = get_element_names(element = 'sep', prefix = prefix)
+        _dict = get_element_names(family_data, element = 'sep', prefix = prefix)
         return _dict
 
     else:
         raise Exception('Subsystem %s not found'%subsystem)
 
 
-def get_family_names(family = None, prefix = ''):
+def get_family_names(accelerator, family = None, prefix = ''):
 
-    family_data = _families._family_data
+    if not isinstance(accelerator, dict):
+        family_data = _families.get_family_data(accelerator)
+    else:
+        family_data = accelerator
 
     if family == None:
         family_names = ['bpm']
 
         _dict = {}
         for family in family_names:
-            _dict.update(get_family_names(family, prefix = prefix))
+            _dict.update(get_family_names(family_data, family, prefix = prefix))
         return _dict
 
     if family.lower() == 'bpm':
@@ -81,9 +87,12 @@ def get_family_names(family = None, prefix = ''):
         raise Exception('Family name %s not found'%family)
 
 
-def get_element_names(element = None, prefix = ''):
+def get_element_names(accelerator, element = None, prefix = ''):
 
-    family_data = _families._family_data
+    if not isinstance(accelerator, dict):
+        family_data = _families.get_family_data(accelerator)
+    else:
+        family_data = accelerator
 
     if element == None:
         elements = []
@@ -96,7 +105,7 @@ def get_element_names(element = None, prefix = ''):
 
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'bend':
@@ -119,7 +128,7 @@ def get_element_names(element = None, prefix = ''):
         elements = _families.families_quadrupoles()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'corr':
@@ -127,7 +136,7 @@ def get_element_names(element = None, prefix = ''):
         elements += _families.families_vertical_correctors()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix = prefix))
         return _dict
 
     if element.lower() == 'bpm':
@@ -219,8 +228,8 @@ def get_element_names(element = None, prefix = ''):
         raise Exception('Element %s not found'%element)
 
 
-def get_magnet_names():
-    return get_record_names('tsma')
+def get_magnet_names(accelerator):
+    return get_record_names(accelerator, 'tsma')
 
-def get_pulsed_magnet_names():
-    return get_record_names('tspm')
+def get_pulsed_magnet_names(accelerator):
+    return get_record_names(accelerator, 'tspm')

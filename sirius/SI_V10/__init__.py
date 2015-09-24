@@ -19,5 +19,5 @@ default_vchamber_on  = _accelerator._default_vchamber_on
 default_optics_mode  = _lattice._default_optics_mode.label
 lattice_symmetry     = _lattice._lattice_symmetry
 lattice_version      = accelerator_data['lattice_version']
-family_data          = _families._family_data
+get_family_data      = _families.get_family_data
 family_mapping       = _families._family_mapping

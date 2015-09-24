@@ -18,12 +18,12 @@ _s_re = _re.compile('SIMA-S.*')
 _c_re = _re.compile('SIMA-C.*')
 
 
-def get_excitation_curve_mapping():
+def get_excitation_curve_mapping(accelerator):
     """Get mapping from magnet to excitation curve file names
 
     Returns dict.
     """
-    magnets = _record_names.get_magnet_names()
+    magnets = _record_names.get_magnet_names(accelerator)
 
     ec = dict()
     for name in magnets:
