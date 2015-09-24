@@ -46,7 +46,7 @@ def get_family_data(lattice):
                 new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
                 j += data[key]['nr_segs']
             data[key]['index']=new_index
-    print(data['qd2']['index'])
+
     # qd
     data['qd']={}
     data['qd']['index'] = []
