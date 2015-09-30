@@ -95,8 +95,26 @@ def get_family_data(lattice):
     # rf cavity
     data['cav']
 
+    #girders
+    girder =  get_girder_data(lattice)
+    if girder is not None:
+        data['girder'] = girder
+
     return data
 
+def get_girder_data(lattice):
+    data = dict()
+    gir = _pyaccel.lattice.find_indices(lattice,'fam_name','girder')
+    if len(gir) == 0: return None
+
+    gir_ini = gir[0::2]
+    gir_end = gir[1::2]
+    for i in range(len(gir_ini)):
+        idx = list(range(gir_ini[i],gir_end[i]+1))
+        name = 'Gir{0:03d}'.format(i)
+        data[name] = dict({'index':idx})
+
+    return data
 
 _family_segmentation={
     'b1'  : 2, 'b2' : 3, 'bc_hf' : 14, 'bc_lf' : 14,
