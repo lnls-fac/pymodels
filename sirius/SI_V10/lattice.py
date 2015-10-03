@@ -169,101 +169,99 @@ def create_lattice():
 
     # -- transport lines --
 
-    M2A = [GIR,CF,L085,SFA,L150,QFA,L124,BPM,L116,SDA,L150,QDA,GIR,L170,GIR];                           # high beta xxM2 girder
-    M1A = M2A[::-1];                                                                                    # high beta xxM1 girder
-    IDA = [L500,RBPM,LIA,L500,MIDA,L500,L500,MIA,L500,L500,MIDA,L500,LIA,RBPM,L500];                    # high beta ID straight section
-    CAV = [L500,RBPM,LIA,L500,L500,L500,MIA,RFC,L500,L500,L500,LIA,RBPM,L500];                          # high beta RF cavity straight section
-    INJ = [L500,LIA,L500,L200,SEPTIN,L800,END,START,MIA,LKK,KICKIN,LPMU, PMM, LPMD];                    # high beta INJ straight section
-    M1B = [GIR,L170,GIR,QDB1,L150,SDB,L116,BPM,L124,QFB,L150,SFB,L050,CF,L035,QDB2,GIR];                # low beta xxM1 girder
+    M2A = [GIR,CF,L085,SFA,L150,QFA,L124,BPM,L116,SDA,L150,QDA,GIR,L170,GIR]                            # high beta xxM2 girder
+    M1A = M2A[::-1]                                                                                     # high beta xxM1 girder
+    IDA = [L500,RBPM,LIA,L500,MIDA,L500,L500,MIA,L500,L500,MIDA,L500,LIA,RBPM,L500]                     # high beta ID straight section
+    CAV = [L500,RBPM,LIA,L500,L500,L500,MIA,RFC,L500,L500,L500,LIA,RBPM,L500]                           # high beta RF cavity straight section
+    INJ = [L500,LIA,L500,L200,SEPTIN,L800,END,START,MIA,LKK,KICKIN,LPMU, PMM, LPMD]                     # high beta INJ straight section
+    M1B = [GIR,L170,GIR,QDB1,L150,SDB,L116,BPM,L124,QFB,L150,SFB,L050,CF,L035,QDB2,GIR]                 # low beta xxM1 girder
     M2B = M1B[::-1]                                                                                     # low beta xxM2 girder
-    IDB = [L500,RBPM,LIB,L500,MIDB,L500,L500,MIB,L500,L500,MIDB,L500,LIB,RBPM,L500];                    # low beta ID straight section
-    C1A = [GIR,L610,GIR,SD1J,L170,QF1,L135, BPM,L125,SF1J,L230,QF2,L170,SD2J,GIR,L155,GIR,BPM,L185];    # arc sector in between B1-B2 (high beta odd-numbered straight sections)
-    C2A = [GIR,L460,GIR,SD3J,L170,QF3,L083,CF,L077,SF2J,L118,BPM,L112,QF4,GIR,L788,GIR,BPM,RBPM,L100];  # arc sector in between B2-BC (high beta odd-numbered straight sections)
-    C3A = [GIR,L888,GIR,QF4,L112,RBPM,BPM,L118,SF2K,L077,CF,L083,QF3,L170,SD3K,GIR,L275,GIR,BPM,L185];  # arc sector in between BC-B2 (high beta odd-numbered straight sections)
-    C4A = [GIR,L340,GIR,SD2K,L170,QF2,L230,SF1K,L125,BPM,L135,QF1,L170,SD1K,GIR,L610,GIR];              # arc sector in between B2-B1 (high beta odd-numbered straight sections)
-    C1B = [GIR,L610,GIR,SD1K,L170,QF1,L135, BPM,L125,SF1K,L230,QF2,L170,SD2K,GIR,L155,GIR,BPM,L185];    # arc sector in between B1-B2 (low beta even-numbered straight sections)
-    C2B = [GIR,L460,GIR,SD3K,L170,QF3,L083,CF,L077,SF2K,L118,BPM,L112,QF4,GIR,L788,GIR,BPM,RBPM,L100];  # arc sector in between B2-BC (low beta even-numbered straight sections)
-    C3B = [GIR,L888,GIR,QF4,L112,RBPM,BPM,L118,SF2J,L077,CF,L083,QF3,L170,SD3J,GIR,L275,GIR,BPM,L185];  # arc sector in between BC-B2 (low beta even-numbered straight sections)
-    C4B = [GIR,L340,GIR,SD2J,L170,QF2,L230,SF1J,L125,BPM,L135,QF1,L170,SD1J,GIR,L610,GIR];              # arc sector in between B2-B1 (low beta even-numbered straight sections)
+    IDB = [L500,RBPM,LIB,L500,MIDB,L500,L500,MIB,L500,L500,MIDB,L500,LIB,RBPM,L500]                     # low beta ID straight section
+    C1A = [GIR,L610,GIR,SD1J,L170,QF1,L135, BPM,L125,SF1J,L230,QF2,L170,SD2J,GIR,L155,GIR,BPM,L185]     # arc sector in between B1-B2 (high beta odd-numbered straight sections)
+    C2A = [GIR,L460,GIR,SD3J,L170,QF3,L083,CF,L077,SF2J,L118,BPM,L112,QF4,GIR,L788,GIR,BPM,RBPM,L100]   # arc sector in between B2-BC (high beta odd-numbered straight sections)
+    C3A = [GIR,L888,GIR,QF4,L112,RBPM,BPM,L118,SF2K,L077,CF,L083,QF3,L170,SD3K,GIR,L275,GIR,BPM,L185]   # arc sector in between BC-B2 (high beta odd-numbered straight sections)
+    C4A = [GIR,L340,GIR,SD2K,L170,QF2,L230,SF1K,L125,BPM,L135,QF1,L170,SD1K,GIR,L610,GIR]               # arc sector in between B2-B1 (high beta odd-numbered straight sections)
+    C1B = [GIR,L610,GIR,SD1K,L170,QF1,L135, BPM,L125,SF1K,L230,QF2,L170,SD2K,GIR,L155,GIR,BPM,L185]     # arc sector in between B1-B2 (low beta even-numbered straight sections)
+    C2B = [GIR,L460,GIR,SD3K,L170,QF3,L083,CF,L077,SF2K,L118,BPM,L112,QF4,GIR,L788,GIR,BPM,RBPM,L100]   # arc sector in between B2-BC (low beta even-numbered straight sections)
+    C3B = [GIR,L888,GIR,QF4,L112,RBPM,BPM,L118,SF2J,L077,CF,L083,QF3,L170,SD3J,GIR,L275,GIR,BPM,L185]   # arc sector in between BC-B2 (low beta even-numbered straight sections)
+    C4B = [GIR,L340,GIR,SD2J,L170,QF2,L230,SF1J,L125,BPM,L135,QF1,L170,SD1J,GIR,L610,GIR]               # arc sector in between B2-B1 (low beta even-numbered straight sections)
 
-    C2A_DCCT = [GIR,L460,GIR,SD3J,L170,QF3,L083,CF,L077,SF2J,L118,BPM,L112,QF4,GIR,L300,DCCT1,L488,GIR,BPM,RBPM,L100];  # arc sector in between B2-BC with DCCT1 (high beta odd-numbered straight sections)
-    C2B_DCCT = [GIR,L460,GIR,SD3K,L170,QF3,L083,CF,L077,SF2K,L118,BPM,L112,QF4,GIR,L300,DCCT2,L488,GIR,BPM,RBPM,L100];  # arc sector in between B2-BC with DCCT2 (low beta even-numbered straight sections)
+    C2A_DCCT = [GIR,L460,GIR,SD3J,L170,QF3,L083,CF,L077,SF2J,L118,BPM,L112,QF4,GIR,L300,DCCT1,L488,GIR,BPM,RBPM,L100]   # arc sector in between B2-BC with DCCT1 (high beta odd-numbered straight sections)
+    C2B_DCCT = [GIR,L460,GIR,SD3K,L170,QF3,L083,CF,L077,SF2K,L118,BPM,L112,QF4,GIR,L300,DCCT2,L488,GIR,BPM,RBPM,L100]   # arc sector in between B2-BC with DCCT2 (low beta even-numbered straight sections)
 
     # -- girders --
 
     # straight sections
-    SS_S01 = INJ; SS_S02 = IDB;
-    SS_S03 = CAV; SS_S04 = IDB;
-    SS_S05 = IDA; SS_S06 = IDB;
-    SS_S07 = IDA; SS_S08 = IDB;
-    SS_S09 = IDA; SS_S10 = IDB;
-    SS_S11 = IDA; SS_S12 = IDB;
-    SS_S13 = IDA; SS_S14 = IDB;
-    SS_S15 = IDA; SS_S16 = IDB;
-    SS_S17 = IDA; SS_S18 = IDB;
-    SS_S19 = IDA; SS_S20 = IDB;
+    SS_S01 = INJ; SS_S02 = IDB
+    SS_S03 = CAV; SS_S04 = IDB
+    SS_S05 = IDA; SS_S06 = IDB
+    SS_S07 = IDA; SS_S08 = IDB
+    SS_S09 = IDA; SS_S10 = IDB
+    SS_S11 = IDA; SS_S12 = IDB
+    SS_S13 = IDA; SS_S14 = IDB
+    SS_S15 = IDA; SS_S16 = IDB
+    SS_S17 = IDA; SS_S18 = IDB
+    SS_S19 = IDA; SS_S20 = IDB
 
     # down and upstream straight sections
-    M1_S01 = M1A; M2_S01 = M2A; M1_S02 = M1B; M2_S02 = M2B;
-    M1_S03 = M1A; M2_S03 = M2A; M1_S04 = M1B; M2_S04 = M2B;
-    M1_S05 = M1A; M2_S05 = M2A; M1_S06 = M1B; M2_S06 = M2B;
-    M1_S07 = M1A; M2_S07 = M2A; M1_S08 = M1B; M2_S08 = M2B;
-    M1_S09 = M1A; M2_S09 = M2A; M1_S10 = M1B; M2_S10 = M2B;
-    M1_S11 = M1A; M2_S11 = M2A; M1_S12 = M1B; M2_S12 = M2B;
-    M1_S13 = M1A; M2_S13 = M2A; M1_S14 = M1B; M2_S14 = M2B;
-    M1_S15 = M1A; M2_S15 = M2A; M1_S16 = M1B; M2_S16 = M2B;
-    M1_S17 = M1A; M2_S17 = M2A; M1_S18 = M1B; M2_S18 = M2B;
-    M1_S19 = M1A; M2_S19 = M2A; M1_S20 = M1B; M2_S20 = M2B;
+    M1_S01 = M1A; M2_S01 = M2A; M1_S02 = M1B; M2_S02 = M2B
+    M1_S03 = M1A; M2_S03 = M2A; M1_S04 = M1B; M2_S04 = M2B
+    M1_S05 = M1A; M2_S05 = M2A; M1_S06 = M1B; M2_S06 = M2B
+    M1_S07 = M1A; M2_S07 = M2A; M1_S08 = M1B; M2_S08 = M2B
+    M1_S09 = M1A; M2_S09 = M2A; M1_S10 = M1B; M2_S10 = M2B
+    M1_S11 = M1A; M2_S11 = M2A; M1_S12 = M1B; M2_S12 = M2B
+    M1_S13 = M1A; M2_S13 = M2A; M1_S14 = M1B; M2_S14 = M2B
+    M1_S15 = M1A; M2_S15 = M2A; M1_S16 = M1B; M2_S16 = M2B
+    M1_S17 = M1A; M2_S17 = M2A; M1_S18 = M1B; M2_S18 = M2B
+    M1_S19 = M1A; M2_S19 = M2A; M1_S20 = M1B; M2_S20 = M2B
 
     # dispersive arcs
-    C1_S01 = C1A; C2_S01 = C2A; C3_S01 = C3A; C4_S01 = C4A;
-    C1_S02 = C1B; C2_S02 = C2B; C3_S02 = C3B; C4_S02 = C4B;
-    C1_S03 = C1A; C2_S03 = C2A; C3_S03 = C3A; C4_S03 = C4A;
-    C1_S04 = C1B; C2_S04 = C2B; C3_S04 = C3B; C4_S04 = C4B;
-    C1_S05 = C1A; C2_S05 = C2A; C3_S05 = C3A; C4_S05 = C4A;
-    C1_S06 = C1B; C2_S06 = C2B; C3_S06 = C3B; C4_S06 = C4B;
-    C1_S07 = C1A; C2_S07 = C2A; C3_S07 = C3A; C4_S07 = C4A;
-    C1_S08 = C1B; C2_S08 = C2B; C3_S08 = C3B; C4_S08 = C4B;
-    C1_S09 = C1A; C2_S09 = C2A; C3_S09 = C3A; C4_S09 = C4A;
-    C1_S10 = C1B; C2_S10 = C2B; C3_S10 = C3B; C4_S10 = C4B;
-    C1_S11 = C1A; C2_S11 = C2A; C3_S11 = C3A; C4_S11 = C4A;
-    C1_S12 = C1B; C2_S12 = C2B; C3_S12 = C3B; C4_S12 = C4B;
-    C1_S13 = C1A; C2_S13 = C2A_DCCT; C3_S13 = C3A; C4_S13 = C4A;
-    C1_S14 = C1B; C2_S14 = C2B_DCCT; C3_S14 = C3B; C4_S14 = C4B;
-    C1_S15 = C1A; C2_S15 = C2A; C3_S15 = C3A; C4_S15 = C4A;
-    C1_S16 = C1B; C2_S16 = C2B; C3_S16 = C3B; C4_S16 = C4B;
-    C1_S17 = C1A; C2_S17 = C2A; C3_S17 = C3A; C4_S17 = C4A;
-    C1_S18 = C1B; C2_S18 = C2B; C3_S18 = C3B; C4_S18 = C4B;
-    C1_S19 = C1A; C2_S19 = C2A; C3_S19 = C3A; C4_S19 = C4A;
-    C1_S20 = C1B; C2_S20 = C2B; C3_S20 = C3B; C4_S20 = C4B;
+    C1_S01 = C1A; C2_S01 = C2A; C3_S01 = C3A; C4_S01 = C4A
+    C1_S02 = C1B; C2_S02 = C2B; C3_S02 = C3B; C4_S02 = C4B
+    C1_S03 = C1A; C2_S03 = C2A; C3_S03 = C3A; C4_S03 = C4A
+    C1_S04 = C1B; C2_S04 = C2B; C3_S04 = C3B; C4_S04 = C4B
+    C1_S05 = C1A; C2_S05 = C2A; C3_S05 = C3A; C4_S05 = C4A
+    C1_S06 = C1B; C2_S06 = C2B; C3_S06 = C3B; C4_S06 = C4B
+    C1_S07 = C1A; C2_S07 = C2A; C3_S07 = C3A; C4_S07 = C4A
+    C1_S08 = C1B; C2_S08 = C2B; C3_S08 = C3B; C4_S08 = C4B
+    C1_S09 = C1A; C2_S09 = C2A; C3_S09 = C3A; C4_S09 = C4A
+    C1_S10 = C1B; C2_S10 = C2B; C3_S10 = C3B; C4_S10 = C4B
+    C1_S11 = C1A; C2_S11 = C2A; C3_S11 = C3A; C4_S11 = C4A
+    C1_S12 = C1B; C2_S12 = C2B; C3_S12 = C3B; C4_S12 = C4B
+    C1_S13 = C1A; C2_S13 = C2A_DCCT; C3_S13 = C3A; C4_S13 = C4A
+    C1_S14 = C1B; C2_S14 = C2B_DCCT; C3_S14 = C3B; C4_S14 = C4B
+    C1_S15 = C1A; C2_S15 = C2A; C3_S15 = C3A; C4_S15 = C4A
+    C1_S16 = C1B; C2_S16 = C2B; C3_S16 = C3B; C4_S16 = C4B
+    C1_S17 = C1A; C2_S17 = C2A; C3_S17 = C3A; C4_S17 = C4A
+    C1_S18 = C1B; C2_S18 = C2B; C3_S18 = C3B; C4_S18 = C4B
+    C1_S19 = C1A; C2_S19 = C2A; C3_S19 = C3A; C4_S19 = C4A
+    C1_S20 = C1B; C2_S20 = C2B; C3_S20 = C3B; C4_S20 = C4B
 
     ## SECTORS # 01..20
 
-    S01 = [M1_S01, SS_S01, M2_S01, B1, C1_S01, B2, C2_S01, BC, C3_S01, B2, C4_S01, B1];
-    S02 = [M1_S02, SS_S02, M2_S02, B1, C1_S02, B2, C2_S02, BC, C3_S02, B2, C4_S02, B1];
-    S03 = [M1_S03, SS_S03, M2_S03, B1, C1_S03, B2, C2_S03, BC, C3_S03, B2, C4_S03, B1];
-    S04 = [M1_S04, SS_S04, M2_S04, B1, C1_S04, B2, C2_S04, BC, C3_S04, B2, C4_S04, B1];
-    S05 = [M1_S05, SS_S05, M2_S05, B1, C1_S05, B2, C2_S05, BC, C3_S05, B2, C4_S05, B1];
-    S06 = [M1_S06, SS_S06, M2_S06, B1, C1_S06, B2, C2_S06, BC, C3_S06, B2, C4_S06, B1];
-    S07 = [M1_S07, SS_S07, M2_S07, B1, C1_S07, B2, C2_S07, BC, C3_S07, B2, C4_S07, B1];
-    S08 = [M1_S08, SS_S08, M2_S08, B1, C1_S08, B2, C2_S08, BC, C3_S08, B2, C4_S08, B1];
-    S09 = [M1_S09, SS_S09, M2_S09, B1, C1_S09, B2, C2_S09, BC, C3_S09, B2, C4_S09, B1];
-    S10 = [M1_S10, SS_S10, M2_S10, B1, C1_S10, B2, C2_S10, BC, C3_S10, B2, C4_S10, B1];
-    S11 = [M1_S11, SS_S11, M2_S11, B1, C1_S11, B2, C2_S11, BC, C3_S11, B2, C4_S11, B1];
-    S12 = [M1_S12, SS_S12, M2_S12, B1, C1_S12, B2, C2_S12, BC, C3_S12, B2, C4_S12, B1];
-    S13 = [M1_S13, SS_S13, M2_S13, B1, C1_S13, B2, C2_S13, BC, C3_S13, B2, C4_S13, B1];
-    S14 = [M1_S14, SS_S14, M2_S14, B1, C1_S14, B2, C2_S14, BC, C3_S14, B2, C4_S14, B1];
-    S15 = [M1_S15, SS_S15, M2_S15, B1, C1_S15, B2, C2_S15, BC, C3_S15, B2, C4_S15, B1];
-    S16 = [M1_S16, SS_S16, M2_S16, B1, C1_S16, B2, C2_S16, BC, C3_S16, B2, C4_S16, B1];
-    S17 = [M1_S17, SS_S17, M2_S17, B1, C1_S17, B2, C2_S17, BC, C3_S17, B2, C4_S17, B1];
-    S18 = [M1_S18, SS_S18, M2_S18, B1, C1_S18, B2, C2_S18, BC, C3_S18, B2, C4_S18, B1];
-    S19 = [M1_S19, SS_S19, M2_S19, B1, C1_S19, B2, C2_S19, BC, C3_S19, B2, C4_S19, B1];
-    S20 = [M1_S20, SS_S20, M2_S20, B1, C1_S20, B2, C2_S20, BC, C3_S20, B2, C4_S20, B1];
+    S01 = [M1_S01, SS_S01, M2_S01, B1, C1_S01, B2, C2_S01, BC, C3_S01, B2, C4_S01, B1]
+    S02 = [M1_S02, SS_S02, M2_S02, B1, C1_S02, B2, C2_S02, BC, C3_S02, B2, C4_S02, B1]
+    S03 = [M1_S03, SS_S03, M2_S03, B1, C1_S03, B2, C2_S03, BC, C3_S03, B2, C4_S03, B1]
+    S04 = [M1_S04, SS_S04, M2_S04, B1, C1_S04, B2, C2_S04, BC, C3_S04, B2, C4_S04, B1]
+    S05 = [M1_S05, SS_S05, M2_S05, B1, C1_S05, B2, C2_S05, BC, C3_S05, B2, C4_S05, B1]
+    S06 = [M1_S06, SS_S06, M2_S06, B1, C1_S06, B2, C2_S06, BC, C3_S06, B2, C4_S06, B1]
+    S07 = [M1_S07, SS_S07, M2_S07, B1, C1_S07, B2, C2_S07, BC, C3_S07, B2, C4_S07, B1]
+    S08 = [M1_S08, SS_S08, M2_S08, B1, C1_S08, B2, C2_S08, BC, C3_S08, B2, C4_S08, B1]
+    S09 = [M1_S09, SS_S09, M2_S09, B1, C1_S09, B2, C2_S09, BC, C3_S09, B2, C4_S09, B1]
+    S10 = [M1_S10, SS_S10, M2_S10, B1, C1_S10, B2, C2_S10, BC, C3_S10, B2, C4_S10, B1]
+    S11 = [M1_S11, SS_S11, M2_S11, B1, C1_S11, B2, C2_S11, BC, C3_S11, B2, C4_S11, B1]
+    S12 = [M1_S12, SS_S12, M2_S12, B1, C1_S12, B2, C2_S12, BC, C3_S12, B2, C4_S12, B1]
+    S13 = [M1_S13, SS_S13, M2_S13, B1, C1_S13, B2, C2_S13, BC, C3_S13, B2, C4_S13, B1]
+    S14 = [M1_S14, SS_S14, M2_S14, B1, C1_S14, B2, C2_S14, BC, C3_S14, B2, C4_S14, B1]
+    S15 = [M1_S15, SS_S15, M2_S15, B1, C1_S15, B2, C2_S15, BC, C3_S15, B2, C4_S15, B1]
+    S16 = [M1_S16, SS_S16, M2_S16, B1, C1_S16, B2, C2_S16, BC, C3_S16, B2, C4_S16, B1]
+    S17 = [M1_S17, SS_S17, M2_S17, B1, C1_S17, B2, C2_S17, BC, C3_S17, B2, C4_S17, B1]
+    S18 = [M1_S18, SS_S18, M2_S18, B1, C1_S18, B2, C2_S18, BC, C3_S18, B2, C4_S18, B1]
+    S19 = [M1_S19, SS_S19, M2_S19, B1, C1_S19, B2, C2_S19, BC, C3_S19, B2, C4_S19, B1]
+    S20 = [M1_S20, SS_S20, M2_S20, B1, C1_S20, B2, C2_S20, BC, C3_S20, B2, C4_S20, B1]
 
-    anel = [S01,S02,S03,S04,S05,S06,S07,S08,S09,S10,S11,S12,S13,S14,S15,S16,S17,S18,S19,S20];
-
-    # -- remove girder
-    anel = set_girders(anel)
+    anel = [S01,S02,S03,S04,S05,S06,S07,S08,S09,S10,S11,S12,S13,S14,S15,S16,S17,S18,S19,S20]
+    anel = _mp.utils.flatten(anel)
 
     the_ring = _pyaccel.lattice.build(anel)
 
@@ -350,11 +348,3 @@ def set_vacuum_chamber(the_ring):
     for i in inj_list:
         e = the_ring[i]
         e.hmin, e.hmax, e.vmin, e.vmax = inj_vchamber
-
-def set_girders(the_ring):
-    the_ring = _mp.utils.flatten(the_ring)
-    new_ring = []
-    for elem in the_ring:
-        if elem.fam_name != 'girder':
-            new_ring.append(elem)
-    return new_ring
