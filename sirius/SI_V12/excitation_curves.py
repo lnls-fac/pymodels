@@ -18,7 +18,8 @@ _qs_re = _re.compile('SIMA-QS.*')
 _s_re = _re.compile('SIMA-S.*')
 _ch_re = _re.compile('SIMA-CH.*')
 _cv_re = _re.compile('SIMA-CV.*')
-
+_fch_re = _re.compile('SIMA-FCH.*')
+_fcv_re = _re.compile('SIMA-FCV.*')
 
 def get_excitation_curve_mapping(accelerator):
     """Get mapping from magnet to excitation curve file names
@@ -45,5 +46,7 @@ def get_excitation_curve_mapping(accelerator):
         elif _s_re.match(name) is not None: ec[name] = 'sima-s.txt'
         elif _ch_re.match(name) is not None: ec[name] = 'sima-ch.txt'
         elif _cv_re.match(name) is not None: ec[name] = 'sima-cv.txt'
+        elif _fch_re.match(name) is not None: ec[name] = 'sima-ch.txt'
+        elif _fcv_re.match(name) is not None: ec[name] = 'sima-cv.txt'
 
     return ec

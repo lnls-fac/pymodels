@@ -1480,6 +1480,131 @@ def get_element_names(accelerator, element = None, prefix = ''):
         }
         return _dict
 
+    if element.lower() == 'cf':
+        prefix = prefix + 'CF-'
+        _dict = {
+            #Sector 1
+            prefix + '01M1'   : {'cf' : [family_data['cf']['index'][79]]},
+            prefix + '01M2'   : {'cf' : [family_data['cf']['index'][0]]},
+            prefix + '01C2'   : {'cf' : [family_data['cf']['index'][1]]},
+            prefix + '01C4'   : {'cf' : [family_data['cf']['index'][2]]},
+
+            #Sector 2
+            prefix + '02M1'   : {'cf' : [family_data['cf']['index'][3]]},
+            prefix + '02M2'   : {'cf' : [family_data['cf']['index'][4]]},
+            prefix + '02C2'   : {'cf' : [family_data['cf']['index'][5]]},
+            prefix + '02C4'   : {'cf' : [family_data['cf']['index'][6]]},
+
+            #Sector 3
+            prefix + '03M1'   : {'cf' : [family_data['cf']['index'][7]]},
+            prefix + '03M2'   : {'cf' : [family_data['cf']['index'][8]]},
+            prefix + '03C2'   : {'cf' : [family_data['cf']['index'][9]]},
+            prefix + '03C4'   : {'cf' : [family_data['cf']['index'][10]]},
+
+            #Sector 4
+            prefix + '04M1'   : {'cf' : [family_data['cf']['index'][11]]},
+            prefix + '04M2'   : {'cf' : [family_data['cf']['index'][12]]},
+            prefix + '04C2'   : {'cf' : [family_data['cf']['index'][13]]},
+            prefix + '04C4'   : {'cf' : [family_data['cf']['index'][14]]},
+
+            #Sector 5
+            prefix + '05M1'   : {'cf' : [family_data['cf']['index'][15]]},
+            prefix + '05M2'   : {'cf' : [family_data['cf']['index'][16]]},
+            prefix + '05C2'   : {'cf' : [family_data['cf']['index'][17]]},
+            prefix + '05C4'   : {'cf' : [family_data['cf']['index'][18]]},
+
+            #Sector 6
+            prefix + '06M1'   : {'cf' : [family_data['cf']['index'][19]]},
+            prefix + '06M2'   : {'cf' : [family_data['cf']['index'][20]]},
+            prefix + '06C2'   : {'cf' : [family_data['cf']['index'][21]]},
+            prefix + '06C4'   : {'cf' : [family_data['cf']['index'][22]]},
+
+            #Sector 7
+            prefix + '07M1'   : {'cf' : [family_data['cf']['index'][23]]},
+            prefix + '07M2'   : {'cf' : [family_data['cf']['index'][24]]},
+            prefix + '07C2'   : {'cf' : [family_data['cf']['index'][25]]},
+            prefix + '07C4'   : {'cf' : [family_data['cf']['index'][26]]},
+
+            #Sector 8
+            prefix + '08M1'   : {'cf' : [family_data['cf']['index'][27]]},
+            prefix + '08M2'   : {'cf' : [family_data['cf']['index'][28]]},
+            prefix + '08C2'   : {'cf' : [family_data['cf']['index'][29]]},
+            prefix + '08C4'   : {'cf' : [family_data['cf']['index'][30]]},
+
+            #Sector 9
+            prefix + '09M1'   : {'cf' : [family_data['cf']['index'][31]]},
+            prefix + '09M2'   : {'cf' : [family_data['cf']['index'][32]]},
+            prefix + '09C2'   : {'cf' : [family_data['cf']['index'][33]]},
+            prefix + '09C4'   : {'cf' : [family_data['cf']['index'][34]]},
+
+            #Sector 10
+            prefix + '10M1'   : {'cf' : [family_data['cf']['index'][35]]},
+            prefix + '10M2'   : {'cf' : [family_data['cf']['index'][36]]},
+            prefix + '10C2'   : {'cf' : [family_data['cf']['index'][37]]},
+            prefix + '10C4'   : {'cf' : [family_data['cf']['index'][38]]},
+
+            #Sector 11
+            prefix + '11M1'   : {'cf' : [family_data['cf']['index'][39]]},
+            prefix + '11M2'   : {'cf' : [family_data['cf']['index'][40]]},
+            prefix + '11C2'   : {'cf' : [family_data['cf']['index'][41]]},
+            prefix + '11C4'   : {'cf' : [family_data['cf']['index'][42]]},
+
+            #Sector 12
+            prefix + '12M1'   : {'cf' : [family_data['cf']['index'][43]]},
+            prefix + '12M2'   : {'cf' : [family_data['cf']['index'][44]]},
+            prefix + '12C2'   : {'cf' : [family_data['cf']['index'][45]]},
+            prefix + '12C4'   : {'cf' : [family_data['cf']['index'][46]]},
+
+            #Sector 13
+            prefix + '13M1'   : {'cf' : [family_data['cf']['index'][47]]},
+            prefix + '13M2'   : {'cf' : [family_data['cf']['index'][48]]},
+            prefix + '13C2'   : {'cf' : [family_data['cf']['index'][49]]},
+            prefix + '13C4'   : {'cf' : [family_data['cf']['index'][50]]},
+
+            #Sector 14
+            prefix + '14M1'   : {'cf' : [family_data['cf']['index'][51]]},
+            prefix + '14M2'   : {'cf' : [family_data['cf']['index'][52]]},
+            prefix + '14C2'   : {'cf' : [family_data['cf']['index'][53]]},
+            prefix + '14C4'   : {'cf' : [family_data['cf']['index'][54]]},
+
+            #Sector 15
+            prefix + '15M1'   : {'cf' : [family_data['cf']['index'][55]]},
+            prefix + '15M2'   : {'cf' : [family_data['cf']['index'][56]]},
+            prefix + '15C2'   : {'cf' : [family_data['cf']['index'][57]]},
+            prefix + '15C4'   : {'cf' : [family_data['cf']['index'][58]]},
+
+            #Sector 16
+            prefix + '16M1'   : {'cf' : [family_data['cf']['index'][59]]},
+            prefix + '16M2'   : {'cf' : [family_data['cf']['index'][60]]},
+            prefix + '16C2'   : {'cf' : [family_data['cf']['index'][61]]},
+            prefix + '16C4'   : {'cf' : [family_data['cf']['index'][62]]},
+
+            #Sector 17
+            prefix + '17M1'   : {'cf' : [family_data['cf']['index'][63]]},
+            prefix + '17M2'   : {'cf' : [family_data['cf']['index'][64]]},
+            prefix + '17C2'   : {'cf' : [family_data['cf']['index'][65]]},
+            prefix + '17C4'   : {'cf' : [family_data['cf']['index'][66]]},
+
+            #Sector 18
+            prefix + '18M1'   : {'cf' : [family_data['cf']['index'][67]]},
+            prefix + '18M2'   : {'cf' : [family_data['cf']['index'][68]]},
+            prefix + '18C2'   : {'cf' : [family_data['cf']['index'][69]]},
+            prefix + '18C4'   : {'cf' : [family_data['cf']['index'][70]]},
+
+            #Sector 19
+            prefix + '19M1'   : {'cf' : [family_data['cf']['index'][71]]},
+            prefix + '19M2'   : {'cf' : [family_data['cf']['index'][72]]},
+            prefix + '19C2'   : {'cf' : [family_data['cf']['index'][73]]},
+            prefix + '19C4'   : {'cf' : [family_data['cf']['index'][74]]},
+
+            #Sector 20
+            prefix + '20M1'   : {'cf' : [family_data['cf']['index'][75]]},
+            prefix + '20M2'   : {'cf' : [family_data['cf']['index'][76]]},
+            prefix + '20C2'   : {'cf' : [family_data['cf']['index'][77]]},
+            prefix + '20C4'   : {'cf' : [family_data['cf']['index'][78]]},
+        }
+        return _dict
+
     if element.lower() == 'sfa':
         prefix = prefix + 'SFA-'
         _dict = {
