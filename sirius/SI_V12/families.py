@@ -1,8 +1,8 @@
 """Element family definitions"""
 
-from . import lattice as _lattice
+import numpy as _numpy
 import pyaccel as _pyaccel
-
+from . import lattice as _lattice
 
 def families_dipoles():
     return ['bend',]
@@ -35,28 +35,50 @@ def get_family_data(lattice):
 
     Returns dict.
     """
-    latt_dict=_pyaccel.lattice.find_dict(lattice,'fam_name')
-    data={}
+    latt_dict = _pyaccel.lattice.find_dict(lattice,'fam_name')
+    data = {}
     for key in latt_dict.keys():
         if key in _family_segmentation.keys():
-            data[key]={'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
+            data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
 
     # ch - slow horizontal correctors
     data['ch']={}
-    data['ch']['index'] = []
-    data['ch']['index'] = data['ch']['index'] + data['sfa']['index']
-    data['ch']['index'] = data['ch']['index'] + data['sfb']['index']
-    data['ch']['index'] = data['ch']['index'] + data['sd1j']['index']
-    data['ch']['index'] = data['ch']['index'] + data['sf2j']['index']
-    data['ch']['index'] = data['ch']['index'] + data['sd1k']['index']
-    data['ch']['index'] = data['ch']['index'] + data['sf2k']['index']
-    data['ch']['index']=sorted(data['ch']['index'])
+    idx = []
+    idx = idx + data['sfa']['index']
+    idx = idx + data['sfb']['index']
+    idx = idx + data['sd1j']['index']
+    idx = idx + data['sf2j']['index']
+    idx = idx + data['sd1k']['index']
+    idx = idx + data['sf2k']['index']
+    data['ch']['index'] = sorted(idx)
     data['ch']['nr_segs'] = _family_segmentation['ch']
 
     # cv - slow vertical correctors
+    idx = []
+    idx = idx + data['sfa']['index']
+    idx = idx + data['sd1j']['index']
+    idx = idx + data['sd3j']['index']
+    idx = idx + data['sfb']['index']
+    idx = idx + data['sd1k']['index']
+    idx = idx + data['sd3k']['index']
+    idx = idx + data['cv']['index']
+    indices = sorted(data['sf2k']['index'] + data['sf2j']['index'])
+    dipoles = sorted(data['b2']['index'] + data['bc_lf']['index'])
+    dipoles = _numpy.array(dipoles)
+    for i in indices:
+        el, *_ = _numpy.nonzero(dipoles > i)
+        if len(el) != 0:
+            if lattice[dipoles[el[0]]].fam_name == 'b2':
+                idx += [i]
+        else:
+            el, *_ = _numpy.nonzero(dipoles < i)
+            if len(el) != 0:
+                if lattice[dipoles[el[-1]]].fam_name == 'bc_lf':
+                    idx += [i]
+            else:
+                raise Exception('Problem with vertical corrector index definition.')
     data['cv']={}
-    data['cv']['index']=[]
-    data['cv']['index']=sorted(data['cv']['index'])
+    data['cv']['index'] = sorted(idx)
     data['cv']['nr_segs'] = _family_segmentation['cv']
 
     # fch - fast horizontal correctors
@@ -71,37 +93,37 @@ def get_family_data(lattice):
 
     # qs - skew quad correctors
     data['qs']={}
-    data['qs']['index'] = []
-    data['qs']['index'] = data['qs']['index'] + data['sda']['index']
-    data['qs']['index'] = data['qs']['index'] + data['sfa']['index']
-    data['qs']['index'] = data['qs']['index'] + data['sf1j']['index']
-    data['qs']['index'] = data['qs']['index'] + data['sf1k']['index']
-    data['qs']['index'] = sorted(data['qs']['index'])
+    idx = []
+    idx = idx + data['sda']['index']
+    idx = idx + data['sfa']['index']
+    idx = idx + data['sf1j']['index']
+    idx = idx + data['sf1k']['index']
+    data['qs']['index'] = sorted(idx)
     data['qs']['nr_segs'] = _family_segmentation['qs']
 
     # qn - quadrupoles knobs for optics correction
     data['qn']={}
-    data['qn']['index'] = []
-    data['qn']['index'] = data['qn']['index'] + data['qfa']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qda']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qf1']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qf2']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qf3']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qf4']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qdb1']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qfb']['index']
-    data['qn']['index'] = data['qn']['index'] + data['qdb2']['index']
-    data['qn']['index'] = sorted(data['qn']['index'])
+    idx = []
+    idx = idx + data['qfa']['index']
+    idx = idx + data['qda']['index']
+    idx = idx + data['qf1']['index']
+    idx = idx + data['qf2']['index']
+    idx = idx + data['qf3']['index']
+    idx = idx + data['qf4']['index']
+    idx = idx + data['qdb1']['index']
+    idx = idx + data['qfb']['index']
+    idx = idx + data['qdb2']['index']
+    data['qn']['index'] = sorted(idx)
     data['qn']['nr_segs'] = _family_segmentation['qn']
 
     for key in data.keys():
         if data[key]['nr_segs'] != 1:
-            new_index=[]
-            j=0
+            new_index = []
+            j = 0
             for i in range(len(data[key]['index'])//data[key]['nr_segs']):
                 new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
                 j += data[key]['nr_segs']
-            data[key]['index']=new_index
+            data[key]['index'] = new_index
 
     return data
 
