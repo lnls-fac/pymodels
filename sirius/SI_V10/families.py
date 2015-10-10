@@ -103,7 +103,7 @@ def get_family_data(lattice):
     return data
 
 def get_girder_data(lattice):
-    data = dict()
+    data = []
     gir = _pyaccel.lattice.find_indices(lattice,'fam_name','girder')
     if len(gir) == 0: return None
 
@@ -111,8 +111,7 @@ def get_girder_data(lattice):
     gir_end = gir[1::2]
     for i in range(len(gir_ini)):
         idx = list(range(gir_ini[i],gir_end[i]+1))
-        name = 'Gir{0:03d}'.format(i)
-        data[name] = dict({'index':idx})
+        data.append(dict({'index':idx}))
 
     return data
 

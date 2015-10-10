@@ -76,7 +76,6 @@ def create_lattice():
     END      = marker('end')            # end of the model
     MIA      = marker('mia')            # center of long straight sections (even-numbered)
     MIB      = marker('mib')            # center of short straight sections (odd-numbered)
-    GIRDER   = marker('girder')         # marker used to delimit girders. one marker at begin and another at end of girder
     MIDA     = marker('id_enda')        # marker for the extremities of IDs in long straight sections
     MIDB     = marker('id_endb')        # marker for the extremities of IDs in short straight sections
     MOMACCEP = marker('calc_mom_accep') # marker to define points where momentum acceptance will be calculated
@@ -272,9 +271,7 @@ def create_lattice():
     S20 = [M1_S20, SS_S20, M2_S20, B1, C1_S20, B2, C2_S20, BC, C3_S20, B2, C4_S20, B1]
 
     anel = [S01,S02,S03,S04,S05,S06,S07,S08,S09,S10,S11,S12,S13,S14,S15,S16,S17,S18,S19,S20]
-
-    # -- remove girder
-    anel = set_girders(anel)
+    anel = _mp.utils.flatten(anel)
 
     the_ring = _pyaccel.lattice.build(anel)
 
@@ -361,11 +358,3 @@ def set_vacuum_chamber(the_ring):
     for i in inj_list:
         e = the_ring[i]
         e.hmin, e.hmax, e.vmin, e.vmax = inj_vchamber
-
-def set_girders(the_ring):
-    the_ring = _mp.utils.flatten(the_ring)
-    new_ring = []
-    for elem in the_ring:
-        if elem.fam_name != 'girder':
-            new_ring.append(elem)
-    return new_ring

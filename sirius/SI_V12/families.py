@@ -42,26 +42,21 @@ def get_family_data(lattice):
             data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
 
     # ch - slow horizontal correctors
-    data['ch']={}
     idx = []
-    idx = idx + data['sfa']['index']
-    idx = idx + data['sfb']['index']
-    idx = idx + data['sd1j']['index']
-    idx = idx + data['sf2j']['index']
-    idx = idx + data['sd1k']['index']
-    idx = idx + data['sf2k']['index']
-    data['ch']['index'] = sorted(idx)
-    data['ch']['nr_segs'] = _family_segmentation['ch']
+    fams = ['sfa','sfb','sd1j','sf2j','sd1k','sf2k']
+    for fam in fams:
+        idx.extend(data[fam]['index'])
+    data['ch']={'index':sorted(idx), 'nr_segs':_family_segmentation['ch']}
 
     # cv - slow vertical correctors
     idx = []
-    idx = idx + data['sfa']['index']
-    idx = idx + data['sd1j']['index']
-    idx = idx + data['sd3j']['index']
-    idx = idx + data['sfb']['index']
-    idx = idx + data['sd1k']['index']
-    idx = idx + data['sd3k']['index']
-    idx = idx + data['cv']['index']
+    fams = ['sfa','sd1j','sd3j','sfb','sd1k','sd3k','cv']
+    for fam in fams:
+            idx.extend(data[fam]['index'])
+    #In this version of the lattice, there is a cv corrector in the sextupoles
+    #sf2 of every sector C3 of the arc of the lattice. It means the corrector
+    #alternates between a SF2J and SF2K. The logic bellow uses the dipoles B2
+    #and BC_LF to determine where to put the corrector.
     indices = sorted(data['sf2k']['index'] + data['sf2j']['index'])
     dipoles = sorted(data['b2']['index'] + data['bc_lf']['index'])
     dipoles = _numpy.array(dipoles)
@@ -77,44 +72,28 @@ def get_family_data(lattice):
                     idx += [i]
             else:
                 raise Exception('Problem with vertical corrector index definition.')
-    data['cv']={}
-    data['cv']['index'] = sorted(idx)
-    data['cv']['nr_segs'] = _family_segmentation['cv']
+    data['cv']={'index':sorted(idx), 'nr_segs':_family_segmentation['cv']}
 
     # fch - fast horizontal correctors
-    data['fch']={}
-    data['fch']['index'] = data['cf']['index']
-    data['fch']['nr_segs'] = _family_segmentation['fch']
+    data['fch']={'index':data['cf']['index'], 'nr_segs':_family_segmentation['fch']}
 
     # fcv - fast vertical correctors
-    data['fcv']={}
-    data['fcv']['index'] = data['cf']['index']
-    data['fcv']['nr_segs'] = _family_segmentation['fcv']
+    data['fcv']={'index':data['cf']['index'], 'nr_segs':_family_segmentation['fcv']}
 
     # qs - skew quad correctors
-    data['qs']={}
     idx = []
-    idx = idx + data['sda']['index']
-    idx = idx + data['sfa']['index']
-    idx = idx + data['sf1j']['index']
-    idx = idx + data['sf1k']['index']
-    data['qs']['index'] = sorted(idx)
-    data['qs']['nr_segs'] = _family_segmentation['qs']
+    fams = ['sfa','sda','sf1j','sf1k']
+    for fam in fams:
+            idx.extend(data[fam]['index'])
+    data['qs']={'index':sorted(idx), 'nr_segs':_family_segmentation['qs']}
 
     # qn - quadrupoles knobs for optics correction
-    data['qn']={}
     idx = []
-    idx = idx + data['qfa']['index']
-    idx = idx + data['qda']['index']
-    idx = idx + data['qf1']['index']
-    idx = idx + data['qf2']['index']
-    idx = idx + data['qf3']['index']
-    idx = idx + data['qf4']['index']
-    idx = idx + data['qdb1']['index']
-    idx = idx + data['qfb']['index']
-    idx = idx + data['qdb2']['index']
-    data['qn']['index'] = sorted(idx)
-    data['qn']['nr_segs'] = _family_segmentation['qn']
+    fams = ['qfa','qda','qf1','qf2','qf3','qf4','qdb1','qfb','qdb2']
+    for fam in fams:
+            idx.extend(data[fam]['index'])
+    data['qn']={'index':sorted(idx), 'nr_segs':_family_segmentation['qn']}
+
 
     for key in data.keys():
         if data[key]['nr_segs'] != 1:
@@ -124,6 +103,23 @@ def get_family_data(lattice):
                 new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
                 j += data[key]['nr_segs']
             data[key]['index'] = new_index
+
+    #girders
+    girder =  get_girder_data(lattice)
+    if girder is not None: data['girder'] = girder
+
+    return data
+
+def get_girder_data(lattice):
+    data = []
+    gir = _pyaccel.lattice.find_indices(lattice,'fam_name','girder')
+    if len(gir) == 0: return None
+
+    gir_ini = gir[0::2]
+    gir_end = gir[1::2]
+    for i in range(len(gir_ini)):
+        idx = list(range(gir_ini[i],gir_end[i]+1))
+        data.append(dict({'index':idx}))
 
     return data
 
