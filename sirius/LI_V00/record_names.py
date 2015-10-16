@@ -32,20 +32,12 @@ def get_record_names(accelerator, subsystem=None):
     else:
         raise Exception('Subsystem %s not found'%subsystem)
 
-def get_family_names(accelerator, family=None, prefix=''):
-    if not isinstance(accelerator, dict):
-        family_data = _families.get_family_data(accelerator)
-    else:
-        family_data = accelerator
+def get_family_names(accelerator, family=None, prefix='',suffix=''):
     _dict = {}
     return _dict
 
 
-def get_element_names(accelerator, element=None, prefix=''):
-    if not isinstance(accelerator, dict):
-        family_data = _families.get_family_data(accelerator)
-    else:
-        family_data = accelerator
+def get_element_names(accelerator, element=None, prefix='',suffix=''):
     _dict = {}
     return _dict
 

@@ -23,38 +23,41 @@ def get_record_names(accelerator, subsystem = None):
 
     if subsystem.lower() == 'tbdi':
         prefix = 'TBDI-'
-        _dict = get_element_names(family_data, element = 'bpm', prefix = prefix)
-        _dict.update(get_family_names(family_data, family = 'bpm', prefix = prefix))
+        suffix = ''
+        _dict = get_element_names(family_data, element = 'bpm', prefix=prefix, suffix=suffix)
+        _dict.update(get_family_names(family_data, family = 'bpm', prefix=prefix, suffix=suffix))
         return _dict
 
     if subsystem.lower() == 'tbps':
         prefix = 'TBPS-'
+        suffix = ''
 
         _dict ={}
-        _dict.update(get_element_names(family_data, element = 'bend', prefix = prefix))
-        _dict.update(get_element_names(family_data, element = 'quad', prefix = prefix))
-        _dict.update(get_element_names(family_data, element = 'hcm', prefix = prefix))
-        _dict.update(get_element_names(family_data, element = 'vcm', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'bend', prefix=prefix, suffix=suffix))
+        _dict.update(get_element_names(family_data, element = 'quad',prefix=prefix, suffix=suffix))
+        _dict.update(get_element_names(family_data, element = 'corr', prefix=prefix, suffix=suffix))
         return _dict
 
     if subsystem.lower() == 'tbpu':
         prefix = 'TBPU-'
-        _dict = get_element_names(family_data, element = 'sep', prefix = prefix)
+        suffix = ''
+        _dict = get_element_names(family_data, element = 'sep', prefix=prefix, suffix=suffix)
         return _dict
 
     if subsystem.lower() == 'tbma':
         prefix = 'TBMA-'
+        suffix = ''
 
         _dict ={}
-        _dict.update(get_element_names(family_data, element = 'bend', prefix = prefix))
-        _dict.update(get_element_names(family_data, element = 'quad', prefix = prefix))
-        _dict.update(get_element_names(family_data, element = 'hcm', prefix = prefix))
-        _dict.update(get_element_names(family_data, element = 'vcm', prefix = prefix))
+        _dict.update(get_element_names(family_data, element = 'bend', prefix=prefix, suffix=suffix))
+        _dict.update(get_element_names(family_data, element = 'quad', prefix=prefix, suffix=suffix))
+        _dict.update(get_element_names(family_data, element = 'corr', prefix=prefix, suffix=suffix))
         return _dict
 
     if subsystem.lower() == 'tbpm':
         prefix = 'TBPM-'
-        _dict = get_element_names(family_data, element = 'sep', prefix = prefix)
+        suffix = ''
+        _dict = get_element_names(family_data, element = 'sep', prefix=prefix, suffix=suffix)
         return _dict
 
     if subsystem.lower() == 'tbti':
@@ -70,7 +73,7 @@ def get_record_names(accelerator, subsystem = None):
         raise Exception('Subsystem %s not found'%subsystem)
 
 
-def get_family_names(accelerator, family = None, prefix = ''):
+def get_family_names(accelerator, family = None, prefix='', suffix=''):
 
     if not isinstance(accelerator, dict):
         family_data = _families.get_family_data(accelerator)
@@ -82,13 +85,13 @@ def get_family_names(accelerator, family = None, prefix = ''):
 
         _dict = {}
         for family in family_names:
-            _dict.update(get_family_names(family_data, family, prefix = prefix))
+            _dict.update(get_family_names(family_data, family, prefix=prefix, suffix=suffix))
         return _dict
 
     if family.lower() == 'bpm':
         indices = family_data['bpm']['index']
-        _dict = {prefix + 'BPM-FAM-X': {'bpm': indices},
-                 prefix + 'BPM-FAM-Y': {'bpm': indices}
+        _dict = {prefix + 'BPM-FAM-X' + suffix : {'bpm': indices},
+                 prefix + 'BPM-FAM-Y' + suffix : {'bpm': indices}
                 }
         return _dict
 
@@ -96,7 +99,7 @@ def get_family_names(accelerator, family = None, prefix = ''):
         raise Exception('Family name %s not found'%family)
 
 
-def get_element_names(accelerator, element = None, prefix = ''):
+def get_element_names(accelerator, element = None, prefix='', suffix=''):
 
     if not isinstance(accelerator, dict):
         family_data = _families.get_family_data(accelerator)
@@ -114,28 +117,28 @@ def get_element_names(accelerator, element = None, prefix = ''):
 
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(family_data, element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
         return _dict
 
     if element.lower() == 'bend':
         _dict = {
-            prefix + 'BEND-01' : {'bend' :  family_data['spec']['index']},
-            prefix + 'BEND-02' : {'bend' :  family_data['bn']['index']},
-            prefix + 'BEND-03' : {'bend' : [family_data['bp']['index'][0]]},
-            prefix + 'BEND-04' : {'bend' : [family_data['bp']['index'][1]]},
+            prefix + 'BEND-01' + suffix : {'bend' :  family_data['spec']['index']},
+            prefix + 'BEND-02' + suffix : {'bend' :  family_data['bn']['index']},
+            prefix + 'BEND-03' + suffix : {'bend' : [family_data['bp']['index'][0]]},
+            prefix + 'BEND-04' + suffix : {'bend' : [family_data['bp']['index'][1]]},
         }
         return _dict
 
     if element.lower() == 'quad':
         _dict = {}
-        _dict.update(get_element_names(family_data, 'qd', prefix = prefix))
-        _dict.update(get_element_names(family_data, 'qf', prefix = prefix))
-        _dict.update(get_element_names(family_data, 'triplet', prefix = prefix))
+        _dict.update(get_element_names(family_data, 'qd', prefix=prefix, suffix=suffix))
+        _dict.update(get_element_names(family_data, 'qf', prefix=prefix, suffix=suffix))
+        _dict.update(get_element_names(family_data, 'triplet', prefix=prefix, suffix=suffix))
         return _dict
 
     if element.lower() == 'sep':
         _dict ={
-            prefix + 'SEPIN-05' : {'sep' : family_data['sep']['index']},
+            prefix + 'SEPIN-05' + suffix : {'sep' : family_data['sep']['index']},
         }
         return _dict
 
@@ -144,67 +147,67 @@ def get_element_names(accelerator, element = None, prefix = ''):
         elements += _families.families_vertical_correctors()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(family_data, element, prefix = prefix))
+            _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
         return _dict
 
     if element.lower() == 'bpm':
         indices = family_data['bpm']['index']
         _dict = {
-            prefix + 'BPM-02'   : {'bpm' : [indices[0]]},
-            prefix + 'BPM-03-A' : {'bpm' : [indices[1]]},
-            prefix + 'BPM-03-B' : {'bpm' : [indices[2]]},
-            prefix + 'BPM-04'   : {'bpm' : [indices[3]]},
-            prefix + 'BPM-05'   : {'bpm' : [indices[4]]},
+            prefix + 'BPM-02'   + suffix : {'bpm' : [indices[0]]},
+            prefix + 'BPM-03-A' + suffix : {'bpm' : [indices[1]]},
+            prefix + 'BPM-03-B' + suffix : {'bpm' : [indices[2]]},
+            prefix + 'BPM-04'   + suffix : {'bpm' : [indices[3]]},
+            prefix + 'BPM-05'   + suffix : {'bpm' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'qf':
         indices = family_data['qf']['index']
         _dict = {
-            prefix + 'QF-02'   : {'qf' : [indices[0]]},
-            prefix + 'QF-03-A' : {'qf' : [indices[1]]},
-            prefix + 'QF-03-B' : {'qf' : [indices[2]]},
-            prefix + 'QF-04'   : {'qf' : [indices[3]]},
-            prefix + 'QF-05'   : {'qf' : [indices[4]]},
+            prefix + 'QF-02'   + suffix : {'qf' : [indices[0]]},
+            prefix + 'QF-03-A' + suffix : {'qf' : [indices[1]]},
+            prefix + 'QF-03-B' + suffix : {'qf' : [indices[2]]},
+            prefix + 'QF-04'   + suffix : {'qf' : [indices[3]]},
+            prefix + 'QF-05'   + suffix : {'qf' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'qd':
         indices = family_data['qd']['index']
         _dict = {
-            prefix + 'QD-02'   : {'qd' : [indices[0]]},
-            prefix + 'QD-03-A' : {'qd' : [indices[1]]},
-            prefix + 'QD-03-B' : {'qd' : [indices[2]]},
-            prefix + 'QD-04'   : {'qd' : [indices[3]]},
-            prefix + 'QD-05'   : {'qd' : [indices[4]]},
+            prefix + 'QD-02'   + suffix : {'qd' : [indices[0]]},
+            prefix + 'QD-03-A' + suffix : {'qd' : [indices[1]]},
+            prefix + 'QD-03-B' + suffix : {'qd' : [indices[2]]},
+            prefix + 'QD-04'   + suffix : {'qd' : [indices[3]]},
+            prefix + 'QD-05'   + suffix : {'qd' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'triplet':
         indices = family_data['triplet']['index']
         _dict = {
-            prefix + 'Q1A-01-A' : {'triplet': [indices[0]]},
-            prefix + 'Q1B-01'   : {'triplet': [indices[1]]},
-            prefix + 'Q1A-01-B' : {'triplet': [indices[2]]},
-            prefix + 'Q1C-01'   : {'triplet': [indices[3]]},
+            prefix + 'Q1A-01-A' + suffix : {'triplet': [indices[0]]},
+            prefix + 'Q1B-01'   + suffix : {'triplet': [indices[1]]},
+            prefix + 'Q1A-01-B' + suffix : {'triplet': [indices[2]]},
+            prefix + 'Q1C-01'   + suffix : {'triplet': [indices[3]]},
         }
         return _dict
 
     if element.lower() == 'hcm':
         _dict = {
-            prefix + 'CH-03': {'hcm' : [family_data['hcm']['index'][0]]},
+            prefix + 'CH-03' + suffix : {'hcm' : [family_data['hcm']['index'][0]]},
         }
         return _dict
 
     if element.lower() == 'vcm':
         indices = family_data['vcm']['index']
         _dict = {
-            prefix + 'CV-02-A' : {'vcm' : [indices[0]]},
-            prefix + 'CV-02-B' : {'vcm' : [indices[1]]},
-            prefix + 'CV-03-A' : {'vcm' : [indices[2]]},
-            prefix + 'CV-03-B' : {'vcm' : [indices[3]]},
-            prefix + 'CV-05-A' : {'vcm' : [indices[4]]},
-            prefix + 'CV-05-B' : {'vcm' : [indices[5]]},
+            prefix + 'CV-02-A' + suffix : {'vcm' : [indices[0]]},
+            prefix + 'CV-02-B' + suffix : {'vcm' : [indices[1]]},
+            prefix + 'CV-03-A' + suffix : {'vcm' : [indices[2]]},
+            prefix + 'CV-03-B' + suffix : {'vcm' : [indices[3]]},
+            prefix + 'CV-05-A' + suffix : {'vcm' : [indices[4]]},
+            prefix + 'CV-05-B' + suffix : {'vcm' : [indices[5]]},
         }
         return _dict
     else:
