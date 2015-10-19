@@ -48,6 +48,27 @@ def get_family_data(lattice):
                 j += data[key]['nr_segs']
             data[key]['index'] = new_index
 
+    #girders
+    girder =  get_girder_data(lattice)
+    if girder is not None: data['girder'] = girder
+
+    return data
+
+def get_girder_data(lattice):
+    data = []
+    girders = _pyaccel.lattice.find_indices(lattice,'fam_name','girder')
+    if len(girders) == 0: return None
+
+    idx = list(range(girders[-1], len(lattice))) + list(range(girders[0]))
+    data.append(dict({'index':idx}))
+
+    gir = girders[1:-1]
+    gir_ini = gir[0::2]
+    gir_end = gir[1::2]
+    for i in range(len(gir_ini)):
+        idx = list(range(gir_ini[i],gir_end[i]+1))
+        data.append(dict({'index':idx}))
+
     return data
 
 

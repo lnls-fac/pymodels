@@ -67,7 +67,7 @@ def create_lattice(**kwargs):
     GIR  = marker('girder')
     SIN  = marker('sept_in')
     SEX  = marker('sept_ex')
-    mqf  = marker('mqf')
+    MQF  = marker('mqf')
     BPM  = marker('bpm')
 
     KIN  = quadrupole('kick_in', 0.50000, 0.0)
@@ -78,7 +78,7 @@ def create_lattice(**kwargs):
     SD   = sextupole ('sd',      0.10500, strengths['sd'])
     QD   = quadrupole('qd',      0.10074, strengths['qd'])
     QFI  = quadrupole('qf',      0.11373, strengths['qf'])
-    QF   = [QFI,mqf,QFI]
+    QF   = [QFI,MQF,QFI]
 
     RFC = rfcavity('cav', 0, 0, 0) # RF frequency will be set later.
 
@@ -96,7 +96,7 @@ def create_lattice(**kwargs):
     DW_KI = [GIR, L033627, KIN, L129600,                  D214600, GIR]
     DW_CH = [L016118, CH, GIR, L182091,                   D214600, GIR]
 
-    UP_01 = UP_SI;        DW_01 = DW_KI;        S01 = [UP_01, QFI, FIM, STR, mqf, QFI, DW_01, B]
+    UP_01 = UP_SI;        DW_01 = DW_KI;        S01 = [UP_01, QFI, FIM, STR, MQF, QFI, DW_01, B]
     UP_02 = UP_SF;        DW_02 = DW_QD;        S02 = [UP_02, QF, DW_02, B]
     UP_03 = UP_CS;        DW_03 = DW;           S03 = [UP_03, QF, DW_03, B]
     UP_04 = UP_SF;        DW_04 = DW_QD;        S04 = [UP_04, QF, DW_04, B]
@@ -153,9 +153,6 @@ def create_lattice(**kwargs):
              S21,S22,S23,S24,S25,S26,S27,S28,S29,S30,
              S31,S32,S33,S34,S35,S36,S37,S38,S39,S40,
              S41,S42,S43,S44,S45,S46,S47,S48,S49,S50]
-
-    # -- remove girder
-    elist = set_girders(elist)
 
     the_ring = _pyaccel.lattice.build(elist)
 
@@ -309,11 +306,3 @@ def dipole_segmented_model():
     b_length_segmented = 2*sum(b_model[:,0])
 
     return (bd, b_length_segmented)
-
-def set_girders(the_ring):
-    the_ring = _mp.utils.flatten(the_ring)
-    new_ring = []
-    for elem in the_ring:
-        if elem.fam_name != 'girder':
-            new_ring.append(elem)
-    return new_ring
