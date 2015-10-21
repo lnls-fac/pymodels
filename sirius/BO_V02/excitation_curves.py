@@ -28,6 +28,6 @@ def get_excitation_curve_mapping(accelerator):
         elif _sd_re.match(name) is not None: ec[name] = 'boma-sd.txt'
         elif _ch_re.match(name) is not None: ec[name] = 'boma-ch.txt'
         elif _cv_re.match(name) is not None: ec[name] = 'boma-cv.txt'
-        else: ec[name] = 'boma-s.txt'
+        # else: ec[name] = 'boma-s.txt'
 
     return ec
