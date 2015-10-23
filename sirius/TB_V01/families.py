@@ -14,10 +14,10 @@ def families_quadrupoles():
     return ['qf','qd','triplet']
 
 def families_horizontal_correctors():
-    return ['hcm']
+    return ['ch']
 
 def families_vertical_correctors():
-    return ['vcm']
+    return ['cv']
 
 def get_family_data(lattice):
     """Get pyaccel lattice model index and segmentation for each family name
@@ -32,7 +32,7 @@ def get_family_data(lattice):
 
     for key in latt_dict.keys():
         if key in _family_segmentation.keys():
-            data[key]={'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
+            data[key]={'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
 
     if len(data['bpm']['index']) == 7:
         # bpm
@@ -47,12 +47,27 @@ def get_family_data(lattice):
                 j += data[key]['nr_segs']
             data[key]['index']=new_index
 
+    # linac correctors
+    data['lch'] = {}
+    data['lch']['index']   = [data['ch']['index'][0]]
+    data['lch']['nr_segs'] = _family_segmentation['ch']
+
+    data['lcv'] = {}
+    data['lcv']['index']   = [data['cv']['index'][0]]
+    data['lcv']['nr_segs'] = _family_segmentation['cv']
+
+    # remove linac corrector from ch data
+    data['ch']['index'] = data['ch']['index'][1:]
+
+    # remove linac corrector from cv data
+    data['cv']['index'] = data['cv']['index'][1:]
+
     # qd
     data['qd']={}
     data['qd']['index'] = []
     data['qd']['nr_segs'] = _family_segmentation['quad']
-    data['qd']['families'] = ['qd2','qd3a','qd3b','qd4','qd5']
-    for family in data['qd']['families']:
+    families = ['qd2','qd3a','qd3b','qd4','qd5']
+    for family in families:
         data['qd']['index'] = data['qd']['index'] + latt_dict[family]
     data['qd']['index']=sorted(data['qd']['index'])
 
@@ -60,8 +75,8 @@ def get_family_data(lattice):
     data['qf']={}
     data['qf']['index'] = []
     data['qf']['nr_segs'] = _family_segmentation['quad']
-    data['qf']['families'] = ['qf2','qf3a','qf3b','qf4','qf5']
-    for family in data['qf']['families']:
+    families = ['qf2','qf3a','qf3b','qf4','qf5']
+    for family in families:
         data['qf']['index'] = data['qf']['index'] + latt_dict[family]
     data['qf']['index']=sorted(data['qf']['index'])
 
@@ -69,32 +84,23 @@ def get_family_data(lattice):
     data['triplet']={}
     data['triplet']['index'] = []
     data['triplet']['nr_segs'] = _family_segmentation['triplet']
-    data['triplet']['families'] = ['q1a','q1b','q1c']
-    for family in data['triplet']['families']:
+    families = ['q1a','q1b','q1c']
+    for family in families:
         data['triplet']['index'] = data['triplet']['index'] + latt_dict[family]
     data['triplet']['index']=sorted(data['triplet']['index'])
-
-    # quadrupole
-    data['quad']={}
-    data['quad']['index'] = []
-    data['quad']['nr_segs'] = _family_segmentation['quad']
-    data['quad']['families'] = ['q1a','q1b','q1c','qd2','qf2','qd3a','qf3a','qf3b','qd3b','qf4','qd4','qf5','qd5']
-    for family in data['quad']['families']:
-        data['quad']['index'] = data['quad']['index'] + latt_dict[family]
-    data['quad']['index']=sorted(data['quad']['index'])
 
     # septum
     data['sep']={}
     data['sep']['index'] = []
     data['sep']['nr_segs'] = _family_segmentation['sep']
-    data['sep']['families'] = ['septin']
-    for family in data['sep']['families']:
+    families = ['septin']
+    for family in families:
         data['sep']['index'] = data['sep']['index'] + latt_dict[family]
     data['sep']['index']=sorted(data['sep']['index'])
 
     return data
 
-_family_segmentation = { 'bn':2, 'bp':2, 'bpm':1, 'hcm': 1, 'vcm': 1,
+_family_segmentation = { 'bn':2, 'bp':2, 'bpm':1, 'ch': 1, 'cv': 1,
                          'q1a':1, 'q1b':1, 'q1c':1, 'qd2':1, 'qf2':1, 'qd3a':1, 'qf3a':1, 'qf3b':1, 'qd3b':1,
                          'qf4':1, 'qd4':1, 'qf5':1, 'qd5':1,
                          'septin':2, 'spec':2,
@@ -106,7 +112,8 @@ _family_mapping = {
     'bp':      'dipole',
     'bpm':     'bpm',
     'spec':    'dipole',
-    'hcm':     'horizontal_corrector',
+    'ch':     'horizontal_corrector',
+    'cv':     'vertical_corrector',
     'q1a':     'quadrupole',
     'q1b':     'quadrupole',
     'q1c':     'quadrupole',
@@ -121,7 +128,6 @@ _family_mapping = {
     'qf5':     'quadrupole',
     'qd5':     'quadrupole',
     'septin':  'septum',
-    'vcm':     'vertical_corrector',
     'bend':    'dipole',
     'sep':     'septum',
     'quad':    'quadrupole',

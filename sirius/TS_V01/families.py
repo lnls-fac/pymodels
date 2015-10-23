@@ -12,13 +12,13 @@ def families_septa():
     return ['septex', 'septing', 'septinf']
 
 def families_quadrupoles():
-    return ['qd', 'qf']
+    return ['quad']
 
 def families_horizontal_correctors():
-    return ['hcm']
+    return ['ch']
 
 def families_vertical_correctors():
-    return ['vcm']
+    return ['cv']
 
 
 def get_family_data(lattice):
@@ -34,7 +34,7 @@ def get_family_data(lattice):
 
     for key in latt_dict.keys():
         if key in _family_segmentation.keys():
-            data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key] , 'families' : key}
+            data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
 
     for key in data.keys():
         if data[key]['nr_segs'] != 1:
@@ -47,10 +47,10 @@ def get_family_data(lattice):
 
     return data
 
-_family_segmentation={ 'bend'    : 2, 'septex'  : 2, 'septing' : 2, 'septinf' : 2,
-                       'qf1a'    : 1, 'qf1b'  : 1, 'qd2'  : 1, 'qf2'  : 1,
-                       'qf3'     : 1, 'qd4a'  : 1, 'qf4'  : 1, 'qd4b' : 1,
-                       'bpm'     : 1, 'hcm'   : 1, 'vcm'  : 1, 'qd'   : 1, 'qf' : 1
+_family_segmentation={ 'bend' : 2, 'septex' : 2, 'septing' : 2, 'septinf' : 2,
+                       'qf1a' : 1, 'qf1b'   : 1, 'qd2'     : 1, 'qf2'     : 1,
+                       'qf3'  : 1, 'qd4a'   : 1, 'qf4'     : 1, 'qd4b'    : 1,
+                       'bpm'  : 1, 'ch'     : 1, 'cv'      : 1,
                        }
 
 _family_mapping = {
@@ -67,8 +67,8 @@ _family_mapping = {
     'qf4'     : 'quadrupole',
     'qd4b'    : 'quadrupole',
     'bpm'     : 'bpm',
-    'hcm'     : 'horizontal_corrector',
-    'vcm'     : 'vertical_corrector',
+    'ch'     : 'horizontal_corrector',
+    'cv'     : 'vertical_corrector',
     'qd'      : 'quadrupole',
     'qf'      : 'quadrupole',
 }

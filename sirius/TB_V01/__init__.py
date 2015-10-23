@@ -18,5 +18,3 @@ default_optics_mode  = _lattice._default_optics_mode.label
 lattice_version      = accelerator_data['lattice_version']
 get_family_data      = _families.get_family_data
 family_mapping       = _families._family_mapping
-# initial_twiss        = _lattice._initial_twiss
-# ejection_fixed_point = _lattice._ejection_fixed_point

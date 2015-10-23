@@ -9,6 +9,8 @@ from . import optics_mode_M4 as _optics_mode_M4
 from . import optics_mode_M5 as _optics_mode_M5
 from . import optics_mode_M6 as _optics_mode_M6
 
+class LatticeError(Exception):
+    pass
 
 _energy = 0.15e9 #[eV]
 _default_optics_mode = _optics_mode_M1
@@ -36,62 +38,70 @@ def create_lattice(optics_mode = _default_optics_mode.label):
     drift  = _pyaccel.elements.drift
     quadrupole   = _pyaccel.elements.quadrupole
     rbend_sirius = _pyaccel.elements.rbend
+    sextupole    = _pyaccel.elements.sextupole
     hcorrector   = _pyaccel.elements.hcorrector
     vcorrector   = _pyaccel.elements.vcorrector
     strengths    = _default_optics_mode.strengths
 
+    corr_length = 0.07
+
     # --- drift spaces ---
-    l100     = drift('l100', 0.1000)
-    l150     = drift('l150', 0.1500)
-    l200     = drift('l200', 0.2000)
-    la1      = drift('la1',  0.1150)
-    la2p     = drift('la2p', 0.1588)
-    lb1p     = drift('lb1p', 0.1250)
-    lb2p     = drift('lb2p', 0.2750)
-    lb3p     = drift('lb3p', 0.2765)
-    lc2      = drift('lc2',  0.2700)
-    lc3p     = drift('lc3p', 0.2138)
-    lc4      = drift('lc4',  0.2700)
-    ld1p     = drift('ld1p', 0.2892)
-    ld2      = drift('ld2',  0.2200)
-    ld3p     = drift('ld3p', 0.1800)
-    le1p     = drift('le1p', 0.1856)
-    le2      = drift('le2',  0.2160)
+    l100   = drift('l100', 0.1000)
+    l150   = drift('l150', 0.1500)
+    l200   = drift('l200', 0.2000)
+    la1    = drift('la1',  0.1150)
+    la2p   = drift('la2p', 0.1588)
+    lb1p   = drift('lb1p', 0.1250)
+    lb2p   = drift('lb2p', 0.2750)
+    lb3p   = drift('lb3p', 0.2765)
+    lc2    = drift('lc2',  0.2700)
+    lc3p   = drift('lc3p', 0.2138)
+    lc4    = drift('lc4',  0.2700)
+    ld1p   = drift('ld1p', 0.2892)
+    ld2    = drift('ld2',  0.2200)
+    ld3p   = drift('ld3p', 0.1800)
+    le1p   = drift('le1p', 0.1856)
+    le2    = drift('le2',  0.2160)
+
+    l100c  = drift('l100c', 0.1000 - corr_length/2)
+    l150c  = drift('l150c', 0.1500 - corr_length/2)
+    l200c  = drift('l200c', 0.2000 - corr_length/2)
+    l100cc = drift('l100c', 0.1000 - corr_length)
 
     # --- markers ---
-    mbspec   = marker('mbspec')
-    mbn      = marker('mbn')
-    mbp      = marker('mbp')
-    msep     = marker('msep')
-    inicio   = marker('start')
-    fim      = marker('end')
-    fenda    = marker('fenda')
+    mbspec = marker('mbspec')
+    mbn    = marker('mbn')
+    mbp    = marker('mbp')
+    msep   = marker('msep')
+    inicio = marker('start')
+    fim    = marker('end')
+    fenda  = marker('fenda')
 
     # --- beam position monitors ---
-    bpm      = marker('bpm')
+    bpm = marker('bpm')
 
     # --- correctors ---
-    ch  = hcorrector('hcm',  0)
-    cv  = vcorrector('vcm',  0)
+    ch  = sextupole('ch', corr_length, 0.0)
+    cv  = sextupole('cv', corr_length, 0.0)
 
-    mch    = marker('mch')
-    mcv    = marker('mcv')
-
+    # --- linac correctors ---
+    lch = hcorrector('ch',  0)
+    lcv = vcorrector('cv',  0)
 
     # --- quadrupoles ---
-    q1a      = quadrupole('q1a', 0.05, strengths['q1a'])
-    q1b      = quadrupole('q1b', 0.10, strengths['q1b'])
-    q1c      = quadrupole('q1c', 0.05, strengths['q1c'])
-    qd2      = quadrupole('qd2', 0.10, strengths['qd2'])
-    qf2      = quadrupole('qf2', 0.10, strengths['qf2'])
-    qd3a     = quadrupole('qd3a', 0.10, strengths['qd3a'])
-    qf3a     = quadrupole('qf3a', 0.10, strengths['qf3a'])
-    qf3b     = quadrupole('qf3b', 0.10, strengths['qf3b'])
-    qd3b     = quadrupole('qd3b', 0.10, strengths['qd3b'])
-    qf4      = quadrupole('qf4', 0.10, strengths['qf4'])
-    qd4      = quadrupole('qd4', 0.10, strengths['qd4'])
-    qf5      = quadrupole('qf5', 0.10, strengths['qf5'])
-    qd5      = quadrupole('qd5', 0.10, strengths['qd5'])
+    q1a  = quadrupole('q1a', 0.05, strengths['q1a'])
+    q1b  = quadrupole('q1b', 0.10, strengths['q1b'])
+    q1c  = quadrupole('q1c', 0.05, strengths['q1c'])
+    qd2  = quadrupole('qd2', 0.10, strengths['qd2'])
+    qf2  = quadrupole('qf2', 0.10, strengths['qf2'])
+    qd3a = quadrupole('qd3a', 0.10, strengths['qd3a'])
+    qf3a = quadrupole('qf3a', 0.10, strengths['qf3a'])
+    qf3b = quadrupole('qf3b', 0.10, strengths['qf3b'])
+    qd3b = quadrupole('qd3b', 0.10, strengths['qd3b'])
+    qf4  = quadrupole('qf4', 0.10, strengths['qf4'])
+    qd4  = quadrupole('qd4', 0.10, strengths['qd4'])
+    qf5  = quadrupole('qf5', 0.10, strengths['qf5'])
+    qd5  = quadrupole('qd5', 0.10, strengths['qd5'])
 
     # --- bending magnets ---
     deg_2_rad = (_math.pi/180)
@@ -135,7 +145,7 @@ def create_lattice(optics_mode = _default_optics_mode.label):
     septins = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
     bseptin = marker('bseptin')
     eseptin = marker('eseptin')
-    septin  = [bseptin, septine, ch, septins, eseptin]
+    septin  = [bseptin, septine, septins, eseptin]
 
     #booster
     l800    = drift('l800', 0.80)
@@ -150,17 +160,17 @@ def create_lattice(optics_mode = _default_optics_mode.label):
     ## # --- lines ---
 
     la2   = [la2p, l200, l200, l200]
-    lb1   = [lb1p, l200, l200, bpm, l150, ch, l100, cv, l150]
+    lb1   = [lb1p, l200, l200, bpm, l150c, ch, l100cc, cv, l150c]
     lb2   = [lb2p, l200]
-    lb3   = [l200, l200, l200, l200, l200, fenda, l200, bpm, l150, cv, l100, ch, l200, l200, lb3p]
+    lb3   = [l200, l200, l200, l200, l200, fenda, l200, bpm, l150c, cv, l100cc, ch, l200c, l200, lb3p]
     lc1   = [l200, l200, l200, l200, l100]
-    lc3   = [l200, bpm, l150, cv, l100, ch, [l200]*26, lc3p]
-    lc5   = [l150, l150, l150, bpm, l150, ch, l100, cv, l200]
+    lc3   = [l200, bpm, l150c, cv, l100cc, ch, l200c, [l200]*25, lc3p]
+    lc5   = [l150, l150, l150, bpm, l150c, ch, l100cc, cv, l200c]
     ld1   = [ld1p, [l200]*10]
-    ld3   = [ld3p, bpm, l150, ch, l200]
-    le1   = [l200, cv, l200, l200, l200, l200, l200, l200, le1p]
-    le3   = [l150, bpm, l150, cv, l100]
-    line1 = [ch, cv, la1, q1a, l100, q1b, l100, q1a, l100, q1c, la2]
+    ld3   = [ld3p, bpm, l150c, ch, l200c]
+    le1   = [l200c, cv, l200c, l200, l200, l200, l200, l200, le1p]
+    le3   = [l150, bpm, l150c, cv, l100c]
+    line1 = [lch, lcv, la1, q1a, l100, q1b, l100, q1a, l100, q1c, la2]
     arc1  = [lb1, qd2, lb2, qf2, lb3]
     line2 = [lc1, qd3a, lc2, qf3a, lc3, qf3b, lc4, qd3b, lc5]
     arc2  = [ld1, qf4, ld2, qd4, ld3]
@@ -176,6 +186,10 @@ def create_lattice(optics_mode = _default_optics_mode.label):
     # shifts model to marker 'start'
     idx = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'start')
     the_line = _pyaccel.lattice.shift(the_line, idx[0])
+
+    lengths = _pyaccel.lattice.get_attribute(the_line, 'length')
+    for length in lengths:
+        if length < 0: raise LatticeError('Model with negative drift!')
 
     # sets number of integration steps
     set_num_integ_steps(the_line)
