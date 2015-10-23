@@ -31,5 +31,5 @@ accelerator_data['dirs'] = {
 accelerator_data['global_coupling']  = 1.00 # expected corrected value
 accelerator_data['emittance']        = 170.3329758677203e-09 # [m·rad]
 accelerator_data['energy_spread']    = 0.005
-accelerator_data['twiss_at_exit']    = _pyaccel.optics.Twiss.make_new(beta=[7.0,7.0], alpha=[-1.0,-1.0])
+accelerator_data['twiss_at_exit']    = _pyaccel.optics.Twiss.make_new(beta=[7.0,7.0], alpha=[0.0,0.0])
 accelerator_data['pressure_profile'] = None
