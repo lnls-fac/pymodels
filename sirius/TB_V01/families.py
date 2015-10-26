@@ -38,14 +38,6 @@ def get_family_data(lattice):
         # bpm
         data['bpm']['index'].pop()
 
-    for key in data.keys():
-        if data[key]['nr_segs'] != 1:
-            new_index=[]
-            j=0
-            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
-                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
-                j += data[key]['nr_segs']
-            data[key]['index']=new_index
 
     # linac correctors
     data['lch'] = {}
@@ -69,7 +61,7 @@ def get_family_data(lattice):
     families = ['qd2','qd3a','qd3b','qd4','qd5']
     for family in families:
         data['qd']['index'] = data['qd']['index'] + latt_dict[family]
-    data['qd']['index']=sorted(data['qd']['index'])
+    data['qd']['index'] = sorted(data['qd']['index'])
 
     # qf
     data['qf']={}
@@ -78,7 +70,7 @@ def get_family_data(lattice):
     families = ['qf2','qf3a','qf3b','qf4','qf5']
     for family in families:
         data['qf']['index'] = data['qf']['index'] + latt_dict[family]
-    data['qf']['index']=sorted(data['qf']['index'])
+    data['qf']['index'] = sorted(data['qf']['index'])
 
     # triplet
     data['triplet']={}
@@ -87,7 +79,7 @@ def get_family_data(lattice):
     families = ['q1a','q1b','q1c']
     for family in families:
         data['triplet']['index'] = data['triplet']['index'] + latt_dict[family]
-    data['triplet']['index']=sorted(data['triplet']['index'])
+    data['triplet']['index'] = sorted(data['triplet']['index'])
 
     # septum
     data['sep']={}
@@ -96,7 +88,25 @@ def get_family_data(lattice):
     families = ['septin']
     for family in families:
         data['sep']['index'] = data['sep']['index'] + latt_dict[family]
-    data['sep']['index']=sorted(data['sep']['index'])
+    data['sep']['index'] = sorted(data['sep']['index'])
+
+    # dipole
+    data['bend']={}
+    data['bend']['index'] = []
+    data['bend']['nr_segs'] = _family_segmentation['bn']
+    families = ['bn', 'bp', 'spec']
+    for family in families:
+        data['bend']['index'] = data['bend']['index'] + latt_dict[family]
+    data['bend']['index'] = sorted(data['bend']['index'])
+
+    for key in data.keys():
+        if data[key]['nr_segs'] != 1:
+            new_index=[]
+            j=0
+            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
+                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
+                j += data[key]['nr_segs']
+            data[key]['index']=new_index
 
     return data
 
@@ -130,7 +140,6 @@ _family_mapping = {
     'septin':  'septum',
     'bend':    'dipole',
     'sep':     'septum',
-    'quad':    'quadrupole',
     'qd':      'quadrupole',
     'qf':      'quadrupole',
     'triplet': 'quadrupole',
