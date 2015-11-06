@@ -12,7 +12,7 @@ _emittance = 170.3329758677203e-09 #[m rad]
 _energy_spread = 0.005
 _single_bunch_charge = 1e-9 #[Coulomb]
 _multi_bunch_charge  = 3e-9 #[Coulomb]
-_pulse_duration_interval = [150e-9,300e-9] #[seconds]
+_pulse_duration_interval = 150e-9 #[seconds]
 _frequency = 3e9 #[Hz]
 
 def create_lattice(**kwargs):
