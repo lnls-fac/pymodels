@@ -134,6 +134,7 @@ _family_segmentation={
     'bpm' : 1, 'cf' : 1,
     'fch' : 1, 'fcv': 1, 'qs'  : 1, 'ch': 1, 'cv': 1, 'qn' : 1,
     'cav' : 1,
+    'start': 1,
 }
 
 _family_mapping = {

@@ -114,7 +114,8 @@ _family_segmentation = { 'bn':2, 'bp':2, 'bpm':1, 'ch': 1, 'cv': 1,
                          'q1a':1, 'q1b':1, 'q1c':1, 'qd2':1, 'qf2':1, 'qd3a':1, 'qf3a':1, 'qf3b':1, 'qd3b':1,
                          'qf4':1, 'qd4':1, 'qf5':1, 'qd5':1,
                          'septin':2, 'spec':2,
-                         'quad':1, 'bend':2, 'sep':2, 'triplet':1
+                         'quad':1, 'bend':2, 'sep':2, 'triplet':1,
+                         'start':1,
                           }
 
 _family_mapping = {

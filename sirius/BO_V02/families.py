@@ -74,7 +74,7 @@ def get_girder_data(lattice):
 
 _family_segmentation={ 'b'  : 14, 'qf' : 2, 'qd' : 1, 'sd' : 1,
                        'sf' : 1, 'bpm' : 1, 'ch' : 1, 'cv' : 1,
-                       'cav' : 1 }
+                       'cav' : 1, 'start': 1,}
 _family_mapping = {
     'b': 'dipole',
     'bend': 'dipole',

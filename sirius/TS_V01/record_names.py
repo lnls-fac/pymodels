@@ -104,6 +104,20 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
         family_data = _families.get_family_data(accelerator)
     else:
         family_data = accelerator
+
+    start = family_data['start']['index'][0]
+    if start != 0:
+        for key in family_data.keys():
+            if isinstance(family_data[key], dict):
+                index = family_data[key]['index']
+                j = 0
+                for i in index:
+                    if isinstance(i, int) and i < start: j+=1
+                    elif isinstance(i, list) and i[0] < start: j+=1
+                index = index[j:]+index[:j]
+                family_data[key]['index'] = index
+
+
     if element == None:
         elements = []
         elements += _families.families_dipoles()

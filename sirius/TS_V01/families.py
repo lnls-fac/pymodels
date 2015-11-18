@@ -50,7 +50,7 @@ def get_family_data(lattice):
 _family_segmentation={ 'bend' : 2, 'septex' : 2, 'septing' : 2, 'septinf' : 2,
                        'qf1a' : 1, 'qf1b'   : 1, 'qd2'     : 1, 'qf2'     : 1,
                        'qf3'  : 1, 'qd4a'   : 1, 'qf4'     : 1, 'qd4b'    : 1,
-                       'bpm'  : 1, 'ch'     : 1, 'cv'      : 1,
+                       'bpm'  : 1, 'ch'     : 1, 'cv'      : 1, 'start'   : 1,
                        }
 
 _family_mapping = {
