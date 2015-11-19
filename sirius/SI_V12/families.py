@@ -27,6 +27,10 @@ def families_skew_correctors():
 def families_rf():
     return ['cav',]
 
+def families_septa():
+    return []
+
+
 def get_family_data(lattice):
     """Get pyaccel lattice model index and segmentation for each family name
 
@@ -80,6 +84,9 @@ def get_family_data(lattice):
     # fcv - fast vertical correctors
     data['fcv']={'index':data['cf']['index'], 'nr_segs':_family_segmentation['fcv']}
 
+    # bc
+    data['bc']={'index':sorted(data['bc_hf']['index']+data['bc_lf']['index']), 'nr_segs':_family_segmentation['bc']}
+
     # qs - skew quad correctors
     idx = []
     fams = ['sfa','sda','sf1j','sf1k']
@@ -93,7 +100,6 @@ def get_family_data(lattice):
     for fam in fams:
             idx.extend(data[fam]['index'])
     data['qn']={'index':sorted(idx), 'nr_segs':_family_segmentation['qn']}
-
 
     for key in data.keys():
         if data[key]['nr_segs'] != 1:
@@ -125,7 +131,7 @@ def get_girder_data(lattice):
 
 
 _family_segmentation={
-    'b1'  : 2, 'b2' : 3, 'bc_hf' : 14, 'bc_lf' : 14,
+    'b1'  : 2, 'b2' : 3, 'bc_hf' : 14, 'bc_lf' : 14, 'bc': 28,
     'qfa' : 1, 'qda': 1, 'qdb2': 1, 'qfb': 1,
     'qdb1': 1, 'qf1': 1, 'qf2' : 1, 'qf3': 1, 'qf4': 1,
     'sda' : 1, 'sfa': 1, 'sdb' : 1, 'sfb': 1,

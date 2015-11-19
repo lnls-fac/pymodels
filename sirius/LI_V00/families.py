@@ -1,6 +1,32 @@
+"""Element family definitions"""
+
 from . import lattice as _lattice
 import pyaccel as _pyaccel
+import numpy as _np
 
+def families_dipoles():
+    return []
+
+def families_septa():
+    return []
+
+def families_quadrupoles():
+    return []
+
+def families_horizontal_correctors():
+    return []
+
+def families_vertical_correctors():
+    return []
+
+def families_sextupoles():
+    return []
+
+def families_skew_correctors():
+    return []
+
+def families_rf():
+    return []
 
 def get_family_data(lattice):
     """Get pyaccel lattice model index and segmentation for each family name

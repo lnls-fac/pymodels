@@ -6,25 +6,26 @@ from . import lattice as _lattice
 def families_dipoles():
     return ['bend']
 
-
 def families_quadrupoles():
     return ['qf', 'qd']
-
 
 def families_sextupoles():
     return ['sf', 'sd']
 
-
 def families_horizontal_correctors():
     return ['ch']
-
 
 def families_vertical_correctors():
     return ['cv']
 
-
 def families_rf():
     return ['cav']
+
+def families_septa():
+    return []
+
+def families_skew_correctors():
+    return []
 
 
 def get_family_data(lattice):
@@ -35,8 +36,12 @@ def get_family_data(lattice):
         if key in _family_segmentation.keys():
             data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
 
+    # bend
+    data['bend']={'index':data['b']['index'], 'nr_segs':_family_segmentation['bend']}
+
+    start = data['start']['index'][0]
     for key in data.keys():
-        if key == 'qf':
+        if key == 'qf' and start == 0:
             idx=data[key]['index'].pop()
             data[key]['index'].insert(0,idx)
 
@@ -74,7 +79,7 @@ def get_girder_data(lattice):
 
 _family_segmentation={ 'b'  : 14, 'qf' : 2, 'qd' : 1, 'sd' : 1,
                        'sf' : 1, 'bpm' : 1, 'ch' : 1, 'cv' : 1,
-                       'cav' : 1, 'start': 1,}
+                       'cav' : 1, 'start': 1, 'bend': 14,}
 _family_mapping = {
     'b': 'dipole',
     'bend': 'dipole',

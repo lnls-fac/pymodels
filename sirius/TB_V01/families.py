@@ -19,6 +19,15 @@ def families_horizontal_correctors():
 def families_vertical_correctors():
     return ['cv']
 
+def families_sextupoles():
+    return []
+
+def families_skew_correctors():
+    return []
+
+def families_rf():
+    return []
+
 def get_family_data(lattice):
     """Get pyaccel lattice model index and segmentation for each family name
 
@@ -34,70 +43,51 @@ def get_family_data(lattice):
         if key in _family_segmentation.keys():
             data[key]={'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
 
-    if len(data['bpm']['index']) == 7:
-        # bpm
+    if len(data['bpm']['index']) > 6:
         data['bpm']['index'].pop()
 
+    if len(data['ch']['index']) > 5:
+        # linac horizontal corrector
+        data['lch']={'index':[data['ch']['index'][0]], 'nr_segs':_family_segmentation['ch']}
+        # remove linac corrector from ch data
+        data['ch']['index'] = data['ch']['index'][1:]
 
-    # linac correctors
-    data['lch'] = {}
-    data['lch']['index']   = [data['ch']['index'][0]]
-    data['lch']['nr_segs'] = _family_segmentation['ch']
-
-    data['lcv'] = {}
-    data['lcv']['index']   = [data['cv']['index'][0]]
-    data['lcv']['nr_segs'] = _family_segmentation['cv']
-
-    # remove linac corrector from ch data
-    data['ch']['index'] = data['ch']['index'][1:]
-
-    # remove linac corrector from cv data
-    data['cv']['index'] = data['cv']['index'][1:]
+    if len(data['cv']['index']) > 6:
+        # linac vertical corrector
+        data['lcv']={'index':[data['cv']['index'][0]], 'nr_segs':_family_segmentation['cv']}
+        # remove linac corrector from cv data
+        data['cv']['index'] = data['cv']['index'][1:]
 
     # qd
-    data['qd']={}
-    data['qd']['index'] = []
-    data['qd']['nr_segs'] = _family_segmentation['quad']
+    idx = []
     families = ['qd2','qd3a','qd3b','qd4','qd5']
     for family in families:
-        data['qd']['index'] = data['qd']['index'] + latt_dict[family]
-    data['qd']['index'] = sorted(data['qd']['index'])
+            idx.extend(data[family]['index'])
+    data['qd']={'index':sorted(idx), 'nr_segs':_family_segmentation['quad']}
 
     # qf
-    data['qf']={}
-    data['qf']['index'] = []
-    data['qf']['nr_segs'] = _family_segmentation['quad']
+    idx = []
     families = ['qf2','qf3a','qf3b','qf4','qf5']
     for family in families:
-        data['qf']['index'] = data['qf']['index'] + latt_dict[family]
-    data['qf']['index'] = sorted(data['qf']['index'])
+            idx.extend(data[family]['index'])
+    data['qf']={'index':sorted(idx), 'nr_segs':_family_segmentation['quad']}
 
     # triplet
-    data['triplet']={}
-    data['triplet']['index'] = []
-    data['triplet']['nr_segs'] = _family_segmentation['triplet']
+    idx = []
     families = ['q1a','q1b','q1c']
     for family in families:
-        data['triplet']['index'] = data['triplet']['index'] + latt_dict[family]
-    data['triplet']['index'] = sorted(data['triplet']['index'])
+            idx.extend(data[family]['index'])
+    data['triplet']={'index':sorted(idx), 'nr_segs':_family_segmentation['triplet']}
 
     # septum
-    data['sep']={}
-    data['sep']['index'] = []
-    data['sep']['nr_segs'] = _family_segmentation['sep']
-    families = ['septin']
-    for family in families:
-        data['sep']['index'] = data['sep']['index'] + latt_dict[family]
-    data['sep']['index'] = sorted(data['sep']['index'])
+    data['sep']={'index':data['septin']['index'], 'nr_segs':_family_segmentation['sep']}
 
     # dipole
-    data['bend']={}
-    data['bend']['index'] = []
-    data['bend']['nr_segs'] = _family_segmentation['bn']
+    idx = []
     families = ['bn', 'bp', 'spec']
     for family in families:
-        data['bend']['index'] = data['bend']['index'] + latt_dict[family]
-    data['bend']['index'] = sorted(data['bend']['index'])
+            idx.extend(data[family]['index'])
+    data['bend']={'index':sorted(idx), 'nr_segs':_family_segmentation['bend']}
 
     for key in data.keys():
         if data[key]['nr_segs'] != 1:

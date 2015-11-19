@@ -20,6 +20,15 @@ def families_horizontal_correctors():
 def families_vertical_correctors():
     return ['cv']
 
+def families_sextupoles():
+    return []
+
+def families_skew_correctors():
+    return []
+
+def families_rf():
+    return []
+
 
 def get_family_data(lattice):
     """Get pyaccel lattice model index and segmentation for each family name
@@ -36,6 +45,13 @@ def get_family_data(lattice):
         if key in _family_segmentation.keys():
             data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
 
+    # quad
+    idx = []
+    families = ['qf1a', 'qf1b', 'qd2', 'qf2', 'qf3', 'qd4a', 'qf4', 'qd4b']
+    for family in families:
+            idx.extend(data[family]['index'])
+    data['quad']={'index':sorted(idx), 'nr_segs':_family_segmentation['quad']}
+
     for key in data.keys():
         if data[key]['nr_segs'] != 1:
             new_index=[]
@@ -51,6 +67,7 @@ _family_segmentation={ 'bend' : 2, 'septex' : 2, 'septing' : 2, 'septinf' : 2,
                        'qf1a' : 1, 'qf1b'   : 1, 'qd2'     : 1, 'qf2'     : 1,
                        'qf3'  : 1, 'qd4a'   : 1, 'qf4'     : 1, 'qd4b'    : 1,
                        'bpm'  : 1, 'ch'     : 1, 'cv'      : 1, 'start'   : 1,
+                       'quad' : 1,
                        }
 
 _family_mapping = {
