@@ -43,6 +43,8 @@ def get_record_names(accelerator, subsystem = None):
                 'BOPA-SIGX':{},
                 'BOPA-SIGY':{},
                 'BOPA-SIGS':{},
+                'BOPA-INJEFF':{},
+                'BOPA-EXTEFF':{},
         }
         return _dict
 

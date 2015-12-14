@@ -15,11 +15,18 @@ def get_record_names(accelerator, subsystem = None):
         family_data = accelerator
 
     if subsystem == None:
-        subsystems = ['tsdi', 'tsps', 'tspu', 'tsti']
+        subsystems = ['tsdi', 'tsps', 'tspu', 'tsti', 'tspa']
         record_names_dict = {}
         for subsystem in subsystems:
             record_names_dict.update(get_record_names(family_data, subsystem))
         return record_names_dict
+
+    if subsystem.lower() == 'tspa':
+        _dict = {
+            'TSPA-INJEFF':{},
+            'TSPA-EXTEFF':{},
+        }
+        return _dict
 
     if subsystem.lower() == 'tsdi':
         prefix = 'TSDI-'

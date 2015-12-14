@@ -43,6 +43,8 @@ def get_record_names(accelerator, subsystem = None):
                 'SIPA-SIGX':{},
                 'SIPA-SIGY':{},
                 'SIPA-SIGS':{},
+                'SIPA-INJEFF':{},
+                'SIPA-INJEFF-TOTAL':{},
         }
         return _dict
 
