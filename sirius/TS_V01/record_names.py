@@ -74,6 +74,8 @@ def get_record_names(accelerator, subsystem = None):
                 'TSTI-SEPTUMTHICK-DELAY':{},
                 'TSTI-SEPTUMTHIN-ENABLED':{},
                 'TSTI-SEPTUMTHIN-DELAY':{},
+                'TSTI-SEPTUMEX-ENABLED':{},
+                'TSTI-SEPTUMEX-DELAY':{},
         }
         return _dict
 
