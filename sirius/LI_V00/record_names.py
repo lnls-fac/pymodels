@@ -26,6 +26,7 @@ def get_record_names(accelerator, subsystem=None):
                 'LITI-CYCLE':{},
                 'LITI-EGUN-ENABLED':{},
                 'LITI-EGUN-DELAY':{},
+                'LITI-INJECTION-BUNCH':{},
         }
         return _dict
 
