@@ -1,6 +1,6 @@
 
 import re as _re
-from . import record_names as _record_names
+from . import device_names as _device_names
 
 _bc_re = _re.compile('SIMA-BC.*')
 _b1_re = _re.compile('SIMA-B1.*')
@@ -27,7 +27,7 @@ def get_excitation_curve_mapping(accelerator):
 
     Returns dict.
     """
-    magnets = _record_names.get_magnet_names(accelerator)
+    magnets = _device_names.get_magnet_names(accelerator)
 
     ec = dict()
     for name in magnets:

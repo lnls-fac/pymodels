@@ -1,6 +1,6 @@
 
 import re as _re
-from . import record_names as _record_names
+from . import device_names as _device_names
 
 
 def get_excitation_curve_mapping(accelerator):

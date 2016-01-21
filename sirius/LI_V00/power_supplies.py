@@ -2,7 +2,7 @@
 
 import re as _re
 from . import families as _families
-from . import record_names as _record_names
+from . import device_names as _device_names
 
 
 _name_split_char = '-'

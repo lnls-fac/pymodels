@@ -2,7 +2,7 @@
 from . import lattice as _lattice
 from . import accelerator as _accelerator
 from . import families as _families
-from . import record_names
+from . import device_names
 from . import excitation_curves
 from . import power_supplies
 

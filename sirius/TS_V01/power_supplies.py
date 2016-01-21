@@ -2,7 +2,7 @@
 
 import re as _re
 from . import families as _families
-from . import record_names as _record_names
+from . import device_names as _device_names
 
 
 _name_split_char = '-'
@@ -18,9 +18,9 @@ def get_magnet_mapping(accelerator):
     mapping = dict()
 
     # Add individual power supplies
-    magnets = _record_names.get_record_names(family_data, 'tsma')
+    magnets = _device_names.get_device_names(family_data, 'tsma')
     magnet_names = magnets.keys()
-    pss = _record_names.get_record_names(family_data, 'tsps')
+    pss = _device_names.get_device_names(family_data, 'tsps')
     for ps_name in pss.keys():
         ps_magnet_name = ps_name.replace('TSPS', 'TSMA')
         if ps_magnet_name in magnet_names:
@@ -32,9 +32,9 @@ def get_magnet_mapping(accelerator):
                 mapping[ps_magnet_name] = s
 
     # Add pulsed power supplies
-    pulsed_magnets = _record_names.get_record_names(family_data, 'tspm')
+    pulsed_magnets = _device_names.get_device_names(family_data, 'tspm')
     pulsed_magnet_names = pulsed_magnets.keys()
-    pulsed_pss = _record_names.get_record_names(family_data, 'tspu')
+    pulsed_pss = _device_names.get_device_names(family_data, 'tspu')
     for pu_name in pulsed_pss.keys():
         pu_magnet_name = pu_name.replace('TSPU', 'TSPM')
         if pu_magnet_name in pulsed_magnet_names:

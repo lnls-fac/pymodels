@@ -2,8 +2,8 @@
 from . import families as _families
 
 
-def get_record_names(accelerator, subsystem = None):
-    """Return a dictionary of record names for given subsystem
+def get_device_names(accelerator, subsystem = None):
+    """Return a dictionary of device names for given subsystem
     each entry is another dictionary of model families whose
     values are the indices in the pyaccel model of the magnets
     that belong to the family. The magnet models ca be segmented,
@@ -16,10 +16,10 @@ def get_record_names(accelerator, subsystem = None):
 
     if subsystem == None:
         subsystems = ['tbdi', 'tbps', 'tbpu', 'tbti', 'tbpa']
-        record_names_dict = {}
+        device_names_dict = {}
         for subsystem in subsystems:
-            record_names_dict.update(get_record_names(family_data, subsystem))
-        return record_names_dict
+            device_names_dict.update(get_device_names(family_data, subsystem))
+        return device_names_dict
 
     if subsystem.lower() == 'tbpa':
         _dict = {
@@ -32,8 +32,7 @@ def get_record_names(accelerator, subsystem = None):
         prefix = 'TBDI-'
         suffix = ''
         _dict = get_element_names(family_data, element = 'bpm', prefix=prefix, suffix=suffix)
-        _dict.update(get_family_names(family_data, family = 'bpm', prefix=prefix, suffix='-X'))
-        _dict.update(get_family_names(family_data, family = 'bpm', prefix=prefix, suffix='-Y'))
+        _dict.update(get_family_names(family_data, family = 'bpm', prefix=prefix, suffix=suffix))
         return _dict
 
     if subsystem.lower() == 'tbps':
@@ -237,6 +236,6 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
 
 
 def get_magnet_names(accelerator):
-    _dict = get_record_names(accelerator, 'tbma')
-    _dict.update(get_record_names(accelerator, 'tbpm'))
+    _dict = get_device_names(accelerator, 'tbma')
+    _dict.update(get_device_names(accelerator, 'tbpm'))
     return _dict

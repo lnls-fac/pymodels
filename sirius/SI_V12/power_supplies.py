@@ -2,7 +2,7 @@
 
 import re as _re
 from . import families as _families
-from . import record_names as _record_names
+from . import device_names as _device_names
 
 
 _name_split_char = '-'
@@ -20,8 +20,8 @@ def get_magnet_mapping(accelerator):
     mapping = dict()
 
     # Add family power supplies
-    bend_magnets = _record_names.get_element_names(family_data, 'bend', magnet_prefix)
-    bend_family = _record_names.get_family_names(family_data, 'bend', ps_prefix)
+    bend_magnets = _device_names.get_element_names(family_data, 'bend', magnet_prefix)
+    bend_family = _device_names.get_family_names(family_data, 'bend', ps_prefix)
     bend_family_name = list(bend_family.keys())[0]
     for magnet_name in bend_magnets.keys():
         if _re.match('SIMA-BC-.*', magnet_name) is None:
@@ -29,8 +29,8 @@ def get_magnet_mapping(accelerator):
             s.add(bend_family_name)
             mapping[magnet_name] = s
 
-    quad_magnets = _record_names.get_element_names(family_data, 'quad', magnet_prefix)
-    quad_families = _record_names.get_family_names(family_data, 'quad', ps_prefix)
+    quad_magnets = _device_names.get_element_names(family_data, 'quad', magnet_prefix)
+    quad_families = _device_names.get_family_names(family_data, 'quad', ps_prefix)
     for family_name in quad_families.keys():
         element_name = family_name[5:-4]
         for magnet_name in quad_magnets.keys():
@@ -40,8 +40,8 @@ def get_magnet_mapping(accelerator):
                 s.add(family_name)
                 mapping[magnet_name] = s
 
-    sext_magnets = _record_names.get_element_names(family_data, 'sext', magnet_prefix)
-    sext_families = _record_names.get_family_names(family_data, 'sext', ps_prefix)
+    sext_magnets = _device_names.get_element_names(family_data, 'sext', magnet_prefix)
+    sext_families = _device_names.get_family_names(family_data, 'sext', ps_prefix)
     for family_name in sext_families.keys():
         element_name = family_name[5:-4]
         for magnet_name in sext_magnets.keys():
@@ -52,9 +52,9 @@ def get_magnet_mapping(accelerator):
                 mapping[magnet_name] = s
 
     # Add individual power supplies
-    magnets = _record_names.get_record_names(family_data, 'sima')
+    magnets = _device_names.get_device_names(family_data, 'sima')
     magnet_names = magnets.keys()
-    pss = _record_names.get_record_names(family_data, 'sips')
+    pss = _device_names.get_device_names(family_data, 'sips')
     for ps_name in pss.keys():
         ps_magnet_name = ps_name.replace('SIPS', 'SIMA')
         if ps_magnet_name in magnet_names:
