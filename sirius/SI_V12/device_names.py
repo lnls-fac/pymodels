@@ -69,7 +69,7 @@ def get_device_names(accelerator, subsystem = None):
 
         element_dict = {}
         element_dict.update(get_element_names(family_data, element = 'quad',  prefix=prefix, suffix=suffix))
-        element_dict.update(get_element_names(family_data, element = 'sext',  prefix=prefix, suffix=suffix))
+        #element_dict.update(get_element_names(family_data, element = 'sext',  prefix=prefix, suffix=suffix))
         element_dict.update(get_element_names(family_data, element = 'hcorr', prefix=prefix, suffix=suffix))
         element_dict.update(get_element_names(family_data, element = 'vcorr', prefix=prefix, suffix=suffix))
         element_dict.update(get_element_names(family_data, element = 'qs',    prefix=prefix, suffix=suffix))
