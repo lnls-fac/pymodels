@@ -12,13 +12,20 @@ _emittance = 170.3329758677203e-09 #[m rad]
 _energy_spread = 0.005
 _single_bunch_charge = 1e-9 #[Coulomb]
 _multi_bunch_charge  = 3e-9 #[Coulomb]
-_pulse_duration_interval = 150e-9 #[seconds]
+_single_bunch_pulse_duration = 1e-9 #[seconds]
+_multi_bunch_pulse_duration = 150e-9 #[seconds]
 _frequency = 3e9 #[Hz]
 
 def create_lattice(**kwargs):
     marker = _pyaccel.elements.marker
-    linac = marker('linac')
-    elist = [linac]
+    drift  = _pyaccel.elements.drift
+
+    start = marker('start')
+    egun  = marker('egun')
+    l21   = drift('l21', 21.000)
+    end   = marker('end')
+
+    elist = [start, egun, l21, end]
     the_line = _pyaccel.lattice.build(elist)
 
     return the_line

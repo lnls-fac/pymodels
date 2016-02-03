@@ -10,7 +10,8 @@ _sf_re = _re.compile('BOMA-SF.*')
 _sd_re = _re.compile('BOMA-SD.*')
 _ch_re = _re.compile('BOMA-CH.*')
 _cv_re = _re.compile('BOMA-CV.*')
-
+_kick_in_re = _re.compile('BOPM-KICKERINJ.*')
+_kick_ex_re = _re.compile('BOPM-KICKEREX.*')
 
 def get_excitation_curve_mapping(accelerator):
     """Get mapping from magnet to excitation curve file names
@@ -28,6 +29,8 @@ def get_excitation_curve_mapping(accelerator):
         elif _sd_re.match(name) is not None: ec[name] = 'boma-sd.txt'
         elif _ch_re.match(name) is not None: ec[name] = 'boma-ch.txt'
         elif _cv_re.match(name) is not None: ec[name] = 'boma-cv.txt'
-        else: ec[name] = 'boma-sd.txt'
+        elif _kick_in_re.match(name) is not None: ec[name] = 'bopm-kickinj.txt'
+        elif _kick_ex_re.match(name) is not None: ec[name] = 'bopm-kickex.txt'
+        elif _sd_re.match(name) is not None : ec[name] = 'boma-sd.txt'
 
     return ec

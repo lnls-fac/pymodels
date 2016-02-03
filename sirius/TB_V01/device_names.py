@@ -48,7 +48,7 @@ def get_device_names(accelerator, subsystem = None):
     if subsystem.lower() == 'tbpu':
         prefix = 'TBPU-'
         suffix = ''
-        _dict = get_element_names(family_data, element = 'sep', prefix=prefix, suffix=suffix)
+        _dict = get_element_names(family_data, element = 'pulsed_magnets', prefix=prefix, suffix=suffix)
         return _dict
 
     if subsystem.lower() == 'tbma':
@@ -64,7 +64,7 @@ def get_device_names(accelerator, subsystem = None):
     if subsystem.lower() == 'tbpm':
         prefix = 'TBPM-'
         suffix = ''
-        _dict = get_element_names(family_data, element = 'sep', prefix=prefix, suffix=suffix)
+        _dict = get_element_names(family_data, element = 'pulsed_magnets', prefix=prefix, suffix=suffix)
         return _dict
 
     if subsystem.lower() == 'tbti':
@@ -124,7 +124,7 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
     if element == None:
         elements = []
         elements += _families.families_dipoles()
-        elements += _families.families_septa()
+        elements += _families.families_pulsed_magnets()
         elements += _families.families_quadrupoles()
         elements += _families.families_horizontal_correctors()
         elements += _families.families_vertical_correctors()
@@ -151,9 +151,9 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
         _dict.update(get_element_names(family_data, 'triplet', prefix=prefix, suffix=suffix))
         return _dict
 
-    if element.lower() == 'sep':
+    if element.lower() == 'sep' or element.lower() == 'pulsed_magnets':
         _dict ={
-            prefix + 'SEPIN-05' + suffix : {'sep' : family_data['sep']['index']},
+            prefix + 'SEPTUMINJ-05' + suffix : {'sep' : family_data['sep']['index']},
         }
         return _dict
 

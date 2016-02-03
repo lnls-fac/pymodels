@@ -15,7 +15,7 @@ def get_device_names(accelerator, subsystem = None):
         family_data = accelerator
 
     if subsystem == None:
-        subsystems = ['bopa', 'bodi', 'borf', 'bops', 'boti']
+        subsystems = ['bopa', 'bodi', 'borf', 'bops', 'boti', 'bopu']
         device_names_dict = {}
         for subsystem in subsystems:
             device_names_dict.update(get_device_names(family_data, subsystem))
@@ -80,6 +80,12 @@ def get_device_names(accelerator, subsystem = None):
         _dict.update(family_dict)
         return _dict
 
+    if subsystem.lower() == 'bopu':
+        prefix = 'BOPU-'
+        suffix = ''
+        _dict = get_element_names(family_data, element='pulsed_magnets', prefix=prefix, suffix=suffix)
+        return _dict
+
     if subsystem.lower() == 'boma':
         prefix = 'BOMA-'
         suffix = ''
@@ -92,14 +98,18 @@ def get_device_names(accelerator, subsystem = None):
 
         return element_dict
 
+    if subsystem.lower() == 'bopm':
+        prefix = 'BOPM-'
+        suffix = ''
+        _dict = get_element_names(family_data, element='pulsed_magnets', prefix=prefix, suffix=suffix)
+        return _dict
 
     if subsystem.lower() == 'boti':
         _dict = {
-                'BOTI-KICKINJ-ENABLED':{},
-                'BOTI-KICKINJ-DELAY':{},
-                'BOTI-KICKEX-ENABLED':{},
-                'BOTI-KICKEX-DELAY':{},
-                'BOTI-KICKEX-INC':{},
+                'BOTI-KICKERINJ-ENABLED':{},
+                'BOTI-KICKERINJ-DELAY':{},
+                'BOTI-KICKEREXT-ENABLED':{},
+                'BOTI-KICKEREXT-DELAY':{},
                 'BOTI-RAMPPS-ENABLED':{},
                 'BOTI-RAMPPS-DELAY':{},
         }
@@ -199,6 +209,7 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
         elements += _families.families_sextupoles()
         elements += _families.families_horizontal_correctors()
         elements += _families.families_vertical_correctors()
+        elements += _families.families_pulsed_magnets()
         elements += ['bpm']
 
         _dict = {}
@@ -228,59 +239,66 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
             _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
         return _dict
 
+    if element.lower() == 'pulsed_magnets':
+        elements = _families.families_pulsed_magnets()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
+        return _dict
+
     if element.lower() == 'bpm':
         prefix = prefix + 'BPM-'
         _dict = {
-            prefix + '01-U' + suffix : {'bpm' : [family_data['bpm']['index'][49]]},
-            prefix + '02-U' + suffix : {'bpm' : [family_data['bpm']['index'][0]]},
-            prefix + '03-U' + suffix : {'bpm' : [family_data['bpm']['index'][1]]},
-            prefix + '04-U' + suffix : {'bpm' : [family_data['bpm']['index'][2]]},
-            prefix + '05-U' + suffix : {'bpm' : [family_data['bpm']['index'][3]]},
-            prefix + '06-U' + suffix : {'bpm' : [family_data['bpm']['index'][4]]},
-            prefix + '07-U' + suffix : {'bpm' : [family_data['bpm']['index'][5]]},
-            prefix + '08-U' + suffix : {'bpm' : [family_data['bpm']['index'][6]]},
-            prefix + '09-U' + suffix : {'bpm' : [family_data['bpm']['index'][7]]},
-            prefix + '10-U' + suffix : {'bpm' : [family_data['bpm']['index'][8]]},
-            prefix + '11-U' + suffix : {'bpm' : [family_data['bpm']['index'][9]]},
-            prefix + '12-U' + suffix : {'bpm' : [family_data['bpm']['index'][10]]},
-            prefix + '13-U' + suffix : {'bpm' : [family_data['bpm']['index'][11]]},
-            prefix + '14-U' + suffix : {'bpm' : [family_data['bpm']['index'][12]]},
-            prefix + '15-U' + suffix : {'bpm' : [family_data['bpm']['index'][13]]},
-            prefix + '16-U' + suffix : {'bpm' : [family_data['bpm']['index'][14]]},
-            prefix + '17-U' + suffix : {'bpm' : [family_data['bpm']['index'][15]]},
-            prefix + '18-U' + suffix : {'bpm' : [family_data['bpm']['index'][16]]},
-            prefix + '19-U' + suffix : {'bpm' : [family_data['bpm']['index'][17]]},
-            prefix + '20-U' + suffix : {'bpm' : [family_data['bpm']['index'][18]]},
-            prefix + '21-U' + suffix : {'bpm' : [family_data['bpm']['index'][19]]},
-            prefix + '22-U' + suffix : {'bpm' : [family_data['bpm']['index'][20]]},
-            prefix + '23-U' + suffix : {'bpm' : [family_data['bpm']['index'][21]]},
-            prefix + '24-U' + suffix : {'bpm' : [family_data['bpm']['index'][22]]},
-            prefix + '25-U' + suffix : {'bpm' : [family_data['bpm']['index'][23]]},
-            prefix + '26-U' + suffix : {'bpm' : [family_data['bpm']['index'][24]]},
-            prefix + '27-U' + suffix : {'bpm' : [family_data['bpm']['index'][25]]},
-            prefix + '28-U' + suffix : {'bpm' : [family_data['bpm']['index'][26]]},
-            prefix + '29-U' + suffix : {'bpm' : [family_data['bpm']['index'][27]]},
-            prefix + '30-U' + suffix : {'bpm' : [family_data['bpm']['index'][28]]},
-            prefix + '31-U' + suffix : {'bpm' : [family_data['bpm']['index'][29]]},
-            prefix + '32-U' + suffix : {'bpm' : [family_data['bpm']['index'][30]]},
-            prefix + '33-U' + suffix : {'bpm' : [family_data['bpm']['index'][31]]},
-            prefix + '34-U' + suffix : {'bpm' : [family_data['bpm']['index'][32]]},
-            prefix + '35-U' + suffix : {'bpm' : [family_data['bpm']['index'][33]]},
-            prefix + '36-U' + suffix : {'bpm' : [family_data['bpm']['index'][34]]},
-            prefix + '37-U' + suffix : {'bpm' : [family_data['bpm']['index'][35]]},
-            prefix + '38-U' + suffix : {'bpm' : [family_data['bpm']['index'][36]]},
-            prefix + '39-U' + suffix : {'bpm' : [family_data['bpm']['index'][37]]},
-            prefix + '40-U' + suffix : {'bpm' : [family_data['bpm']['index'][38]]},
-            prefix + '41-U' + suffix : {'bpm' : [family_data['bpm']['index'][39]]},
-            prefix + '42-U' + suffix : {'bpm' : [family_data['bpm']['index'][40]]},
-            prefix + '43-U' + suffix : {'bpm' : [family_data['bpm']['index'][41]]},
-            prefix + '44-U' + suffix : {'bpm' : [family_data['bpm']['index'][42]]},
-            prefix + '45-U' + suffix : {'bpm' : [family_data['bpm']['index'][43]]},
-            prefix + '46-U' + suffix : {'bpm' : [family_data['bpm']['index'][44]]},
-            prefix + '47-U' + suffix : {'bpm' : [family_data['bpm']['index'][45]]},
-            prefix + '48-U' + suffix : {'bpm' : [family_data['bpm']['index'][46]]},
-            prefix + '49-U' + suffix : {'bpm' : [family_data['bpm']['index'][47]]},
-            prefix + '50-U' + suffix : {'bpm' : [family_data['bpm']['index'][48]]},
+            prefix + '01U' + suffix : {'bpm' : [family_data['bpm']['index'][49]]},
+            prefix + '02U' + suffix : {'bpm' : [family_data['bpm']['index'][0]]},
+            prefix + '03U' + suffix : {'bpm' : [family_data['bpm']['index'][1]]},
+            prefix + '04U' + suffix : {'bpm' : [family_data['bpm']['index'][2]]},
+            prefix + '05U' + suffix : {'bpm' : [family_data['bpm']['index'][3]]},
+            prefix + '06U' + suffix : {'bpm' : [family_data['bpm']['index'][4]]},
+            prefix + '07U' + suffix : {'bpm' : [family_data['bpm']['index'][5]]},
+            prefix + '08U' + suffix : {'bpm' : [family_data['bpm']['index'][6]]},
+            prefix + '09U' + suffix : {'bpm' : [family_data['bpm']['index'][7]]},
+            prefix + '10U' + suffix : {'bpm' : [family_data['bpm']['index'][8]]},
+            prefix + '11U' + suffix : {'bpm' : [family_data['bpm']['index'][9]]},
+            prefix + '12U' + suffix : {'bpm' : [family_data['bpm']['index'][10]]},
+            prefix + '13U' + suffix : {'bpm' : [family_data['bpm']['index'][11]]},
+            prefix + '14U' + suffix : {'bpm' : [family_data['bpm']['index'][12]]},
+            prefix + '15U' + suffix : {'bpm' : [family_data['bpm']['index'][13]]},
+            prefix + '16U' + suffix : {'bpm' : [family_data['bpm']['index'][14]]},
+            prefix + '17U' + suffix : {'bpm' : [family_data['bpm']['index'][15]]},
+            prefix + '18U' + suffix : {'bpm' : [family_data['bpm']['index'][16]]},
+            prefix + '19U' + suffix : {'bpm' : [family_data['bpm']['index'][17]]},
+            prefix + '20U' + suffix : {'bpm' : [family_data['bpm']['index'][18]]},
+            prefix + '21U' + suffix : {'bpm' : [family_data['bpm']['index'][19]]},
+            prefix + '22U' + suffix : {'bpm' : [family_data['bpm']['index'][20]]},
+            prefix + '23U' + suffix : {'bpm' : [family_data['bpm']['index'][21]]},
+            prefix + '24U' + suffix : {'bpm' : [family_data['bpm']['index'][22]]},
+            prefix + '25U' + suffix : {'bpm' : [family_data['bpm']['index'][23]]},
+            prefix + '26U' + suffix : {'bpm' : [family_data['bpm']['index'][24]]},
+            prefix + '27U' + suffix : {'bpm' : [family_data['bpm']['index'][25]]},
+            prefix + '28U' + suffix : {'bpm' : [family_data['bpm']['index'][26]]},
+            prefix + '29U' + suffix : {'bpm' : [family_data['bpm']['index'][27]]},
+            prefix + '30U' + suffix : {'bpm' : [family_data['bpm']['index'][28]]},
+            prefix + '31U' + suffix : {'bpm' : [family_data['bpm']['index'][29]]},
+            prefix + '32U' + suffix : {'bpm' : [family_data['bpm']['index'][30]]},
+            prefix + '33U' + suffix : {'bpm' : [family_data['bpm']['index'][31]]},
+            prefix + '34U' + suffix : {'bpm' : [family_data['bpm']['index'][32]]},
+            prefix + '35U' + suffix : {'bpm' : [family_data['bpm']['index'][33]]},
+            prefix + '36U' + suffix : {'bpm' : [family_data['bpm']['index'][34]]},
+            prefix + '37U' + suffix : {'bpm' : [family_data['bpm']['index'][35]]},
+            prefix + '38U' + suffix : {'bpm' : [family_data['bpm']['index'][36]]},
+            prefix + '39U' + suffix : {'bpm' : [family_data['bpm']['index'][37]]},
+            prefix + '40U' + suffix : {'bpm' : [family_data['bpm']['index'][38]]},
+            prefix + '41U' + suffix : {'bpm' : [family_data['bpm']['index'][39]]},
+            prefix + '42U' + suffix : {'bpm' : [family_data['bpm']['index'][40]]},
+            prefix + '43U' + suffix : {'bpm' : [family_data['bpm']['index'][41]]},
+            prefix + '44U' + suffix : {'bpm' : [family_data['bpm']['index'][42]]},
+            prefix + '45U' + suffix : {'bpm' : [family_data['bpm']['index'][43]]},
+            prefix + '46U' + suffix : {'bpm' : [family_data['bpm']['index'][44]]},
+            prefix + '47U' + suffix : {'bpm' : [family_data['bpm']['index'][45]]},
+            prefix + '48U' + suffix : {'bpm' : [family_data['bpm']['index'][46]]},
+            prefix + '49U' + suffix : {'bpm' : [family_data['bpm']['index'][47]]},
+            prefix + '50U' + suffix : {'bpm' : [family_data['bpm']['index'][48]]},
         }
         return _dict
 
@@ -343,93 +361,93 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
     if element.lower() == 'cv':
         prefix = prefix + 'CV-'
         _dict = {
-            prefix + '01-U' + suffix : {'cv' : [family_data['cv']['index'][24]]},
-            prefix + '03-U' + suffix : {'cv' : [family_data['cv']['index'][0]]},
-            prefix + '05-U' + suffix : {'cv' : [family_data['cv']['index'][1]]},
-            prefix + '07-U' + suffix : {'cv' : [family_data['cv']['index'][2]]},
-            prefix + '09-U' + suffix : {'cv' : [family_data['cv']['index'][3]]},
-            prefix + '11-U' + suffix : {'cv' : [family_data['cv']['index'][4]]},
-            prefix + '13-U' + suffix : {'cv' : [family_data['cv']['index'][5]]},
-            prefix + '15-U' + suffix : {'cv' : [family_data['cv']['index'][6]]},
-            prefix + '17-U' + suffix : {'cv' : [family_data['cv']['index'][7]]},
-            prefix + '19-U' + suffix : {'cv' : [family_data['cv']['index'][8]]},
-            prefix + '21-U' + suffix : {'cv' : [family_data['cv']['index'][9]]},
-            prefix + '23-U' + suffix : {'cv' : [family_data['cv']['index'][10]]},
-            prefix + '25-U' + suffix : {'cv' : [family_data['cv']['index'][11]]},
-            prefix + '27-U' + suffix : {'cv' : [family_data['cv']['index'][12]]},
-            prefix + '29-U' + suffix : {'cv' : [family_data['cv']['index'][13]]},
-            prefix + '31-U' + suffix : {'cv' : [family_data['cv']['index'][14]]},
-            prefix + '33-U' + suffix : {'cv' : [family_data['cv']['index'][15]]},
-            prefix + '35-U' + suffix : {'cv' : [family_data['cv']['index'][16]]},
-            prefix + '37-U' + suffix : {'cv' : [family_data['cv']['index'][17]]},
-            prefix + '39-U' + suffix : {'cv' : [family_data['cv']['index'][18]]},
-            prefix + '41-U' + suffix : {'cv' : [family_data['cv']['index'][19]]},
-            prefix + '43-U' + suffix : {'cv' : [family_data['cv']['index'][20]]},
-            prefix + '45-U' + suffix : {'cv' : [family_data['cv']['index'][21]]},
-            prefix + '47-U' + suffix : {'cv' : [family_data['cv']['index'][22]]},
-            prefix + '49-U' + suffix : {'cv' : [family_data['cv']['index'][23]]},
+            prefix + '01U' + suffix : {'cv' : [family_data['cv']['index'][24]]},
+            prefix + '03U' + suffix : {'cv' : [family_data['cv']['index'][0]]},
+            prefix + '05U' + suffix : {'cv' : [family_data['cv']['index'][1]]},
+            prefix + '07U' + suffix : {'cv' : [family_data['cv']['index'][2]]},
+            prefix + '09U' + suffix : {'cv' : [family_data['cv']['index'][3]]},
+            prefix + '11U' + suffix : {'cv' : [family_data['cv']['index'][4]]},
+            prefix + '13U' + suffix : {'cv' : [family_data['cv']['index'][5]]},
+            prefix + '15U' + suffix : {'cv' : [family_data['cv']['index'][6]]},
+            prefix + '17U' + suffix : {'cv' : [family_data['cv']['index'][7]]},
+            prefix + '19U' + suffix : {'cv' : [family_data['cv']['index'][8]]},
+            prefix + '21U' + suffix : {'cv' : [family_data['cv']['index'][9]]},
+            prefix + '23U' + suffix : {'cv' : [family_data['cv']['index'][10]]},
+            prefix + '25U' + suffix : {'cv' : [family_data['cv']['index'][11]]},
+            prefix + '27U' + suffix : {'cv' : [family_data['cv']['index'][12]]},
+            prefix + '29U' + suffix : {'cv' : [family_data['cv']['index'][13]]},
+            prefix + '31U' + suffix : {'cv' : [family_data['cv']['index'][14]]},
+            prefix + '33U' + suffix : {'cv' : [family_data['cv']['index'][15]]},
+            prefix + '35U' + suffix : {'cv' : [family_data['cv']['index'][16]]},
+            prefix + '37U' + suffix : {'cv' : [family_data['cv']['index'][17]]},
+            prefix + '39U' + suffix : {'cv' : [family_data['cv']['index'][18]]},
+            prefix + '41U' + suffix : {'cv' : [family_data['cv']['index'][19]]},
+            prefix + '43U' + suffix : {'cv' : [family_data['cv']['index'][20]]},
+            prefix + '45U' + suffix : {'cv' : [family_data['cv']['index'][21]]},
+            prefix + '47U' + suffix : {'cv' : [family_data['cv']['index'][22]]},
+            prefix + '49U' + suffix : {'cv' : [family_data['cv']['index'][23]]},
         }
         return _dict
 
     if element.lower() == 'ch':
         prefix = prefix + 'CH-'
         _dict = {
-            prefix + '01-U' + suffix : {'ch' : [family_data['ch']['index'][24]]},
-            prefix + '03-U' + suffix : {'ch' : [family_data['ch']['index'][0]]},
-            prefix + '05-U' + suffix : {'ch' : [family_data['ch']['index'][1]]},
-            prefix + '07-U' + suffix : {'ch' : [family_data['ch']['index'][2]]},
-            prefix + '09-U' + suffix : {'ch' : [family_data['ch']['index'][3]]},
-            prefix + '11-U' + suffix : {'ch' : [family_data['ch']['index'][4]]},
-            prefix + '13-U' + suffix : {'ch' : [family_data['ch']['index'][5]]},
-            prefix + '15-U' + suffix : {'ch' : [family_data['ch']['index'][6]]},
-            prefix + '17-U' + suffix : {'ch' : [family_data['ch']['index'][7]]},
-            prefix + '19-U' + suffix : {'ch' : [family_data['ch']['index'][8]]},
-            prefix + '21-U' + suffix : {'ch' : [family_data['ch']['index'][9]]},
-            prefix + '23-U' + suffix : {'ch' : [family_data['ch']['index'][10]]},
-            prefix + '25-U' + suffix : {'ch' : [family_data['ch']['index'][11]]},
-            prefix + '27-U' + suffix : {'ch' : [family_data['ch']['index'][12]]},
-            prefix + '29-U' + suffix : {'ch' : [family_data['ch']['index'][13]]},
-            prefix + '31-U' + suffix : {'ch' : [family_data['ch']['index'][14]]},
-            prefix + '33-U' + suffix : {'ch' : [family_data['ch']['index'][15]]},
-            prefix + '35-U' + suffix : {'ch' : [family_data['ch']['index'][16]]},
-            prefix + '37-U' + suffix : {'ch' : [family_data['ch']['index'][17]]},
-            prefix + '39-U' + suffix : {'ch' : [family_data['ch']['index'][18]]},
-            prefix + '41-U' + suffix : {'ch' : [family_data['ch']['index'][19]]},
-            prefix + '43-U' + suffix : {'ch' : [family_data['ch']['index'][20]]},
-            prefix + '45-U' + suffix : {'ch' : [family_data['ch']['index'][21]]},
-            prefix + '47-U' + suffix : {'ch' : [family_data['ch']['index'][22]]},
-            prefix + '49-D' + suffix : {'ch' : [family_data['ch']['index'][23]]},
+            prefix + '01U' + suffix : {'ch' : [family_data['ch']['index'][24]]},
+            prefix + '03U' + suffix : {'ch' : [family_data['ch']['index'][0]]},
+            prefix + '05U' + suffix : {'ch' : [family_data['ch']['index'][1]]},
+            prefix + '07U' + suffix : {'ch' : [family_data['ch']['index'][2]]},
+            prefix + '09U' + suffix : {'ch' : [family_data['ch']['index'][3]]},
+            prefix + '11U' + suffix : {'ch' : [family_data['ch']['index'][4]]},
+            prefix + '13U' + suffix : {'ch' : [family_data['ch']['index'][5]]},
+            prefix + '15U' + suffix : {'ch' : [family_data['ch']['index'][6]]},
+            prefix + '17U' + suffix : {'ch' : [family_data['ch']['index'][7]]},
+            prefix + '19U' + suffix : {'ch' : [family_data['ch']['index'][8]]},
+            prefix + '21U' + suffix : {'ch' : [family_data['ch']['index'][9]]},
+            prefix + '23U' + suffix : {'ch' : [family_data['ch']['index'][10]]},
+            prefix + '25U' + suffix : {'ch' : [family_data['ch']['index'][11]]},
+            prefix + '27U' + suffix : {'ch' : [family_data['ch']['index'][12]]},
+            prefix + '29U' + suffix : {'ch' : [family_data['ch']['index'][13]]},
+            prefix + '31U' + suffix : {'ch' : [family_data['ch']['index'][14]]},
+            prefix + '33U' + suffix : {'ch' : [family_data['ch']['index'][15]]},
+            prefix + '35U' + suffix : {'ch' : [family_data['ch']['index'][16]]},
+            prefix + '37U' + suffix : {'ch' : [family_data['ch']['index'][17]]},
+            prefix + '39U' + suffix : {'ch' : [family_data['ch']['index'][18]]},
+            prefix + '41U' + suffix : {'ch' : [family_data['ch']['index'][19]]},
+            prefix + '43U' + suffix : {'ch' : [family_data['ch']['index'][20]]},
+            prefix + '45U' + suffix : {'ch' : [family_data['ch']['index'][21]]},
+            prefix + '47U' + suffix : {'ch' : [family_data['ch']['index'][22]]},
+            prefix + '49D' + suffix : {'ch' : [family_data['ch']['index'][23]]},
         }
         return _dict
 
     if element.lower() == 'qd':
         prefix = prefix + 'QD-'
         _dict = {
-            prefix + '02-D' + suffix : {'qd' : [family_data['qd']['index'][0]]},
-            prefix + '04-D' + suffix : {'qd' : [family_data['qd']['index'][1]]},
-            prefix + '06-D' + suffix : {'qd' : [family_data['qd']['index'][2]]},
-            prefix + '08-D' + suffix : {'qd' : [family_data['qd']['index'][3]]},
-            prefix + '10-D' + suffix : {'qd' : [family_data['qd']['index'][4]]},
-            prefix + '12-D' + suffix : {'qd' : [family_data['qd']['index'][5]]},
-            prefix + '14-D' + suffix : {'qd' : [family_data['qd']['index'][6]]},
-            prefix + '16-D' + suffix : {'qd' : [family_data['qd']['index'][7]]},
-            prefix + '18-D' + suffix : {'qd' : [family_data['qd']['index'][8]]},
-            prefix + '20-D' + suffix : {'qd' : [family_data['qd']['index'][9]]},
-            prefix + '22-D' + suffix : {'qd' : [family_data['qd']['index'][10]]},
-            prefix + '24-D' + suffix : {'qd' : [family_data['qd']['index'][11]]},
-            prefix + '26-D' + suffix : {'qd' : [family_data['qd']['index'][12]]},
-            prefix + '28-D' + suffix : {'qd' : [family_data['qd']['index'][13]]},
-            prefix + '30-D' + suffix : {'qd' : [family_data['qd']['index'][14]]},
-            prefix + '32-D' + suffix : {'qd' : [family_data['qd']['index'][15]]},
-            prefix + '34-D' + suffix : {'qd' : [family_data['qd']['index'][16]]},
-            prefix + '36-D' + suffix : {'qd' : [family_data['qd']['index'][17]]},
-            prefix + '38-D' + suffix : {'qd' : [family_data['qd']['index'][18]]},
-            prefix + '40-D' + suffix : {'qd' : [family_data['qd']['index'][19]]},
-            prefix + '42-D' + suffix : {'qd' : [family_data['qd']['index'][20]]},
-            prefix + '44-D' + suffix : {'qd' : [family_data['qd']['index'][21]]},
-            prefix + '46-D' + suffix : {'qd' : [family_data['qd']['index'][22]]},
-            prefix + '48-D' + suffix : {'qd' : [family_data['qd']['index'][23]]},
-            prefix + '50-D' + suffix : {'qd' : [family_data['qd']['index'][24]]},
+            prefix + '02D' + suffix : {'qd' : [family_data['qd']['index'][0]]},
+            prefix + '04D' + suffix : {'qd' : [family_data['qd']['index'][1]]},
+            prefix + '06D' + suffix : {'qd' : [family_data['qd']['index'][2]]},
+            prefix + '08D' + suffix : {'qd' : [family_data['qd']['index'][3]]},
+            prefix + '10D' + suffix : {'qd' : [family_data['qd']['index'][4]]},
+            prefix + '12D' + suffix : {'qd' : [family_data['qd']['index'][5]]},
+            prefix + '14D' + suffix : {'qd' : [family_data['qd']['index'][6]]},
+            prefix + '16D' + suffix : {'qd' : [family_data['qd']['index'][7]]},
+            prefix + '18D' + suffix : {'qd' : [family_data['qd']['index'][8]]},
+            prefix + '20D' + suffix : {'qd' : [family_data['qd']['index'][9]]},
+            prefix + '22D' + suffix : {'qd' : [family_data['qd']['index'][10]]},
+            prefix + '24D' + suffix : {'qd' : [family_data['qd']['index'][11]]},
+            prefix + '26D' + suffix : {'qd' : [family_data['qd']['index'][12]]},
+            prefix + '28D' + suffix : {'qd' : [family_data['qd']['index'][13]]},
+            prefix + '30D' + suffix : {'qd' : [family_data['qd']['index'][14]]},
+            prefix + '32D' + suffix : {'qd' : [family_data['qd']['index'][15]]},
+            prefix + '34D' + suffix : {'qd' : [family_data['qd']['index'][16]]},
+            prefix + '36D' + suffix : {'qd' : [family_data['qd']['index'][17]]},
+            prefix + '38D' + suffix : {'qd' : [family_data['qd']['index'][18]]},
+            prefix + '40D' + suffix : {'qd' : [family_data['qd']['index'][19]]},
+            prefix + '42D' + suffix : {'qd' : [family_data['qd']['index'][20]]},
+            prefix + '44D' + suffix : {'qd' : [family_data['qd']['index'][21]]},
+            prefix + '46D' + suffix : {'qd' : [family_data['qd']['index'][22]]},
+            prefix + '48D' + suffix : {'qd' : [family_data['qd']['index'][23]]},
+            prefix + '50D' + suffix : {'qd' : [family_data['qd']['index'][24]]},
         }
         return _dict
 
@@ -492,47 +510,60 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
     if element.lower() == 'sd':
         prefix = prefix + 'SD-'
         _dict = {
-            prefix + '03-U' + suffix : {'sd' : [family_data['sd']['index'][0]]},
-            prefix + '08-U' + suffix : {'sd' : [family_data['sd']['index'][1]]},
-            prefix + '13-U' + suffix : {'sd' : [family_data['sd']['index'][2]]},
-            prefix + '18-U' + suffix : {'sd' : [family_data['sd']['index'][3]]},
-            prefix + '23-U' + suffix : {'sd' : [family_data['sd']['index'][4]]},
-            prefix + '28-U' + suffix : {'sd' : [family_data['sd']['index'][5]]},
-            prefix + '33-U' + suffix : {'sd' : [family_data['sd']['index'][6]]},
-            prefix + '38-U' + suffix : {'sd' : [family_data['sd']['index'][7]]},
-            prefix + '43-U' + suffix : {'sd' : [family_data['sd']['index'][8]]},
-            prefix + '48-U' + suffix : {'sd' : [family_data['sd']['index'][9]]},
+            prefix + '03U' + suffix : {'sd' : [family_data['sd']['index'][0]]},
+            prefix + '08U' + suffix : {'sd' : [family_data['sd']['index'][1]]},
+            prefix + '13U' + suffix : {'sd' : [family_data['sd']['index'][2]]},
+            prefix + '18U' + suffix : {'sd' : [family_data['sd']['index'][3]]},
+            prefix + '23U' + suffix : {'sd' : [family_data['sd']['index'][4]]},
+            prefix + '28U' + suffix : {'sd' : [family_data['sd']['index'][5]]},
+            prefix + '33U' + suffix : {'sd' : [family_data['sd']['index'][6]]},
+            prefix + '38U' + suffix : {'sd' : [family_data['sd']['index'][7]]},
+            prefix + '43U' + suffix : {'sd' : [family_data['sd']['index'][8]]},
+            prefix + '48U' + suffix : {'sd' : [family_data['sd']['index'][9]]},
         }
         return _dict
 
     if element.lower() == 'sf':
         prefix = prefix + 'SF-'
         _dict = {
-            prefix + '02-U' + suffix : {'sf' : [family_data['sf']['index'][0]]},
-            prefix + '04-U' + suffix : {'sf' : [family_data['sf']['index'][1]]},
-            prefix + '06-U' + suffix : {'sf' : [family_data['sf']['index'][2]]},
-            prefix + '08-U' + suffix : {'sf' : [family_data['sf']['index'][3]]},
-            prefix + '10-U' + suffix : {'sf' : [family_data['sf']['index'][4]]},
-            prefix + '12-U' + suffix : {'sf' : [family_data['sf']['index'][5]]},
-            prefix + '14-U' + suffix : {'sf' : [family_data['sf']['index'][6]]},
-            prefix + '16-U' + suffix : {'sf' : [family_data['sf']['index'][7]]},
-            prefix + '18-U' + suffix : {'sf' : [family_data['sf']['index'][8]]},
-            prefix + '20-U' + suffix : {'sf' : [family_data['sf']['index'][9]]},
-            prefix + '22-U' + suffix : {'sf' : [family_data['sf']['index'][10]]},
-            prefix + '24-U' + suffix : {'sf' : [family_data['sf']['index'][11]]},
-            prefix + '26-U' + suffix : {'sf' : [family_data['sf']['index'][12]]},
-            prefix + '28-U' + suffix : {'sf' : [family_data['sf']['index'][13]]},
-            prefix + '30-U' + suffix : {'sf' : [family_data['sf']['index'][14]]},
-            prefix + '32-U' + suffix : {'sf' : [family_data['sf']['index'][15]]},
-            prefix + '34-U' + suffix : {'sf' : [family_data['sf']['index'][16]]},
-            prefix + '36-U' + suffix : {'sf' : [family_data['sf']['index'][17]]},
-            prefix + '38-U' + suffix : {'sf' : [family_data['sf']['index'][18]]},
-            prefix + '40-U' + suffix : {'sf' : [family_data['sf']['index'][19]]},
-            prefix + '42-U' + suffix : {'sf' : [family_data['sf']['index'][20]]},
-            prefix + '44-U' + suffix : {'sf' : [family_data['sf']['index'][21]]},
-            prefix + '46-U' + suffix : {'sf' : [family_data['sf']['index'][22]]},
-            prefix + '48-U' + suffix : {'sf' : [family_data['sf']['index'][23]]},
-            prefix + '50-U' + suffix : {'sf' : [family_data['sf']['index'][24]]},
+            prefix + '02U' + suffix : {'sf' : [family_data['sf']['index'][0]]},
+            prefix + '04U' + suffix : {'sf' : [family_data['sf']['index'][1]]},
+            prefix + '06U' + suffix : {'sf' : [family_data['sf']['index'][2]]},
+            prefix + '08U' + suffix : {'sf' : [family_data['sf']['index'][3]]},
+            prefix + '10U' + suffix : {'sf' : [family_data['sf']['index'][4]]},
+            prefix + '12U' + suffix : {'sf' : [family_data['sf']['index'][5]]},
+            prefix + '14U' + suffix : {'sf' : [family_data['sf']['index'][6]]},
+            prefix + '16U' + suffix : {'sf' : [family_data['sf']['index'][7]]},
+            prefix + '18U' + suffix : {'sf' : [family_data['sf']['index'][8]]},
+            prefix + '20U' + suffix : {'sf' : [family_data['sf']['index'][9]]},
+            prefix + '22U' + suffix : {'sf' : [family_data['sf']['index'][10]]},
+            prefix + '24U' + suffix : {'sf' : [family_data['sf']['index'][11]]},
+            prefix + '26U' + suffix : {'sf' : [family_data['sf']['index'][12]]},
+            prefix + '28U' + suffix : {'sf' : [family_data['sf']['index'][13]]},
+            prefix + '30U' + suffix : {'sf' : [family_data['sf']['index'][14]]},
+            prefix + '32U' + suffix : {'sf' : [family_data['sf']['index'][15]]},
+            prefix + '34U' + suffix : {'sf' : [family_data['sf']['index'][16]]},
+            prefix + '36U' + suffix : {'sf' : [family_data['sf']['index'][17]]},
+            prefix + '38U' + suffix : {'sf' : [family_data['sf']['index'][18]]},
+            prefix + '40U' + suffix : {'sf' : [family_data['sf']['index'][19]]},
+            prefix + '42U' + suffix : {'sf' : [family_data['sf']['index'][20]]},
+            prefix + '44U' + suffix : {'sf' : [family_data['sf']['index'][21]]},
+            prefix + '46U' + suffix : {'sf' : [family_data['sf']['index'][22]]},
+            prefix + '48U' + suffix : {'sf' : [family_data['sf']['index'][23]]},
+            prefix + '50U' + suffix : {'sf' : [family_data['sf']['index'][24]]},
+        }
+        return _dict
+
+    if element.lower() == 'kick_in':
+        prefix = prefix + 'KICKERINJ-'
+        _dict = {prefix + '01D' + suffix : {'kick_in' : family_data['kick_in']['index']}}
+        return _dict
+
+    if element.lower() == 'kick_ex':
+        prefix = prefix + 'KICKEREXT-'
+        _dict = {
+            prefix + '48D-A' + suffix : {'kick_ex' : [family_data['kick_ex']['index'][0]]},
+            prefix + '48D-B' + suffix : {'kick_ex' : [family_data['kick_ex']['index'][1]]},
         }
         return _dict
 
@@ -541,4 +572,6 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
 
 
 def get_magnet_names(accelerator):
-    return get_device_names(accelerator, 'boma')
+    _dict = get_device_names(accelerator, 'boma')
+    _dict.update(get_device_names(accelerator, 'bopm'))
+    return _dict

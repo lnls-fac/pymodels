@@ -65,6 +65,20 @@ def get_magnet_mapping(accelerator):
                 s.add(ps_name)
                 mapping[ps_magnet_name] = s
 
+    # Add pulsed power supplies
+    pulsed_magnets = _device_names.get_device_names(family_data, 'sipm')
+    pulsed_magnet_names = pulsed_magnets.keys()
+    pulsed_pss = _device_names.get_device_names(family_data, 'sipu')
+    for pu_name in pulsed_pss.keys():
+        pu_magnet_name = pu_name.replace('SIPU', 'SIPM')
+        if pu_magnet_name in pulsed_magnet_names:
+            if pu_magnet_name in mapping:
+                mapping[pu_magnet_name].add(pu_name)
+            else:
+                s = set()
+                s.add(pu_name)
+                mapping[pu_magnet_name] = s
+
     inverse_mapping = dict()
     for item in mapping.items():
         key, value = item

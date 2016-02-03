@@ -21,8 +21,8 @@ def families_vertical_correctors():
 def families_rf():
     return ['cav']
 
-def families_septa():
-    return []
+def families_pulsed_magnets():
+    return ['kick_in', 'kick_ex']
 
 def families_skew_correctors():
     return []
@@ -79,7 +79,8 @@ def get_girder_data(lattice):
 
 _family_segmentation={ 'b'  : 14, 'qf' : 2, 'qd' : 1, 'sd' : 1,
                        'sf' : 1, 'bpm' : 1, 'ch' : 1, 'cv' : 1,
-                       'cav' : 1, 'start': 1, 'bend': 14,}
+                       'cav' : 1, 'start': 1, 'bend': 14,
+                       'kick_in': 1, 'kick_ex': 1,}
 _family_mapping = {
     'b': 'dipole',
     'bend': 'dipole',
@@ -89,6 +90,9 @@ _family_mapping = {
 
     'sd': 'sextupole',
     'sf': 'sextupole',
+
+    'kick_in': 'pulsed_magnet',
+    'kick_ex': 'pulsed_magnet',
 
     'bpm': 'bpm',
 
