@@ -15,6 +15,7 @@ def create_accelerator():
 
     if isinstance(lattice, _pyaccel.accelerator.Accelerator):
         accelerator = lattice
+        accelerator.energy = _lattice._energy
         accelerator.cavity_on = _default_cavity_on
         accelerator.radiation_on = _default_radiation_on
         accelerator.vchamber_on = _default_vchamber_on
