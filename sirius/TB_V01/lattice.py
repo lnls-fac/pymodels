@@ -213,6 +213,12 @@ def set_num_integ_steps(the_line):
         else:
             the_line[i].nr_steps = 1
 
+    ch_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'ch')
+    cv_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'cv')
+    corr_indices = ch_indices + cv_indices
+    for idx in corr_indices:
+        the_line[idx].nr_steps = 5
+        
 
 def set_vacuum_chamber(the_line):
 
