@@ -166,6 +166,7 @@ def create_lattice(optics_mode = _default_optics_mode.label):
 
     return the_line
 
+
 def set_num_integ_steps(the_line):
 
     for i in range(len(the_line)):
@@ -178,6 +179,13 @@ def set_num_integ_steps(the_line):
             the_line[i].nr_steps = 5
         else:
             the_line[i].nr_steps = 1
+
+    ch_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'ch')
+    cv_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'cv')
+    corr_indices = ch_indices + cv_indices
+    for idx in corr_indices:
+        the_line[idx].nr_steps = 5
+
 
 def set_vacuum_chamber(the_line):
 

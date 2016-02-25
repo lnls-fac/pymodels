@@ -29,6 +29,7 @@ accelerator_data = dict()
 accelerator_data['lattice_version'] = 'SI_V12'
 accelerator_data['dirs'] = {
     'excitation_curves': _lnls.system.folder_excitation_curves,
+    'pulse_curves': _lnls.system.folder_pulse_curves,
 }
 accelerator_data['global_coupling'] = 0.01 # expected corrected value
 accelerator_data['pressure_profile'] = _np.array([[0, 518.396],[1.333e-9]*2]) # [s [m], p [mbar]]

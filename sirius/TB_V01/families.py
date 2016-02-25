@@ -7,7 +7,7 @@ import pyaccel as _pyaccel
 def families_dipoles():
     return ['bend']
 
-def families_septa():
+def families_pulsed_magnets():
     return ['sep']
 
 def families_quadrupoles():
@@ -128,9 +128,9 @@ _family_mapping = {
     'qd4':     'quadrupole',
     'qf5':     'quadrupole',
     'qd5':     'quadrupole',
-    'septin':  'septum',
+    'septin':  'pulsed_magnet',
     'bend':    'dipole',
-    'sep':     'septum',
+    'sep':     'pulsed_magnet',
     'qd':      'quadrupole',
     'qf':      'quadrupole',
     'triplet': 'quadrupole',

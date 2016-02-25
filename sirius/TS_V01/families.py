@@ -8,7 +8,7 @@ import numpy as _np
 def families_dipoles():
     return ['bend']
 
-def families_septa():
+def families_pulsed_magnets():
     return ['septex', 'septing', 'septinf']
 
 def families_quadrupoles():
@@ -72,9 +72,9 @@ _family_segmentation={ 'bend' : 2, 'septex' : 2, 'septing' : 2, 'septinf' : 2,
 
 _family_mapping = {
     'bend'    : 'dipole',
-    'septex'  : 'septum',
-    'septing' : 'septum',
-    'septinf' : 'septum',
+    'septex'  : 'pulsed_magnet',
+    'septing' : 'pulsed_magnet',
+    'septinf' : 'pulsed_magnet',
     'qf1a'    : 'quadrupole',
     'qf1b'    : 'quadrupole',
     'qd2'     : 'quadrupole',

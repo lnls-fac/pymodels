@@ -48,7 +48,7 @@ def get_device_names(accelerator, subsystem = None):
     if subsystem.lower() == 'tspu':
         prefix = 'TSPU-'
         suffix = ''
-        _dict = get_element_names(family_data, element = 'septa', prefix=prefix, suffix=suffix)
+        _dict = get_element_names(family_data, element = 'pulsed_magnets', prefix=prefix, suffix=suffix)
         return _dict
 
     if subsystem.lower() == 'tsma':
@@ -64,7 +64,7 @@ def get_device_names(accelerator, subsystem = None):
     if subsystem.lower() == 'tspm':
         prefix = 'TSPM-'
         suffix = ''
-        _dict = get_element_names(family_data, element = 'sep', prefix=prefix, suffix=suffix)
+        _dict = get_element_names(family_data, element = 'pulsed_magnets', prefix=prefix, suffix=suffix)
         return _dict
 
     if subsystem.lower() == 'tsti':
@@ -73,8 +73,8 @@ def get_device_names(accelerator, subsystem = None):
                 'TSTI-SEPTUMTHICK-DELAY':{},
                 'TSTI-SEPTUMTHIN-ENABLED':{},
                 'TSTI-SEPTUMTHIN-DELAY':{},
-                'TSTI-SEPTUMEX-ENABLED':{},
-                'TSTI-SEPTUMEX-DELAY':{},
+                'TSTI-SEPTUMEXT-ENABLED':{},
+                'TSTI-SEPTUMEXT-DELAY':{},
         }
         return _dict
 
@@ -129,7 +129,7 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
     if element == None:
         elements = []
         elements += _families.families_dipoles()
-        elements += _families.families_septa()
+        elements += _families.families_pulsed_magnets()
         elements += _families.families_quadrupoles()
         elements += _families.families_horizontal_correctors()
         elements += _families.families_vertical_correctors()
@@ -148,7 +148,7 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
         }
         return _dict
 
-    if element.lower() == 'septa' or element.lower() == 'sep':
+    if element.lower() == 'septa' or element.lower() == 'pulsed_magnets':
         _dict ={
             prefix + 'SEPTUMEXT-01'   + suffix : {'septex'  : family_data['septex']['index'] },
             prefix + 'SEPTUMTHICK-04' + suffix : {'septing' : family_data['septing']['index']},

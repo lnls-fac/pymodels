@@ -7,7 +7,7 @@ import numpy as _np
 def families_dipoles():
     return []
 
-def families_septa():
+def families_pulsed_magnets():
     return []
 
 def families_quadrupoles():
