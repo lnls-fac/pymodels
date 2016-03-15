@@ -15,7 +15,7 @@ def get_device_names(accelerator, subsystem = None):
         family_data = accelerator
 
     if subsystem == None:
-        subsystems = ['sipa', 'sidi', 'sirf', 'sips', 'siti']
+        subsystems = ['sipa', 'sidi', 'sirf', 'sips', 'siti', 'sipu']
         device_names_dict = {}
         for subsystem in subsystems:
             device_names_dict.update(get_device_names(family_data, subsystem))
@@ -84,6 +84,12 @@ def get_device_names(accelerator, subsystem = None):
         _dict.update(family_dict)
         return _dict
 
+    if subsystem.lower() == 'sipu':
+        prefix = 'SIPU-'
+        suffix = ''
+        _dict = get_element_names(family_data, element='pulsed_magnets', prefix=prefix, suffix=suffix)
+        return _dict
+
     if subsystem.lower() == 'sima':
         prefix = 'SIMA-'
         suffix = ''
@@ -98,10 +104,16 @@ def get_device_names(accelerator, subsystem = None):
 
         return element_dict
 
+    if subsystem.lower() == 'sipm':
+        prefix = 'SIPM-'
+        suffix = ''
+        _dict = get_element_names(family_data, element = 'pulsed_magnets',  prefix=prefix, suffix=suffix)
+        return _dict
+
     if subsystem.lower() == 'siti':
         _dict = {
-                'SITI-KICKINJ-ENABLED':{},
-                'SITI-KICKINJ-DELAY':{},
+                'SITI-KICKERINJ-ENABLED':{},
+                'SITI-KICKERINJ-DELAY':{},
                 'SITI-PMM-ENABLED':{},
                 'SITI-PMM-DELAY':{},
         }
@@ -304,6 +316,7 @@ def get_element_names(accelerator, element = None, prefix = '', suffix = ''):
         elements += _families.families_horizontal_correctors()
         elements += _families.families_vertical_correctors()
         elements += _families.families_skew_correctors()
+        elements += _families.families_pulsed_magnets()
         elements += ['bpm']
 
         _dict = {}
@@ -349,6 +362,13 @@ def get_element_names(accelerator, element = None, prefix = '', suffix = ''):
 
     if element.lower() == 'vcorr':
         elements = _families.families_vertical_correctors()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
+        return _dict
+
+    if element.lower() == 'pulsed_magnets':
+        elements = _families.families_pulsed_magnets()
         _dict = {}
         for element in elements:
             _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
@@ -1955,9 +1975,21 @@ def get_element_names(accelerator, element = None, prefix = '', suffix = ''):
         }
         return _dict
 
+    if element.lower() == 'pmm':
+        prefix = prefix + 'PMM-'
+        _dict = {prefix + '01M2' + suffix: {'pmm' : family_data['pmm']['index']}}
+        return _dict
+
+    if element.lower() == 'kick' or element.lower() == 'kicker' or element.lower() == 'kick_in':
+        prefix = prefix + 'KICKERINJ-'
+        _dict = {prefix + '01M2' + suffix: {'kick_in' : family_data['kick_in']['index']}}
+        return _dict
+
     else:
         raise Exception('Element %s not found'%element)
 
 
 def get_magnet_names(accelerator):
-    return get_device_names(accelerator, 'sima')
+    _dict = get_device_names(accelerator, 'sima')
+    _dict.update(get_device_names(accelerator, 'sipm'))
+    return _dict

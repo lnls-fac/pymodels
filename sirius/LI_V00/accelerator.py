@@ -27,6 +27,7 @@ accelerator_data = dict()
 accelerator_data['lattice_version'] = 'LI_V00'
 accelerator_data['dirs'] = {
     'excitation_curves': _lnls.system.folder_excitation_curves,
+    'pulse_curves': _lnls.system.folder_pulse_curves,
 }
 accelerator_data['global_coupling']  = 1.00 # expected corrected value
 accelerator_data['emittance']        = 170.3329758677203e-09 # [m·rad]
