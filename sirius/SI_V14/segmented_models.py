@@ -50,8 +50,6 @@ def dipole_bc(m_accep_fam_name):
         fam_name, element_type = segtypes[segmodel[i][0]]
         if element_type == _pyaccel.elements.rbend:
             for j in range(len(monomials)):
-                #print(n)
-                #print(segmodel[i][j+3])
                 PolyB[monomials[j]] = segmodel[i][j+3]
             PolyA = 0 * PolyB
             element = element_type(fam_name=fam_name, length=segmodel[i][1], angle=d2r * segmodel[i][2],
@@ -115,8 +113,6 @@ def dipole_b1(m_accep_fam_name):
         fam_name, element_type = segtypes[segmodel[i][0]]
         if element_type == _pyaccel.elements.rbend:
             for j in range(len(monomials)):
-                #print(n)
-                #print(segmodel[i][j+3])
                 PolyB[monomials[j]] = segmodel[i][j+3]
             PolyA = 0 * PolyB
             element = element_type(fam_name=fam_name, length=segmodel[i][1], angle=d2r * segmodel[i][2],
@@ -184,8 +180,6 @@ def dipole_b2(m_accep_fam_name):
         fam_name, element_type = segtypes[segmodel[i][0]]
         if element_type == _pyaccel.elements.rbend:
             for j in range(len(monomials)):
-                #print(n)
-                #print(segmodel[i][j+3])
                 PolyB[monomials[j]] = segmodel[i][j+3]
             PolyA = 0 * PolyB
             element = element_type(fam_name=fam_name, length=segmodel[i][1], angle=d2r * segmodel[i][2],
@@ -265,7 +259,6 @@ def quadrupole_q20(fam_name, strength):
     model_length = 2 * sum(seg_lens)
     fmap_strength = [2*segmodel[i][3+quadidx]*seg_lens[i]/model_length for i in range(len(segmodel))]
     rescale = [strength / fmap_strength[i] for i in range(len(segmodel))]
-    print(fam_name, strength, rescale)
 
     # --- hard-edge 1-segment model ---
     model = []
