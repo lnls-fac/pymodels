@@ -15,7 +15,7 @@ def get_device_names(accelerator, subsystem = None):
         family_data = accelerator
 
     if subsystem == None:
-        subsystems = ['sipa', 'sidi', 'sirf', 'sips', 'siti']
+        subsystems = ['sipa', 'sidi', 'sirf', 'sips', 'siti', 'sipu']
         device_names_dict = {}
         for subsystem in subsystems:
             device_names_dict.update(get_device_names(family_data, subsystem))
@@ -84,6 +84,12 @@ def get_device_names(accelerator, subsystem = None):
         _dict.update(family_dict)
         return _dict
 
+    if subsystem.lower() == 'sipu':
+        prefix = 'SIPU-'
+        suffix = ''
+        _dict = get_element_names(family_data, element='pulsed_magnets', prefix=prefix, suffix=suffix)
+        return _dict
+
     if subsystem.lower() == 'sima':
         prefix = 'SIMA-'
         suffix = ''
@@ -98,10 +104,16 @@ def get_device_names(accelerator, subsystem = None):
 
         return element_dict
 
+    if subsystem.lower() == 'sipm':
+        prefix = 'SIPM-'
+        suffix = ''
+        _dict = get_element_names(family_data, element = 'pulsed_magnets',  prefix=prefix, suffix=suffix)
+        return _dict
+
     if subsystem.lower() == 'siti':
         _dict = {
-                'SITI-KICKINJ-ENABLED':{},
-                'SITI-KICKINJ-DELAY':{},
+                'SITI-KICKERINJ-ENABLED':{},
+                'SITI-KICKERINJ-DELAY':{},
                 'SITI-PMM-ENABLED':{},
                 'SITI-PMM-DELAY':{},
         }
@@ -304,6 +316,7 @@ def get_element_names(accelerator, element = None, prefix = '', suffix = ''):
         elements += _families.families_horizontal_correctors()
         elements += _families.families_vertical_correctors()
         elements += _families.families_skew_correctors()
+        elements += _families.families_pulsed_magnets()
         elements += ['bpm']
 
         _dict = {}
@@ -349,6 +362,13 @@ def get_element_names(accelerator, element = None, prefix = '', suffix = ''):
 
     if element.lower() == 'vcorr':
         elements = _families.families_vertical_correctors()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
+        return _dict
+
+    if element.lower() == 'pulsed_magnets':
+        elements = _families.families_pulsed_magnets()
         _dict = {}
         for element in elements:
             _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
@@ -1191,89 +1211,89 @@ def get_element_names(accelerator, element = None, prefix = '', suffix = ''):
         return _dict
 
 
-    if element.lower() == 'cf':
-        prefix = prefix + 'CF-'
+    if element.lower() == 'fc':
+        prefix = prefix + 'FC-'
         _dict = {
-            prefix + '01M2' + suffix : { 'cf' : [family_data['cf']['index'][0]]},
-            prefix + '01C2' + suffix : { 'cf' : [family_data['cf']['index'][1]]},
-            prefix + '01C3' + suffix : { 'cf' : [family_data['cf']['index'][2]]},
-            prefix + '02M1' + suffix : { 'cf' : [family_data['cf']['index'][3]]},
-            prefix + '02M2' + suffix : { 'cf' : [family_data['cf']['index'][4]]},
-            prefix + '02C2' + suffix : { 'cf' : [family_data['cf']['index'][5]]},
-            prefix + '02C3' + suffix : { 'cf' : [family_data['cf']['index'][6]]},
-            prefix + '03M1' + suffix : { 'cf' : [family_data['cf']['index'][7]]},
-            prefix + '03M2' + suffix : { 'cf' : [family_data['cf']['index'][8]]},
-            prefix + '03C2' + suffix : { 'cf' : [family_data['cf']['index'][9]]},
-            prefix + '03C3' + suffix : { 'cf' : [family_data['cf']['index'][10]]},
-            prefix + '04M1' + suffix : { 'cf' : [family_data['cf']['index'][11]]},
-            prefix + '04M2' + suffix : { 'cf' : [family_data['cf']['index'][12]]},
-            prefix + '04C2' + suffix : { 'cf' : [family_data['cf']['index'][13]]},
-            prefix + '04C3' + suffix : { 'cf' : [family_data['cf']['index'][14]]},
-            prefix + '05M1' + suffix : { 'cf' : [family_data['cf']['index'][15]]},
-            prefix + '05M2' + suffix : { 'cf' : [family_data['cf']['index'][16]]},
-            prefix + '05C2' + suffix : { 'cf' : [family_data['cf']['index'][17]]},
-            prefix + '05C3' + suffix : { 'cf' : [family_data['cf']['index'][18]]},
-            prefix + '06M1' + suffix : { 'cf' : [family_data['cf']['index'][19]]},
-            prefix + '06M2' + suffix : { 'cf' : [family_data['cf']['index'][20]]},
-            prefix + '06C2' + suffix : { 'cf' : [family_data['cf']['index'][21]]},
-            prefix + '06C3' + suffix : { 'cf' : [family_data['cf']['index'][22]]},
-            prefix + '07M1' + suffix : { 'cf' : [family_data['cf']['index'][23]]},
-            prefix + '07M2' + suffix : { 'cf' : [family_data['cf']['index'][24]]},
-            prefix + '07C2' + suffix : { 'cf' : [family_data['cf']['index'][25]]},
-            prefix + '07C3' + suffix : { 'cf' : [family_data['cf']['index'][26]]},
-            prefix + '08M1' + suffix : { 'cf' : [family_data['cf']['index'][27]]},
-            prefix + '08M2' + suffix : { 'cf' : [family_data['cf']['index'][28]]},
-            prefix + '08C2' + suffix : { 'cf' : [family_data['cf']['index'][29]]},
-            prefix + '08C3' + suffix : { 'cf' : [family_data['cf']['index'][30]]},
-            prefix + '09M1' + suffix : { 'cf' : [family_data['cf']['index'][31]]},
-            prefix + '09M2' + suffix : { 'cf' : [family_data['cf']['index'][32]]},
-            prefix + '09C2' + suffix : { 'cf' : [family_data['cf']['index'][33]]},
-            prefix + '09C3' + suffix : { 'cf' : [family_data['cf']['index'][34]]},
-            prefix + '10M1' + suffix : { 'cf' : [family_data['cf']['index'][35]]},
-            prefix + '10M2' + suffix : { 'cf' : [family_data['cf']['index'][36]]},
-            prefix + '10C2' + suffix : { 'cf' : [family_data['cf']['index'][37]]},
-            prefix + '10C3' + suffix : { 'cf' : [family_data['cf']['index'][38]]},
-            prefix + '11M1' + suffix : { 'cf' : [family_data['cf']['index'][39]]},
-            prefix + '11M2' + suffix : { 'cf' : [family_data['cf']['index'][40]]},
-            prefix + '11C2' + suffix : { 'cf' : [family_data['cf']['index'][41]]},
-            prefix + '11C3' + suffix : { 'cf' : [family_data['cf']['index'][42]]},
-            prefix + '12M1' + suffix : { 'cf' : [family_data['cf']['index'][43]]},
-            prefix + '12M2' + suffix : { 'cf' : [family_data['cf']['index'][44]]},
-            prefix + '12C2' + suffix : { 'cf' : [family_data['cf']['index'][45]]},
-            prefix + '12C3' + suffix : { 'cf' : [family_data['cf']['index'][46]]},
-            prefix + '13M1' + suffix : { 'cf' : [family_data['cf']['index'][47]]},
-            prefix + '13M2' + suffix : { 'cf' : [family_data['cf']['index'][48]]},
-            prefix + '13C2' + suffix : { 'cf' : [family_data['cf']['index'][49]]},
-            prefix + '13C3' + suffix : { 'cf' : [family_data['cf']['index'][50]]},
-            prefix + '14M1' + suffix : { 'cf' : [family_data['cf']['index'][51]]},
-            prefix + '14M2' + suffix : { 'cf' : [family_data['cf']['index'][52]]},
-            prefix + '14C2' + suffix : { 'cf' : [family_data['cf']['index'][53]]},
-            prefix + '14C3' + suffix : { 'cf' : [family_data['cf']['index'][54]]},
-            prefix + '15M1' + suffix : { 'cf' : [family_data['cf']['index'][55]]},
-            prefix + '15M2' + suffix : { 'cf' : [family_data['cf']['index'][56]]},
-            prefix + '15C2' + suffix : { 'cf' : [family_data['cf']['index'][57]]},
-            prefix + '15C3' + suffix : { 'cf' : [family_data['cf']['index'][58]]},
-            prefix + '16M1' + suffix : { 'cf' : [family_data['cf']['index'][59]]},
-            prefix + '16M2' + suffix : { 'cf' : [family_data['cf']['index'][60]]},
-            prefix + '16C2' + suffix : { 'cf' : [family_data['cf']['index'][61]]},
-            prefix + '16C3' + suffix : { 'cf' : [family_data['cf']['index'][62]]},
-            prefix + '17M1' + suffix : { 'cf' : [family_data['cf']['index'][63]]},
-            prefix + '17M2' + suffix : { 'cf' : [family_data['cf']['index'][64]]},
-            prefix + '17C2' + suffix : { 'cf' : [family_data['cf']['index'][65]]},
-            prefix + '17C3' + suffix : { 'cf' : [family_data['cf']['index'][66]]},
-            prefix + '18M1' + suffix : { 'cf' : [family_data['cf']['index'][67]]},
-            prefix + '18M2' + suffix : { 'cf' : [family_data['cf']['index'][68]]},
-            prefix + '18C2' + suffix : { 'cf' : [family_data['cf']['index'][69]]},
-            prefix + '18C3' + suffix : { 'cf' : [family_data['cf']['index'][70]]},
-            prefix + '19M1' + suffix : { 'cf' : [family_data['cf']['index'][71]]},
-            prefix + '19M2' + suffix : { 'cf' : [family_data['cf']['index'][72]]},
-            prefix + '19C2' + suffix : { 'cf' : [family_data['cf']['index'][73]]},
-            prefix + '19C3' + suffix : { 'cf' : [family_data['cf']['index'][74]]},
-            prefix + '20M1' + suffix : { 'cf' : [family_data['cf']['index'][75]]},
-            prefix + '20M2' + suffix : { 'cf' : [family_data['cf']['index'][76]]},
-            prefix + '20C2' + suffix : { 'cf' : [family_data['cf']['index'][77]]},
-            prefix + '20C3' + suffix : { 'cf' : [family_data['cf']['index'][78]]},
-            prefix + '01M1' + suffix : { 'cf' : [family_data['cf']['index'][79]]},
+            prefix + '01M2' + suffix : { 'fc' : [family_data['fc']['index'][0]]},
+            prefix + '01C2' + suffix : { 'fc' : [family_data['fc']['index'][1]]},
+            prefix + '01C3' + suffix : { 'fc' : [family_data['fc']['index'][2]]},
+            prefix + '02M1' + suffix : { 'fc' : [family_data['fc']['index'][3]]},
+            prefix + '02M2' + suffix : { 'fc' : [family_data['fc']['index'][4]]},
+            prefix + '02C2' + suffix : { 'fc' : [family_data['fc']['index'][5]]},
+            prefix + '02C3' + suffix : { 'fc' : [family_data['fc']['index'][6]]},
+            prefix + '03M1' + suffix : { 'fc' : [family_data['fc']['index'][7]]},
+            prefix + '03M2' + suffix : { 'fc' : [family_data['fc']['index'][8]]},
+            prefix + '03C2' + suffix : { 'fc' : [family_data['fc']['index'][9]]},
+            prefix + '03C3' + suffix : { 'fc' : [family_data['fc']['index'][10]]},
+            prefix + '04M1' + suffix : { 'fc' : [family_data['fc']['index'][11]]},
+            prefix + '04M2' + suffix : { 'fc' : [family_data['fc']['index'][12]]},
+            prefix + '04C2' + suffix : { 'fc' : [family_data['fc']['index'][13]]},
+            prefix + '04C3' + suffix : { 'fc' : [family_data['fc']['index'][14]]},
+            prefix + '05M1' + suffix : { 'fc' : [family_data['fc']['index'][15]]},
+            prefix + '05M2' + suffix : { 'fc' : [family_data['fc']['index'][16]]},
+            prefix + '05C2' + suffix : { 'fc' : [family_data['fc']['index'][17]]},
+            prefix + '05C3' + suffix : { 'fc' : [family_data['fc']['index'][18]]},
+            prefix + '06M1' + suffix : { 'fc' : [family_data['fc']['index'][19]]},
+            prefix + '06M2' + suffix : { 'fc' : [family_data['fc']['index'][20]]},
+            prefix + '06C2' + suffix : { 'fc' : [family_data['fc']['index'][21]]},
+            prefix + '06C3' + suffix : { 'fc' : [family_data['fc']['index'][22]]},
+            prefix + '07M1' + suffix : { 'fc' : [family_data['fc']['index'][23]]},
+            prefix + '07M2' + suffix : { 'fc' : [family_data['fc']['index'][24]]},
+            prefix + '07C2' + suffix : { 'fc' : [family_data['fc']['index'][25]]},
+            prefix + '07C3' + suffix : { 'fc' : [family_data['fc']['index'][26]]},
+            prefix + '08M1' + suffix : { 'fc' : [family_data['fc']['index'][27]]},
+            prefix + '08M2' + suffix : { 'fc' : [family_data['fc']['index'][28]]},
+            prefix + '08C2' + suffix : { 'fc' : [family_data['fc']['index'][29]]},
+            prefix + '08C3' + suffix : { 'fc' : [family_data['fc']['index'][30]]},
+            prefix + '09M1' + suffix : { 'fc' : [family_data['fc']['index'][31]]},
+            prefix + '09M2' + suffix : { 'fc' : [family_data['fc']['index'][32]]},
+            prefix + '09C2' + suffix : { 'fc' : [family_data['fc']['index'][33]]},
+            prefix + '09C3' + suffix : { 'fc' : [family_data['fc']['index'][34]]},
+            prefix + '10M1' + suffix : { 'fc' : [family_data['fc']['index'][35]]},
+            prefix + '10M2' + suffix : { 'fc' : [family_data['fc']['index'][36]]},
+            prefix + '10C2' + suffix : { 'fc' : [family_data['fc']['index'][37]]},
+            prefix + '10C3' + suffix : { 'fc' : [family_data['fc']['index'][38]]},
+            prefix + '11M1' + suffix : { 'fc' : [family_data['fc']['index'][39]]},
+            prefix + '11M2' + suffix : { 'fc' : [family_data['fc']['index'][40]]},
+            prefix + '11C2' + suffix : { 'fc' : [family_data['fc']['index'][41]]},
+            prefix + '11C3' + suffix : { 'fc' : [family_data['fc']['index'][42]]},
+            prefix + '12M1' + suffix : { 'fc' : [family_data['fc']['index'][43]]},
+            prefix + '12M2' + suffix : { 'fc' : [family_data['fc']['index'][44]]},
+            prefix + '12C2' + suffix : { 'fc' : [family_data['fc']['index'][45]]},
+            prefix + '12C3' + suffix : { 'fc' : [family_data['fc']['index'][46]]},
+            prefix + '13M1' + suffix : { 'fc' : [family_data['fc']['index'][47]]},
+            prefix + '13M2' + suffix : { 'fc' : [family_data['fc']['index'][48]]},
+            prefix + '13C2' + suffix : { 'fc' : [family_data['fc']['index'][49]]},
+            prefix + '13C3' + suffix : { 'fc' : [family_data['fc']['index'][50]]},
+            prefix + '14M1' + suffix : { 'fc' : [family_data['fc']['index'][51]]},
+            prefix + '14M2' + suffix : { 'fc' : [family_data['fc']['index'][52]]},
+            prefix + '14C2' + suffix : { 'fc' : [family_data['fc']['index'][53]]},
+            prefix + '14C3' + suffix : { 'fc' : [family_data['fc']['index'][54]]},
+            prefix + '15M1' + suffix : { 'fc' : [family_data['fc']['index'][55]]},
+            prefix + '15M2' + suffix : { 'fc' : [family_data['fc']['index'][56]]},
+            prefix + '15C2' + suffix : { 'fc' : [family_data['fc']['index'][57]]},
+            prefix + '15C3' + suffix : { 'fc' : [family_data['fc']['index'][58]]},
+            prefix + '16M1' + suffix : { 'fc' : [family_data['fc']['index'][59]]},
+            prefix + '16M2' + suffix : { 'fc' : [family_data['fc']['index'][60]]},
+            prefix + '16C2' + suffix : { 'fc' : [family_data['fc']['index'][61]]},
+            prefix + '16C3' + suffix : { 'fc' : [family_data['fc']['index'][62]]},
+            prefix + '17M1' + suffix : { 'fc' : [family_data['fc']['index'][63]]},
+            prefix + '17M2' + suffix : { 'fc' : [family_data['fc']['index'][64]]},
+            prefix + '17C2' + suffix : { 'fc' : [family_data['fc']['index'][65]]},
+            prefix + '17C3' + suffix : { 'fc' : [family_data['fc']['index'][66]]},
+            prefix + '18M1' + suffix : { 'fc' : [family_data['fc']['index'][67]]},
+            prefix + '18M2' + suffix : { 'fc' : [family_data['fc']['index'][68]]},
+            prefix + '18C2' + suffix : { 'fc' : [family_data['fc']['index'][69]]},
+            prefix + '18C3' + suffix : { 'fc' : [family_data['fc']['index'][70]]},
+            prefix + '19M1' + suffix : { 'fc' : [family_data['fc']['index'][71]]},
+            prefix + '19M2' + suffix : { 'fc' : [family_data['fc']['index'][72]]},
+            prefix + '19C2' + suffix : { 'fc' : [family_data['fc']['index'][73]]},
+            prefix + '19C3' + suffix : { 'fc' : [family_data['fc']['index'][74]]},
+            prefix + '20M1' + suffix : { 'fc' : [family_data['fc']['index'][75]]},
+            prefix + '20M2' + suffix : { 'fc' : [family_data['fc']['index'][76]]},
+            prefix + '20C2' + suffix : { 'fc' : [family_data['fc']['index'][77]]},
+            prefix + '20C3' + suffix : { 'fc' : [family_data['fc']['index'][78]]},
+            prefix + '01M1' + suffix : { 'fc' : [family_data['fc']['index'][79]]},
         }
         return _dict
 
@@ -1955,9 +1975,21 @@ def get_element_names(accelerator, element = None, prefix = '', suffix = ''):
         }
         return _dict
 
+    if element.lower() == 'pmm':
+        prefix = prefix + 'PMM-'
+        _dict = {prefix + '01M2' + suffix: {'pmm' : family_data['pmm']['index']}}
+        return _dict
+
+    if element.lower() == 'kick' or element.lower() == 'kicker' or element.lower() == 'kick_in':
+        prefix = prefix + 'KICKERINJ-'
+        _dict = {prefix + '01M2' + suffix: {'kick_in' : family_data['kick_in']['index']}}
+        return _dict
+
     else:
         raise Exception('Element %s not found'%element)
 
 
 def get_magnet_names(accelerator):
-    return get_device_names(accelerator, 'sima')
+    _dict = get_device_names(accelerator, 'sima')
+    _dict.update(get_device_names(accelerator, 'sipm'))
+    return _dict

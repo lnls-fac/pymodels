@@ -27,8 +27,8 @@ def families_skew_correctors():
 def families_rf():
     return ['cav',]
 
-def families_septa():
-    return []
+def families_pulsed_magnets():
+    return ['kick_in', 'pmm']
 
 
 def get_family_data(lattice):
@@ -79,10 +79,10 @@ def get_family_data(lattice):
     data['cv']={'index':sorted(idx), 'nr_segs':_family_segmentation['cv']}
 
     # fch - fast horizontal correctors
-    data['fch']={'index':data['cf']['index'], 'nr_segs':_family_segmentation['fch']}
+    data['fch']={'index':data['fc']['index'], 'nr_segs':_family_segmentation['fch']}
 
     # fcv - fast vertical correctors
-    data['fcv']={'index':data['cf']['index'], 'nr_segs':_family_segmentation['fcv']}
+    data['fcv']={'index':data['fc']['index'], 'nr_segs':_family_segmentation['fcv']}
 
     # bc
     data['bc']={'index':sorted(data['bc_hf']['index']+data['bc_lf']['index']), 'nr_segs':_family_segmentation['bc']}
@@ -142,6 +142,7 @@ _family_segmentation={
     'bpm'   : 1,  'fc'    : 1,  'fch'   : 1,  'fcv'  : 1,
     'qs'    : 1,  'ch'    : 1,  'cv'    : 1,  'qn'   : 1,
     'cav'   : 1,  'start' : 1,
+    'kick_in' : 1, 'pmm' : 1,
 }
 
 _family_mapping = {
@@ -174,6 +175,9 @@ _family_mapping = {
     'sd2k': 'sextupole',
     'sd3k': 'sextupole',
     'sf2k': 'sextupole',
+
+    'pmm'    : 'pulsed_magnet',
+    'kick_in': 'pulsed_magnet',
 
     'bpm' : 'bpm',
 
