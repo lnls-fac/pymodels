@@ -19,6 +19,8 @@ def create_accelerator():
         accelerator.cavity_on = _default_cavity_on
         accelerator.radiation_on = _default_radiation_on
         accelerator.vchamber_on = _default_vchamber_on
+        _lattice.set_rf_frequency(accelerator)
+        _lattice.set_rf_voltage(accelerator, accelerator.energy)
     else:
         accelerator = _pyaccel.accelerator.Accelerator(
             lattice=lattice,
