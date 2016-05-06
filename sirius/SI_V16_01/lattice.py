@@ -4,12 +4,14 @@ import pyaccel as _pyaccel
 import mathphys as _mp
 from . import segmented_models as _segmented_models
 
-_default_optics_mode = 'S10.01'
+_default_mode = 'S05'
+_default_version = '01'
 _lattice_symmetry = 5
 _harmonic_number  = 864
 _energy = 3e9 #[eV]
 
-def create_lattice(mode='S10',version='01'):
+def create_lattice(mode=_default_mode, version=_default_version):
+
     # -- selection of optics mode --
     strengths = get_optics_mode(mode=mode,version=version)
 
@@ -334,7 +336,7 @@ def set_vacuum_chamber(the_ring):
         e.hmin, e.hmax, e.vmin, e.vmax = inj_vchamber
 
 
-def get_optics_mode(mode='S10',version='01'):
+def get_optics_mode(mode=_default_mode, version=_default_version):
 
     if mode == 'S10':
         if version == '01':
