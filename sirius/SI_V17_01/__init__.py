@@ -11,7 +11,7 @@ from . import pulsed_magnets
 accelerator_data = _accelerator.accelerator_data
 create_accelerator = _accelerator.create_accelerator
 
-# -- default accelerator values for SI_V16_01 --
+# -- default accelerator values for SI_V17_01 --
 energy               = _lattice._energy
 harmonic_number      = _lattice._harmonic_number
 default_cavity_on    = _accelerator._default_cavity_on
