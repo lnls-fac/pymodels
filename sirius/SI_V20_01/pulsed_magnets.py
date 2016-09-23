@@ -3,17 +3,19 @@ from . import device_names as _device_names
 
 _system  = 'si'
 
-_dipk_sec   =  '01SA'
-_dipk_pm    = _device_names.join_name(_system, 'PM', 'DIPK', _dipk_sec)
-_dipk_delay = _device_names.join_name(_system, 'TI', 'SOE',  _dipk_sec) + ':TrigDelayCh01'
-_dipk_enbl  = _device_names.join_name(_system, 'TI', 'SOE',  _dipk_sec) + ':TrigEnblCh01'
-_dipk_pc    = 'sipm-dipk-pulse.txt'
+# DIPK
+_pm1_sec   =  '01SA'
+_pm1_name  = _device_names.join_name(_system, 'PM', 'DIPK', _pm1_sec)
+_pm1_delay = _device_names.join_name(_system, 'TI', 'SOE',  _pm1_sec) + ':TrigDelayCh01'
+_pm1_enbl  = _device_names.join_name(_system, 'TI', 'SOE',  _pm1_sec) + ':TrigEnblCh01'
+_pm1_pc    = 'sipm-dipk-pulse.txt'
 
-_nlk_sec    =  '01SA'
-_nlk_pm     = _device_names.join_name(_system, 'PM', 'NLK', _nlk_sec)
-_nlk_delay  = _device_names.join_name(_system, 'TI', 'SOE', _nlk_sec) + ':TrigDelayCh02'
-_nlk_enbl   = _device_names.join_name(_system, 'TI', 'SOE', _nlk_sec) + ':TrigEnblCh02'
-_nlk_pc     = 'sipm-nlk-pulse.txt'
+# NLK
+_pm2_sec   =  '01SA'
+_pm2_name  = _device_names.join_name(_system, 'PM', 'NLK', _pm2_sec)
+_pm2_delay = _device_names.join_name(_system, 'TI', 'SOE', _pm2_sec) + ':TrigDelayCh01'
+_pm2_enbl  = _device_names.join_name(_system, 'TI', 'SOE', _pm2_sec) + ':TrigEnblCh01'
+_pm2_pc    = 'sipm-nlk-pulse.txt'
 
 
 def get_magnet_delay_mapping():
@@ -22,8 +24,8 @@ def get_magnet_delay_mapping():
     Returns dict.
     """
     mapping = {}
-    mapping[_dipk_pm] = _dipk_delay
-    mapping[_nlk_pm ] = _nlk_delay
+    mapping[_pm1_name] = _pm1_delay
+    mapping[_pm2_name] = _pm2_delay
 
     inverse_mapping = dict()
     for key, value in mapping.items():
@@ -38,8 +40,8 @@ def get_magnet_enabled_mapping():
     Returns dict.
     """
     mapping = {}
-    mapping[_dipk_pm] = _dipk_enbl
-    mapping[_nlk_pm ] = _nlk_enbl
+    mapping[_pm1_name] = _pm1_enbl
+    mapping[_pm2_name] = _pm2_enbl
 
     inverse_mapping = dict()
     for key, value in mapping.items():
@@ -54,7 +56,7 @@ def get_pulse_curve_mapping():
     Returns dict.
     """
     mapping = {}
-    mapping[_dipk_pm] = _dipk_pc
-    mapping[_nlk_pm ] = _nlk_pc
+    mapping[_pm1_name] = _pm1_pc
+    mapping[_pm2_name] = _pm2_pc
 
     return mapping

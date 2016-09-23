@@ -2,15 +2,6 @@
 import re as _re
 from . import device_names as _device_names
 
-
-_bend_re  = _re.compile('TSMA-B.*')
-_quad_re  = _re.compile('TSMA-Q.*')
-_hcorr_re = _re.compile('TSMA-CH.*')
-_vcorr_re = _re.compile('TSMA-CV.*')
-_septex_re  = _re.compile('TSPM-SEPTUME.*')
-_septing_re  = _re.compile('TSPM-SEPTUMTHICK.*')
-_septinf_re  = _re.compile('TSPM-SEPTUMTHIN.*')
-
 def get_excitation_curve_mapping(accelerator):
     """Get mapping from magnet to excitation curve file names
 
@@ -20,21 +11,13 @@ def get_excitation_curve_mapping(accelerator):
 
     ec = dict()
     for name in magnets:
-        if _bend_re.match(name) is not None:
-            ec[name] = 'tsma-bend.txt'
-        elif _quad_re.match(name) is not None:
-            ec[name] = 'tsma-q.txt'
-        elif _hcorr_re.match(name) is not None:
-            ec[name] = 'tsma-ch.txt'
-        elif _vcorr_re.match(name) is not None:
-            ec[name] = 'tsma-cv.txt'
-        elif _septex_re.match(name) is not None:
-            ec[name] = 'tspm-septex.txt'
-        elif _septing_re.match(name) is not None:
-            ec[name] = 'tspm-septing.txt'
-        elif _septinf_re.match(name) is not None:
-            ec[name] = 'tspm-septinf.txt'
-        else:
-            ec[name] = 'tsma-q.txt'
+        device = _device_names.split_name(name)['device']
+        if _re.search('B', device)     is not None: ec[name] = 'tsma-bend.txt'
+        elif _re.search('Q', device)   is not None: ec[name] = 'tsma-q.txt'
+        elif _re.search('CH', device)   is not None: ec[name] = 'tspm-ch.txt'
+        elif _re.search('CV', device)  is not None: ec[name] = 'tspm-cv.txt'
+        elif _re.search('SEPTUME', device) is not None: ec[name] = 'tspm-septex.txt'
+        elif _re.search('SEPTUMTHICK', device)  is not None: ec[name] = 'tspm-septing.txt'
+        elif _re.search('SEPTUMTHIN', device) is not None: ec[name] = 'tspm-septinf.txt'
 
     return ec

@@ -1,5 +1,4 @@
 
-import re as _re
 from . import device_names as _device_names
 
 

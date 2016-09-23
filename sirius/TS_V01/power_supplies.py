@@ -1,11 +1,7 @@
 """Magnet to power supply mapping definitions"""
 
-import re as _re
 from . import families as _families
 from . import device_names as _device_names
-
-
-_name_split_char = '-'
 
 
 def get_magnet_mapping(accelerator):
@@ -18,11 +14,11 @@ def get_magnet_mapping(accelerator):
     mapping = dict()
 
     # Add individual power supplies
-    magnets = _device_names.get_device_names(family_data, 'tsma')
+    magnets = _device_names.get_device_names(family_data, 'ma')
     magnet_names = magnets.keys()
-    pss = _device_names.get_device_names(family_data, 'tsps')
+    pss = _device_names.get_device_names(family_data, 'ps')
     for ps_name in pss.keys():
-        ps_magnet_name = ps_name.replace('TSPS', 'TSMA')
+        ps_magnet_name = ps_name.replace('PS', 'MA')
         if ps_magnet_name in magnet_names:
             if ps_magnet_name in mapping:
                 mapping[ps_magnet_name].add(ps_name)
@@ -32,11 +28,11 @@ def get_magnet_mapping(accelerator):
                 mapping[ps_magnet_name] = s
 
     # Add pulsed power supplies
-    pulsed_magnets = _device_names.get_device_names(family_data, 'tspm')
+    pulsed_magnets = _device_names.get_device_names(family_data, 'pm')
     pulsed_magnet_names = pulsed_magnets.keys()
-    pulsed_pss = _device_names.get_device_names(family_data, 'tspu')
+    pulsed_pss = _device_names.get_device_names(family_data, 'pu')
     for pu_name in pulsed_pss.keys():
-        pu_magnet_name = pu_name.replace('TSPU', 'TSPM')
+        pu_magnet_name = pu_name.replace('PU', 'PM')
         if pu_magnet_name in pulsed_magnet_names:
             if pu_magnet_name in mapping:
                 mapping[pu_magnet_name].add(pu_name)

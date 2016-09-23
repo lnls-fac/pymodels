@@ -1,6 +1,59 @@
 
 from . import families as _families
 
+system = 'tb'
+
+_pvnaming_rule = 2 # 1 : PV Naming Proposal#1; 2 : PV Naming Proposal#2
+_pvnaming_glob = 'Glob'
+_pvnaming_fam  = 'Fam'
+
+def join_name(system, subsystem, device, sector, idx = None):
+    # Proposal 1
+    if _pvnaming_rule == 1:
+        if idx is not None:
+            name = system.upper() + '-' + subsystem.upper() + ':' + device + '-' + sector + '-' + idx
+        else:
+            name = system.upper() + '-' + subsystem.upper() + ':' + device + '-' + sector
+        return name
+
+    # Proposal 2
+    elif _pvnaming_rule == 2:
+        if idx is not None:
+            name = system.upper() + '-' + sector + ':' + subsystem.upper() + '-' + device + '-' + idx
+        else:
+            name = system.upper() + '-' + sector + ':' + subsystem.upper() + '-' + device
+        return name
+
+    else:
+        raise Exception('Device name specification not found.')
+
+def split_name(name):
+    name_list = [s.split(':') for s in name.split('-')]
+    name_list = [y for x in name_list for y in x]
+    name_dict = {}
+
+    # Proposal 1
+    if _pvnaming_rule == 1:
+        name_dict['system']    = name_list[0]
+        name_dict['subsystem'] = name_list[1]
+        name_dict['device']    = name_list[2]
+        name_dict['sector']    = name_list[3]
+        if len(name_list) >= 5:
+            name_dict['idx']  = name_list[4]
+        return name_dict
+
+    # Proposal 2
+    elif _pvnaming_rule == 2:
+        name_dict['system']    = name_list[0]
+        name_dict['sector']    = name_list[1]
+        name_dict['subsystem'] = name_list[2]
+        name_dict['device']    = name_list[3]
+        if len(name_list) >= 5:
+            name_dict['idx']  = name_list[4]
+        return name_dict
+
+    else:
+        raise Exception('Device name specification not found.')
 
 def get_device_names(accelerator, subsystem = None):
     """Return a dictionary of device names for given subsystem
@@ -15,62 +68,43 @@ def get_device_names(accelerator, subsystem = None):
         family_data = accelerator
 
     if subsystem == None:
-        subsystems = ['tbdi', 'tbps', 'tbpu', 'tbti', 'tbpa']
+        subsystems = ['di', 'ps', 'ti', 'pu']
         device_names_dict = {}
         for subsystem in subsystems:
             device_names_dict.update(get_device_names(family_data, subsystem))
         return device_names_dict
 
-    if subsystem.lower() == 'tbpa':
+    if subsystem.lower() == 'di':
+        _dict = {}
+        _dict.update(get_element_names(family_data, subsystem, element = 'bpm'))
+        _dict.update(get_family_names(family_data, subsystem, family = 'bpm'))
+        return _dict
+
+    if subsystem.lower() == 'ps':
+        _dict = {}
+        _dict.update(get_element_names(family_data, subsystem, element = 'bend'))
+        _dict.update(get_element_names(family_data, subsystem, element = 'quad'))
+        _dict.update(get_element_names(family_data, subsystem, element = 'corr'))
+        return _dict
+
+    if subsystem.lower() == 'pu':
+        _dict = get_element_names(family_data, subsystem, element='pulsed_magnets')
+        return _dict
+
+    if subsystem.lower() == 'ma':
+        _dict = {}
+        _dict.update(get_element_names(family_data, subsystem, element = 'bend'))
+        _dict.update(get_element_names(family_data, subsystem, element = 'quad'))
+        _dict.update(get_element_names(family_data, subsystem, element = 'corr'))
+        return _dict
+
+    if subsystem.lower() == 'pm':
+        _dict = get_element_names(family_data, subsystem, element = 'pulsed_magnets')
+        return _dict
+
+    if subsystem.lower() == 'ti':
         _dict = {
-            'TBPA-INJEFF':{},
-            'TBPA-EXTEFF':{},
-        }
-        return _dict
-
-    if subsystem.lower() == 'tbdi':
-        prefix = 'TBDI-'
-        suffix = ''
-        _dict = get_element_names(family_data, element = 'bpm', prefix=prefix, suffix=suffix)
-        _dict.update(get_family_names(family_data, family = 'bpm', prefix=prefix, suffix=suffix))
-        return _dict
-
-    if subsystem.lower() == 'tbps':
-        prefix = 'TBPS-'
-        suffix = ''
-
-        _dict ={}
-        _dict.update(get_element_names(family_data, element = 'bend', prefix=prefix, suffix=suffix))
-        _dict.update(get_element_names(family_data, element = 'quad',prefix=prefix, suffix=suffix))
-        _dict.update(get_element_names(family_data, element = 'corr', prefix=prefix, suffix=suffix))
-        return _dict
-
-    if subsystem.lower() == 'tbpu':
-        prefix = 'TBPU-'
-        suffix = ''
-        _dict = get_element_names(family_data, element = 'pulsed_magnets', prefix=prefix, suffix=suffix)
-        return _dict
-
-    if subsystem.lower() == 'tbma':
-        prefix = 'TBMA-'
-        suffix = ''
-
-        _dict ={}
-        _dict.update(get_element_names(family_data, element = 'bend', prefix=prefix, suffix=suffix))
-        _dict.update(get_element_names(family_data, element = 'quad', prefix=prefix, suffix=suffix))
-        _dict.update(get_element_names(family_data, element = 'corr', prefix=prefix, suffix=suffix))
-        return _dict
-
-    if subsystem.lower() == 'tbpm':
-        prefix = 'TBPM-'
-        suffix = ''
-        _dict = get_element_names(family_data, element = 'pulsed_magnets', prefix=prefix, suffix=suffix)
-        return _dict
-
-    if subsystem.lower() == 'tbti':
-        _dict = {
-                'TBTI-SEPTUMINJ-ENABLED':{},
-                'TBTI-SEPTUMINJ-DELAY':{},
+            join_name(system, subsystem, 'SOE', '05') : {},
         }
         return _dict
 
@@ -78,31 +112,48 @@ def get_device_names(accelerator, subsystem = None):
         raise Exception('Subsystem %s not found'%subsystem)
 
 
-def get_family_names(accelerator, family = None, prefix='', suffix=''):
+def get_family_names(accelerator, subsystem, family = None):
+
+    try:
+        family = family.lower()
+    except:
+        pass
 
     if not isinstance(accelerator, dict):
         family_data = _families.get_family_data(accelerator)
     else:
         family_data = accelerator
 
-    if family == None:
-        family_names = ['bpm']
+    start = family_data['start']['index'][0]
+    if start != 0:
+        for key in family_data.keys():
+            if isinstance(family_data[key], dict):
+                index = family_data[key]['index']
+                j = 0
+                for i in index:
+                    if isinstance(i, int) and i < start: j+=1
+                    elif isinstance(i, list) and i[0] < start: j+=1
+                index = index[j:]+index[:j]
+                family_data[key]['index'] = index
 
+    family_names = ['bpm']
+
+    if family == None:
         _dict = {}
         for family in family_names:
-            _dict.update(get_family_names(family_data, family, prefix=prefix, suffix=suffix))
+            _dict.update(get_family_names(family_data, subsystem, family))
         return _dict
 
-    if family.lower() == 'bpm':
-        indices = family_data['bpm']['index']
-        _dict = {prefix + 'BPM-FAM' + suffix : {'bpm': indices}}
+    if family in family_names:
+        indices = family_data[family]['index']
+        _dict = {join_name(system, subsystem, family.upper(), _pvnaming_fam): {family : indices}}
         return _dict
 
     else:
-        raise Exception('Family name %s not found'%family)
+        raise Exception('Family %s not found'%family)
 
 
-def get_element_names(accelerator, element = None, prefix='', suffix=''):
+def get_element_names(accelerator, subsystem, element = None):
 
     if not isinstance(accelerator, dict):
         family_data = _families.get_family_data(accelerator)
@@ -124,111 +175,126 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
     if element == None:
         elements = []
         elements += _families.families_dipoles()
-        elements += _families.families_pulsed_magnets()
         elements += _families.families_quadrupoles()
         elements += _families.families_horizontal_correctors()
         elements += _families.families_vertical_correctors()
+        elements += _families.families_pulsed_magnets()
         elements += ['bpm']
 
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
+            _dict.update(get_element_names(family_data, subsystem, element))
         return _dict
 
-    if element.lower() == 'bend':
-        _dict = {
-            prefix + 'BEND-01' + suffix : {'bend' :  family_data['spec']['index']},
-            prefix + 'BEND-02' + suffix : {'bend' :  family_data['bn']['index']},
-            prefix + 'BEND-03' + suffix : {'bend' : [family_data['bp']['index'][0]]},
-            prefix + 'BEND-04' + suffix : {'bend' : [family_data['bp']['index'][1]]},
-        }
-        return _dict
-
-    if element.lower() == 'quad':
+    if element == 'quad':
+        elements = _families.families_quadrupoles()
         _dict = {}
-        _dict.update(get_element_names(family_data, 'qd', prefix=prefix, suffix=suffix))
-        _dict.update(get_element_names(family_data, 'qf', prefix=prefix, suffix=suffix))
-        _dict.update(get_element_names(family_data, 'triplet', prefix=prefix, suffix=suffix))
+        for element in elements:
+            _dict.update(get_element_names(family_data, subsystem, element))
         return _dict
 
-    if element.lower() == 'sep' or element.lower() == 'pulsed_magnets':
-        _dict ={
-            prefix + 'SEPTUMINJ-05' + suffix : {'sep' : family_data['sep']['index']},
-        }
-        return _dict
-
-    if element.lower() == 'corr':
+    if element == 'corr':
         elements = _families.families_horizontal_correctors()
         elements += _families.families_vertical_correctors()
         _dict = {}
         for element in elements:
-            _dict.update(get_element_names(family_data, element, prefix=prefix, suffix=suffix))
+            _dict.update(get_element_names(family_data, subsystem, element))
         return _dict
+
+    if element == 'hcorr':
+        elements = _families.families_horizontal_correctors()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(family_data, subsystem, element))
+        return _dict
+
+    if element == 'vcorr':
+        elements = _families.families_vertical_correctors()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(family_data, subsystem, element))
+        return _dict
+
+    if element == 'bend':
+        _dict = {
+            join_name(system, subsystem, element.upper(),'01') : {'bend' :  family_data['spec']['index']},
+            join_name(system, subsystem, element.upper(),'02') : {'bend' :  family_data['bn']['index']},
+            join_name(system, subsystem, element.upper(),'03') : {'bend' : [family_data['bp']['index'][0]]},
+            join_name(system, subsystem, element.upper(),'04') : {'bend' : [family_data['bp']['index'][1]]},
+        }
+        return _dict
+
+    if element.lower() == 'pulsed_magnets':
+        _dict ={
+            join_name(system, subsystem, 'SEPTUMINJ' ,'05') : {'sep' : family_data['sep']['index']},
+        }
+        return _dict
+
 
     if element.lower() == 'bpm':
         indices = family_data['bpm']['index']
         _dict = {
-            prefix + 'BPM-02-A' + suffix : {'bpm' : [indices[0]]},
-            prefix + 'BPM-02-B' + suffix : {'bpm' : [indices[1]]},
-            prefix + 'BPM-03-A' + suffix : {'bpm' : [indices[2]]},
-            prefix + 'BPM-03-B' + suffix : {'bpm' : [indices[3]]},
-            prefix + 'BPM-04'   + suffix : {'bpm' : [indices[4]]},
-            prefix + 'BPM-05'   + suffix : {'bpm' : [indices[5]]},
+            join_name(system, subsystem, element.upper(),'02', '1') : {'bpm' : [indices[0]]},
+            join_name(system, subsystem, element.upper(),'02', '2') : {'bpm' : [indices[1]]},
+            join_name(system, subsystem, element.upper(),'03', '1') : {'bpm' : [indices[2]]},
+            join_name(system, subsystem, element.upper(),'03', '2') : {'bpm' : [indices[3]]},
+            join_name(system, subsystem, element.upper(),'04')      : {'bpm' : [indices[4]]},
+            join_name(system, subsystem, element.upper(),'05')      : {'bpm' : [indices[5]]},
         }
         return _dict
 
     if element.lower() == 'qf':
         indices = family_data['qf']['index']
         _dict = {
-            prefix + 'QF-02'   + suffix : {'qf' : [indices[0]]},
-            prefix + 'QF-03-A' + suffix : {'qf' : [indices[1]]},
-            prefix + 'QF-03-B' + suffix : {'qf' : [indices[2]]},
-            prefix + 'QF-04'   + suffix : {'qf' : [indices[3]]},
-            prefix + 'QF-05'   + suffix : {'qf' : [indices[4]]},
+            join_name(system, subsystem, element.upper(),'02'  )    : {'qf' : [indices[0]]},
+            join_name(system, subsystem, element.upper(),'03', '1') : {'qf' : [indices[1]]},
+            join_name(system, subsystem, element.upper(),'03', '2') : {'qf' : [indices[2]]},
+            join_name(system, subsystem, element.upper(),'04'  )    : {'qf' : [indices[3]]},
+            join_name(system, subsystem, element.upper(),'05'  )    : {'qf' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'qd':
         indices = family_data['qd']['index']
         _dict = {
-            prefix + 'QD-02'   + suffix : {'qd' : [indices[0]]},
-            prefix + 'QD-03-A' + suffix : {'qd' : [indices[1]]},
-            prefix + 'QD-03-B' + suffix : {'qd' : [indices[2]]},
-            prefix + 'QD-04'   + suffix : {'qd' : [indices[3]]},
-            prefix + 'QD-05'   + suffix : {'qd' : [indices[4]]},
+            join_name(system, subsystem, element.upper(),'02'  )    : {'qd' : [indices[0]]},
+            join_name(system, subsystem, element.upper(),'03', '1') : {'qd' : [indices[1]]},
+            join_name(system, subsystem, element.upper(),'03', '2') : {'qd' : [indices[2]]},
+            join_name(system, subsystem, element.upper(),'04'  )    : {'qd' : [indices[3]]},
+            join_name(system, subsystem, element.upper(),'05'  )    : {'qd' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'triplet':
         indices = family_data['triplet']['index']
         _dict = {
-            prefix + 'Q1A-01-A' + suffix : {'triplet': [indices[0]]},
-            prefix + 'Q1B-01'   + suffix : {'triplet': [indices[1]]},
-            prefix + 'Q1A-01-B' + suffix : {'triplet': [indices[2]]},
-            prefix + 'Q1C-01'   + suffix : {'triplet': [indices[3]]},
+            join_name(system, subsystem, 'Q1A', '01', '1')  : {'triplet': [indices[0]]},
+            join_name(system, subsystem, 'Q1B', '01')       : {'triplet': [indices[1]]},
+            join_name(system, subsystem, 'Q1A', '01', '2')  : {'triplet': [indices[2]]},
+            join_name(system, subsystem, 'Q1C', '01')       : {'triplet': [indices[3]]},
         }
         return _dict
 
-    if element.lower() == 'ch' or element.lower() == 'hcm':
+    if element.lower() == 'ch':
         indices = family_data['ch']['index']
         _dict = {
-            prefix + 'CH-02-A' + suffix : {'ch' : [indices[0]]},
-            prefix + 'CH-02-B' + suffix : {'ch' : [indices[1]]},
-            prefix + 'CH-03-A' + suffix : {'ch' : [indices[2]]},
-            prefix + 'CH-03-B' + suffix : {'ch' : [indices[3]]},
-            prefix + 'CH-04'   + suffix : {'ch' : [indices[4]]},
+            join_name(system, subsystem, element.upper(),'02', '1') : {'ch' : [indices[0]]},
+            join_name(system, subsystem, element.upper(),'02', '1') : {'ch' : [indices[1]]},
+            join_name(system, subsystem, element.upper(),'03', '1') : {'ch' : [indices[2]]},
+            join_name(system, subsystem, element.upper(),'03', '2') : {'ch' : [indices[3]]},
+            join_name(system, subsystem, element.upper(),'04'  )    : {'ch' : [indices[4]]},
         }
         return _dict
 
-    if element.lower() == 'cv' or element.lower() == 'vcm':
+    if element.lower() == 'cv':
         indices = family_data['cv']['index']
         _dict = {
-            prefix + 'CV-02-A' + suffix : {'cv' : [indices[0]]},
-            prefix + 'CV-02-B' + suffix : {'cv' : [indices[1]]},
-            prefix + 'CV-03-A' + suffix : {'cv' : [indices[2]]},
-            prefix + 'CV-03-B' + suffix : {'cv' : [indices[3]]},
-            prefix + 'CV-05-A' + suffix : {'cv' : [indices[4]]},
-            prefix + 'CV-05-B' + suffix : {'cv' : [indices[5]]},
+            join_name(system, subsystem, element.upper(),'02', '1') : {'cv' : [indices[0]]},
+            join_name(system, subsystem, element.upper(),'02', '2') : {'cv' : [indices[1]]},
+            join_name(system, subsystem, element.upper(),'03', '1') : {'cv' : [indices[2]]},
+            join_name(system, subsystem, element.upper(),'03', '2') : {'cv' : [indices[3]]},
+            join_name(system, subsystem, element.upper(),'05', '1') : {'cv' : [indices[4]]},
+            join_name(system, subsystem, element.upper(),'05', '2') : {'cv' : [indices[5]]},
         }
         return _dict
     else:
@@ -236,6 +302,6 @@ def get_element_names(accelerator, element = None, prefix='', suffix=''):
 
 
 def get_magnet_names(accelerator):
-    _dict = get_device_names(accelerator, 'tbma')
-    _dict.update(get_device_names(accelerator, 'tbpm'))
+    _dict = get_device_names(accelerator, 'ma')
+    _dict.update(get_device_names(accelerator, 'pm'))
     return _dict

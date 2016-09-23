@@ -3,7 +3,7 @@ from . import families as _families
 
 system = 'si'
 
-_pvnaming_rule = 2 # 1 : PV Naming Proposol#1; 2 : PV Naming Proposol#2
+_pvnaming_rule = 2 # 1 : PV Naming Proposal#1; 2 : PV Naming Proposal#2
 _pvnaming_glob = 'Glob'
 _pvnaming_fam  = 'Fam'
 
@@ -157,12 +157,6 @@ def get_device_names(accelerator, subsystem = None):
 
     else:
         raise Exception('Subsystem %s not found'%subsystem)
-
-
-def get_magnet_names(accelerator):
-    _dict = get_device_names(accelerator, 'ma')
-    _dict.update(get_device_names(accelerator, 'pm'))
-    return _dict
 
 
 def get_family_names(accelerator, subsystem, family = None):
@@ -1976,3 +1970,9 @@ def get_element_names(accelerator, subsystem, element = None):
 
     else:
         raise Exception('Element %s not found'%element)
+
+
+def get_magnet_names(accelerator):
+    _dict = get_device_names(accelerator, 'ma')
+    _dict.update(get_device_names(accelerator, 'pm'))
+    return _dict

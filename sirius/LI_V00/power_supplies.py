@@ -1,11 +1,7 @@
 """Magnet to power supply mapping definitions"""
 
-import re as _re
 from . import families as _families
 from . import device_names as _device_names
-
-
-_name_split_char = '-'
 
 
 def get_magnet_mapping(accelerator):
