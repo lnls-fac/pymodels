@@ -3,9 +3,9 @@ from . import lattice as _lattice
 from . import accelerator as _accelerator
 from . import families as _families
 from . import device_names as _device_names
-#from . import excitation_curves
-#from . import power_supplies
-#from . import pulsed_magnets
+from . import excitation_curves
+from . import power_supplies
+from . import pulsed_magnets
 
 
 accelerator_data = _accelerator.accelerator_data
