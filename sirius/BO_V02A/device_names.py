@@ -138,7 +138,7 @@ def get_family_names(accelerator, subsystem, family = None):
 
     if family == 'bend' or family == 'b':
         _dict = {
-            _naming_system.join_name(system, subsystem, 'BEND', _naming_system.pvnaming_fam) : {'bend' : family_data['b']['index']}
+            _naming_system.join_name(system, subsystem, 'BEND', _naming_system.pvnaming_fam) : {'bend' : family_data['bend']['index']}
         }
         return _dict
 
@@ -300,56 +300,56 @@ def get_element_names(accelerator, subsystem, element = None):
 
     if element.lower() == 'bend' or element.lower() == 'b':
         _dict = {
-            _naming_system.join_name(system, subsystem, 'BEND', '01')  : {'bend' : [family_data['b']['index'][0]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'02')  : {'bend' : [family_data['b']['index'][1]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'03')  : {'bend' : [family_data['b']['index'][2]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'04')  : {'bend' : [family_data['b']['index'][3]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'05')  : {'bend' : [family_data['b']['index'][4]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'06')  : {'bend' : [family_data['b']['index'][5]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'07')  : {'bend' : [family_data['b']['index'][6]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'08')  : {'bend' : [family_data['b']['index'][7]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'09')  : {'bend' : [family_data['b']['index'][8]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'10')  : {'bend' : [family_data['b']['index'][9]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'11')  : {'bend' : [family_data['b']['index'][10]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'12')  : {'bend' : [family_data['b']['index'][11]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'13')  : {'bend' : [family_data['b']['index'][12]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'14')  : {'bend' : [family_data['b']['index'][13]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'15')  : {'bend' : [family_data['b']['index'][14]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'16')  : {'bend' : [family_data['b']['index'][15]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'17')  : {'bend' : [family_data['b']['index'][16]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'18')  : {'bend' : [family_data['b']['index'][17]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'19')  : {'bend' : [family_data['b']['index'][18]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'20')  : {'bend' : [family_data['b']['index'][19]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'21')  : {'bend' : [family_data['b']['index'][20]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'22')  : {'bend' : [family_data['b']['index'][21]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'23')  : {'bend' : [family_data['b']['index'][22]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'24')  : {'bend' : [family_data['b']['index'][23]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'25')  : {'bend' : [family_data['b']['index'][24]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'26')  : {'bend' : [family_data['b']['index'][25]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'27')  : {'bend' : [family_data['b']['index'][26]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'28')  : {'bend' : [family_data['b']['index'][27]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'29')  : {'bend' : [family_data['b']['index'][28]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'30')  : {'bend' : [family_data['b']['index'][29]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'31')  : {'bend' : [family_data['b']['index'][30]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'32')  : {'bend' : [family_data['b']['index'][31]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'33')  : {'bend' : [family_data['b']['index'][32]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'34')  : {'bend' : [family_data['b']['index'][33]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'35')  : {'bend' : [family_data['b']['index'][34]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'36')  : {'bend' : [family_data['b']['index'][35]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'37')  : {'bend' : [family_data['b']['index'][36]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'38')  : {'bend' : [family_data['b']['index'][37]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'39')  : {'bend' : [family_data['b']['index'][38]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'40')  : {'bend' : [family_data['b']['index'][39]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'41')  : {'bend' : [family_data['b']['index'][40]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'42')  : {'bend' : [family_data['b']['index'][41]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'43')  : {'bend' : [family_data['b']['index'][42]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'44')  : {'bend' : [family_data['b']['index'][43]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'45')  : {'bend' : [family_data['b']['index'][44]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'46')  : {'bend' : [family_data['b']['index'][45]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'47')  : {'bend' : [family_data['b']['index'][46]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'48')  : {'bend' : [family_data['b']['index'][47]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'49')  : {'bend' : [family_data['b']['index'][48]]},
-            _naming_system.join_name(system, subsystem, 'BEND' ,'50')  : {'bend' : [family_data['b']['index'][49]]},
+            _naming_system.join_name(system, subsystem, 'BEND', '01')  : {'bend' : [family_data['bend']['index'][0]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'02')  : {'bend' : [family_data['bend']['index'][1]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'03')  : {'bend' : [family_data['bend']['index'][2]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'04')  : {'bend' : [family_data['bend']['index'][3]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'05')  : {'bend' : [family_data['bend']['index'][4]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'06')  : {'bend' : [family_data['bend']['index'][5]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'07')  : {'bend' : [family_data['bend']['index'][6]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'08')  : {'bend' : [family_data['bend']['index'][7]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'09')  : {'bend' : [family_data['bend']['index'][8]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'10')  : {'bend' : [family_data['bend']['index'][9]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'11')  : {'bend' : [family_data['bend']['index'][10]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'12')  : {'bend' : [family_data['bend']['index'][11]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'13')  : {'bend' : [family_data['bend']['index'][12]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'14')  : {'bend' : [family_data['bend']['index'][13]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'15')  : {'bend' : [family_data['bend']['index'][14]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'16')  : {'bend' : [family_data['bend']['index'][15]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'17')  : {'bend' : [family_data['bend']['index'][16]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'18')  : {'bend' : [family_data['bend']['index'][17]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'19')  : {'bend' : [family_data['bend']['index'][18]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'20')  : {'bend' : [family_data['bend']['index'][19]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'21')  : {'bend' : [family_data['bend']['index'][20]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'22')  : {'bend' : [family_data['bend']['index'][21]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'23')  : {'bend' : [family_data['bend']['index'][22]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'24')  : {'bend' : [family_data['bend']['index'][23]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'25')  : {'bend' : [family_data['bend']['index'][24]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'26')  : {'bend' : [family_data['bend']['index'][25]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'27')  : {'bend' : [family_data['bend']['index'][26]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'28')  : {'bend' : [family_data['bend']['index'][27]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'29')  : {'bend' : [family_data['bend']['index'][28]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'30')  : {'bend' : [family_data['bend']['index'][29]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'31')  : {'bend' : [family_data['bend']['index'][30]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'32')  : {'bend' : [family_data['bend']['index'][31]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'33')  : {'bend' : [family_data['bend']['index'][32]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'34')  : {'bend' : [family_data['bend']['index'][33]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'35')  : {'bend' : [family_data['bend']['index'][34]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'36')  : {'bend' : [family_data['bend']['index'][35]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'37')  : {'bend' : [family_data['bend']['index'][36]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'38')  : {'bend' : [family_data['bend']['index'][37]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'39')  : {'bend' : [family_data['bend']['index'][38]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'40')  : {'bend' : [family_data['bend']['index'][39]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'41')  : {'bend' : [family_data['bend']['index'][40]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'42')  : {'bend' : [family_data['bend']['index'][41]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'43')  : {'bend' : [family_data['bend']['index'][42]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'44')  : {'bend' : [family_data['bend']['index'][43]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'45')  : {'bend' : [family_data['bend']['index'][44]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'46')  : {'bend' : [family_data['bend']['index'][45]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'47')  : {'bend' : [family_data['bend']['index'][46]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'48')  : {'bend' : [family_data['bend']['index'][47]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'49')  : {'bend' : [family_data['bend']['index'][48]]},
+            _naming_system.join_name(system, subsystem, 'BEND' ,'50')  : {'bend' : [family_data['bend']['index'][49]]},
         }
         return _dict
 
@@ -552,6 +552,10 @@ def get_element_names(accelerator, subsystem, element = None):
             _naming_system.join_name(system, subsystem, 'KICKEREXT', '48D', '1')  : {'kick_ex' : [family_data['kick_ex']['index'][0]]},
             _naming_system.join_name(system, subsystem, 'KICKEREXT', '48D', '2')  : {'kick_ex' : [family_data['kick_ex']['index'][1]]},
         }
+        return _dict
+
+    if element.lower() == 'cav':
+        _dict = {_naming_system.join_name(system, subsystem, 'CAV','05D')  : {'cav' : family_data['cav']['index']}}
         return _dict
 
     else:

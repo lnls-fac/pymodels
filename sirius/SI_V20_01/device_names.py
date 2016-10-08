@@ -1108,91 +1108,6 @@ def get_element_names(accelerator, subsystem, element = None):
         return _dict
 
 
-    if element == 'fc':
-        _dict = {
-            _naming_system.join_name(system, subsystem, element.upper(), '01M2') : { 'fc' : [family_data['fc']['index'][0]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '01C2') : { 'fc' : [family_data['fc']['index'][1]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '01C3') : { 'fc' : [family_data['fc']['index'][2]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '02M1') : { 'fc' : [family_data['fc']['index'][3]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '02M2') : { 'fc' : [family_data['fc']['index'][4]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '02C2') : { 'fc' : [family_data['fc']['index'][5]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '02C3') : { 'fc' : [family_data['fc']['index'][6]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '03M1') : { 'fc' : [family_data['fc']['index'][7]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '03M2') : { 'fc' : [family_data['fc']['index'][8]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '03C2') : { 'fc' : [family_data['fc']['index'][9]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '03C3') : { 'fc' : [family_data['fc']['index'][10]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '04M1') : { 'fc' : [family_data['fc']['index'][11]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '04M2') : { 'fc' : [family_data['fc']['index'][12]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '04C2') : { 'fc' : [family_data['fc']['index'][13]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '04C3') : { 'fc' : [family_data['fc']['index'][14]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '05M1') : { 'fc' : [family_data['fc']['index'][15]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '05M2') : { 'fc' : [family_data['fc']['index'][16]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '05C2') : { 'fc' : [family_data['fc']['index'][17]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '05C3') : { 'fc' : [family_data['fc']['index'][18]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '06M1') : { 'fc' : [family_data['fc']['index'][19]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '06M2') : { 'fc' : [family_data['fc']['index'][20]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '06C2') : { 'fc' : [family_data['fc']['index'][21]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '06C3') : { 'fc' : [family_data['fc']['index'][22]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '07M1') : { 'fc' : [family_data['fc']['index'][23]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '07M2') : { 'fc' : [family_data['fc']['index'][24]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '07C2') : { 'fc' : [family_data['fc']['index'][25]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '07C3') : { 'fc' : [family_data['fc']['index'][26]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '08M1') : { 'fc' : [family_data['fc']['index'][27]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '08M2') : { 'fc' : [family_data['fc']['index'][28]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '08C2') : { 'fc' : [family_data['fc']['index'][29]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '08C3') : { 'fc' : [family_data['fc']['index'][30]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '09M1') : { 'fc' : [family_data['fc']['index'][31]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '09M2') : { 'fc' : [family_data['fc']['index'][32]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '09C2') : { 'fc' : [family_data['fc']['index'][33]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '09C3') : { 'fc' : [family_data['fc']['index'][34]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '10M1') : { 'fc' : [family_data['fc']['index'][35]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '10M2') : { 'fc' : [family_data['fc']['index'][36]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '10C2') : { 'fc' : [family_data['fc']['index'][37]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '10C3') : { 'fc' : [family_data['fc']['index'][38]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '11M1') : { 'fc' : [family_data['fc']['index'][39]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '11M2') : { 'fc' : [family_data['fc']['index'][40]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '11C2') : { 'fc' : [family_data['fc']['index'][41]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '11C3') : { 'fc' : [family_data['fc']['index'][42]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '12M1') : { 'fc' : [family_data['fc']['index'][43]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '12M2') : { 'fc' : [family_data['fc']['index'][44]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '12C2') : { 'fc' : [family_data['fc']['index'][45]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '12C3') : { 'fc' : [family_data['fc']['index'][46]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '13M1') : { 'fc' : [family_data['fc']['index'][47]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '13M2') : { 'fc' : [family_data['fc']['index'][48]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '13C2') : { 'fc' : [family_data['fc']['index'][49]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '13C3') : { 'fc' : [family_data['fc']['index'][50]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '14M1') : { 'fc' : [family_data['fc']['index'][51]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '14M2') : { 'fc' : [family_data['fc']['index'][52]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '14C2') : { 'fc' : [family_data['fc']['index'][53]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '14C3') : { 'fc' : [family_data['fc']['index'][54]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '15M1') : { 'fc' : [family_data['fc']['index'][55]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '15M2') : { 'fc' : [family_data['fc']['index'][56]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '15C2') : { 'fc' : [family_data['fc']['index'][57]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '15C3') : { 'fc' : [family_data['fc']['index'][58]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '16M1') : { 'fc' : [family_data['fc']['index'][59]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '16M2') : { 'fc' : [family_data['fc']['index'][60]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '16C2') : { 'fc' : [family_data['fc']['index'][61]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '16C3') : { 'fc' : [family_data['fc']['index'][62]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '17M1') : { 'fc' : [family_data['fc']['index'][63]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '17M2') : { 'fc' : [family_data['fc']['index'][64]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '17C2') : { 'fc' : [family_data['fc']['index'][65]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '17C3') : { 'fc' : [family_data['fc']['index'][66]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '18M1') : { 'fc' : [family_data['fc']['index'][67]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '18M2') : { 'fc' : [family_data['fc']['index'][68]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '18C2') : { 'fc' : [family_data['fc']['index'][69]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '18C3') : { 'fc' : [family_data['fc']['index'][70]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '19M1') : { 'fc' : [family_data['fc']['index'][71]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '19M2') : { 'fc' : [family_data['fc']['index'][72]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '19C2') : { 'fc' : [family_data['fc']['index'][73]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '19C3') : { 'fc' : [family_data['fc']['index'][74]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '20M1') : { 'fc' : [family_data['fc']['index'][75]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '20M2') : { 'fc' : [family_data['fc']['index'][76]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '20C2') : { 'fc' : [family_data['fc']['index'][77]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '20C3') : { 'fc' : [family_data['fc']['index'][78]]},
-            _naming_system.join_name(system, subsystem, element.upper(), '01M1') : { 'fc' : [family_data['fc']['index'][79]]},
-        }
-        return _dict
-
     if element == 'qfa':
         _dict = {
             _naming_system.join_name(system, subsystem, element.upper(), '01M1') : { 'qfa' : [family_data['qfa']['index'][0]]},
@@ -1914,6 +1829,10 @@ def get_element_names(accelerator, subsystem, element = None):
 
     if element == 'dipk' or element == 'kicker' or element == 'kick_in':
         _dict = {_naming_system.join_name(system, subsystem, 'DIPK', '01SA'): {'dipk' : family_data['dipk']['index']}}
+        return _dict
+
+    if element.lower() == 'cav':
+        _dict = {_naming_system.join_name(system, subsystem, 'CAV','03SP')  : {'cav' : family_data['cav']['index']}}
         return _dict
 
     else:

@@ -173,7 +173,7 @@ def get_element_names(accelerator, subsystem, element = None):
         }
         return _dict
 
-    if element.lower() == 'pulsed_magnets':
+    if element.lower() == 'pulsed_magnets' or element.lower() == 'sep':
         _dict ={
             _naming_system.join_name(system, subsystem, 'SEPTUMINJ' ,'05') : {'sep' : family_data['sep']['index']},
         }

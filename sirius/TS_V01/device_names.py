@@ -167,9 +167,26 @@ def get_element_names(accelerator, subsystem, element = None):
         return _dict
 
     if element.lower() == 'pulsed_magnets':
+        elements = _families.families_pulsed_magnets()
+        _dict = {}
+        for element in elements:
+            _dict.update(get_element_names(family_data, subsystem, element))
+        return _dict
+
+    if element.lower() == 'septex':
         _dict ={
             _naming_system.join_name(system, subsystem, 'SEPTUMEXT',   '01') : {'septex'  : family_data['septex']['index'] },
+        }
+        return _dict
+
+    if element.lower() == 'septing':
+        _dict ={
             _naming_system.join_name(system, subsystem, 'SEPTUMTHICK', '04') : {'septing' : family_data['septing']['index']},
+        }
+        return _dict
+
+    if element.lower() == 'septinf':
+        _dict ={
             _naming_system.join_name(system, subsystem, 'SEPTUMTHIN',  '04') : {'septinf' : family_data['septinf']['index']},
         }
         return _dict
