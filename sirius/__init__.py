@@ -5,7 +5,7 @@ from . import BO_V02A
 from . import TS_V01
 from . import SI_V17_01
 from . import SI_V20_01
-
+from . import naming_system
 from . import coordinate_system
 
 with open(_os.path.join(__path__[0], 'VERSION'), 'r') as _f:

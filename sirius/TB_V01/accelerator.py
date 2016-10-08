@@ -28,5 +28,4 @@ accelerator_data['dirs'] = {
     'excitation_curves': _lnls.system.folder_excitation_curves,
     'pulse_curves': _lnls.system.folder_pulse_curves,
 }
-#accelerator_data['global_coupling']  = 1.0 # expected corrected value
 accelerator_data['pressure_profile'] = None

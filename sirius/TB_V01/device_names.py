@@ -1,59 +1,9 @@
 
 from . import families as _families
+import sirius.naming_system as _naming_system
 
 system = 'tb'
-
-_pvnaming_rule = 2 # 1 : PV Naming Proposal#1; 2 : PV Naming Proposal#2
-_pvnaming_glob = 'Glob'
-_pvnaming_fam  = 'Fam'
-
-def join_name(system, subsystem, device, sector, idx = None):
-    # Proposal 1
-    if _pvnaming_rule == 1:
-        if idx is not None:
-            name = system.upper() + '-' + subsystem.upper() + ':' + device + '-' + sector + '-' + idx
-        else:
-            name = system.upper() + '-' + subsystem.upper() + ':' + device + '-' + sector
-        return name
-
-    # Proposal 2
-    elif _pvnaming_rule == 2:
-        if idx is not None:
-            name = system.upper() + '-' + sector + ':' + subsystem.upper() + '-' + device + '-' + idx
-        else:
-            name = system.upper() + '-' + sector + ':' + subsystem.upper() + '-' + device
-        return name
-
-    else:
-        raise Exception('Device name specification not found.')
-
-def split_name(name):
-    name_list = [s.split(':') for s in name.split('-')]
-    name_list = [y for x in name_list for y in x]
-    name_dict = {}
-
-    # Proposal 1
-    if _pvnaming_rule == 1:
-        name_dict['system']    = name_list[0]
-        name_dict['subsystem'] = name_list[1]
-        name_dict['device']    = name_list[2]
-        name_dict['sector']    = name_list[3]
-        if len(name_list) >= 5:
-            name_dict['idx']  = name_list[4]
-        return name_dict
-
-    # Proposal 2
-    elif _pvnaming_rule == 2:
-        name_dict['system']    = name_list[0]
-        name_dict['sector']    = name_list[1]
-        name_dict['subsystem'] = name_list[2]
-        name_dict['device']    = name_list[3]
-        if len(name_list) >= 5:
-            name_dict['idx']  = name_list[4]
-        return name_dict
-
-    else:
-        raise Exception('Device name specification not found.')
+subsystems = ['di', 'ps', 'ti', 'pu', 'ma', 'pm']
 
 def get_device_names(accelerator, subsystem = None):
     """Return a dictionary of device names for given subsystem
@@ -68,7 +18,6 @@ def get_device_names(accelerator, subsystem = None):
         family_data = accelerator
 
     if subsystem == None:
-        subsystems = ['di', 'ps', 'ti', 'pu']
         device_names_dict = {}
         for subsystem in subsystems:
             device_names_dict.update(get_device_names(family_data, subsystem))
@@ -104,7 +53,7 @@ def get_device_names(accelerator, subsystem = None):
 
     if subsystem.lower() == 'ti':
         _dict = {
-            join_name(system, subsystem, 'SOE', '05') : {},
+            _naming_system.join_name(system, subsystem, 'SOE', '05') : {},
         }
         return _dict
 
@@ -146,7 +95,7 @@ def get_family_names(accelerator, subsystem, family = None):
 
     if family in family_names:
         indices = family_data[family]['index']
-        _dict = {join_name(system, subsystem, family.upper(), _pvnaming_fam): {family : indices}}
+        _dict = {_naming_system.join_name(system, subsystem, family.upper(), _naming_system.pvnaming_fam): {family : indices}}
         return _dict
 
     else:
@@ -217,16 +166,16 @@ def get_element_names(accelerator, subsystem, element = None):
 
     if element == 'bend':
         _dict = {
-            join_name(system, subsystem, element.upper(),'01') : {'bend' :  family_data['spec']['index']},
-            join_name(system, subsystem, element.upper(),'02') : {'bend' :  family_data['bn']['index']},
-            join_name(system, subsystem, element.upper(),'03') : {'bend' : [family_data['bp']['index'][0]]},
-            join_name(system, subsystem, element.upper(),'04') : {'bend' : [family_data['bp']['index'][1]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'01') : {'bend' :  family_data['spec']['index']},
+            _naming_system.join_name(system, subsystem, element.upper(),'02') : {'bend' :  family_data['bn']['index']},
+            _naming_system.join_name(system, subsystem, element.upper(),'03') : {'bend' : [family_data['bp']['index'][0]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'04') : {'bend' : [family_data['bp']['index'][1]]},
         }
         return _dict
 
     if element.lower() == 'pulsed_magnets':
         _dict ={
-            join_name(system, subsystem, 'SEPTUMINJ' ,'05') : {'sep' : family_data['sep']['index']},
+            _naming_system.join_name(system, subsystem, 'SEPTUMINJ' ,'05') : {'sep' : family_data['sep']['index']},
         }
         return _dict
 
@@ -234,67 +183,67 @@ def get_element_names(accelerator, subsystem, element = None):
     if element.lower() == 'bpm':
         indices = family_data['bpm']['index']
         _dict = {
-            join_name(system, subsystem, element.upper(),'02', '1') : {'bpm' : [indices[0]]},
-            join_name(system, subsystem, element.upper(),'02', '2') : {'bpm' : [indices[1]]},
-            join_name(system, subsystem, element.upper(),'03', '1') : {'bpm' : [indices[2]]},
-            join_name(system, subsystem, element.upper(),'03', '2') : {'bpm' : [indices[3]]},
-            join_name(system, subsystem, element.upper(),'04')      : {'bpm' : [indices[4]]},
-            join_name(system, subsystem, element.upper(),'05')      : {'bpm' : [indices[5]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02', '1') : {'bpm' : [indices[0]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02', '2') : {'bpm' : [indices[1]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '1') : {'bpm' : [indices[2]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '2') : {'bpm' : [indices[3]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'04')      : {'bpm' : [indices[4]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'05')      : {'bpm' : [indices[5]]},
         }
         return _dict
 
     if element.lower() == 'qf':
         indices = family_data['qf']['index']
         _dict = {
-            join_name(system, subsystem, element.upper(),'02'  )    : {'qf' : [indices[0]]},
-            join_name(system, subsystem, element.upper(),'03', '1') : {'qf' : [indices[1]]},
-            join_name(system, subsystem, element.upper(),'03', '2') : {'qf' : [indices[2]]},
-            join_name(system, subsystem, element.upper(),'04'  )    : {'qf' : [indices[3]]},
-            join_name(system, subsystem, element.upper(),'05'  )    : {'qf' : [indices[4]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02'  )    : {'qf' : [indices[0]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '1') : {'qf' : [indices[1]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '2') : {'qf' : [indices[2]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'04'  )    : {'qf' : [indices[3]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'05'  )    : {'qf' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'qd':
         indices = family_data['qd']['index']
         _dict = {
-            join_name(system, subsystem, element.upper(),'02'  )    : {'qd' : [indices[0]]},
-            join_name(system, subsystem, element.upper(),'03', '1') : {'qd' : [indices[1]]},
-            join_name(system, subsystem, element.upper(),'03', '2') : {'qd' : [indices[2]]},
-            join_name(system, subsystem, element.upper(),'04'  )    : {'qd' : [indices[3]]},
-            join_name(system, subsystem, element.upper(),'05'  )    : {'qd' : [indices[4]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02'  )    : {'qd' : [indices[0]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '1') : {'qd' : [indices[1]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '2') : {'qd' : [indices[2]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'04'  )    : {'qd' : [indices[3]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'05'  )    : {'qd' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'triplet':
         indices = family_data['triplet']['index']
         _dict = {
-            join_name(system, subsystem, 'Q1A', '01', '1')  : {'triplet': [indices[0]]},
-            join_name(system, subsystem, 'Q1B', '01')       : {'triplet': [indices[1]]},
-            join_name(system, subsystem, 'Q1A', '01', '2')  : {'triplet': [indices[2]]},
-            join_name(system, subsystem, 'Q1C', '01')       : {'triplet': [indices[3]]},
+            _naming_system.join_name(system, subsystem, 'Q1A', '01', '1')  : {'triplet': [indices[0]]},
+            _naming_system.join_name(system, subsystem, 'Q1B', '01')       : {'triplet': [indices[1]]},
+            _naming_system.join_name(system, subsystem, 'Q1A', '01', '2')  : {'triplet': [indices[2]]},
+            _naming_system.join_name(system, subsystem, 'Q1C', '01')       : {'triplet': [indices[3]]},
         }
         return _dict
 
     if element.lower() == 'ch':
         indices = family_data['ch']['index']
         _dict = {
-            join_name(system, subsystem, element.upper(),'02', '1') : {'ch' : [indices[0]]},
-            join_name(system, subsystem, element.upper(),'02', '1') : {'ch' : [indices[1]]},
-            join_name(system, subsystem, element.upper(),'03', '1') : {'ch' : [indices[2]]},
-            join_name(system, subsystem, element.upper(),'03', '2') : {'ch' : [indices[3]]},
-            join_name(system, subsystem, element.upper(),'04'  )    : {'ch' : [indices[4]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02', '1') : {'ch' : [indices[0]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02', '1') : {'ch' : [indices[1]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '1') : {'ch' : [indices[2]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '2') : {'ch' : [indices[3]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'04'  )    : {'ch' : [indices[4]]},
         }
         return _dict
 
     if element.lower() == 'cv':
         indices = family_data['cv']['index']
         _dict = {
-            join_name(system, subsystem, element.upper(),'02', '1') : {'cv' : [indices[0]]},
-            join_name(system, subsystem, element.upper(),'02', '2') : {'cv' : [indices[1]]},
-            join_name(system, subsystem, element.upper(),'03', '1') : {'cv' : [indices[2]]},
-            join_name(system, subsystem, element.upper(),'03', '2') : {'cv' : [indices[3]]},
-            join_name(system, subsystem, element.upper(),'05', '1') : {'cv' : [indices[4]]},
-            join_name(system, subsystem, element.upper(),'05', '2') : {'cv' : [indices[5]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02', '1') : {'cv' : [indices[0]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'02', '2') : {'cv' : [indices[1]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '1') : {'cv' : [indices[2]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'03', '2') : {'cv' : [indices[3]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'05', '1') : {'cv' : [indices[4]]},
+            _naming_system.join_name(system, subsystem, element.upper(),'05', '2') : {'cv' : [indices[5]]},
         }
         return _dict
     else:

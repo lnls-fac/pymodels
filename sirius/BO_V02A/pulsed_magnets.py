@@ -1,29 +1,39 @@
 
 from . import device_names as _device_names
+import sirius.naming_system as _naming_system
 
 _system  = 'bo'
+_trigger_delay = 'TrigDelay'
+_trigger_enabled = 'TrigEnbl'
+_pulsed_magnet_mapping = {}
+
+def _add_to_pulsed_magnet_mapping(pulsed_magnet_name, timing_device_name, pulse_curve_name, channel):
+    _pulsed_magnet_mapping[pulsed_magnet_name] = {
+        'delay'   : timing_device_name + ":" + _trigger_delay + channel,
+        'enabled' : timing_device_name + ":" + _trigger_enabled + channel,
+        'pulse_curve' : pulse_curve_name,
+    }
 
 # KICKERINJ
-_pm1_sec   =  '01D'
-_pm1_name  = _device_names.join_name(_system, 'PM', 'KICKERINJ', _pm1_sec)
-_pm1_delay = _device_names.join_name(_system, 'TI', 'SOE',  _pm1_sec) + ':TrigDelayCh01'
-_pm1_enbl  = _device_names.join_name(_system, 'TI', 'SOE',  _pm1_sec) + ':TrigEnblCh01'
-_pm1_pc    = 'bopm-kickinj-pulse.txt'
+_pulsed_magnet_name = _naming_system.join_name(_system, 'PM', 'KICKERINJ', '01D')
+_timing_device_name = _naming_system.join_name(_system, 'TI', 'SOE',  '01D')
+_pulse_curve_name  = 'bopm-kickinj-pulse.txt'
+_channel = 'Ch02'
+_add_to_pulsed_magnet_mapping(_pulsed_magnet_name, _timing_device_name, _pulse_curve_name, _channel)
 
 # KICKEREX 1
-_pm2_sec   =  '48D'
-_pm2_name  = _device_names.join_name(_system, 'PM', 'KICKEREX', _pm2_sec, '1')
-_pm2_delay = _device_names.join_name(_system, 'TI', 'STDMOE', _pm2_sec) + ':TrigDelayCh01'
-_pm2_enbl  = _device_names.join_name(_system, 'TI', 'STDMOE', _pm2_sec) + ':TrigEnblCh01'
-_pm2_pc    = 'bopm-kickex-pulse.txt'
-
+_pulsed_magnet_name = _naming_system.join_name(_system, 'PM', 'KICKEREXT', '48D', '1')
+_timing_device_name = _naming_system.join_name(_system, 'TI', 'STDMOE', '48D')
+_pulse_curve_name  =  'bopm-kickex-pulse.txt'
+_channel = 'Ch01'
+_add_to_pulsed_magnet_mapping(_pulsed_magnet_name, _timing_device_name, _pulse_curve_name, _channel)
 
 # KICKEREX 2
-_pm3_sec   =  '48D'
-_pm3_name  = _device_names.join_name(_system, 'PM', 'KICKEREX', _pm3_sec, '2')
-_pm3_delay = _device_names.join_name(_system, 'TI', 'STDMOE', _pm3_sec) + ':TrigDelayCh01'
-_pm3_enbl  = _device_names.join_name(_system, 'TI', 'STDMOE', _pm3_sec) + ':TrigEnblCh01'
-_pm3_pc    = 'bopm-kickex-pulse.txt'
+_pulsed_magnet_name = _naming_system.join_name(_system, 'PM', 'KICKEREXT', '48D', '2')
+_timing_device_name = _naming_system.join_name(_system, 'TI', 'STDMOE', '48D')
+_pulse_curve_name  = 'bopm-kickex-pulse.txt'
+_channel = 'Ch02'
+_add_to_pulsed_magnet_mapping(_pulsed_magnet_name, _timing_device_name, _pulse_curve_name, _channel)
 
 
 def get_magnet_delay_mapping():
@@ -32,9 +42,8 @@ def get_magnet_delay_mapping():
     Returns dict.
     """
     mapping = {}
-    mapping[_pm1_name] = _pm1_delay
-    mapping[_pm2_name] = _pm2_delay
-    mapping[_pm3_name] = _pm3_delay
+    for key in _pulsed_magnet_mapping:
+        mapping[key] = _pulsed_magnet_mapping[key]['delay']
 
     inverse_mapping = dict()
     for key, value in mapping.items():
@@ -49,9 +58,8 @@ def get_magnet_enabled_mapping():
     Returns dict.
     """
     mapping = {}
-    mapping[_pm1_name] = _pm1_enbl
-    mapping[_pm2_name] = _pm2_enbl
-    mapping[_pm3_name] = _pm3_enbl
+    for key in _pulsed_magnet_mapping:
+        mapping[key] = _pulsed_magnet_mapping[key]['enabled']
 
     inverse_mapping = dict()
     for key, value in mapping.items():
@@ -66,8 +74,7 @@ def get_pulse_curve_mapping():
     Returns dict.
     """
     mapping = {}
-    mapping[_pm1_name] = _pm1_pc
-    mapping[_pm2_name] = _pm2_pc
-    mapping[_pm3_name] = _pm3_pc
+    for key in _pulsed_magnet_mapping:
+        mapping[key] = _pulsed_magnet_mapping[key]['pulse_curve']
 
     return mapping

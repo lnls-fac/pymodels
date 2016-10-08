@@ -1,9 +1,8 @@
 """Magnet to power supply mapping definitions"""
 
-import re as _re
 from . import families as _families
 from . import device_names as _device_names
-
+import sirius.naming_system as _naming_system
 
 _name_split_char = '-'
 
@@ -23,7 +22,7 @@ def get_magnet_mapping(accelerator):
 
     # Add family power supplies
     bend_magnets = _device_names.get_element_names(family_data, ma_subsystem, 'bend')
-    bend_family  = _device_names.get_family_names(family_data, ps_subsystem, 'bend')
+    bend_families  = _device_names.get_family_names(family_data, ps_subsystem, 'bend')
     family_list = []
     for family_name in bend_families.keys():
         family_list.append(family_name)
@@ -33,9 +32,9 @@ def get_magnet_mapping(accelerator):
     quad_magnets = _device_names.get_element_names(family_data, ma_subsystem, 'quad')
     quad_families = _device_names.get_family_names(family_data, ps_subsystem, 'quad')
     for family_name in quad_families.keys():
-        element_name = _device_names.split_name(family_name)['device']
+        element_name = _naming_system.split_name(family_name)['device']
         for magnet_name in quad_magnets.keys():
-            if  _device_names.split_name(magnet_name)['device'] ==  element_name:
+            if  _naming_system.split_name(magnet_name)['device'] ==  element_name:
                 s = set()
                 s.add(family_name)
                 mapping[magnet_name] = s
@@ -43,9 +42,9 @@ def get_magnet_mapping(accelerator):
     sext_magnets = _device_names.get_element_names(family_data, ma_subsystem, 'sext')
     sext_families = _device_names.get_family_names(family_data, ps_subsystem, 'sext')
     for family_name in sext_families.keys():
-        element_name = _device_names.split_name(family_name)['device']
+        element_name = _naming_system.split_name(family_name)['device']
         for magnet_name in sext_magnets.keys():
-            if  _device_names.split_name(magnet_name)['device'] ==  element_name:
+            if  _naming_system.split_name(magnet_name)['device'] ==  element_name:
                 s = set()
                 s.add(family_name)
                 mapping[magnet_name] = s

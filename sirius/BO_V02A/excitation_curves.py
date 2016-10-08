@@ -1,6 +1,7 @@
 
 import re as _re
 from . import device_names as _device_names
+import sirius.naming_system as _naming_system
 
 def get_excitation_curve_mapping(accelerator):
     """Get mapping from magnet to excitation curve file names
@@ -11,7 +12,7 @@ def get_excitation_curve_mapping(accelerator):
 
     ec = dict()
     for name in magnets:
-        device = _device_names.split_name(name)['device']
+        device = _naming_system.split_name(name)['device']
         if _re.search('B', device)     is not None: ec[name] = 'boma-bend.txt'
         elif _re.search('QF', device)   is not None: ec[name] = 'boma-qf.txt'
         elif _re.search('QD', device)   is not None: ec[name] = 'boma-qd.txt'
