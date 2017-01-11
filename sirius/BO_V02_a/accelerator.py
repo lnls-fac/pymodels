@@ -27,8 +27,8 @@ def create_accelerator():
 accelerator_data = dict()
 accelerator_data['lattice_version'] = 'BO_V02_a'
 accelerator_data['dirs'] = {
-    'excitation_curves': _lnls.system.folder_excitation_curves,
-    'pulse_curves': _lnls.system.folder_pulse_curves,
+    'excitation_curves': _lnls.folder_excitation_curves,
+    'pulse_curves': _lnls.folder_pulse_curves,
 }
 accelerator_data['global_coupling'] = 0.0002 # expected corrected value
 accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8]*2]) # [s [m], p [mbar]]
