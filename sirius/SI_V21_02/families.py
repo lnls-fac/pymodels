@@ -5,34 +5,34 @@ import pyaccel as _pyaccel
 from . import lattice as _lattice
 
 def families_dipoles():
-    return ['bend',]
+    return ['B1','B2','BC']
 
 def families_quadrupoles():
-    return ['qfa', 'qda', 'qfb', 'qdb1', 'qdb2', 'qfp', 'qdp1', 'qdp2', 'q1', 'q2', 'q3', 'q4',]
+    return ['QFA', 'QDA', 'QFB', 'QDB1', 'QDB2', 'QFP', 'QDP1', 'QDP2', 'Q1', 'Q2', 'Q3', 'Q4',]
 
 def families_sextupoles():
-    return ['sda0', 'sdb0', 'sdp0',
-            'sda1', 'sdb1', 'sdp1',
-            'sda2', 'sdb2', 'sdp2',
-            'sda3', 'sdb3', 'sdp3',
-            'sfa0', 'sfb0', 'sfp0',
-            'sfa1', 'sfb1', 'sfp1',
-            'sfa2', 'sfb2', 'sfp2']
+    return ['SDA0', 'SDB0', 'SDP0',
+            'SDA1', 'SDB1', 'SDP1',
+            'SDA2', 'SDB2', 'SDP2',
+            'SDA3', 'SDB3', 'SDP3',
+            'SFA0', 'SFB0', 'SFP0',
+            'SFA1', 'SFB1', 'SFP1',
+            'SFA2', 'SFB2', 'SFP2']
 
 def families_horizontal_correctors():
-    return ['fch', 'ch',]
+    return ['FCH', 'CH',]
 
 def families_vertical_correctors():
-    return ['fcv', 'cv',]
+    return ['FCV', 'CV',]
 
 def families_skew_correctors():
-    return ['qs',]
+    return ['QS',]
 
 def families_rf():
-    return ['cav',]
+    return ['RFCav',]
 
 def families_pulsed_magnets():
-    return ['dipk', 'nlk']
+    return ['InjDpK', 'InjNLK']
 
 def get_section_name_mapping(lattice):
     lat = lattice[:]
@@ -40,7 +40,7 @@ def get_section_name_mapping(lattice):
 
     ## find where the nomenclature starts counting and shift the lattice:
     start = _pyaccel.lattice.find_indices(lat,'fam_name','start')[0]
-    b1 = _pyaccel.lattice.find_indices(lat, 'fam_name','b1')
+    b1 = _pyaccel.lattice.find_indices(lat, 'fam_name','B1')
     if b1[0]>start:
         ind_shift = (b1[-1] + 1) # Next element of last b1
     else:
@@ -51,12 +51,12 @@ def get_section_name_mapping(lattice):
     lat = _pyaccel.lattice.shift(lat,ind_shift)
 
     #Find indices important to define the change of the names of the subsections
-    b1 = _pyaccel.lattice.find_indices(lat,'fam_name','b1')
+    b1 = _pyaccel.lattice.find_indices(lat,'fam_name','B1')
     b1_nrsegs = len(b1)//40
-    b2 = _pyaccel.lattice.find_indices(lat,'fam_name','b2')
+    b2 = _pyaccel.lattice.find_indices(lat,'fam_name','B2')
     b2_nrsegs = len(b2)//40
-    bc = _pyaccel.lattice.find_indices(lat,'fam_name','bc_lf')
-    bpm = _pyaccel.lattice.find_indices(lat,'fam_name','bpm')
+    bc = _pyaccel.lattice.find_indices(lat,'fam_name','BC_LF')
+    bpm = _pyaccel.lattice.find_indices(lat,'fam_name','BPM')
 
     ## divide the ring in 20 sectors defined by the b1 dipoles:
     Sects = []
@@ -111,54 +111,54 @@ def get_family_data(lattice):
 
     # ch - slow horizontal correctors
     idx = []
-    fams = ['sda0', 'sfb0', 'sfp0', 'sda1', 'sdb1', 'sdp1', 'sfa2', 'sfb2', 'sfp2']
+    fams = ['SDA0', 'SFB0', 'SFP0', 'SDA1', 'SDB1', 'SDP1', 'SFA2', 'SFB2', 'SFP2']
     for fam in fams: idx.extend(latt_dict[fam])
-    data['ch']=sorted(idx)
+    data['CH']=sorted(idx)
 
     # cv - slow vertical correctors
     idx = []
-    fams = ['sda0', 'sfb0', 'sfp0', 'sda1', 'sdb1', 'sdp1',
-            'sda3', 'sdb3', 'sdp3', 'sfa2', 'sfb2', 'sfp2', 'cv']
+    fams = ['SDA0', 'SFB0', 'SFP0', 'SDA1', 'SDB1', 'SDP1',
+            'SDA3', 'SDB3', 'SDP3', 'SFA2', 'SFB2', 'SFP2', 'CV']
     for fam in fams:
-        if fam in {'sfa2', 'sfb2', 'sfp2'}: # for these families there are skew only in C3 sections
+        if fam in {'SFA2', 'SFB2', 'SFP2'}: # for these families there are skew only in C3 sections
             idx.extend([i for i in latt_dict[fam] if 'C3' in section_map[i]])
         else:
             idx.extend(latt_dict[fam])
-    data['cv']=sorted(idx)
+    data['CV']=sorted(idx)
 
     # bc
-    data['bc']=sorted(latt_dict['bc_hf']+latt_dict['bc_lf'])
+    data['BC']=sorted(latt_dict['BC_HF']+latt_dict['BC_LF'])
 
     # fch - fast horizontal correctors
-    data['fch']=sorted(latt_dict['fc']+latt_dict['fcq'])
+    data['FCH']=sorted(latt_dict['FC']+latt_dict['FCQ'])
 
     # fcv - fast vertical correctors
-    data['fcv']=sorted(latt_dict['fc']+latt_dict['fcq'])
+    data['FCV']=sorted(latt_dict['FC']+latt_dict['FCQ'])
 
     # qs - skew quad correctors
     idx = []
-    fams = ['sfa0', 'sdb0', 'sdp0', 'fcq', 'sda2', 'sdb2', 'sdp2', 'sda3', 'sdb3', 'sdp3']
+    fams = ['SFA0', 'SDB0', 'SDP0', 'FCQ', 'SDA2', 'SDB2', 'SDP2', 'SDA3', 'SDB3', 'SDP3']
     for fam in fams:
-        if fam in {'sda2', 'sdb2', 'sdp2'}: # for these families there are skew only in C1 sections
+        if fam in {'SDA2', 'SDB2', 'SDP2'}: # for these families there are skew only in C1 sections
             idx.extend([i for i in latt_dict[fam] if 'C1' in section_map[i]])
-        elif fam in {'sda3', 'sdb3', 'sdp3'}:# for these families there are skew only in C3 sections
+        elif fam in {'SDA3', 'SDB3', 'SDP3'}:# for these families there are skew only in C3 sections
             idx.extend([i for i in latt_dict[fam] if 'C3' in section_map[i]])
         else:
             idx.extend(latt_dict[fam])
-    data['qs']=sorted(idx)
+    data['QS']=sorted(idx)
 
     # quadrupoles knobs for optics correction
     idx = []
-    fams = ['qfa','qda', 'qdb2', 'qfb', 'qdb1', 'qdp2', 'qfp', 'qdp1', 'q1', 'q2','q3', 'q4']
+    fams = ['QFA','QDA', 'QDB2', 'QFB', 'QDB1', 'QDP2', 'QFP', 'QDP1', 'Q1', 'Q2','Q3', 'Q4']
     for fam in fams: idx.extend(latt_dict[fam])
-    data['qn']=sorted(idx)
+    data['QN']=sorted(idx)
 
     # sbs - sextupoles knobs for optics correction
     idx = []
-    fams = ['sda0', 'sdb0', 'sdp0', 'sda1', 'sdb1', 'sdp1', 'sda2', 'sdb2', 'sdp2', 'sda3', 'sdb3', 'sdp3',
-            'sfa0', 'sfb0', 'sfp0', 'sfa1', 'sfb1', 'sfp1', 'sfa2', 'sfb2', 'sfp2']
+    fams = ['SDA0', 'SDB0', 'SDP0', 'SDA1', 'SDB1', 'SDP1', 'SDA2', 'SDB2', 'SDP2', 'SDA3', 'SDB3', 'SDP3',
+            'SFA0', 'SFB0', 'SFP0', 'SFA1', 'SFB1', 'SFP1', 'SFA2', 'SFB2', 'SFP2']
     for fam in fams: idx.extend(latt_dict[fam])
-    data['sn']=sorted(idx)
+    data['SN']=sorted(idx)
 
 
     ### Now organize the data dictionary:
