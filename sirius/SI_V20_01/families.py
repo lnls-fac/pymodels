@@ -34,6 +34,62 @@ def families_rf():
 def families_pulsed_magnets():
     return ['dipk', 'nlk']
 
+def get_section_name_mapping(lattice):
+    lat = lattice[:]
+    section_map = ['' for i in range(len(lat))]
+
+    ## find where the nomenclature starts counting and shift the lattice:
+    start = _pyaccel.lattice.find_indices(lat,'fam_name','start')[0]
+    b1 = _pyaccel.lattice.find_indices(lat, 'fam_name','b1')
+    if b1[0]>start:
+        ind_shift = (b1[-1] + 1) # Next element of last b1
+    else:
+        for i in b1[::-1]: # except there is a b1 before start
+            if i<start:
+                ind_shift = i + 1
+                break
+    lat = _pyaccel.lattice.shift(lat,ind_shift)
+
+    #Find indices important to define the change of the names of the subsections
+    b1 = _pyaccel.lattice.find_indices(lat,'fam_name','b1')
+    b1_nrsegs = len(b1)//40
+    b2 = _pyaccel.lattice.find_indices(lat,'fam_name','b2')
+    b2_nrsegs = len(b2)//40
+    bc = _pyaccel.lattice.find_indices(lat,'fam_name','bc_lf')
+    bpm = _pyaccel.lattice.find_indices(lat,'fam_name','bpm')
+
+    ## divide the ring in 20 sectors defined by the b1 dipoles:
+    Sects = []
+    ini = 0
+    for i in range(len(b1)//(2*b1_nrsegs)):
+        fim = b1[(i+1)*2*b1_nrsegs-1] + 1
+        Sects.append(list(range(ini,fim)))
+        ini = fim
+
+    # Names of the subsections:
+    sub_secs = ['M1','SX','M2','','C1','','C2','','C3','','C4','']
+    symm = ['SA','SB','SP','SB']
+
+    for i, sec in enumerate(Sects,1):
+        ## conditions that define change in subsection name:
+        sec_b1 = [x for x in b1 if sec[0]<= x <= sec[-1]] # define changes to '' and C1
+        relev_inds  = [sec_b1[0]-1, sec_b1[b1_nrsegs-1], sec_b1[b1_nrsegs]-1, sec_b1[-1]]
+        sec_b2 = [x for x in b2 if sec[0]<= x <= sec[-1]] # define changes to '', C2 and C4
+        relev_inds += [sec_b2[0]-1, sec_b2[b2_nrsegs-1], sec_b2[b2_nrsegs]-1, sec_b2[-1]]
+        sec_bc = [x for x in bc if sec[0]<= x <= sec[-1]] # define changes to '' and C3
+        relev_inds += [sec_bc[0]-1, sec_bc[-1]]
+        sec_bpm = [x for x in bpm if sec[0]<= x <= sec[-1]] # define changes to SX and M2
+        relev_inds += [sec_bpm[0], sec_bpm[1]-1]
+        relev_inds.sort()
+        ## fill the section_map variable
+        ref = 0
+        for j in sec:
+            section_map[(ind_shift+j)%len(lat)] = "{0:02d}".format(i)
+            section_map[(ind_shift+j)%len(lat)] += symm[(i-1)%len(symm)] if sub_secs[ref] == 'SX' else sub_secs[ref]
+            if j >= relev_inds[ref]: ref += 1
+
+    return section_map
+
 
 def get_family_data(lattice):
     """Get pyaccel lattice model index and segmentation for each family name
@@ -44,131 +100,97 @@ def get_family_data(lattice):
     Returns dict.
     """
     latt_dict = _pyaccel.lattice.find_dict(lattice,'fam_name')
+    section_map = get_section_name_mapping(lattice)
+
+    #### Fill the data dictionary with index info ######
     data = {}
-    for key in latt_dict.keys():
-        if key in _family_segmentation.keys():
-            data[key] = {'index' : latt_dict[key], 'nr_segs' : _family_segmentation[key]}
+    for key, idx in latt_dict.items():
+        nr = _family_segmentation.get(key)
+        if nr is None: continue
+        data[key] = idx
 
     # ch - slow horizontal correctors
     idx = []
     fams = ['sda0', 'sfb0', 'sfp0', 'sda1', 'sdb1', 'sdp1', 'sfa2', 'sfb2', 'sfp2']
-    for fam in fams:
-        idx.extend(data[fam]['index'])
-    data['ch']={'index':sorted(idx), 'nr_segs':_family_segmentation['ch']}
+    for fam in fams: idx.extend(latt_dict[fam])
+    data['ch']=sorted(idx)
 
     # cv - slow vertical correctors
     idx = []
-    fams = ['sda0', 'sfb0', 'sfp0', 'sda1', 'sdb1', 'sdp1', 'sda3', 'sdb3', 'sdp3', 'cv']
+    fams = ['sda0', 'sfb0', 'sfp0', 'sda1', 'sdb1', 'sdp1',
+            'sda3', 'sdb3', 'sdp3', 'sfa2', 'sfb2', 'sfp2', 'cv']
     for fam in fams:
-        idx.extend(data[fam]['index'])
-
-    # In this version of the lattice, there is a cv corrector in the sextupoles
-    # sf2 of every sector C3 of the arc the lattice. It means the corrector
-    # alternates between all SF2's. The logic bellow uses the
-    # dipoles B2 and BC_LF to determine where to put the corrector.
-    indices = sorted(data['sfa2']['index'] + data['sfb2']['index'] + data['sfp2']['index'])
-    dipoles = sorted(data['b2']['index'] + data['bc_lf']['index'])
-    dipoles = _numpy.array(dipoles)
-    for i in indices:
-        el, *_ = _numpy.nonzero(dipoles > i)
-        if len(el) != 0:
-            if lattice[dipoles[el[0]]].fam_name == 'b2':
-                idx += [i]
+        if fam in {'sfa2', 'sfb2', 'sfp2'}: # for these families there are skew only in C3 sections
+            idx.extend([i for i in latt_dict[fam] if 'C3' in section_map[i]])
         else:
-            el, *_ = _numpy.nonzero(dipoles < i)
-            if len(el) != 0:
-                if lattice[dipoles[el[-1]]].fam_name == 'bc_lf':
-                    idx += [i]
-            else:
-                raise Exception('Problem with vertical corrector index definition.')
-    data['cv']={'index':sorted(idx), 'nr_segs':_family_segmentation['cv']}
+            idx.extend(latt_dict[fam])
+    data['cv']=sorted(idx)
 
     # bc
-    data['bc']={'index':sorted(data['bc_hf']['index']+data['bc_lf']['index']), 'nr_segs':_family_segmentation['bc']}
+    data['bc']=sorted(latt_dict['bc_hf']+latt_dict['bc_lf'])
 
     # fch - fast horizontal correctors
-    data['fch']={'index':sorted(data['fc']['index']+data['fcq']['index']), 'nr_segs':_family_segmentation['fch']}
+    data['fch']=sorted(latt_dict['fc']+latt_dict['fcq'])
 
     # fcv - fast vertical correctors
-    data['fcv']={'index':sorted(data['fc']['index']+data['fcq']['index']), 'nr_segs':_family_segmentation['fcv']}
+    data['fcv']=sorted(latt_dict['fc']+latt_dict['fcq'])
 
     # qs - skew quad correctors
     idx = []
-    fams = ['sfa0', 'sdb0', 'sdp0', 'fcq']
+    fams = ['sfa0', 'sdb0', 'sdp0', 'fcq', 'sda2', 'sdb2', 'sdp2', 'sda3', 'sdb3', 'sdp3']
     for fam in fams:
-        idx.extend(data[fam]['index'])
-
-    # In this version of the lattice, there are qs correctors in the sextupoles
-    # sd2 of every sector C1 of the arc in the lattice. It means the corrector
-    # alternates between all SD2's. The logic bellow uses the
-    # dipoles B1 and B2 to determine where to put the corrector.
-    indqs = sorted(data['sda2']['index'] + data['sdb2']['index']+ data['sdp2']['index']);
-    dips = sorted(data['b1']['index']+ data['b2']['index']);
-    dips = _numpy.array(dips)
-    for i in indqs:
-        el, *_ = _numpy.nonzero(dips > i)
-        if len(el) != 0:
-            if lattice[dips[el[0]]].fam_name == 'b2':
-                idx += [i]
+        if fam in {'sda2', 'sdb2', 'sdp2'}: # for these families there are skew only in C1 sections
+            idx.extend([i for i in latt_dict[fam] if 'C1' in section_map[i]])
+        elif fam in {'sda3', 'sdb3', 'sdp3'}:# for these families there are skew only in C3 sections
+            idx.extend([i for i in latt_dict[fam] if 'C3' in section_map[i]])
         else:
-            el, *_ = _numpy.nonzero(dips < i)
-            if len(el) != 0:
-                if lattice[dips[el[-1]]].fam_name == 'b1':
-                    idx += [i]
-            else:
-                raise Exception('Problem with skew corrector index definition.')
-
-    # In this version of the lattice, there are qs correctors in the sextupoles
-    # sd3 of every sector C3 of the arc in the lattice. It means the corrector
-    # alternates between all SD3's. The logic bellow uses the
-    # dipoles B2 and BC_LF to determine where to put the corrector.
-    indqs = sorted(data['sda3']['index']+ data['sdb3']['index']+ data['sdp3']['index']);
-    dips = sorted(data['b2']['index'] + data['bc_lf']['index'])
-    dips = _numpy.array(dips)
-    for i in indqs:
-        el, *_ = _numpy.nonzero(dips > i)
-        if len(el) != 0:
-            if lattice[dips[el[0]]].fam_name == 'b2':
-                idx += [i]
-        else:
-            el, *_ = _numpy.nonzero(dips < i)
-            if len(el) != 0:
-                if lattice[dips[el[-1]]].fam_name == 'bc_lf':
-                    idx += [i]
-            else:
-                raise Exception('Problem with skew corrector index definition.')
-
-    data['qs']={'index':sorted(idx), 'nr_segs':_family_segmentation['qs']}
+            idx.extend(latt_dict[fam])
+    data['qs']=sorted(idx)
 
     # quadrupoles knobs for optics correction
     idx = []
     fams = ['qfa','qda', 'qdb2', 'qfb', 'qdb1', 'qdp2', 'qfp', 'qdp1', 'q1', 'q2','q3', 'q4']
-    for fam in fams:
-            idx.extend(data[fam]['index'])
-    data['qn']={'index':sorted(idx), 'nr_segs':_family_segmentation['qn']}
+    for fam in fams: idx.extend(latt_dict[fam])
+    data['qn']=sorted(idx)
 
     # sbs - sextupoles knobs for optics correction
     idx = []
     fams = ['sda0', 'sdb0', 'sdp0', 'sda1', 'sdb1', 'sdp1', 'sda2', 'sdb2', 'sdp2', 'sda3', 'sdb3', 'sdp3',
             'sfa0', 'sfb0', 'sfp0', 'sfa1', 'sfb1', 'sfp1', 'sfa2', 'sfb2', 'sfp2']
-    for fam in fams:
-            idx.extend(data[fam]['index'])
-    data['sn']={'index':sorted(idx), 'nr_segs':_family_segmentation['sn']}
+    for fam in fams: idx.extend(latt_dict[fam])
+    data['sn']=sorted(idx)
 
-    for key in data.keys():
-        if data[key]['nr_segs'] != 1:
-            new_index = []
-            j = 0
-            for i in range(len(data[key]['index'])//data[key]['nr_segs']):
-                new_index.append(data[key]['index'][j:j+data[key]['nr_segs']])
-                j += data[key]['nr_segs']
-            data[key]['index'] = new_index
+
+    ### Now organize the data dictionary:
+    new_data = dict()
+    for key, idx in data.items():
+        # Create a list of lists for the indexes
+        nr = _family_segmentation.get(key)
+        if nr is None: continue
+        new_idx = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
+
+        # find out the name of the section each element is installed
+        secs = [ section_map[i[0]] for i in new_idx ]
+
+        # find out if there are more than one element per section and attribute a number to it
+        num = len(secs)*['']
+        if len(secs)>1:
+            j=1
+            f = lambda x: '{0:d}'.format(x)
+            num[0]     = f(j)   if secs[0]==secs[1] else                           ''
+            j          = j+1    if secs[0]==secs[1] else                           1
+            for i in range(1,len(secs)-1):
+                num[i] = f(j)   if secs[i]==secs[i+1] or secs[i]==secs[i-1] else   ''
+                j      = j+1    if secs[i]==secs[i+1] else                         1
+            num[-1]    = f(j)   if (secs[-1] == secs[-2]) else                     ''
+
+        new_data[key] = {'index':new_idx, 'subsection':secs, 'instance':num}
 
     #girders
     girder =  get_girder_data(lattice)
-    if girder is not None: data['girder'] = girder
+    if girder is not None: new_data['girder'] = girder
 
-    return data
+    return new_data
 
 def get_girder_data(lattice):
     data = []
@@ -186,7 +208,7 @@ def get_girder_data(lattice):
 
 _family_segmentation={
     'b1'    : 30, 'b2'    : 36,
-    'bc'    : 30, 'bc_hf' : 16, 'bc_lf' : 14,
+    'bc'    : 44, 'bc_hf' : 16, 'bc_lf' : 14,
     'qfa'   : 1,  'qda'   : 1,
     'qfb'   : 1,  'qdb1'  : 1,  'qdb2'  : 1,
     'qfp'   : 1,  'qdp1'  : 1,  'qdp2'  : 1,
@@ -198,11 +220,11 @@ _family_segmentation={
     'sfa0'  : 1, 'sfb0'   : 1,  'sfp0'  : 1,
     'sfa1'  : 1, 'sfb1'   : 1,  'sfp1'  : 1,
     'sfa2'  : 1, 'sfb2'   : 1,  'sfp2'  : 1,
-    'bpm'   : 1,  'rbpm'  : 1,
-    'fc'    : 1,  'fcq'   : 1,  'fch'  : 1,  'fcv'  : 1,
-    'qs'    : 1,  'ch'    : 1,  'cv'    : 1,  'qn'   : 1, 'sn' : 1,
-    'cav'   : 1,  'start' : 1,
-    'dipk'  : 1, 'nlk' : 1,
+    'bpm'   : 1, 'rbpm'   : 1,
+    'fc'    : 1, 'fcq'    : 1,  'fch'   : 1,  'fcv'  : 1,
+    'qs'    : 1, 'ch'     : 1,  'cv'    : 1,  'qn'   : 1, 'sn' : 1,
+    'cav'   : 1, 'start'  : 1,
+    'dipk'  : 1, 'nlk'    : 1,
 }
 
 _family_mapping = {

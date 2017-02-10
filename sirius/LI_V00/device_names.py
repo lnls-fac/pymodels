@@ -25,7 +25,7 @@ def get_device_names(accelerator, subsystem = None):
 
     if subsystem.lower() == 'ti':
         _dict = {
-            _naming_system.join_name(system, subsystem, 'STDMOE', 'EGUN') : {},
+            _naming_system.join_name(system, subsystem, 'STDMOE', 'EGun') : {},
         }
         return _dict
 

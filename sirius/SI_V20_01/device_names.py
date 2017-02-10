@@ -119,7 +119,7 @@ def get_family_names(accelerator, subsystem, family = None):
     else:
         family_data = accelerator
 
-    start = family_data['start']['index'][0]
+    start = family_data['start']['index'][0][0]
     if start != 0:
         for key in family_data.keys():
             if isinstance(family_data[key], dict):
@@ -182,7 +182,7 @@ def get_element_names(accelerator, subsystem, element = None):
     else:
         family_data = accelerator
 
-    start = family_data['start']['index'][0]
+    start = family_data['start']['index'][0][0]
     if start != 0:
         for key in family_data.keys():
             if isinstance(family_data[key], dict):

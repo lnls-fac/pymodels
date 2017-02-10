@@ -21,7 +21,7 @@ def create_lattice(**kwargs):
     drift  = _pyaccel.elements.drift
 
     start = marker('start')
-    egun  = marker('egun')
+    egun  = marker('EGun')
     l21   = drift('l21', 21.000)
     end   = marker('end')
 

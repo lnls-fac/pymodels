@@ -5,25 +5,24 @@ import pyaccel as _pyaccel
 from . import lattice as _lattice
 
 
-_default_radiation_on = False
-_default_vchamber_on = False
+default_radiation_on = False
+default_vchamber_on = False
 
 
-def create_accelerator():
+def create_accelerator(optics_mode = _lattice.default_optics_mode):
     accelerator = _pyaccel.accelerator.Accelerator(
-        lattice=_lattice.create_lattice(),
-        energy=_lattice._energy,
-        radiation_on=_default_radiation_on,
-        vchamber_on=_default_vchamber_on
+        lattice=_lattice.create_lattice(optics_mode=optics_mode),
+        energy=_lattice.energy,
+        radiation_on=default_radiation_on,
+        vchamber_on=default_vchamber_on
     )
-
     return accelerator
 
 
 _folder_code = _lnls.folder_code
 
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'TB_V01'
+accelerator_data['lattice_version'] = 'TB_V01_03'
 accelerator_data['dirs'] = {
     'excitation_curves': _lnls.folder_excitation_curves,
     'pulse_curves': _lnls.folder_pulse_curves,
