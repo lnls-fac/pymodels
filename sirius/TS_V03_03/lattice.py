@@ -1,6 +1,7 @@
 
 import math as _math
 import pyaccel as _pyaccel
+import numpy as _np
 import mathphys as _mp
 
 
@@ -30,11 +31,11 @@ def create_lattice(optics_mode = default_optics_mode):
     l015   = drift('l015', 0.1500)
     l020   = drift('l020', 0.2000)
     l025   = drift('l025', 0.2500)
+    l040   = drift('l040', 0.4000)
     l060   = drift('l060', 0.6000)
     l080   = drift('l080', 0.8000)
     l090   = drift('l090', 0.9000)
     l130   = drift('l130', 1.3000)
-    l140   = drift('l140', 1.4000)
     l220   = drift('l220', 2.2000)
     l280   = drift('l280', 2.8000)
     la2p   = drift('la2p', 0.08323)
@@ -77,59 +78,90 @@ def create_lattice(optics_mode = default_optics_mode):
     qd4b   = quadrupole('QD4B',  0.14, strengths['qd4b'])
 
     # --- bending magnets ---
-    deg_2_rad = (_math.pi/180)
+    d2r = (_math.pi/180)
 
     # -- b --
     f = 5.011542/5.333333;
-    h1  = rbend_sirius('B', 0.196, d2r*0.8597*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0, -0.163, -1.443, 0])*f)
-    h2  = rbend_sirius('B', 0.192, d2r*0.8467*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0, -0.154, -1.418, 0])*f)
-    h3  = rbend_sirius('B', 0.182, d2r*0.8099*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0, -0.140, -1.403, 0])*f)
-    h4  = rbend_sirius('B', 0.010, d2r*0.0379*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0, -0.175, -1.245, 0])*f)
-    h5  = rbend_sirius('B', 0.010, d2r*0.0274*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0, -0.115, -0.902, 0])*f)
-    h6  = rbend_sirius('B', 0.013, d2r*0.0244*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0, -0.042, -1.194, 0])*f)
-    h7  = rbend_sirius('B', 0.017, d2r*0.0216*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0, -0.008, -1.408, 0])*f)
-    h8  = rbend_sirius('B', 0.020, d2r*0.0166*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0,  0.004, -1.276, 0])*f)
-    h9  = rbend_sirius('B', 0.030, d2r*0.0136*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0,  0.006, -0.858, 0])*f)
-    h10 = rbend_sirius('B', 0.05,  d2r*0.0089*f, 0,0,0,0,0,_np.array([0, 0, 0]), _np.array([0,  0.000, -0.050, 0])*f)
+    h1  = rbend_sirius('B', 0.196, d2r*0.8597*f, 0,0,0,0,0, [0, 0, 0], _np.array([0, -0.163, -1.443, 0])*f)
+    h2  = rbend_sirius('B', 0.192, d2r*0.8467*f, 0,0,0,0,0, [0, 0, 0], _np.array([0, -0.154, -1.418, 0])*f)
+    h3  = rbend_sirius('B', 0.182, d2r*0.8099*f, 0,0,0,0,0, [0, 0, 0], _np.array([0, -0.140, -1.403, 0])*f)
+    h4  = rbend_sirius('B', 0.010, d2r*0.0379*f, 0,0,0,0,0, [0, 0, 0], _np.array([0, -0.175, -1.245, 0])*f)
+    h5  = rbend_sirius('B', 0.010, d2r*0.0274*f, 0,0,0,0,0, [0, 0, 0], _np.array([0, -0.115, -0.902, 0])*f)
+    h6  = rbend_sirius('B', 0.013, d2r*0.0244*f, 0,0,0,0,0, [0, 0, 0], _np.array([0, -0.042, -1.194, 0])*f)
+    h7  = rbend_sirius('B', 0.017, d2r*0.0216*f, 0,0,0,0,0, [0, 0, 0], _np.array([0, -0.008, -1.408, 0])*f)
+    h8  = rbend_sirius('B', 0.020, d2r*0.0166*f, 0,0,0,0,0, [0, 0, 0], _np.array([0,  0.004, -1.276, 0])*f)
+    h9  = rbend_sirius('B', 0.030, d2r*0.0136*f, 0,0,0,0,0, [0, 0, 0], _np.array([0,  0.006, -0.858, 0])*f)
+    h10 = rbend_sirius('B', 0.05,  d2r*0.0089*f, 0,0,0,0,0, [0, 0, 0], _np.array([0,  0.000, -0.050, 0])*f)
     mbend = marker('mB');
 
-    bend = [h10 h9 h8 h7 h6 h5 h4 h3 h2 h1 mbend h1 h2 h3 h4 h5 h6 h7 h8 h9 h10]
+    bend = [h10, h9, h8, h7, h6, h5, h4, h3, h2, h1, mbend,
+            h1, h2, h3, h4, h5, h6, h7, h8, h9, h10]
 
-    # -- sep --
-    dip_nam =  'InjS'
-    dip_len =  0.50
-    dip_ang =  21.75 * deg_2_rad
-    dip_K   =  0.0
-    dip_S   =  0.00
-    septine = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang, 0,0,0, [0,0,0], [0,dip_K,dip_S])
-    septins = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
-    bseptin = marker('bInjS')
-    eseptin = marker('eInjS')
-    septin  = [bseptin, septine, septins, eseptin]
+    # -- Thin Septum --
+    dip_nam =  'EjeSF';
+    dip_len =  0.5773;
+    dip_ang =  -3.6 * d2r;
+    dip_K   =  0.0;
+    dip_S   =  0.00;
+    h1      = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang,   0,0,0, [0,0,0], [0,dip_K,dip_S])
+    h2      = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang/2, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
+    bejesf = marker('bEjeSF') # marker at the beginning of thin septum
+    mejesf = marker('mEjeSF') # marker at the center of thin septum
+    eejesf = marker('eEjeSF') # marker at the end of thin septum
+    ejesf = [bejesf, h1, mejesf, h2, eejesf];
+
+
+    # -- bo thick ejection septum --
+    dip_nam  =  'EjeSG';
+    dip_len  =  0.5773;
+    dip_ang  =  -3.6 * d2r;
+    dip_K    =  0.0;
+    dip_S    =  0.00;
+    h1       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang, 0,0,0, [0,0,0], [0,dip_K,dip_S])
+    h2       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
+    bejesg = marker('bEjeSG') # marker at the beginning of thick septum
+    mejesg = marker('mEjeSG') # marker at the center of thick septum
+    eejesg = marker('eEjeSG') # marker at the end of thick septum
+    ejesg = [bejesg, h1, mejesg, h2, eejesg];
+
+    # -- si thick injection septum (2 of these are used) --
+    dip_nam  =  'InjSG';
+    dip_len  =  0.5773;
+    dip_ang  =  +3.6 * d2r;
+    dip_K    =  0.0;
+    dip_S    =  0.00;
+    h1       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang, 0,0,0, [0,0,0], [0,dip_K,dip_S])
+    h2       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
+    binjsg = marker('bInjSG') # marker at the beginning of thick septum
+    minjsg = marker('mInjSG') # marker at the center of thick septum
+    einjsg = marker('eInjSG') # marker at the end of thick septum
+    injsg = [binjsg, h1, minjsg, h2, einjsg];
+
+    # -- si thin injection septum --
+    dip_nam  =  'InjSF';
+    dip_len  =  0.5773;
+    dip_ang  =  +3.118 * d2r;
+    dip_K    =  0.0;
+    dip_S    =  0.00;
+    h1       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang, 0,0,0, [0,0,0], [0,dip_K,dip_S])
+    h2       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
+    binjsf = marker('bInjSF') # marker at the beginning of thin septum
+    minjsf = marker('mInjSF') # marker at the center of thin septum
+    einjsf = marker('eInjSF') # marker at the end of thin septum
+    injsf = [binjsf, h1, minjsf, h2, einjsf];
+
 
     # --- lines ---
-    s01_1   = [lb1p, l200, l200, scrn, bpm, l150c, ch, l100cc, cv, l150c]
-    s01_2   = [lb2p, l200]
-    s01_3   = [l200, l200, l200, l200, l200, l200, hslit, scrn, bpm, l150c, cv, l100cc, ch, l200c, vslit, l200, lb3p]
-    s02_1   = [l200, l200, ict, l200, l200, l100]
-    s02_2   = [l200, scrn, bpm, l150c, ch, l100cc, cv, l200c] + 25*[l200] + [lc3p]
-    s02_3   = [l150, l150, l150, scrn, bpm, l150c, ch, l100cc, cv, l200c]
-    ld1     = [ld1p] + 10*[l200]
-    s03_1   = [ld3p, scrn, bpm, l150c, ch, l200c]
-    s04_1   = [l200c, cv, l200c, l200, l200, l200, l200, l200, ict, le1p]
-    s04_2   = [l150, scrn, bpm, l150c, cv, l100c]
+    sec01 = [ejesf,l025,ejesg,l060,cv,l090,qf1a,la2p,ict,l280,scrn,bpm,
+             l020,ch,l020,qf1b,l020,cv,l020,la3p,bend]
+    sec02 = [l080,lb1p,qd2,lb2p,l080,scrn,bpm,l020,qf2,l020,ch,l025,cv,l015,lb3p,bend]
+    sec03 = [lc1p,l220,qf3,l025,scrn,bpm,l020,ch,l025,cv,lc2p,bend]
+    sec04 = [ld1p,l130,qd4a,ld2p,l060,scrn,bpm,l020,cv,l025,ch,l020,qf4,ld3p,
+             l020,qd4b,l060,fct,l040,ict,l040,scrn,bpm,cv,l020,injsg,l025,injsg,l025,ch,injsf]
 
-    sector01 = [s01_1, qd1, s01_2, qf1, s01_3, bn]
-    sector02 = [s02_1, qd2a, lc2, qf2a, s02_2, qf2b, lc4, qd2b, s02_3, bp]
-    sector03 = [ld1, qf3, ld2, qd3, s03_1, bp]
-    sector04 = [s04_1, qf4, le2, qd4, s04_2, septin]
+    ts  = [inicio,sec01,sec02,sec03,sec04,fim];
 
-    ## TB beamline beginning with end of linac
-    ltlb  = [inicio, sector01, sector02, sector03, sector04, fim]
-
-    #ltlb  = [inicio, sector01, sector02, sector03, sector04, fim]
-
-    elist = ltlb
+    elist = ts
 
     the_line = _pyaccel.lattice.build(elist)
 
@@ -154,81 +186,25 @@ def get_optics_mode(optics_mode):
     # -- selection of optics mode --
     if optics_mode == 'M1':
         strengths = {
-            'qd1'  : -8.420879613851,
-            'qf1'  : 13.146671512202,
-            'qd2a' : -5.003211465479,
-            'qf2a' :  6.783244529016,
-            'qf2b' :  2.895212566505,
-            'qd2b' : -2.984706731539,
-            'qf3'  :  7.963034094957,
-            'qd3'  : -2.013774809345,
-            'qf4'  : 11.529185003262,
-            'qd4'  : -7.084093211983,
+            'qf1a'  :  1.70521151606,
+            'qf1b'  :  1.734817173998,
+            'qd2'   : -2.8243902951,
+            'qf2'   :  2.76086143922,
+            'qf3'   :  2.632182549934,
+            'qd4a'  : -3.048732667316,
+            'qf4'   :  3.613066375692,
+            'qd4b'  : -1.46213606815,
         }
     elif optics_mode == 'M2':
         strengths = {
-            'qd1'  :   -8.420884154134,
-            'qf1'  :   13.146672851601,
-            'qd2a' :   -5.786996070251,
-            'qf2a' :   7.48800218842,
-            'qf2b' :   3.444273863854,
-            'qd2b' :   -4.370692899919,
-            'qf3'  :   9.275556378041,
-            'qd3'  :   -3.831727343173,
-            'qf4'  :   11.774551301802,
-            'qd4'  :   -7.239923812237,
-        }
-    elif optics_mode == 'M3':
-        strengths = {
-            'qd1'  :   -8.4202421458,
-            'qf1'  :   13.146512110234,
-            'qd2a' :   -4.742318522445,
-            'qf2a' :   6.865529327161,
-            'qf2b' :   3.644627263975,
-            'qd2b' :   -3.640344975066,
-            'qf3'  :   6.882094963212,
-            'qd3'  :   -0.650373210524,
-            'qf4'  :   11.456881278596,
-            'qd4'  :   -7.183997114808,
-        }
-    elif optics_mode == 'M4':
-        strengths = {
-            'qd1'  :   -8.420952075727,
-            'qf1'  :   13.146690356394,
-            'qd2a' :   -6.698085523725,
-            'qf2a' :   7.789621927907,
-            'qf2b' :   2.77064582429,
-            'qd2b' :   -3.328855564917,
-            'qf3'  :   8.734105391772,
-            'qd3'  :   -3.014211757657,
-            'qf4'  :   11.424069037719,
-            'qd4'  :   -6.740424372291,
-        }
-    elif optics_mode == 'M5':
-        strengths = {
-            'qd1'  :   -8.420850561756,
-            'qf1'  :   13.146666514846,
-            'qd2a' :   -5.621149037043,
-            'qf2a' :   8.967988594169,
-            'qf2b' :   2.958960220371,
-            'qd2b' :   -3.210342770435,
-            'qf3'  :   8.311858252882,
-            'qd3'  :   -2.442934101437,
-            'qf4'  :   11.391698651189,
-            'qd4'  :   -6.772341213215,
-        }
-    elif optics_mode == 'M6':
-        strengths = {
-            'qd1'  :   -8.420886991042,
-            'qf1'  :   13.146673683891,
-            'qd2a' :   -5.452694879372,
-            'qf2a' :   7.345924165318,
-            'qf2b' :   3.605078182875,
-            'qd2b' :   -4.255957305622,
-            'qf3'  :   8.858246721391,
-            'qd3'  :   -3.243238337219,
-            'qf4'  :   11.728866700839,
-            'qd4'  :   -7.246970930681,
+            'qf1a' :  1.670801801437,
+            'qf1b' :  2.098494339697,
+            'qd2'  : -2.906779151209,
+            'qf2'  :  2.807031512313,
+            'qf3'  :  2.533815202102,
+            'qd4a' : -2.962460334623,
+            'qf4'  :  3.537403658428,
+            'qd4b' : -1.421177262593,
         }
     else:
         Exception('Invalid TS optics mode: ' + optics_mode)
@@ -249,35 +225,39 @@ def set_num_integ_steps(the_line):
         else:
             the_line[i].nr_steps = 1
 
-    ch_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'CH')
-    cv_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'CV')
-    corr_indices = ch_indices + cv_indices
-    for idx in corr_indices:
-        the_line[idx].nr_steps = 5
-
 
 def set_vacuum_chamber(the_line):
 
     # -- default physical apertures --
     for i in range(len(the_line)):
-        the_line[i].hmin = -0.018
-        the_line[i].hmax = +0.018
-        the_line[i].vmin = -0.018
-        the_line[i].vmax = +0.018
+        the_line[i].hmin = -0.012
+        the_line[i].hmax = +0.012
+        the_line[i].vmin = -0.012
+        the_line[i].vmax = +0.012
 
-    # -- bo injection septum --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjS')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjS')[0]
+    # -- bo ejection septa --
+    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bEjeSF')[0]
+    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eEjeSG')[0]
     for i in range(beg,end+1):
-        the_line[i].hmin = -0.0110
-        the_line[i].hmax = +0.0075
-        the_line[i].vmin = -0.0080
-        the_line[i].vmax = +0.0080
+        the_line[i].hmin = -0.0150
+        the_line[i].hmax = +0.0150
+        the_line[i].vmin = -0.0040
+        the_line[i].vmax = +0.0040
 
-    # -- dipoles --
-    bnd = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'B')
-    for i in bnd:
-        the_line[i].hmin = -0.0117
-        the_line[i].hmax = +0.0117
-        the_line[i].vmin = -0.0117
-        the_line[i].vmax = +0.0117
+    # -- si thick injection septum --
+    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSG')[0]
+    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSG')[0]
+    for i in range(beg,end+1):
+        the_line[i].hmin = -0.0045
+        the_line[i].hmax = +0.0045
+        the_line[i].vmin = -0.0035
+        the_line[i].vmax = +0.0035
+
+    # -- si thin injection septum --
+    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSF')[0]
+    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSF')[0]
+    for i in range(beg,end+1):
+        the_line[i].hmin = -0.0150
+        the_line[i].hmax = +0.0150
+        the_line[i].vmin = -0.0035
+        the_line[i].vmax = +0.0035

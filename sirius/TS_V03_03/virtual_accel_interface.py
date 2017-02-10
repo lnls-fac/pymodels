@@ -3,16 +3,16 @@ from . import families as _families
 import sirius.naming_system as _naming_sys
 import re as _re
 
-_section = 'TB'
+_section = 'TS'
 _el_names = { # All these Family names must be defined in family_data dictionary
     'DI': _families.families_di(),
-    'PS': ['CH','CV','QD1','QF1','QD2A','QF2A','QF2B',
-           'QD2B','QF3','QD3','QF4','QD4'],
-    'MA': ['CH','CV','QD1','QF1','QD2A','QF2A','QF2B',
-           'QD2B','QF3','QD3','QF4','QD4','B'],
-    'TI': ['InjS'],
-    'PU': ['InjS'],
-    'PM': ['InjS']
+    'PS': ['CH','CV','QF1A','QF1B','QD2','QF2','QF3',
+           'QD4A','QF4','QD4B'],
+    'MA': ['CH','CV','QF1A','QF1B','QD2','QF2','QF3',
+           'QD4A','QF4','QD4B','B'],
+    'TI': _families.families_pulsed_magnets(),
+    'PU': _families.families_pulsed_magnets(),
+    'PM': _families.families_pulsed_magnets()
 }
 _fam_names = { # All these Family names must be defined in family_data dictionary
     'DI': ['BPM'],
@@ -24,10 +24,13 @@ _disciplines = sorted( _el_names.keys() | _fam_names.keys() | _glob_names.keys()
 
 ##### Pulsed Magnets #######
 _pulse_curve_mapping= {
-    'InjS':'tbpm-sep-pulse.txt' # INJECTION SEPTUM
+    'InjSF':'tspm-injs-pulse.txt', # INJECTION SEPTUM
+    'InjSG':'tspm-injs-pulse.txt', # INJECTION SEPTUM
+    'EjeSF':'tspm-ejes-pulse.txt',
+    'EjeSG':'tspm-ejes-pulse.txt',
 }
 
-class TBDeviceNames(_naming_sys.DeviceNames):
+class TSDeviceNames(_naming_sys.DeviceNames):
 
     def __init__(self):
         self.section = _section
@@ -49,15 +52,20 @@ class TBDeviceNames(_naming_sys.DeviceNames):
 
         Returns dict.
         """
-        magnets = _device_names.get_magnet_names(accelerator)
+        magnets = self.get_magnet_names(accelerator)
 
         ec = dict()
         for name in magnets:
-            device = _naming_system.split_name(name)['device']
-            if _re.search('B', device)     is not None: ec[name] = 'tbma-b.txt'
-            elif _re.search('Q', device)   is not None: ec[name] = 'tbma-q.txt'
-            elif _re.search('CH', device)   is not None: ec[name] = 'tbma-ch.txt'
-            elif _re.search('CV', device)  is not None: ec[name] = 'tbma-cv.txt'
-            elif _re.search('S', device) is not None: ec[name] = 'tbpm-injs.txt'
+            device = self.split_name(name)['device']
+            if _re.search('B', device)       is not None: ec[name] = 'tsma-b.txt'
+            elif _re.search('QF1', device)   is not None: ec[name] = 'tsma-q14.txt'
+            elif _re.search('QD', device)    is not None: ec[name] = 'tsma-q14.txt'
+            elif _re.search('QF', device)    is not None: ec[name] = 'tsma-q20.txt'
+            elif _re.search('CH', device)    is not None: ec[name] = 'tsma-ch.txt'
+            elif _re.search('CV', device)    is not None: ec[name] = 'tsma-cv.txt'
+            elif _re.search('EjeSF', device) is not None: ec[name] = 'tspm-ejesf.txt'
+            elif _re.search('EjeSG', device) is not None: ec[name] = 'tspm-ejesg.txt'
+            elif _re.search('InjSG', device) is not None: ec[name] = 'tspm-injsg.txt'
+            elif _re.search('InjSF', device) is not None: ec[name] = 'tspm-injsf.txt'
 
         return ec

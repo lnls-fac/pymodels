@@ -3,31 +3,35 @@
 import pyaccel as _pyaccel
 
 _family_segmentation = {
-    'B':2, 'CH': 1, 'CV': 1,
-    'QD1':1,'QF1':1,'QD2A':1,'QF2A':1,'QF2B':1,'QD2B':1,
-    'QF3':1,'QD3':1,'QF4':1,'QD4':1,
-    'InjS':2,
-    'ICT':1, 'HSlit':1,'VSlit':1,'Scrn':1,'BPM':1
+    'B':20, 'CH': 1, 'CV': 1,
+    'QF1A':1,'QF1B':1,'QD2':1,'QF2':1,'QF3':1,
+    'QD4A':1,'QF4':1,'QD4B':1,
+    'InjSF':2, 'InjSG':2, 'EjeSF':2,'EjeSG':2,
+    'ICT':1,'FCT':1, 'Scrn':1,'BPM':1
 }
 
 family_mapping = {
     'B':       'dipole',
+
     'CH':      'horizontal_corrector',
     'CV':      'vertical_corrector',
-    'QD1':     'quadrupole',
-    'QF1':     'quadrupole',
-    'QD2A':    'quadrupole',
-    'QF2A':    'quadrupole',
-    'QF2B':    'quadrupole',
-    'QD2B':    'quadrupole',
-    'QF3':     'quadrupole',
-    'QD3':     'quadrupole',
-    'QF4':     'quadrupole',
-    'QD4':     'quadrupole',
-    'InjS':    'pulsed_magnet',
+
+    'QF1A':    'quadrupole',
+    'QF1B':    'quadrupole',
+    'QD2' :    'quadrupole',
+    'QF2' :    'quadrupole',
+    'QF3' :    'quadrupole',
+    'QD4A':    'quadrupole',
+    'QF4' :    'quadrupole',
+    'QD4B':    'quadrupole',
+
+    'InjSF':   'pulsed_magnet',
+    'InjSG':   'pulsed_magnet',
+    'EjeSF':   'pulsed_magnet',
+    'EjeSG':   'pulsed_magnet',
+
     'ICT':     'beam_current_monitor',
-    'HSlit':   'horizontal_slit',
-    'VSlit':   'vertical_slit',
+    'FCT':     'beam_current_monitor',
     'Scrn':    'beam_profile_monitor',
     'BPM':     'bpm'
 }
@@ -36,10 +40,10 @@ def families_dipoles():
     return ['B']
 
 def families_pulsed_magnets():
-    return ['InjS']
+    return ['InjSF','InjSG','EjeSF','EjeSG']
 
 def families_quadrupoles():
-    return ['QD1','QF1','QD2A','QF2A','QF2B','QD2B','QF3','QD3','QF4','QD4']
+    return ['QF1A','QF1B','QD2','QF2','QF3','QD4A','QF4','QD4B']
 
 def families_horizontal_correctors():
     return ['CH']
@@ -57,7 +61,7 @@ def families_rf():
     return []
 
 def families_di():
-    return ['ICT','BPM','Scrn','HSlit','VSlit']
+    return ['ICT','FCT','BPM','Scrn']
 
 def get_section_name_mapping(lattice):
     section_map = len(lattice)*['']

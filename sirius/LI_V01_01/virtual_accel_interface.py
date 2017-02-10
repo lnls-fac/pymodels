@@ -50,11 +50,11 @@ class LIDeviceNames(_naming_sys.DeviceNames):
 
         Returns dict.
         """
-        magnets = _device_names.get_magnet_names(accelerator)
+        magnets = self.get_magnet_names(accelerator)
 
         ec = dict()
         for name in magnets:
-            dev = _naming_system.split_name(name)['device']
+            dev = self.split_name(name)['device']
             if dev.startswith(('QD','QF3')):
                 ec[name] = 'lima-q.txt'
             elif dev.startswith('QF'):

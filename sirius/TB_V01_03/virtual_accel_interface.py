@@ -49,11 +49,11 @@ class TBDeviceNames(_naming_sys.DeviceNames):
 
         Returns dict.
         """
-        magnets = _device_names.get_magnet_names(accelerator)
+        magnets = self.get_magnet_names(accelerator)
 
         ec = dict()
         for name in magnets:
-            device = _naming_system.split_name(name)['device']
+            device = self.split_name(name)['device']
             if _re.search('B', device)     is not None: ec[name] = 'tbma-b.txt'
             elif _re.search('Q', device)   is not None: ec[name] = 'tbma-q.txt'
             elif _re.search('CH', device)   is not None: ec[name] = 'tbma-ch.txt'

@@ -12,7 +12,7 @@ from .families import family_mapping
 from .families import get_section_name_mapping
 
 from . import virtual_accel_interface
-device_names  = virtual_accel_interface.TBDeviceNames()
+device_names  = virtual_accel_interface.TSDeviceNames()
 del virtual_accel_interface
 
 # -- default accelerator values for TS_V03 --
