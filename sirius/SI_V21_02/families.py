@@ -1,8 +1,102 @@
 """Element family definitions"""
 
-import numpy as _numpy
 import pyaccel as _pyaccel
 from . import lattice as _lattice
+
+_family_segmentation={
+    'B1'    : 30,'B2'     : 36, 'BC'    :30,
+    'QFA'   : 1, 'QDA'    : 1,
+    'QFB'   : 1, 'QDB1'   : 1, 'QDB2'   : 1,
+    'QFP'   : 1, 'QDP1'   : 1, 'QDP2'   : 1,
+    'Q1'    : 1, 'Q2'     : 1, 'Q3'     : 1,  'Q4'   : 1,
+    'SDA0'  : 1, 'SDB0'   : 1, 'SDP0'   : 1,
+    'SDA1'  : 1, 'SDB1'   : 1, 'SDP1'   : 1,
+    'SDA2'  : 1, 'SDB2'   : 1, 'SDP2'   : 1,
+    'SDA3'  : 1, 'SDB3'   : 1, 'SDP3'   : 1,
+    'SFA0'  : 1, 'SFB0'   : 1, 'SFP0'   : 1,
+    'SFA1'  : 1, 'SFB1'   : 1, 'SFP1'   : 1,
+    'SFA2'  : 1, 'SFB2'   : 1, 'SFP2'   : 1,
+    'BPM'   : 1, 'DCCT'   : 1, 'HScrap' : 1, 'VScrap' : 1, 'GSL15'  : 1,
+    'GSL07' : 1, 'BPME'   : 1, 'BbBP'   : 1, 'HBbBS'  : 1, 'VBbBS'  : 1,
+    'HTuneS': 1, 'HTuneP' : 1, 'VTuneS' : 1, 'VTuneP' : 1,
+    'FC'    : 1, 'FCQ'    : 1,
+    'QS'    : 1, 'CH'     : 1,  'CV'    : 1,
+    'SRFCav': 1, 'start'  : 1,
+    'InjDpK': 1, 'InjNLK' : 1, 'VPing'  :1,
+}
+
+family_mapping = {
+
+    'B1'  : 'dipole',
+    'B2'  : 'dipole',
+    'BC'  : 'dipole',
+
+    'QFA' : 'quadrupole',
+    'QDA' : 'quadrupole',
+    'QDB2': 'quadrupole',
+    'QFB' : 'quadrupole',
+    'QDB1': 'quadrupole',
+    'QDP2': 'quadrupole',
+    'QFP' : 'quadrupole',
+    'QDP1': 'quadrupole',
+    'Q1'  : 'quadrupole',
+    'Q2'  : 'quadrupole',
+    'Q3'  : 'quadrupole',
+    'Q4'  : 'quadrupole',
+
+    'SDA0': 'sextupole',
+    'SDB0': 'sextupole',
+    'SDP0': 'sextupole',
+    'SDA1': 'sextupole',
+    'SDB1': 'sextupole',
+    'SDP1': 'sextupole',
+    'SDA2': 'sextupole',
+    'SDB2': 'sextupole',
+    'SDP2': 'sextupole',
+    'SDA3': 'sextupole',
+    'SDB3': 'sextupole',
+    'SDP3': 'sextupole',
+    'SFA0': 'sextupole',
+    'SFB0': 'sextupole',
+    'SFP0': 'sextupole',
+    'SFA1': 'sextupole',
+    'SFB1': 'sextupole',
+    'SFP1': 'sextupole',
+    'SFA2': 'sextupole',
+    'SFB2': 'sextupole',
+    'SFP2': 'sextupole',
+
+    'InjNLK': 'pulsed_magnet',
+    'InjDpK': 'pulsed_magnet',
+    'VPing' : 'Vertical Pinger',
+
+    'BPM'    : 'bpm',
+    'DCCT'   : 'dcct_to_measure_beam_current',
+    'HScrap' : 'horizontal_scraper',
+    'VScrap' : 'vertical_scraper',
+    'GSL15'  : 'generic_stripline_(lambda/4)',
+    'GSL07'  : 'generic_stripline_(lambda/8)',
+    'BPME'   : 'extra_bpm',
+    'BbBP'   : 'bunch-by-bunch_pickup',
+    'HBbBS'  : 'horizontal_bunch-by-bunch_shaker',
+    'VBbBS'  : 'vertical_bunch-by-bunch_shaker',
+    'HTuneS' : 'horizontal_tune_shaker',
+    'HTuneP' : 'horizontal_tune_pickup',
+    'VTuneS' : 'vertical_tune_shaker',
+    'VTuneP' : 'vertical_tune_pickup',
+
+    'FC'  : 'fast_corrector',
+    'FCQ' : 'fast_corrector',
+    'FCH' : 'fast_horizontal_corrector',
+    'FCV' : 'fast_vertical_corrector',
+
+    'CH'  : 'slow_horizontal_corrector',
+    'CV'  : 'slow_vertical_corrector',
+
+    'QS'  : 'skew_quadrupole',
+
+    'SRFCav': 'superconducting_rf_cavity'
+}
 
 def families_dipoles():
     return ['B1','B2','BC']
@@ -29,10 +123,15 @@ def families_skew_correctors():
     return ['QS',]
 
 def families_rf():
-    return ['RFCav',]
+    return ['SRFCav',]
 
 def families_pulsed_magnets():
-    return ['InjDpK', 'InjNLK']
+    return ['InjDpK', 'InjNLK', 'VPing']
+
+def families_di():
+    return ['BPM', 'DCCT', 'HScrap', 'VScrap', 'GSL15', 'GSL07',
+            'BPME', 'BbBP', 'HBbBS', 'VBbBS', 'HTuneS', 'HTuneP',
+            'VTuneS', 'VTuneP']
 
 def get_section_name_mapping(lattice):
     lat = lattice[:]
@@ -55,7 +154,7 @@ def get_section_name_mapping(lattice):
     b1_nrsegs = len(b1)//40
     b2 = _pyaccel.lattice.find_indices(lat,'fam_name','B2')
     b2_nrsegs = len(b2)//40
-    bc = _pyaccel.lattice.find_indices(lat,'fam_name','BC_LF')
+    bc = _pyaccel.lattice.find_indices(lat,'fam_name','BC')
     bpm = _pyaccel.lattice.find_indices(lat,'fam_name','BPM')
 
     ## divide the ring in 20 sectors defined by the b1 dipoles:
@@ -101,19 +200,21 @@ def get_family_data(lattice):
     """
     latt_dict = _pyaccel.lattice.find_dict(lattice,'fam_name')
     section_map = get_section_name_mapping(lattice)
+    get_idx = lambda x: x[0]
 
     #### Fill the data dictionary with index info ######
     data = {}
     for key, idx in latt_dict.items():
         nr = _family_segmentation.get(key)
         if nr is None: continue
-        data[key] = idx
+        # Create a list of lists for the indexes
+        data[key] = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
 
     # ch - slow horizontal correctors
     idx = []
     fams = ['SDA0', 'SFB0', 'SFP0', 'SDA1', 'SDB1', 'SDP1', 'SFA2', 'SFB2', 'SFP2']
-    for fam in fams: idx.extend(latt_dict[fam])
-    data['CH']=sorted(idx)
+    for fam in fams: idx.extend(data[fam])
+    data['CH']=sorted(idx,key=get_idx)
 
     # cv - slow vertical correctors
     idx = []
@@ -121,56 +222,52 @@ def get_family_data(lattice):
             'SDA3', 'SDB3', 'SDP3', 'SFA2', 'SFB2', 'SFP2', 'CV']
     for fam in fams:
         if fam in {'SFA2', 'SFB2', 'SFP2'}: # for these families there are skew only in C3 sections
-            idx.extend([i for i in latt_dict[fam] if 'C3' in section_map[i]])
+            idx.extend([i for i in data[fam] if 'C3' in section_map[i[0]]])
         else:
-            idx.extend(latt_dict[fam])
-    data['CV']=sorted(idx)
+            idx.extend(data[fam])
+    data['CV']=sorted(idx,key=get_idx)
 
-    # bc
-    data['BC']=sorted(latt_dict['BC_HF']+latt_dict['BC_LF'])
 
     # fch - fast horizontal correctors
-    data['FCH']=sorted(latt_dict['FC']+latt_dict['FCQ'])
+    data['FCH']=sorted(data['FC']+data['FCQ'],key=get_idx)
 
     # fcv - fast vertical correctors
-    data['FCV']=sorted(latt_dict['FC']+latt_dict['FCQ'])
+    data['FCV']=sorted(data['FC']+data['FCQ'],key=get_idx)
 
     # qs - skew quad correctors
     idx = []
     fams = ['SFA0', 'SDB0', 'SDP0', 'FCQ', 'SDA2', 'SDB2', 'SDP2', 'SDA3', 'SDB3', 'SDP3']
     for fam in fams:
         if fam in {'SDA2', 'SDB2', 'SDP2'}: # for these families there are skew only in C1 sections
-            idx.extend([i for i in latt_dict[fam] if 'C1' in section_map[i]])
+            idx.extend([i for i in data[fam] if 'C1' in section_map[i[0]]])
         elif fam in {'SDA3', 'SDB3', 'SDP3'}:# for these families there are skew only in C3 sections
-            idx.extend([i for i in latt_dict[fam] if 'C3' in section_map[i]])
+            idx.extend([i for i in data[fam] if 'C3' in section_map[i[0]]])
         else:
-            idx.extend(latt_dict[fam])
-    data['QS']=sorted(idx)
+            idx.extend(data[fam])
+    data['QS']=sorted(idx,key=get_idx)
 
     # quadrupoles knobs for optics correction
     idx = []
     fams = ['QFA','QDA', 'QDB2', 'QFB', 'QDB1', 'QDP2', 'QFP', 'QDP1', 'Q1', 'Q2','Q3', 'Q4']
-    for fam in fams: idx.extend(latt_dict[fam])
-    data['QN']=sorted(idx)
+    for fam in fams: idx.extend(data[fam])
+    data['QN']=sorted(idx,key=get_idx)
 
     # sbs - sextupoles knobs for optics correction
     idx = []
     fams = ['SDA0', 'SDB0', 'SDP0', 'SDA1', 'SDB1', 'SDP1', 'SDA2', 'SDB2', 'SDP2', 'SDA3', 'SDB3', 'SDP3',
             'SFA0', 'SFB0', 'SFP0', 'SFA1', 'SFB1', 'SFP1', 'SFA2', 'SFB2', 'SFP2']
-    for fam in fams: idx.extend(latt_dict[fam])
-    data['SN']=sorted(idx)
+    for fam in fams: idx.extend(data[fam])
+    data['SN']=sorted(idx,key=get_idx)
 
+    # Power Supply for B1 and B2 families
+    data['B1B2-1'] = sorted(data['B1']+data['B2'],key=get_idx)
+    data['B1B2-2'] = sorted(data['B1']+data['B2'],key=get_idx)
 
     ### Now organize the data dictionary:
     new_data = dict()
     for key, idx in data.items():
-        # Create a list of lists for the indexes
-        nr = _family_segmentation.get(key)
-        if nr is None: continue
-        new_idx = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
-
         # find out the name of the section each element is installed
-        secs = [ section_map[i[0]] for i in new_idx ]
+        secs = [ section_map[get_idx(i)] for i in idx ]
 
         # find out if there are more than one element per section and attribute a number to it
         num = len(secs)*['']
@@ -184,7 +281,7 @@ def get_family_data(lattice):
                 j      = j+1    if secs[i]==secs[i+1] else                         1
             num[-1]    = f(j)   if (secs[-1] == secs[-2]) else                     ''
 
-        new_data[key] = {'index':new_idx, 'subsection':secs, 'instance':num}
+        new_data[key] = {'index':idx, 'subsection':secs, 'instance':num}
 
     #girders
     girder =  get_girder_data(lattice)
@@ -204,83 +301,3 @@ def get_girder_data(lattice):
         data.append(dict({'index':idx}))
 
     return data
-
-
-_family_segmentation={
-    'b1'    : 30, 'b2'    : 36,
-    'bc'    : 44, 'bc_hf' : 16, 'bc_lf' : 14,
-    'qfa'   : 1,  'qda'   : 1,
-    'qfb'   : 1,  'qdb1'  : 1,  'qdb2'  : 1,
-    'qfp'   : 1,  'qdp1'  : 1,  'qdp2'  : 1,
-    'q1'    : 1,  'q2'    : 1,  'q3'    : 1,  'q4'   : 1,
-    'sda0'  : 1, 'sdb0'   : 1,  'sdp0'  : 1,
-    'sda1'  : 1, 'sdb1'   : 1,  'sdp1'  : 1,
-    'sda2'  : 1, 'sdb2'   : 1,  'sdp2'  : 1,
-    'sda3'  : 1, 'sdb3'   : 1,  'sdp3'  : 1,
-    'sfa0'  : 1, 'sfb0'   : 1,  'sfp0'  : 1,
-    'sfa1'  : 1, 'sfb1'   : 1,  'sfp1'  : 1,
-    'sfa2'  : 1, 'sfb2'   : 1,  'sfp2'  : 1,
-    'bpm'   : 1, 'rbpm'   : 1,
-    'fc'    : 1, 'fcq'    : 1,  'fch'   : 1,  'fcv'  : 1,
-    'qs'    : 1, 'ch'     : 1,  'cv'    : 1,  'qn'   : 1, 'sn' : 1,
-    'cav'   : 1, 'start'  : 1,
-    'dipk'  : 1, 'nlk'    : 1,
-}
-
-_family_mapping = {
-
-    'b1'  : 'dipole',
-    'b2'  : 'dipole',
-    'bc'  : 'dipole',
-
-    'qfa' : 'quadrupole',
-    'qda' : 'quadrupole',
-    'qdb2': 'quadrupole',
-    'qfb' : 'quadrupole',
-    'qdb1': 'quadrupole',
-    'qdp2': 'quadrupole',
-    'qfp' : 'quadrupole',
-    'qdp1': 'quadrupole',
-    'q1'  : 'quadrupole',
-    'q2'  : 'quadrupole',
-    'q3'  : 'quadrupole',
-    'q4'  : 'quadrupole',
-
-    'sda0': 'sextupole',
-    'sdb0': 'sextupole',
-    'sdp0': 'sextupole',
-    'sda1': 'sextupole',
-    'sdb1': 'sextupole',
-    'sdp1': 'sextupole',
-    'sda2': 'sextupole',
-    'sdb2': 'sextupole',
-    'sdp2': 'sextupole',
-    'sda3': 'sextupole',
-    'sdb3': 'sextupole',
-    'sdp3': 'sextupole',
-    'sfa0': 'sextupole',
-    'sfb0': 'sextupole',
-    'sfp0': 'sextupole',
-    'sfa1': 'sextupole',
-    'sfb1': 'sextupole',
-    'sfp1': 'sextupole',
-    'sfa2': 'sextupole',
-    'sfb2': 'sextupole',
-    'sfp2': 'sextupole',
-
-    'nlk'  : 'pulsed_magnet',
-    'dipk' : 'pulsed_magnet',
-
-    'bpm' : 'bpm',
-    'rbpm': 'bpm',
-
-    'fc'  : 'fast_corrector',
-    'fcq' : 'fast_corrector',
-    'fch' : 'fast_horizontal_corrector',
-    'fcv' : 'fast_vertical_corrector',
-
-    'ch'  : 'slow_horizontal_corrector',
-    'cv'  : 'slow_vertical_corrector',
-
-    'qs'  : 'skew_quadrupole',
-}

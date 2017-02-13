@@ -43,45 +43,11 @@ class DeviceNames:
     pvnaming_glob = 'Glob'
     pvnaming_fam  = 'Fam'
 
-    @staticmethod
-    def join_name(section, discipline, device, subsection, instance = None):
+    def split_name(self,name):
+        return split_name(name)
 
-        if _pvnaming_rule == 1:       # Proposal 1
-            name = section.upper() + '-' + discipline.upper() + ':' + device + '-' + subsection
-        elif _pvnaming_rule == 2:     # Proposal 2
-            name = section.upper() + '-' + subsection + ':' + discipline.upper() + '-' + device
-        else:
-            raise Exception('Device name specification not implemented.')
-
-        name += ('-' + instance) if instance else ""
-        return name
-
-    @staticmethod
-    def split_name(name):
-        name_list = [s.split(':') for s in name.split('-')]
-        name_list = [y for x in name_list for y in x]
-        name_dict = {}
-
-        # Proposal 1
-        if _pvnaming_rule == 1:
-            name_dict['section']    = name_list[0]
-            name_dict['discipline'] = name_list[1]
-            name_dict['device']     = name_list[2]
-            name_dict['subsection'] = name_list[3]
-            name_dict['instance']   = name_list[4] if len(name_list) >= 5 else ''
-            return name_dict
-
-        # Proposal 2
-        elif _pvnaming_rule == 2:
-            name_dict['section']    = name_list[0]
-            name_dict['subsection'] = name_list[1]
-            name_dict['discipline'] = name_list[2]
-            name_dict['device']     = name_list[3]
-            name_dict['instance']   = name_list[4] if len(name_list) >= 5 else ''
-            return name_dict
-
-        else:
-            raise Exception('Device name specification not implemented.')
+    def join_name(self, discipline, device, subsection, instance = None):
+        return join_name(self.section, discipline, device, subsection, instance)
 
     ### Must be implemented in classes that derive from this one ####
     def __init__(self):
@@ -90,6 +56,9 @@ class DeviceNames:
         self.fam_names = dict() # All these Family names must be defined in family_data dictionary
         self.glob_names = dict()# These Family names can be any name
         self.disciplines = sorted( self.el_names.keys() | self.fam_names.keys() | self.glob_names.keys())
+
+        ##### Excitation Curves #######
+        self.excitation_curves_mapping = dict()
 
         ##### Pulsed Magnets #######
         self.pulse_curve_mapping = dict()
@@ -125,18 +94,18 @@ class DeviceNames:
                 num    = family_data[el]['instance']
                 idx    = family_data[el]['index']
                 for i in range(len(subsec)):
-                    device_name = self.join_name(self.section, dis, el, subsec[i], num[i])
+                    device_name = self.join_name(dis, el, subsec[i], num[i])
                     _dict.update({ device_name:{el:idx[i]} })
 
             fams = self.fam_names.get(dis) or []
             for fam in fams:
                 idx = family_data[fam]['index']
-                device_name = self.join_name(self.section, dis, fam, self.pvnaming_fam)
+                device_name = self.join_name(dis, fam, self.pvnaming_fam)
                 _dict.update({ device_name:{fam:idx} })
 
             globs = self.glob_names.get(dis) or []
             for glob in globs:
-                device_name = join_name(self.section, dis, glob, self.pvnaming_glob)
+                device_name = join_name(dis, glob, self.pvnaming_glob)
                 _dict.update({ device_name:{} })
 
         return _dict
@@ -154,24 +123,31 @@ class DeviceNames:
         Returns mapping, inverse_mapping.
         """
         mapping = dict()
-        for power, mag in zip(['ma','pm'],['ps','pu']):
+        for mag, power in zip(['ma','pm'],['ps','pu']):
             # create a mapping of index in the lattice and magnet name
             mag_ind_dict = dict()
-            for mag_name, mag_prop in self.get_device_names(accelerator,power).items():
+            for mag_name, mag_prop in self.get_device_names(accelerator,mag).items():
                 if self.pvnaming_fam in mag_name: continue
                 idx = list(mag_prop.values())[0][0]
-                mag_ind_dict[idx] = mag_name
+                if mag_ind_dict.get(idx) is None: # there could be more than one magnet per index
+                    mag_ind_dict[idx]  = {mag_name}
+                else:
+                    mag_ind_dict[idx] |= {mag_name}
 
             #Use this mapping to see if the power supply is attached to the same element
-            for ps_name, ps_prop in self.get_device_names(accelerator,mag).items():
+            for ps_name, ps_prop in self.get_device_names(accelerator,power).items():
+                ps = self.split_name(ps_name)['device']
                 idx = list(ps_prop.values())[0]
                 idx = [idx[0]] if self.pvnaming_fam not in ps_name else [i[0] for i in idx] # if Fam then indices are list of lists
                 for i in idx:
-                    mag_name = mag_ind_dict[i]
-                    if mapping.get(mag_name) is None:
-                        mapping[mag_name]  = {ps_name}
-                    else:
-                        mapping[mag_name] |= {ps_name}
+                    mag_names = mag_ind_dict[i]
+                    for mag_name in mag_names:
+                        m = self.split_name(mag_name)['device']
+                        if m not in ps: continue  # WARNING: WILL FAIL IF THE POWER SUPPLY OF THE MAGNET DOES NOT HAVE ITS NAME ON ITSELF.
+                        if mapping.get(mag_name) is None:
+                            mapping[mag_name]  = {ps_name}
+                        else:
+                            mapping[mag_name] |= {ps_name}
 
         # Finally find the inverse map
         inverse_mapping = dict()
@@ -230,4 +206,16 @@ class DeviceNames:
 
 
     ####### Excitation Curves #########
-    def get_excitation_curve_mapping(accelerator):  return NotImplemented
+    def get_excitation_curve_mapping(self,accelerator):
+        """Get mapping from magnet to excitation curve file names
+
+        Returns dict.
+        """
+        magnets = self.get_magnet_names(accelerator)
+
+        ec = dict()
+        for fams, curve in self.excitation_curves_mapping.items():
+            for name in magnets:
+                device = self.split_name(name)['device']
+                if device.startswith(fams): ec[name] = curve
+        return ec

@@ -25,6 +25,15 @@ _fam_names = { # All these Family names must be defined in family_data dictionar
 _glob_names = dict() # These Family names can be any name
 _disciplines = sorted( _el_names.keys() | _fam_names.keys() | _glob_names.keys())
 
+##### Excitation Curves #######
+_excitation_curves_mapping = {
+    ('QD','QF3'): 'lima-q.txt',
+    ('QF',):      'lima-famqf.txt',
+    ('CH',):      'lima-ch.txt',
+    ('CV',):      'lima-cv.txt',
+    ('Spect',):   'lima-spect.txt',
+}
+
 ##### Pulsed Magnets #######
 _pulse_curve_mapping= dict()
 
@@ -36,40 +45,9 @@ class LIDeviceNames(_naming_sys.DeviceNames):
         self.fam_names = _fam_names  # All these Family names must be defined in family_data dictionary
         self.glob_names = _glob_names # These Family names can be any name
         self.disciplines = _disciplines
-
+        ##### Excitation Curves #######
+        self.excitation_curves_mapping = _excitation_curves_mapping
         ##### Pulsed Magnets #######
         self._pulse_curve_mapping = _pulse_curve_mapping
-
         ##### Family Data Function ######
         self.get_family_data = _families.get_family_data
-
-
-    ####### Excitation Curves #########
-    def get_excitation_curve_mapping(self,accelerator):
-        """Get mapping from magnet to excitation curve file names
-
-        Returns dict.
-        """
-        magnets = self.get_magnet_names(accelerator)
-
-        ec = dict()
-        for name in magnets:
-            dev = self.split_name(name)['device']
-            if dev.startswith(('QD','QF3')):
-                ec[name] = 'lima-q.txt'
-            elif dev.startswith('QF'):
-                ec[name] = 'lima-famqf.txt'
-            elif dev.startswith('CH'):
-                ec[name] = 'lima-ch.txt'
-            elif dev.startswith('CV'):
-                ec[name] = 'lima-cv.txt'
-            elif dev.startswith('Spect'):
-                ec[name] = 'lima-spect.txt'
-
-            # elif dev.startswith('Slnd') and (int(dev[-2:]) >= 14):
-            #     ec[name] = 'lima-famslnd.txt'
-            # elif dev.startswith('Slnd') and (int(dev[-2:]) <= 13):
-            #     ec[name] = 'lima-indslnd.txt'
-            # elif dev.startswith('Lens'):
-            #     ec[name] = 'lima-lens.txt'
-        return ec

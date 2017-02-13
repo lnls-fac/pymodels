@@ -50,14 +50,14 @@ def families_horizontal_correctors():
 def families_vertical_correctors():
     return ['CV']
 
+def families_skew_correctors():
+    return ['QS']
+
 def families_rf():
     return ['RFCav']
 
 def families_pulsed_magnets():
     return ['InjK', 'EjeK']
-
-def families_skew_correctors():
-    return ['QS']
 
 def families_di():
     return ['DCCT','BPM','Scrn','TuneP','TuneS','GSL']
@@ -112,46 +112,50 @@ def get_section_name_mapping(lattice):
         return section_map
 
 def get_family_data(lattice):
+    """Get pyaccel lattice model index and segmentation for each family name
+
+    Keyword argument:
+    lattice -- lattice model
+
+    Returns dict.
+    """
     latt_dict = _pyaccel.lattice.find_dict(lattice,'fam_name')
     section_map = get_section_name_mapping(lattice)
+    get_idx = lambda x: x[0]
 
     #### Fill the data dictionary with index info ######
     data = {}
     for key, idx in latt_dict.items():
         nr = _family_segmentation.get(key)
         if nr is None: continue
-        data[key] = idx
+        # Create a list of lists for the indexes
+        data[key] = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
 
     # quadrupoles knobs for optics correction
     idx = []
     fams = ['QF','QD']
-    for fam in fams: idx.extend(latt_dict[fam])
-    data['QN']=sorted(idx)
+    for fam in fams: idx.extend(data[fam])
+    data['QN']=sorted(idx,key=get_idx)
 
     # sbs - sextupoles knobs for optics correction
     idx = []
     fams = ['SD','SF']
-    for fam in fams: idx.extend(latt_dict[fam])
-    data['SN']=sorted(idx)
+    for fam in fams: idx.extend(data[fam])
+    data['SN']=sorted(idx,key=get_idx)
 
     # Dipole Families for power supplies
     idx = []
     fams = ['B']
-    for fam in fams: idx.extend(latt_dict[fam])
-    data['B-1']=sorted(idx)
-    data['B-2']=sorted(idx)
+    for fam in fams: idx.extend(data[fam])
+    data['B-1']=sorted(idx,key=get_idx)
+    data['B-2']=sorted(idx,key=get_idx)
 
 
     ### Now organize the data dictionary:
     new_data = dict()
     for key, idx in data.items():
-        # Create a list of lists for the indexes
-        nr = _family_segmentation.get(key)
-        if nr is None: continue
-        new_idx = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
-
         # find out the name of the section each element is installed
-        secs = [ section_map[i[0]] for i in new_idx ]
+        secs = [ section_map[get_idx(i)] for i in new_idx ]
 
         # find out if there are more than one element per section and attribute a number to it
         num = len(secs)*['']

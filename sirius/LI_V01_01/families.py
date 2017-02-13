@@ -135,24 +135,21 @@ def get_family_data(lattice):
     """
     latt_dict = _pyaccel.lattice.find_dict(lattice,'fam_name')
     section_map = get_section_name_mapping(lattice)
-
+    get_idx = lambda x: x[0]
+    
     #### Fill the data dictionary with index info ######
     data = {}
     for key, idx in latt_dict.items():
         nr = _family_segmentation.get(key)
         if nr is None: continue
-        data[key] = idx
+        # Create a list of lists for the indexes
+        data[key] = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
 
     ### Now organize the data dictionary:
     new_data = dict()
     for key, idx in data.items():
-        # Create a list of lists for the indexes
-        nr = _family_segmentation.get(key)
-        if nr is None: continue
-        new_idx = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
-
         # find out the name of the section each element is installed
-        secs = [ section_map[i[0]] for i in new_idx ]
+        secs = [ section_map[get_idx(i)] for i in new_idx ]
 
         # find out if there are more than one element per section and attribute a number to it
         num = len(secs)*['']
