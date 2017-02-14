@@ -16,7 +16,7 @@ single_bunch_pulse_duration = 1e-9 #[seconds]
 multi_bunch_pulse_duration = 150e-9 #[seconds]
 frequency = 3e9 #[Hz]
 
-~
+
 
 def create_lattice(optics_mode = default_optics_mode, operation_mode = default_operation_mode):
 

@@ -18,7 +18,7 @@ _fam_names = { # All these Family names must be defined in family_data dictionar
     'DI': ['BPM']
 }
 _glob_names = {# These Family names can be any name
-    'AP': ['ChromX','ChromY','Lifetime','BLifetime','SigX','SigY','SigS','EmitX','EmitY'],
+    'AP': ['Chrom','CurrLT','Size','Emitt'],
     'TI': ['STDMOE']
 }
 _disciplines = sorted( _el_names.keys() | _fam_names.keys() | _glob_names.keys())

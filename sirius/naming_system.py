@@ -1,42 +1,36 @@
+def join_name(section, discipline, device, subsection,
+              instance=None, proper=None, field=None):
 
-_pvnaming_rule = 2 # 1 : PV Naming Proposal#1; 2 : PV Naming Proposal#2
-def join_name(section, discipline, device, subsection, instance = None):
-
-    if _pvnaming_rule == 1:       # Proposal 1
-        name = section.upper() + '-' + discipline.upper() + ':' + device + '-' + subsection
-    elif _pvnaming_rule == 2:     # Proposal 2
-        name = section.upper() + '-' + subsection + ':' + discipline.upper() + '-' + device
-    else:
-        raise Exception('Device name specification not implemented.')
-
+    name = section.upper() + '-' + subsection + ':' + discipline.upper() + '-' + device
     name += ('-' + instance) if instance else ""
+    name += (':' + proper)   if proper   else ""
+    name += ('.' + field)   if field   else ""
     return name
 
 def split_name(name):
-    name_list = [s.split(':') for s in name.split('-')]
-    name_list = [y for x in name_list for y in x]
     name_dict = {}
+    name_list = name.split(':')
+    name_dict['area_name'] = name_list[0]
+    name_dict['device_name'] = name_list[0] + ':' + name_list[1]
 
-    # Proposal 1
-    if _pvnaming_rule == 1:
-        name_dict['section']    = name_list[0]
-        name_dict['discipline'] = name_list[1]
-        name_dict['device']     = name_list[2]
-        name_dict['subsection'] = name_list[3]
-        name_dict['instance']   = name_list[4] if len(name_list) >= 5 else ''
-        return name_dict
+    name_sublist = name_list[0].split('-')
+    name_dict['section']    = name_sublist[0]
+    name_dict['subsection'] = name_sublist[1]
 
-    # Proposal 2
-    elif _pvnaming_rule == 2:
-        name_dict['section']    = name_list[0]
-        name_dict['subsection'] = name_list[1]
-        name_dict['discipline'] = name_list[2]
-        name_dict['device']     = name_list[3]
-        name_dict['instance']   = name_list[4] if len(name_list) >= 5 else ''
-        return name_dict
+    name_sublist = name_list[1].split('-')
+    name_dict['discipline'] = name_sublist[0]
+    name_dict['device']     = name_sublist[1]
+    name_dict['instance']   = name_sublist[2] if len(name_sublist) >= 3 else ''
 
+    if len(name_list) > 3:
+        name_sublist = name_list.split('.')
+        name_dict['property'] = name_sublist[0]
+        name_dict['field'] = name_sublist[1] if len(name_sublist) >= 2 else ''
     else:
-        raise Exception('Device name specification not implemented.')
+        name_dict['property'] = ''
+        name_dict['field'] = ''
+
+    return name_dict
 
 
 class DeviceNames:
@@ -46,8 +40,10 @@ class DeviceNames:
     def split_name(self,name):
         return split_name(name)
 
-    def join_name(self, discipline, device, subsection, instance = None):
-        return join_name(self.section, discipline, device, subsection, instance)
+    def join_name(self, discipline, device, subsection,
+                  instance=None, proper=None, field=None):
+        return join_name(self.section, discipline, device, subsection,
+                        instance, proper, field)
 
     ### Must be implemented in classes that derive from this one ####
     def __init__(self):
@@ -105,7 +101,7 @@ class DeviceNames:
 
             globs = self.glob_names.get(dis) or []
             for glob in globs:
-                device_name = join_name(dis, glob, self.pvnaming_glob)
+                device_name = self.join_name(dis, glob, self.pvnaming_glob)
                 _dict.update({ device_name:{} })
 
         return _dict

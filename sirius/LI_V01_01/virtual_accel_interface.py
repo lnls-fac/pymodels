@@ -22,7 +22,9 @@ _fam_names = { # All these Family names must be defined in family_data dictionar
     'MA': ['Slnd14','Slnd15','Slnd16','Slnd17','Slnd18','Slnd19','Slnd20',
            'Slnd21','QF1','QF2'],
 }
-_glob_names = dict() # These Family names can be any name
+_glob_names = { # These Family names can be any name
+    'TI': ['Cycle',]
+}
 _disciplines = sorted( _el_names.keys() | _fam_names.keys() | _glob_names.keys())
 
 ##### Excitation Curves #######

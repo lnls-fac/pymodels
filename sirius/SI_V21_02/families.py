@@ -166,16 +166,16 @@ def get_section_name_mapping(lattice):
         ini = fim
 
     # Names of the subsections:
-    sub_secs = ['M1','SX','M2','','C1','','C2','','C3','','C4','']
+    sub_secs = ['M1','SX','M2','C1','C2','BC','C3','C4']
     symm = ['SA','SB','SP','SB']
 
     for i, sec in enumerate(Sects,1):
         ## conditions that define change in subsection name:
-        sec_b1 = [x for x in b1 if sec[0]<= x <= sec[-1]] # define changes to '' and C1
-        relev_inds  = [sec_b1[0]-1, sec_b1[b1_nrsegs-1], sec_b1[b1_nrsegs]-1, sec_b1[-1]]
-        sec_b2 = [x for x in b2 if sec[0]<= x <= sec[-1]] # define changes to '', C2 and C4
-        relev_inds += [sec_b2[0]-1, sec_b2[b2_nrsegs-1], sec_b2[b2_nrsegs]-1, sec_b2[-1]]
-        sec_bc = [x for x in bc if sec[0]<= x <= sec[-1]] # define changes to '' and C3
+        sec_b1 = [x for x in b1 if sec[0]<= x <= sec[-1]] # define changes to C1
+        relev_inds  = [sec_b1[0]-1, sec_b1[-1]]
+        sec_b2 = [x for x in b2 if sec[0]<= x <= sec[-1]] # define changes to C2 and C4
+        relev_inds += [sec_b2[0]-1, sec_b2[-1]]
+        sec_bc = [x for x in bc if sec[0]<= x <= sec[-1]] # define changes to BC and C3
         relev_inds += [sec_bc[0]-1, sec_bc[-1]]
         sec_bpm = [x for x in bpm if sec[0]<= x <= sec[-1]] # define changes to SX and M2
         relev_inds += [sec_bpm[0], sec_bpm[1]-1]
