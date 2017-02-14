@@ -13,7 +13,7 @@ default_optics_mode = 'M1'
 
 def create_lattice(optics_mode = default_optics_mode):
 
-    strengths = get_optics_mode(optics_mode)
+    strengths, twiss_at_start = get_optics_mode(optics_mode)
 
     # -- shortcut symbols --
     marker       = _pyaccel.elements.marker
@@ -179,10 +179,13 @@ def create_lattice(optics_mode = default_optics_mode):
     # -- define vacuum chamber for all elements
     set_vacuum_chamber(the_line)
 
-    return the_line
+    return the_line, twiss_at_start
 
 
 def get_optics_mode(optics_mode):
+    twiss_at_start = _pyaccel.optics.Twiss.make_new(beta=[9.321, 12.881],
+                                                    alpha=[-2.647, 2.000],
+                                                    etax=[0.231, 0.069])
     # -- selection of optics mode --
     if optics_mode == 'M1':
         strengths = {
@@ -209,7 +212,7 @@ def get_optics_mode(optics_mode):
     else:
         Exception('Invalid TS optics mode: ' + optics_mode)
 
-    return strengths
+    return strengths, twiss_at_start
 
 
 def set_num_integ_steps(the_line):

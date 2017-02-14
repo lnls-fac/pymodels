@@ -130,9 +130,8 @@ class DeviceNames:
                 if self.pvnaming_fam in mag_name: continue
                 idx = list(mag_prop.values())[0][0]
                 if mag_ind_dict.get(idx) is None: # there could be more than one magnet per index
-                    mag_ind_dict[idx]  = {mag_name}
-                else:
-                    mag_ind_dict[idx] |= {mag_name}
+                    mag_ind_dict[idx]  = set()
+                mag_ind_dict[idx] |= {mag_name}
 
             #Use this mapping to see if the power supply is attached to the same element
             for ps_name, ps_prop in self.get_device_names(accelerator,power).items():
@@ -143,20 +142,19 @@ class DeviceNames:
                     mag_names = mag_ind_dict[i]
                     for mag_name in mag_names:
                         m = self.split_name(mag_name)['device']
-                        if m not in ps: continue  # WARNING: WILL FAIL IF THE POWER SUPPLY OF THE MAGNET DOES NOT HAVE ITS NAME ON ITSELF.
+                        if (m not in ps) and (ps not in m):
+                            continue  # WARNING: WILL FAIL IF THE POWER SUPPLY DOES NOT HAVE THE MAGNET NAME ON ITSELF OR VICE VERSA.
                         if mapping.get(mag_name) is None:
-                            mapping[mag_name]  = {ps_name}
-                        else:
-                            mapping[mag_name] |= {ps_name}
+                            mapping[mag_name]  = set()
+                        mapping[mag_name] |= {ps_name}
 
         # Finally find the inverse map
         inverse_mapping = dict()
         for key, value in mapping.items():
             for v in value:
                 if inverse_mapping.get(v) is None:
-                    inverse_mapping[v] = {key}
-                else:
-                    inverse_mapping[v].add(key)
+                    inverse_mapping[v] = set()
+                inverse_mapping[v].add(key)
 
         return mapping, inverse_mapping
 

@@ -29,7 +29,7 @@ def create_lattice(**kwargs):
     energy = kwargs['energy'] if 'energy' in kwargs else energy
     optics_mode = kwargs['optics_mode'] if 'optics_mode' in kwargs else default_optics_mode
 
-    strengths = get_optics_mode(optics_mode)
+    strengths = get_optics_mode(optics_mode,energy)
 
     B, b_len_seg = _seg_models.dipole(energy)
     b_len_hdedge = 1.152
@@ -202,18 +202,33 @@ def create_lattice(**kwargs):
     return the_ring
 
 
-def get_optics_mode(optics_mode):
+def get_optics_mode(optics_mode,energy=energy):
 
     if optics_mode == 'M0':
-        strengths = {
-            'qf' :  1.657881617545217,
-            'qd' : -0.009637589230525,
-            'sf' : 11.327508716063402,
-            'sd' :  7.064290473083006,
-        }
+        # 2017-01-11 ximenes (overall checking of model - quadrupole qd model 02)
+        # tunes fitted to [19.20433 7.31417] with "[THERING, conv, t2, t1] = lnls_correct_tunes(THERING,[19.20433 7.31417],{'QF','QD'},'svd','add',10,1e-9)"
+        # chroms fitted to [0.5 0.5] with "THERING = fitchrom2(THERING, [0.5, 0.5], 'SD', 'SF')"
+        # effective length changed from 227 mm to 228 mm.
+        # added model data for injection energy (2016-12-06 - ximenes)
+        qf_high_en = 1.654036900448982
+        qd_high_en = -0.005474886350700
+        sf_high_en = 11.326236792215228
+        sd_high_en = 6.282586036135388
+
+        qf_low_en = 1.653947031926041
+        qd_low_en = 0.011197961538728  # this is correct! the sign has changed!
+        sf_low_en = 11.331918124055948
+        sd_low_en = 5.007982970980575
     else:
         raise Exception('Optics mode not recognized.')
 
+    coeff = (energy-0.15e9)/(3e9-0.15e9)
+    strengths = {
+        'qf' : qf_low_en + coeff*(qf_high_en - qf_low_en),
+        'qd' : qd_low_en + coeff*(qd_high_en - qd_low_en),
+        'sf' : sf_low_en + coeff*(sf_high_en - sf_low_en),
+        'sd' : sd_low_en + coeff*(sd_high_en - sd_low_en),
+    }
     return strengths
 
 def set_rf_frequency(the_ring):

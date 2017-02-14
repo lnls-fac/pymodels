@@ -12,7 +12,7 @@ default_optics_mode = 'M1'
 
 def create_lattice(optics_mode = default_optics_mode):
 
-    strengths = get_optics_mode(optics_mode)
+    strengths, twiss_at_start = get_optics_mode(optics_mode)
 
     # -- shortcut symbols --
     marker       = _pyaccel.elements.marker
@@ -154,12 +154,13 @@ def create_lattice(optics_mode = default_optics_mode):
     # -- define vacuum chamber for all elements
     set_vacuum_chamber(the_line)
 
-    return the_line
+    return the_line, twiss_at_start
 
 
 def get_optics_mode(optics_mode):
     # -- selection of optics mode --
     if optics_mode == 'M1':
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(beta=[ 3.1667, 13.3117], alpha=[ 1.5073, -2.9245],etax=[-0.0586, -0.2588])
         strengths = {
             'qd1'  : -8.420879613851,
             'qf1'  : 13.146671512202,
@@ -173,6 +174,7 @@ def get_optics_mode(optics_mode):
             'qd4'  : -7.084093211983,
         }
     elif optics_mode == 'M2':
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(beta=[ 3.6036, 16.6264], alpha=[ 1.5671, -1.3144],etax=[-0.0586, -0.2588])
         strengths = {
             'qd1'  :   -8.420884154134,
             'qf1'  :   13.146672851601,
@@ -186,6 +188,7 @@ def get_optics_mode(optics_mode):
             'qd4'  :   -7.239923812237,
         }
     elif optics_mode == 'M3':
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(beta=[ 3.2556, 19.6968], alpha=[ 1.0134, -3.6354],etax=[-0.0586, -0.2588])
         strengths = {
             'qd1'  :   -8.4202421458,
             'qf1'  :   13.146512110234,
@@ -199,6 +202,7 @@ def get_optics_mode(optics_mode):
             'qd4'  :   -7.183997114808,
         }
     elif optics_mode == 'M4':
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(beta=[ 3.2421,  3.8668], alpha=[ 1.7275,  0.2114],etax=[-0.0586, -0.2588])
         strengths = {
             'qd1'  :   -8.420952075727,
             'qf1'  :   13.146690356394,
@@ -212,6 +216,7 @@ def get_optics_mode(optics_mode):
             'qd4'  :   -6.740424372291,
         }
     elif optics_mode == 'M5':
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(beta=[ 0.4918, 21.7039], alpha=[-0.6437, -3.4604],etax=[-0.0586, -0.2588])
         strengths = {
             'qd1'  :   -8.420850561756,
             'qf1'  :   13.146666514846,
@@ -225,6 +230,7 @@ def get_optics_mode(optics_mode):
             'qd4'  :   -6.772341213215,
         }
     elif optics_mode == 'M6':
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(beta=[ 2.9771, 11.0431], alpha=[ 1.0378, -0.8005],etax=[-0.0586, -0.2588])
         strengths = {
             'qd1'  :   -8.420886991042,
             'qf1'  :   13.146673683891,
@@ -240,7 +246,7 @@ def get_optics_mode(optics_mode):
     else:
         Exception('Invalid TS optics mode: ' + optics_mode)
 
-    return strengths
+    return strengths, twiss_at_start
 
 
 def set_num_integ_steps(the_line):
