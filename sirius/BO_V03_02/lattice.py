@@ -237,7 +237,7 @@ def set_rf_frequency(the_ring):
     velocity = _mp.constants.light_speed
     rev_frequency = velocity / circumference
     rf_frequency  = harmonic_number * rev_frequency
-    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'Cav')
+    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'RFCav')
     for i in idx:
         the_ring[i].frequency = rf_frequency
 
@@ -253,7 +253,7 @@ def set_rf_voltage(the_ring, energy):
     voltage_eje = 950e3
     voltage = min([(overvoltage*U0 + voltage_inj), voltage_eje])
 
-    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'Cav')
+    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'RFCav')
     for i in idx:
         the_ring[i].voltage = voltage
 
