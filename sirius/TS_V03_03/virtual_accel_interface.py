@@ -54,6 +54,6 @@ class TSDeviceNames(_naming_sys.DeviceNames):
         ##### Excitation Curves #######
         self.excitation_curves_mapping = _excitation_curves_mapping
         ##### Pulsed Magnets #######
-        self._pulse_curve_mapping = _pulse_curve_mapping
+        self.pulse_curve_mapping = _pulse_curve_mapping
         ##### Family Data Function ######
         self.get_family_data = _families.get_family_data

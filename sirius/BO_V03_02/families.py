@@ -12,6 +12,8 @@ _family_segmentation={
 
 family_mapping = {
     'B': 'dipole',
+    'B-1': 'dipole',
+    'B-2': 'dipole',
 
     'QF': 'quadrupole',
     'QD': 'quadrupole',

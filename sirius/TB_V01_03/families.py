@@ -66,14 +66,13 @@ def get_section_name_mapping(lattice):
     b = _pyaccel.lattice.find_indices(lattice,'fam_name','B')
     b_nrsegs = len(b)//3
     start = _pyaccel.lattice.find_indices(lattice,'fam_name','start')
-    fim = _pyaccel.lattice.find_indices(lattice,'fam_name','end')
 
     # Names of the sections:
     secs = ['01','02','03','04']
 
     ## conditions that define change in section name:
     relev_inds  = [b[b_nrsegs-1], b[2*b_nrsegs-1], b[-1]]
-    relev_inds += [fim[0]]
+    relev_inds += [len(lattice)-1]
     relev_inds.sort()
     ## fill the section_map variable
     ref = 0
@@ -107,7 +106,7 @@ def get_family_data(lattice):
     new_data = dict()
     for key, idx in data.items():
         # find out the name of the section each element is installed
-        secs = [ section_map[get_idx(i)] for i in new_idx ]
+        secs = [ section_map[get_idx(i)] for i in idx ]
 
         # find out if there are more than one element per section and attribute a number to it
         num = len(secs)*['']
@@ -121,6 +120,6 @@ def get_family_data(lattice):
                 j      = j+1    if secs[i]==secs[i+1] else                         1
             num[-1]    = f(j)   if (secs[-1] == secs[-2]) else                     ''
 
-        new_data[key] = {'index':new_idx, 'subsection':secs, 'instance':num}
+        new_data[key] = {'index':idx, 'subsection':secs, 'instance':num}
 
     return new_data

@@ -16,5 +16,6 @@ device_names  = virtual_accel_interface.TSDeviceNames()
 del virtual_accel_interface
 
 # -- default accelerator values for TS_V03 --
-lattice_version      = accelerator_data['lattice_version']
-get_device_names     = device_names.get_device_names
+lattice_version   = accelerator_data['lattice_version']
+get_device_names  = device_names.get_device_names
+get_magnet_names  = device_names.get_magnet_names

@@ -55,10 +55,12 @@ _excitation_curves_mapping = {
     ('FCV',)                    : 'sima-cv.txt',
     ('InjDpK',)                 : 'sipm-injdpk.txt',
     ('InjNLK',)                 : 'sipm-injnlk.txt',
+    ('VPing',)                  : 'sipm-injdpk.txt',
 }
 
 ##### Pulsed Magnets #######
 _pulse_curve_mapping= {
+    'VPing' :'sipm-injdpk-pulse.txt',
     'InjDpK':'sipm-injdpk-pulse.txt',
     'InjNLK':'sipm-injnlk-pulse.txt',
 }

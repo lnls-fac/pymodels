@@ -33,3 +33,4 @@ accelerator_data['global_coupling']  = 1.00 # expected corrected value
 accelerator_data['emittance']        = 170.3329758677203e-09 # [m·rad]
 accelerator_data['energy_spread']    = 0.005
 accelerator_data['pressure_profile'] = None
+_,accelerator_data['twiss_at_exit']    = create_accelerator()

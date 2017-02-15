@@ -10,13 +10,14 @@ default_vchamber_on = False
 
 
 def create_accelerator(optics_mode = _lattice.default_optics_mode):
+    _latt,twiss_at_start = _lattice.create_lattice(optics_mode=optics_mode)
     accelerator = _pyaccel.accelerator.Accelerator(
-        lattice=_lattice.create_lattice(optics_mode=optics_mode),
+        lattice=_latt,
         energy=_lattice.energy,
         radiation_on=default_radiation_on,
         vchamber_on=default_vchamber_on
     )
-    return accelerator
+    return accelerator, twiss_at_start
 
 
 _folder_code = _lnls.folder_code

@@ -22,8 +22,8 @@ def split_name(name):
     name_dict['device']     = name_sublist[1]
     name_dict['instance']   = name_sublist[2] if len(name_sublist) >= 3 else ''
 
-    if len(name_list) > 3:
-        name_sublist = name_list.split('.')
+    if len(name_list) >= 3:
+        name_sublist = name_list[2].split('.')
         name_dict['property'] = name_sublist[0]
         name_dict['field'] = name_sublist[1] if len(name_sublist) >= 2 else ''
     else:
@@ -192,7 +192,7 @@ class DeviceNames:
         """
         mapping = {}
         pms_dev = set(self.get_device_names(accelerator, 'PM').keys())
-        for pm in _pms_dev:
+        for pm in pms_dev:
             dev = split_name(pm)['device']
             mapping[pm] = self.pulse_curve_mapping[dev]
 

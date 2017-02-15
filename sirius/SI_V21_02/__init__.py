@@ -17,5 +17,6 @@ from . import virtual_accel_interface
 device_names  = virtual_accel_interface.SIDeviceNames()
 del virtual_accel_interface
 
-lattice_version      = accelerator_data['lattice_version']
-get_device_names     = device_names.get_device_names
+lattice_version   = accelerator_data['lattice_version']
+get_device_names  = device_names.get_device_names
+get_magnet_names  = device_names.get_magnet_names
