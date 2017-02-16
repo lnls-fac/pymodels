@@ -12,7 +12,7 @@ def get_excitation_curve_mapping(accelerator):
 
     ec = dict()
     for name in magnets:
-        device = _naming_system.split_name(name)['device']
+        device = _naming_system.split_name(name)['Device']
         if _re.search('B', device)     is not None: ec[name] = 'boma-bend.txt'
         elif _re.search('QF', device)   is not None: ec[name] = 'boma-qf.txt'
         elif _re.search('QD', device)   is not None: ec[name] = 'boma-qd.txt'

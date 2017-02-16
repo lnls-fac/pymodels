@@ -10,25 +10,25 @@ def join_name(section, discipline, device, subsection,
 def split_name(name):
     name_dict = {}
     name_list = name.split(':')
-    name_dict['area_name'] = name_list[0]
-    name_dict['device_name'] = name_list[0] + ':' + name_list[1]
+    name_dict['Area_name'] = name_list[0]
+    name_dict['Device_name'] = name_list[0] + ':' + name_list[1]
 
     name_sublist = name_list[0].split('-')
-    name_dict['section']    = name_sublist[0]
-    name_dict['subsection'] = name_sublist[1]
+    name_dict['Section']    = name_sublist[0]
+    name_dict['Subsection'] = name_sublist[1]
 
     name_sublist = name_list[1].split('-')
-    name_dict['discipline'] = name_sublist[0]
-    name_dict['device']     = name_sublist[1]
-    name_dict['instance']   = name_sublist[2] if len(name_sublist) >= 3 else ''
+    name_dict['Discipline'] = name_sublist[0]
+    name_dict['Device']     = name_sublist[1]
+    name_dict['Instance']   = name_sublist[2] if len(name_sublist) >= 3 else ''
 
     if len(name_list) >= 3:
         name_sublist = name_list[2].split('.')
-        name_dict['property'] = name_sublist[0]
-        name_dict['field'] = name_sublist[1] if len(name_sublist) >= 2 else ''
+        name_dict['Property'] = name_sublist[0]
+        name_dict['Field'] = name_sublist[1] if len(name_sublist) >= 2 else ''
     else:
-        name_dict['property'] = ''
-        name_dict['field'] = ''
+        name_dict['Property'] = ''
+        name_dict['Field'] = ''
 
     return name_dict
 
@@ -131,13 +131,13 @@ class DeviceNames:
 
             #Use this mapping to see if the power supply is attached to the same element
             for ps_name, ps_prop in self.get_device_names(accelerator,power).items():
-                ps = self.split_name(ps_name)['device']
+                ps = self.split_name(ps_name)['Device']
                 idx = list(ps_prop.values())[0]
                 idx = [idx[0]] if self.pvnaming_fam not in ps_name else [i[0] for i in idx] # if Fam then indices are list of lists
                 for i in idx:
                     mag_names = mag_ind_dict[i]
                     for mag_name in mag_names:
-                        m = self.split_name(mag_name)['device']
+                        m = self.split_name(mag_name)['Device']
                         if (m not in ps) and (ps not in m):
                             continue  # WARNING: WILL FAIL IF THE POWER SUPPLY DOES NOT HAVE THE MAGNET NAME ON ITSELF OR VICE VERSA.
                         if mapping.get(mag_name) is None:
@@ -161,7 +161,9 @@ class DeviceNames:
         tis_dev = set(self.get_device_names(accelerator, 'TI').keys())
         pms_dev = set(self.get_device_names(accelerator, 'PM').keys())
         for pm in pms_dev:
-            dev = split_name(pm)['device']
+            dev = split_name(pm)['Device']
+            ins = split_name(pm)['Instance']
+            dev += '-'+ins if ins else ins
             ti = [i for i in tis_dev if dev in i][0]
             mapping[pm] = ti + delay_or_enbl
 
@@ -193,7 +195,7 @@ class DeviceNames:
         mapping = {}
         pms_dev = set(self.get_device_names(accelerator, 'PM').keys())
         for pm in pms_dev:
-            dev = split_name(pm)['device']
+            dev = split_name(pm)['Device']
             mapping[pm] = self.pulse_curve_mapping[dev]
 
         return mapping
@@ -210,6 +212,6 @@ class DeviceNames:
         ec = dict()
         for fams, curve in self.excitation_curves_mapping.items():
             for name in magnets:
-                device = self.split_name(name)['device']
+                device = self.split_name(name)['Device']
                 if device.startswith(fams): ec[name] = curve
         return ec

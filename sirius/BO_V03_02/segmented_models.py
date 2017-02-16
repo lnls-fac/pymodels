@@ -207,9 +207,11 @@ def sx_sextupole(energy, fam_name, hardedge_SL):
     for i in range(sx_modelC.shape[0]):
         if sx_modelC[i,0] == b:
             pol_b = _np.zeros(int(max(monomials))+1)
+            pol_a = _np.zeros(int(max(monomials))+1)
             pol_b[monomials] = sx_modelC[i,3:]
             s = sextupole(fam_name, 2*sx_modelC[i,1], 0) # factor 2 in length for one-segment model
             s.polynom_b=pol_b
+            s.polynom_a=pol_a
             sx.append(s)
         else:
             raise Exception("Sextupole type not recognized.")
@@ -339,9 +341,11 @@ def qd_quadrupole(energy, fam_name, hardedge_KL):
     for i in range(qd_modelC.shape[0]):
         if qd_modelC[i,0] == b:
             pol_b = _np.zeros(int(max(monomials))+1)
+            pol_a = _np.zeros(int(max(monomials))+1)
             pol_b[monomials] = qd_modelC[i,3:]
             q = quadrupole(fam_name, 2*qd_modelC[i,1], 0) # factor 2 in length for one-segment model
             q.polynom_b=pol_b
+            q.polynom_a=pol_a
             qd.append(q)
         else:
             raise Exception("Quadrupole type not recognized.")
@@ -472,9 +476,11 @@ def qf_quadrupole(energy, fam_name, hardedge_KL):
     for i in range(qf_modelC.shape[0]):
         if qf_modelC[i,0] == b:
             pol_b = _np.zeros(int(max(monomials))+1)
+            pol_a = _np.zeros(int(max(monomials))+1)
             pol_b[monomials] = qf_modelC[i,3:]
             q = quadrupole(fam_name, qf_modelC[i,1], 0)
             q.polynom_b=pol_b
+            q.polynom_a=pol_a
             qf.append(q)
         else:
             raise Exception("Quadrupole type not recognized.")

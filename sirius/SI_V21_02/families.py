@@ -70,7 +70,7 @@ family_mapping = {
 
     'InjNLK': 'pulsed_magnet',
     'InjDpK': 'pulsed_magnet',
-    'VPing' : 'Vertical Pinger',
+    'VPing' : 'pulsed_magnet',
 
     'BPM'    : 'bpm',
     'DCCT'   : 'dcct_to_measure_beam_current',
