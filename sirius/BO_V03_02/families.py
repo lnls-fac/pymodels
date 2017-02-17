@@ -6,7 +6,7 @@ _family_segmentation={
     'B-1'  : 20,'B-2'  : 20,'B'  : 20, 'QF' : 2, 'QD' : 1, 'SD' : 1, 'QS':1,
     'SF' : 1, 'CH' : 1, 'CV' : 1,
     'BPM' : 1, 'Scrn':1, 'DCCT':1,'TuneP':1,'TuneS':1,'GSL':1,
-    'RFCav' : 1, 'start': 1, 'BEND': 14,
+    'P5Cav' : 1, 'start': 1, 'BEND': 14,
     'InjK': 1, 'EjeK': 1
 }
 
@@ -34,7 +34,7 @@ family_mapping = {
     'CH': 'horizontal_corrector',
     'CV': 'vertical_corrector',
 
-    'RFCav': 'rf_cavity',
+    'P5Cav': 'rf_cavity',
 }
 
 def families_dipoles():
@@ -56,7 +56,7 @@ def families_skew_correctors():
     return ['QS']
 
 def families_rf():
-    return ['RFCav']
+    return ['P5Cav']
 
 def families_pulsed_magnets():
     return ['InjK', 'EjeK']

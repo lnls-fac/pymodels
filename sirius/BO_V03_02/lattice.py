@@ -100,7 +100,7 @@ def create_lattice(**kwargs):
     QS    = quadrupole('QS', 0.10, 0.0)
     QF0   = [QF[0], FIM, STR, QF[1:]]
 
-    RFC = rfcavity('RFCav', 0, 0, 0) # RF frequency will be set later.
+    RFC = rfcavity('P5Cav', 0, 0, 0) # RF frequency will be set later.
 
 
     US_SF      = [GIR, D21460, BPM,                            L18935, GIR, SF, L01335]
@@ -237,7 +237,7 @@ def set_rf_frequency(the_ring):
     velocity = _mp.constants.light_speed
     rev_frequency = velocity / circumference
     rf_frequency  = harmonic_number * rev_frequency
-    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'RFCav')
+    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'P5Cav')
     for i in idx:
         the_ring[i].frequency = rf_frequency
 
@@ -253,7 +253,7 @@ def set_rf_voltage(the_ring, energy):
     voltage_eje = 950e3
     voltage = min([(overvoltage*U0 + voltage_inj), voltage_eje])
 
-    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'RFCav')
+    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'P5Cav')
     for i in idx:
         the_ring[i].voltage = voltage
 
