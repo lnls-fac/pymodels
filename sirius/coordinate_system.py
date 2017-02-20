@@ -20,4 +20,5 @@ def parameters(accelerator_prefix):
     else:
         delta_rx = None
         delta_angle = None
-    return delta_rx, delta_angle
+    # return delta_rx, delta_angle
+    return 0.0,0.0
