@@ -9,8 +9,10 @@ def get_slots_list():
     response = _urllib.request.urlopen(url)
     str_response = response.readall().decode('utf-8')
     data = _json.loads(str_response);
-    #return data
-    slot_list = data['installationSlots']
+    try:
+        slot_list = data['installationSlots']
+    except:
+        slot_list = data['slot']
     return slot_list
 
 def get_devtypes_dict():
