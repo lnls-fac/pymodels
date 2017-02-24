@@ -5,7 +5,7 @@ from . import BO_V03_02
 from . import TS_V03_03
 from . import SI_V21_02
 from . import coordinate_system
-from . import discs
+
 
 with open(_os.path.join(__path__[0], 'VERSION'), 'r') as _f:
     __version__ = _f.read().strip()
