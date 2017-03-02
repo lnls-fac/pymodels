@@ -6,12 +6,12 @@ with open('VERSION','r') as _f:
     __version__ = _f.read().strip()
 
 setup(
-    name='sirius',
+    name='models',
     version=__version__,
     author='lnls-fac',
-    description='Sirius lattice definitions',
-    url='https://github.com/lnls-fac/sirius',
-    download_url='https://github.com/lnls-fac/sirius',
+    description='Models lattice definitions',
+    url='https://github.com/lnls-fac/models',
+    download_url='https://github.com/lnls-fac/models',
     license='MIT License',
     classifiers=[
         'Intended Audience :: Science/Research',
@@ -19,6 +19,6 @@ setup(
         'Topic :: Scientific/Engineering'
     ],
     packages=find_packages(),
-    package_data={'sirius': ['VERSION','BO_V02A/at_flat_file_M0.txt']},
+    package_data={'models': ['VERSION','BO_V02A/at_flat_file_M0.txt']},
     zip_safe=False
 )

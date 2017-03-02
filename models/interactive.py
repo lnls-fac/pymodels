@@ -1,10 +1,10 @@
 
-"""Interactive sirius module
+"""Interactive models module
 
 Use this module to define variables and functions to be globally available when
 using
 
-    'from sirius.interactive import *'
+    'from models.interactive import *'
 """
 
 from pyaccel.interactive import *
@@ -16,4 +16,4 @@ from . import ts
 
 __all__ = [name for name in dir() if not name.startswith('_')]
 
-print('Names defined in sirius.interactive: ' + ', '.join(__all__) + '.\n')
+print('Names defined in models.interactive: ' + ', '.join(__all__) + '.\n')
