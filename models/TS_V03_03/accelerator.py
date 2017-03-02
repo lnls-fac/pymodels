@@ -20,8 +20,6 @@ def create_accelerator(optics_mode = _lattice.default_optics_mode):
     return accelerator, twiss_at_start
 
 
-_folder_code = _lnls.folder_code
-
 accelerator_data = dict()
 accelerator_data['lattice_version'] = 'TS_V03_03'
 accelerator_data['dirs'] = {
