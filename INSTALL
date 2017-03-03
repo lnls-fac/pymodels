@@ -1,4 +1,4 @@
-INSTALL - models
+INSTALL - pymodels
 ================
 
 This package can be installed using setuptools (>=16.0). There is no automatic

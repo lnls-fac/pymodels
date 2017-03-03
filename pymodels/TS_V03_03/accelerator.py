@@ -22,8 +22,4 @@ def create_accelerator(optics_mode = _lattice.default_optics_mode):
 
 accelerator_data = dict()
 accelerator_data['lattice_version'] = 'TS_V03_03'
-accelerator_data['dirs'] = {
-    'excitation_curves': _lnls.folder_excitation_curves,
-    'pulse_curves': _lnls.folder_pulse_curves,
-}
 accelerator_data['pressure_profile'] = None

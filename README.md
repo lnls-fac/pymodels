@@ -1,5 +1,5 @@
-# models
-Models parameters and pyaccel models for
+# pymodels
+pyModels parameters and pyaccel models for
 - SI
 - BO
 - TS

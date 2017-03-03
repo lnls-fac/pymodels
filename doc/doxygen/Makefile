@@ -1,7 +1,7 @@
 # Makefile for Doxygen documentation
 
 DOXYFILE = Doxyfile
-PROJECT_DIR = $(FACCODE)/models/models
+PROJECT_DIR = $(FACCODE)/pymodels/pymodels
 PROJECT_NUMBER = $(shell cat $(PROJECT_DIR)/VERSION)
 
 html:
