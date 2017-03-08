@@ -22,8 +22,7 @@ _family_segmentation={
     'FC'    : 1, 'FCQ'    : 1,
     'QS'    : 1, 'CH'     : 1,  'CV'    : 1,
     'SRFCav': 1, 'start'  : 1,
-    'InjDpK': 1, 'InjNLK' : 1, 'HPing'  : 1, 'VPing'  :1,
-}
+    'InjDpK': 1, 'InjNLK' : 1, 'HPing'  : 1, 'VPing'  :1,}
 
 family_mapping = {
 
@@ -98,8 +97,7 @@ family_mapping = {
 
     'QS'  : 'skew_quadrupole',
 
-    'SRFCav': 'superconducting_rf_cavity'
-}
+    'SRFCav': 'superconducting_rf_cavity'}
 
 def families_dipoles():
     return ['B1','B2','BC']
@@ -192,7 +190,6 @@ def get_section_name_mapping(lattice):
 
     return section_map
 
-
 def get_family_data(lattice):
     """Get pyaccel lattice model index and segmentation for each family name
 
@@ -265,6 +262,9 @@ def get_family_data(lattice):
     # Power Supply for B1 and B2 families
     data['B1B2-1'] = sorted(data['B1']+data['B2'],key=get_idx)
     data['B1B2-2'] = sorted(data['B1']+data['B2'],key=get_idx)
+
+    # HPing (in the model the same as InjDpK)
+    data['HPing'] = sorted(data['InjDpK'], key=get_idx)
 
     ### Now organize the data dictionary:
     new_data = dict()
