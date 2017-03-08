@@ -22,7 +22,7 @@ _family_segmentation={
     'FC'    : 1, 'FCQ'    : 1,
     'QS'    : 1, 'CH'     : 1,  'CV'    : 1,
     'SRFCav': 1, 'start'  : 1,
-    'InjDpK': 1, 'InjNLK' : 1, 'VPing'  :1,
+    'InjDpK': 1, 'InjNLK' : 1, 'HPing'  : 1, 'VPing'  :1,
 }
 
 family_mapping = {
@@ -70,6 +70,7 @@ family_mapping = {
 
     'InjNLK': 'pulsed_magnet',
     'InjDpK': 'pulsed_magnet',
+    'HPing' : 'pulsed_magnet',
     'VPing' : 'pulsed_magnet',
 
     'BPM'    : 'bpm',
@@ -128,7 +129,7 @@ def families_rf():
     return ['SRFCav',]
 
 def families_pulsed_magnets():
-    return ['InjDpK', 'InjNLK', 'VPing']
+    return ['InjDpK', 'InjNLK', 'HPing', 'VPing']
 
 def families_di():
     return ['BPM', 'DCCT', 'HScrap', 'VScrap', 'GSL15', 'GSL07',
