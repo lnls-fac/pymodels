@@ -2,7 +2,7 @@ import math as _math
 import numpy as _np
 import pyaccel as _pyaccel
 
-def dipole_bc(m_accep_fam_name):
+def dipole_bc(m_accep_fam_name, simplified=False):
 
     segtypes = {
         'BC'      : ('BC', _pyaccel.elements.rbend),
@@ -67,9 +67,35 @@ def dipole_bc(m_accep_fam_name):
     maccep = segtypes['m_accep'][1](segtypes['m_accep'][0])
     model = model[::-1] + [mc,maccep] + model
 
+    if simplified:
+        m_accep = _pyaccel.elements.marker(m_accep_fam_name)
+        l = sum([s[1] for s in segmodel[:8]])
+        ang1 = sum([s[2] for s in segmodel[:8]]) * d2r
+        k = sum([s[4]*s[1] for s in segmodel[:8]])/l
+        s = sum([s[5]*s[1] for s in segmodel[:8]])/l
+        el = _pyaccel.elements.rbend(fam_name='BC', length=2*l, angle=2*ang1,
+                     angle_in=0, angle_out=0,
+                     gap=0, fint_in=0, fint_out=0,
+                     polynom_a=[0,0,0], polynom_b=[0,k,s])
+        l = sum([s[1] for s in segmodel[9:14]])
+        ang2 = sum([s[2] for s in segmodel[9:]]) * d2r
+        k = sum([s[4]*s[1] for s in segmodel[9:]])/l
+        s = sum([s[5]*s[1] for s in segmodel[9:]])/l
+        el_e = _pyaccel.elements.rbend(fam_name='BC', length=l, angle=ang2,
+                     angle_in=0, angle_out=0*ang2,
+                     gap=0, fint_in=0, fint_out=0,
+                     polynom_a=[0,0,0], polynom_b=[0,k,s])
+        el_b = _pyaccel.elements.rbend(fam_name='BC', length=l, angle=ang2,
+                     angle_in=0*ang2, angle_out=0,
+                     gap=0, fint_in=0, fint_out=0,
+                     polynom_a=[0,0,0], polynom_b=[0,k,s])
+        l2 = sum([s[1] for s in segmodel[14:]])
+        dr = _pyaccel.elements.drift('LBC',l2)
+        model = [dr,el_b,m_accep,el,m_accep,el_e,dr]
+
     return model
 
-def dipole_b1(m_accep_fam_name):
+def dipole_b1(m_accep_fam_name, simplified=False):
 
     segtypes = {
         'B1'      : ('B1', _pyaccel.elements.rbend),
@@ -169,9 +195,23 @@ def dipole_b1(m_accep_fam_name):
     maccep = segtypes['m_accep'][1](segtypes['m_accep'][0])
     model = model[::-1] + [mb1,maccep] + model
 
+    if simplified:
+        l = sum([s[1] for s in segmodel[:12]])
+        ang = sum([s[2] for s in segmodel]) * d2r
+        k = sum([s[4]*s[1] for s in segmodel])/l
+        s = sum([s[5]*s[1] for s in segmodel])/l
+        el = _pyaccel.elements.rbend(fam_name='B1', length=2*l, angle=2*ang,
+                     angle_in=0*ang, angle_out=0*ang,
+                     gap=0, fint_in=0, fint_out=0,
+                     polynom_a=[0,0,0], polynom_b=[0,k,s])
+        l2 = sum([s[1] for s in segmodel[12:]])
+        dr = _pyaccel.elements.drift('LB1',l2)
+        model = [dr,el,dr]
+
+
     return model
 
-def dipole_b2(m_accep_fam_name):
+def dipole_b2(m_accep_fam_name, simplified=False):
 
     segtypes = {
         'B2'      : ('B2', _pyaccel.elements.rbend),
@@ -279,9 +319,22 @@ def dipole_b2(m_accep_fam_name):
     maccep = segtypes['m_accep'][1](segtypes['m_accep'][0])
     model = model[::-1] + [mb2,maccep] + model
 
+    if simplified:
+        l = sum([s[1] for s in segmodel[:15]])
+        ang = sum([s[2] for s in segmodel]) * d2r
+        k = sum([s[4]*s[1] for s in segmodel])/l
+        s = sum([s[5]*s[1] for s in segmodel])/l
+        el = _pyaccel.elements.rbend(fam_name='B2', length=2*l, angle=2*ang,
+                     angle_in=0*ang, angle_out=0*ang,
+                     gap=0, fint_in=0, fint_out=0,
+                     polynom_a=[0,0,0], polynom_b=[0,k,s])
+        l2 = sum([s[1] for s in segmodel[15:]])
+        dr = _pyaccel.elements.drift('LB2',l2)
+        model = [dr,el,dr]
+
     return model
 
-def quadrupole_q14(fam_name, strength):
+def quadrupole_q14(fam_name, strength, simplified=False):
 
     segtypes = {
         fam_name      : (fam_name, _pyaccel.elements.quadrupole),
@@ -318,9 +371,13 @@ def quadrupole_q14(fam_name, strength):
     element.polynom_b = PolyB
     model.append(element)
 
+    if simplified:
+        model[0].polynom_a = model[0].polynom_a[:3]
+        model[0].polynom_b = model[0].polynom_b[:3]
+
     return model
 
-def quadrupole_q20(fam_name, strength):
+def quadrupole_q20(fam_name, strength, simplified=False):
 
     segtypes = {
         fam_name      : (fam_name, _pyaccel.elements.quadrupole),
@@ -357,9 +414,13 @@ def quadrupole_q20(fam_name, strength):
     element.polynom_b = PolyB
     model.append(element)
 
+    if simplified:
+        model[0].polynom_a = model[0].polynom_a[:3]
+        model[0].polynom_b = model[0].polynom_b[:3]
+
     return model
 
-def quadrupole_q30(fam_name, strength):
+def quadrupole_q30(fam_name, strength, simplified=False):
 
     segtypes = {
         fam_name      : (fam_name, _pyaccel.elements.quadrupole),
@@ -395,5 +456,9 @@ def quadrupole_q30(fam_name, strength):
     element.polynom_a = PolyA
     element.polynom_b = PolyB
     model.append(element)
+
+    if simplified:
+        model[0].polynom_a = model[0].polynom_a[:3]
+        model[0].polynom_b = model[0].polynom_b[:3]
 
     return model

@@ -9,7 +9,7 @@ lattice_symmetry = 5
 harmonic_number  = 864
 energy = 3e9 #[eV]
 
-def create_lattice(mode=default_optics_mode):
+def create_lattice(mode=default_optics_mode, simplified=False):
 
     # -- selection of optics mode --
     strengths = get_optics_mode(mode=mode)
@@ -75,23 +75,23 @@ def create_lattice(mode=default_optics_mode):
     m_accep_fam_name = 'calc_mom_accep'
 
     # -- dipoles --
-    BC = _segmented_models.dipole_bc(m_accep_fam_name)
-    B1 = _segmented_models.dipole_b1(m_accep_fam_name)
-    B2 = _segmented_models.dipole_b2(m_accep_fam_name)
+    BC = _segmented_models.dipole_bc(m_accep_fam_name, simplified)
+    B1 = _segmented_models.dipole_b1(m_accep_fam_name, simplified)
+    B2 = _segmented_models.dipole_b2(m_accep_fam_name, simplified)
 
     # -- quadrupoles --
-    QFA  = _segmented_models.quadrupole_q20('QFA',  strengths['QFA'])
-    QDA  = _segmented_models.quadrupole_q14('QDA',  strengths['QDA'])
-    QDB2 = _segmented_models.quadrupole_q14('QDB2', strengths['QDB2'])
-    QFB  = _segmented_models.quadrupole_q30('QFB',  strengths['QFB'])
-    QDB1 = _segmented_models.quadrupole_q14('QDB1', strengths['QDB1'])
-    QDP2 = _segmented_models.quadrupole_q14('QDP2', strengths['QDP2'])
-    QFP  = _segmented_models.quadrupole_q30('QFP',  strengths['QFP'])
-    QDP1 = _segmented_models.quadrupole_q14('QDP1', strengths['QDP1'])
-    Q1   = _segmented_models.quadrupole_q20('Q1',   strengths['Q1'])
-    Q2   = _segmented_models.quadrupole_q20('Q2',   strengths['Q2'])
-    Q3   = _segmented_models.quadrupole_q20('Q3',   strengths['Q3'])
-    Q4   = _segmented_models.quadrupole_q20('Q4',   strengths['Q4'])
+    QFA  = _segmented_models.quadrupole_q20('QFA',  strengths['QFA'], simplified)
+    QDA  = _segmented_models.quadrupole_q14('QDA',  strengths['QDA'], simplified)
+    QDB2 = _segmented_models.quadrupole_q14('QDB2', strengths['QDB2'], simplified)
+    QFB  = _segmented_models.quadrupole_q30('QFB',  strengths['QFB'], simplified)
+    QDB1 = _segmented_models.quadrupole_q14('QDB1', strengths['QDB1'], simplified)
+    QDP2 = _segmented_models.quadrupole_q14('QDP2', strengths['QDP2'], simplified)
+    QFP  = _segmented_models.quadrupole_q30('QFP',  strengths['QFP'], simplified)
+    QDP1 = _segmented_models.quadrupole_q14('QDP1', strengths['QDP1'], simplified)
+    Q1   = _segmented_models.quadrupole_q20('Q1',   strengths['Q1'], simplified)
+    Q2   = _segmented_models.quadrupole_q20('Q2',   strengths['Q2'], simplified)
+    Q3   = _segmented_models.quadrupole_q20('Q3',   strengths['Q3'], simplified)
+    Q4   = _segmented_models.quadrupole_q20('Q4',   strengths['Q4'], simplified)
 
     # -- sextupoles --
     SDA0 = sextupole('SDA0', 0.150, strengths['SDA0']) # CH-CV
