@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python-sirius
 
 import os as _os
 import math as _math

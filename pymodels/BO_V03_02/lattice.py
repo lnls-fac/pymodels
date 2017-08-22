@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python-sirius
 
 import math as _math
 import numpy as _np
