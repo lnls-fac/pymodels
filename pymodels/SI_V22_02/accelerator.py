@@ -13,9 +13,10 @@ default_vchamber_on = False
 def create_accelerator(optics_mode=_lattice.default_optics_mode,
                        simplified=False):
     """Create accelerator model."""
+    lattice = _lattice.create_lattice(mode=optics_mode,
+                                      simplified=simplified)
     accelerator = _pyaccel.accelerator.Accelerator(
-        lattice=_lattice.create_lattice(mode=optics_mode,
-                                        simplified=simplified),
+        lattice=lattice,
         energy=_lattice.energy,
         harmonic_number=_lattice.harmonic_number,
         cavity_on=default_cavity_on,
