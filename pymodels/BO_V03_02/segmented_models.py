@@ -3,21 +3,22 @@ import mathphys as _mp
 import pyaccel as _pyaccel
 
 rbend_sirius = _pyaccel.elements.rbend
-quadrupole   = _pyaccel.elements.quadrupole
-sextupole    = _pyaccel.elements.sextupole
-marker       = _pyaccel.elements.marker
+quadrupole = _pyaccel.elements.quadrupole
+sextupole = _pyaccel.elements.sextupole
+marker = _pyaccel.elements.marker
 
-_d2r = _np.pi /180
+_d2r = _np.pi/180
 
 def dipole(energy):
-    b, b_edge, b_pb  = 1, 2, 3
+    """Dipole segmented model."""
+    b, b_edge, b_pb = 1, 2, 3
     # FIELDMAP
     # trajectory centered in good-field region. init_rx is set to +9.045 mm
     # *** interpolation of fields is now cubic ***
     # *** dipole angles were normalized to better close 360 degrees ***
     # *** more refined segmented model.
     # *** dipole angle is now in units of degrees
-    #--- model polynom_b (rz > 0). units: [m] for length, [rad] for angle and [m],[T] for polynom_b ---
+    # --- model polynom_b (rz > 0). units: [m] for length, [rad] for angle and [m],[T] for polynom_b ---
 
     # dipole model 2016-11-22 (3GeV)
     # ==============================
