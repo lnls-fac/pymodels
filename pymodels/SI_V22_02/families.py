@@ -16,13 +16,13 @@ _family_segmentation = {
     'SFA0': 1, 'SFB0': 1, 'SFP0': 1,
     'SFA1': 1, 'SFB1': 1, 'SFP1': 1,
     'SFA2': 1, 'SFB2': 1, 'SFP2': 1,
-    'BPM': 1, 'DCCT': 1, 'HScrap': 1, 'VScrap': 1, 'GSL15': 1,
-    'GSL07': 1, 'BPME': 1, 'BbBP': 1, 'HBbBS': 1, 'VBbBS': 1,
-    'HTuneS': 1, 'HTuneP': 1, 'VTuneS': 1, 'VTuneP': 1,
+    'BPM': 1, 'DCCT': 1, 'ScrapH': 1, 'ScrapV': 1, 'GSL15': 1,
+    'GSL07': 1, 'BPME': 1, 'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1,
+    'TuneShkrH': 1, 'TunePkupH': 1, 'TuneShkrV': 1, 'TunePkupV': 1,
     'FC': 1, 'FCQ': 1,
     'QS': 1, 'CH': 1,  'CV': 1,
     'SRFCav': 1, 'start': 1,
-    'InjDpK': 1, 'InjNLK': 1, 'HPing': 1, 'VPing': 1, }
+    'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1, }
 
 family_mapping = {
 
@@ -67,25 +67,25 @@ family_mapping = {
     'SFB2': 'sextupole',
     'SFP2': 'sextupole',
 
-    'InjNLK': 'pulsed_magnet',
-    'InjDpK': 'pulsed_magnet',
-    'HPing': 'pulsed_magnet',
-    'VPing': 'pulsed_magnet',
+    'InjNLKckr': 'pulsed_magnet',
+    'InjDpKckr': 'pulsed_magnet',
+    'PingH': 'pulsed_magnet',
+    'PingV': 'pulsed_magnet',
 
     'BPM': 'bpm',
     'DCCT': 'dcct_to_measure_beam_current',
-    'HScrap': 'horizontal_scraper',
-    'VScrap': 'vertical_scraper',
+    'ScrapH': 'horizontal_scraper',
+    'ScrapV': 'vertical_scraper',
     'GSL15': 'generic_stripline_(lambda/4)',
     'GSL07': 'generic_stripline_(lambda/8)',
     'BPME': 'extra_bpm',
-    'BbBP': 'bunch-by-bunch_pickup',
-    'HBbBS': 'horizontal_bunch-by-bunch_shaker',
-    'VBbBS': 'vertical_bunch-by-bunch_shaker',
-    'HTuneS': 'horizontal_tune_shaker',
-    'HTuneP': 'horizontal_tune_pickup',
-    'VTuneS': 'vertical_tune_shaker',
-    'VTuneP': 'vertical_tune_pickup',
+    'BbBPkup': 'bunch-by-bunch_pickup',
+    'BbBKckrH': 'horizontal_bunch-by-bunch_shaker',
+    'BbBKckrV': 'vertical_bunch-by-bunch_shaker',
+    'TuneShkrH': 'horizontal_tune_shaker',
+    'TunePkupH': 'horizontal_tune_pickup',
+    'TuneShkr': 'vertical_tune_shaker',
+    'TunePkupV': 'vertical_tune_pickup',
 
     'FC': 'fast_corrector',
     'FCQ': 'fast_corrector',
@@ -144,14 +144,14 @@ def families_rf():
 
 def families_pulsed_magnets():
     """Return pulsed magnet families."""
-    return ['InjDpK', 'InjNLK', 'HPing', 'VPing', ]
+    return ['InjDpKckr', 'InjNLKckr', 'PingH', 'PingV', ]
 
 
 def families_di():
     """Return diagnostics families."""
-    return ['BPM', 'DCCT', 'HScrap', 'VScrap', 'GSL15', 'GSL07',
-            'BPME', 'BbBP', 'HBbBS', 'VBbBS', 'HTuneS', 'HTuneP',
-            'VTuneS', 'VTuneP', ]
+    return ['BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
+            'BPME', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'TuneShkrH',
+            'TunePkupH', 'TuneShkrV', 'TunePkupV', ]
 
 
 def get_section_name_mapping(lattice):
@@ -306,8 +306,8 @@ def get_family_data(lattice):
     data['B1B2-1'] = sorted(data['B1']+data['B2'], key=get_idx)
     data['B1B2-2'] = sorted(data['B1']+data['B2'], key=get_idx)
 
-    # HPing (in the model the same as InjDpK)
-    data['HPing'] = sorted(data['InjDpK'], key=get_idx)
+    # PingH (in the model the same as InjDpKckr)
+    data['PingH'] = sorted(data['InjDpKckr'], key=get_idx)
 
     def f(x):
         return '{0:d}'.format(x)

@@ -6,7 +6,7 @@ _family_segmentation = {
     'B':20, 'CH': 1, 'CV': 1,
     'QF1A':1,'QF1B':1,'QD2':1,'QF2':1,'QF3':1,
     'QD4A':1,'QF4':1,'QD4B':1,
-    'InjSF':2, 'InjSG':2, 'EjeSF':2,'EjeSG':2,
+    'InjSeptF':2, 'InjSeptG':2, 'EjeSeptF':2,'EjeSeptG':2,
     'ICT':1,'FCT':1, 'Scrn':1,'BPM':1
 }
 
@@ -25,10 +25,10 @@ family_mapping = {
     'QF4' :    'quadrupole',
     'QD4B':    'quadrupole',
 
-    'InjSF':   'pulsed_magnet',
-    'InjSG':   'pulsed_magnet',
-    'EjeSF':   'pulsed_magnet',
-    'EjeSG':   'pulsed_magnet',
+    'InjSeptF':   'pulsed_magnet',
+    'InjSeptG':   'pulsed_magnet',
+    'EjeSeptF':   'pulsed_magnet',
+    'EjeSeptG':   'pulsed_magnet',
 
     'ICT':     'beam_current_monitor',
     'FCT':     'beam_current_monitor',
@@ -40,7 +40,7 @@ def families_dipoles():
     return ['B']
 
 def families_pulsed_magnets():
-    return ['InjSF','InjSG','EjeSF','EjeSG']
+    return ['InjSeptF','InjSeptG','EjeSeptF','EjeSeptG']
 
 def families_quadrupoles():
     return ['QF1A','QF1B','QD2','QF2','QF3','QD4A','QF4','QD4B']

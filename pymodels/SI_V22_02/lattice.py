@@ -122,9 +122,9 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     CV = sextupole('CV', 0.150, 0.0)
 
     # -- pulsed magnets --
-    InjDpK = sextupole('InjDpK', 0.400, S=0.0)  # injection kicker
-    InjNLK = sextupole('InjNLK', 0.450, S=0.0)  # pulsed multipole magnet
-    VPing = marker('VPing')  # Vertical Pinger
+    InjDpKckr = sextupole('InjDpKckr', 0.400, S=0.0)  # injection kicker
+    InjNLKckr = sextupole('InjNLKckr', 0.450, S=0.0)  # pulsed multipole magnet
+    PingV = marker('PingV')  # Vertical Pinger
 
     # -- fast correctors --
     FC = sextupole('FC', 0.100, S=0.0)
@@ -150,118 +150,150 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     # marker for the extremities of IDs in short straight sections
     MIDP = marker('id_endp')
     # end of injection septum
-    InjSF = marker('InjSF')
+    InjSeptF = marker('InjSeptF')
 
     # --- Diagnostic Components ---
     BPM = marker('BPM')
     DCCT = marker('DCCT')    # dcct to measure beam current
-    HScrap = marker('HScrap')  # horizontal scraper
-    VScrap = marker('VScrap')  # vertical scraper
+    ScrapH = marker('ScrapH')  # horizontal scraper
+    ScrapV = marker('ScrapV')  # vertical scraper
     GSL15 = marker('GSL15')   # Generic Stripline (lambda/4)
     GSL07 = marker('GSL07')   # Generic Stripline (lambda/8)
     BPME = marker('BPME')    # Extra BPM
-    BbBP = marker('BbBP')    # Bunch-by-Bunch Pickup
-    HBbBS = marker('HBbBS')   # Horizontal Bunch-by-Bunch Shaker
-    VBbBS = marker('VBbBS')   # Vertical Bunch-by-Bunch Shaker
-    HTuneS = marker('HTuneS')  # Horizontal Tune Shaker
-    HTuneP = marker('HTuneP')  # Horizontal Tune Pickup
-    VTuneS = marker('VTuneS')  # Vertical Tune Shaker
-    VTuneP = marker('VTuneP')  # Vertical Tune Pickup
+    BbBPkup = marker('BbBPkup')    # Bunch-by-Bunch Pickup
+    BbBKckrH = marker('BbBKckrH')   # Horizontal Bunch-by-Bunch Shaker
+    BbBKckrV = marker('BbBKckrV')   # Vertical Bunch-by-Bunch Shaker
+    TuneShkrH = marker('TuneShkrH')  # Horizontal Tune Shaker
+    TunePkupH = marker('TunePkupH')  # Horizontal Tune Pickup
+    TuneShkrV = marker('TuneShkrV')  # Vertical Tune Shaker
+    TunePkupV = marker('TunePkupV')  # Vertical Tune Pickup
 
     # -- transport lines --
-    M1A = [GIR, L134, GIR, QDA, L150, SDA0, L066, FC, L074, QFA, L150, SFA0,
-           L135, BPM, GIR]  # high beta xxM1 girder (with fasc corrector)
-    M1B = [GIR, L134, GIR, QDB1, L150, SDB0, L240, QFB, L150, SFB0, L041, FC,
-           L044, QDB2, L140, BPM, GIR]  # low beta xxM1 girder
-    M1P = [GIR, L134, GIR, QDP1, L150, SDP0, L240, QFP, L150, SFP0, L041, FC,
-           L044, QDP2, L140, BPM, GIR]  # low beta xxM1 girder
+    M1A = [
+        GIR, L134, GIR, QDA, L150, SDA0, L066, FC, L074, QFA, L150, SFA0,
+        L135, BPM, GIR]  # high beta xxM1 girder (with fasc corrector)
+    M1B = [
+        GIR, L134, GIR, QDB1, L150, SDB0, L240, QFB, L150, SFB0, L041, FC,
+        L044, QDB2, L140, BPM, GIR]  # low beta xxM1 girder
+    M1P = [
+        GIR, L134, GIR, QDP1, L150, SDP0, L240, QFP, L150, SFP0, L041, FC,
+        L044, QDP2, L140, BPM, GIR]  # low beta xxM1 girder
     M2A = M1A[::-1]  # high beta xxM2 girder (with fast correctors)
     M2B = M1B[::-1]  # low beta xxM2 girder
     M2P = M1P[::-1]  # low beta xxM2 girder
 
-    # low beta xxM1 girder for straight section 12 (with BbBP)
-    M1B_BbBP = [GIR, L134, GIR, QDB1, L150, SDB0, L120, BbBP, L120, QFB, L150,
-                SFB0, L041, FC, L044, QDB2, L140, BPM, GIR]
+    # low beta xxM1 girder for straight section 12 (with BbBPkup)
+    M1B_BbBPkup = [
+        GIR, L134, GIR, QDB1, L150, SDB0, L120, BbBPkup, L120,
+        QFB, L150, SFB0, L041, FC, L044, QDB2, L140, BPM, GIR]
 
-    IDA = [L500, LIA, L500, MIDA, L500, L500, MIA, L500, L500, MIDA, L500,
-           LIA, L500]  # high beta ID straight section
-    IDA_INJ = [L500, HTuneS, LIA, L419, InjSF, L081, L500, L500, END, START,
-               MIA, LKK, InjDpK, LPMU, HScrap, L100, VScrap, L100, InjNLK,
-               LPMD]  # high beta INJ straight section and Scrapers
-    IDA_HBbBS = [L500, HBbBS, LIA, L500, MIDA, L500, L500, MIA, L500, L500,
-                 MIDA, L500, LIA, L500]  # high beta ID straight section
-    IDA_HTuneP = [L500, HTuneP, LIA, L500, MIDA, L500, L500, MIA, L500, L500,
-                  MIDA, L500, LIA, L500]  # high beta ID straight section
+    IDA = [
+        L500, LIA, L500, MIDA, L500, L500, MIA, L500, L500, MIDA, L500,
+        LIA, L500]  # high beta ID straight section
+    IDA_INJ = [
+        L500, TuneShkrH, LIA, L419, InjSeptF, L081, L500, L500, END, START,
+        MIA, LKK, InjDpKckr, LPMU, ScrapH, L100, ScrapV, L100, InjNLKckr,
+        LPMD]  # high beta INJ straight section and Scrapers
+    IDA_BbBKckrH = [
+        L500, BbBKckrH, LIA, L500, MIDA, L500, L500, MIA, L500, L500,
+        MIDA, L500, LIA, L500]  # high beta ID straight section
+    IDA_TunePkupH = [
+        L500, TunePkupH, LIA, L500, MIDA, L500, L500, MIA, L500, L500,
+        MIDA, L500, LIA, L500]  # high beta ID straight section
 
-    IDB = [L500, LIB, L500, MIDB, L500, L500, MIB, L500, L500, MIDB, L500,
-           LIB, L500]  # low beta ID straight section
-    IDB_GSL07 = [L500, GSL07, LIB, L500, MIDB, L500, L500, MIB, L500, L500,
-                 MIDB, L500, LIB, L500]  # low beta ID straight section
+    IDB = [
+        L500, LIB, L500, MIDB, L500, L500, MIB, L500, L500, MIDB, L500,
+        LIB, L500]  # low beta ID straight section
+    IDB_GSL07 = [
+        L500, GSL07, LIB, L500, MIDB, L500, L500, MIB, L500, L500,
+        MIDB, L500, LIB, L500]  # low beta ID straight section
 
-    IDP = [L500, LIP, L500, MIDP, L500, L500, MIP, L500, L500, MIDP, L500,
-           LIP, L500]  # low beta ID straight section
-    IDP_CAV = [L500, LIP, L500, L500, L500, MIP, RFC, L500, L500, L500, LIP,
-               L500]  # low beta RF cavity straight section
-    IDP_GSL15 = [L500, GSL15, LIP, L500, MIDP, L500, L500, MIP, L500, L500,
-                 MIDP, L500, LIP, L500]  # low beta ID straight section
+    IDP = [
+        L500, LIP, L500, MIDP, L500, L500, MIP, L500, L500, MIDP, L500,
+        LIP, L500]  # low beta ID straight section
+    IDP_CAV = [
+        L500, LIP, L500, L500, L500, MIP, RFC, L500, L500, L500, LIP,
+        L500]  # low beta RF cavity straight section
+    IDP_GSL15 = [
+        L500, GSL15, LIP, L500, MIDP, L500, L500, MIP, L500, L500,
+        MIDP, L500, LIP, L500]  # low beta ID straight section
 
     # arc sector in between B1-B2 (high beta odd-numbered straight sections)
-    C1A = [GIR, L474, GIR, SDA1, L170, Q1, L135, BPM, L125, SFA1, L230, Q2,
-           L170, SDA2, GIR, L205, GIR, BPM, L011]
+    C1A = [
+        GIR, L474, GIR, SDA1, L170, Q1, L135, BPM, L125, SFA1, L230, Q2,
+        L170, SDA2, GIR, L205, GIR, BPM, L011]
     # arc sector in between B1-B2 (low beta even-numbered straight sections)
-    C1B = [GIR, L474, GIR, SDB1, L170, Q1, L135, BPM, L125, SFB1, L230, Q2,
-           L170, SDB2, GIR, L205, GIR, BPM, L011]
+    C1B = [
+        GIR, L474, GIR, SDB1, L170, Q1, L135, BPM, L125, SFB1, L230, Q2,
+        L170, SDB2, GIR, L205, GIR, BPM, L011]
     # arc sector in between B1-B2 (low beta even-numbered straight sections)
-    C1P = [GIR, L474, GIR, SDP1, L170, Q1, L135, BPM, L125, SFP1, L230, Q2,
-           L170, SDP2, GIR, L205, GIR, BPM, L011]
+    C1P = [
+        GIR, L474, GIR, SDP1, L170, Q1, L135, BPM, L125, SFP1, L230, Q2,
+        L170, SDP2, GIR, L205, GIR, BPM, L011]
     # arc sector in between B2-BC (high beta odd-numbered straight sections)
-    C2A = [GIR, L336, GIR, SDA3, L170, Q3, L230, SFA2, L260, Q4, L200, CV,
-           GIR, L192, GIR, FCQ, L110, BPM, L075]
+    C2A = [
+        GIR, L336, GIR, SDA3, L170, Q3, L230, SFA2, L260, Q4, L200, CV,
+        GIR, L192, GIR, FCQ, L110, BPM, L075]
     # arc sector in between B2-BC (low beta even-numbered straight sections)
-    C2B = [GIR, L336, GIR, SDB3, L170, Q3, L230, SFB2, L260, Q4, L200, CV,
-           GIR, L192, GIR, FCQ, L110, BPM, L075]
+    C2B = [
+        GIR, L336, GIR, SDB3, L170, Q3, L230, SFB2, L260, Q4, L200, CV,
+        GIR, L192, GIR, FCQ, L110, BPM, L075]
     # arc sector in between B2-BC (low beta even-numbered straight sections)
-    C2P = [GIR, L336, GIR, SDP3, L170, Q3, L230, SFP2, L260, Q4, L200, CV,
-           GIR, L192, GIR, FCQ, L110, BPM, L075]
+    C2P = [
+        GIR, L336, GIR, SDP3, L170, Q3, L230, SFP2, L260, Q4, L200, CV,
+        GIR, L192, GIR, FCQ, L110, BPM, L075]
     # arc sector in between BC-B2 (high beta odd-numbered straight sections)
-    C3A = [GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFA2, L048, FC, L082,
-           Q3, L170, SDA3, GIR, L325, GIR, BPM, L011]
+    C3A = [
+        GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFA2, L048, FC, L082,
+        Q3, L170, SDA3, GIR, L325, GIR, BPM, L011]
     # arc sector in between BC-B2 (low beta even-numbered straight sections)
-    C3B = [GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFB2, L048, FC, L082,
-           Q3, L170, SDB3, GIR, L325, GIR, BPM, L011]
+    C3B = [
+        GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFB2, L048, FC, L082,
+        Q3, L170, SDB3, GIR, L325, GIR, BPM, L011]
     # arc sector in between BC-B2 (low beta even-numbered straight sections)
-    C3P = [GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFP2, L048, FC, L082,
-           Q3, L170, SDP3, GIR, L325, GIR, BPM, L011]
+    C3P = [
+        GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFP2, L048, FC, L082,
+        Q3, L170, SDP3, GIR, L325, GIR, BPM, L011]
     # arc sector in between B2-B1 (high beta odd-numbered straight sections)
-    C4A = [GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135, Q1,
-           L170, SDA1, GIR, L474, GIR]
+    C4A = [
+        GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135, Q1,
+        L170, SDA1, GIR, L474, GIR]
     # arc sector in between B2-B1 (high beta odd-numbered straight sections)
-    C4A_VBbBS = [GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135,
-                 Q1, L170, SDA1, L237, VBbBS, GIR, L237, GIR]
+    C4A_BbBKckrV = [
+        GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135,
+        Q1, L170, SDA1, L237, BbBKckrV, GIR, L237, GIR]
     # arc sector in between B2-B1 (high beta odd-numbered straight sections)
-    C4A_BPME = [GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135,
-                Q1, L170, SDA1, L237, BPME, GIR, L237, GIR]
+    C4A_BPME = [
+        GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135,
+        Q1, L170, SDA1, L237, BPME, GIR, L237, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
-    C4B = [GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1,
-           L170, SDB1, GIR, L474, GIR]
+    C4B = [
+        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1,
+        L170, SDB1, GIR, L474, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
-    C4B_DCCT = [GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135,
-                Q1, L170, SDB1, L237, DCCT, GIR, L237, GIR]
+    C4B_DCCT = [
+        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135,
+        Q1, L170, SDB1, L237, DCCT, GIR, L237, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
-    C4B_VTuneP = [GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135,
-                  Q1, L170, SDB1, L237, VTuneP, GIR, L237, GIR]
+    C4B_TunePkupV = [
+        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135,
+        Q1, L170, SDB1, L237, TunePkupV, GIR, L237, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
-    C4B_VPing = [GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135,
-                 Q1, L170, SDB1, L237, VPing, GIR, L237, GIR]
+    C4B_PingV = [
+        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135,
+        Q1, L170, SDB1, L237, PingV, GIR, L237, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
-    C4P = [GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1,
-           L170, SDP1, GIR, L474, GIR]
+    C4P = [
+        GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1,
+        L170, SDP1, GIR, L474, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
-    C4P_DCCT = [GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135,
-                Q1, L170, SDP1, L237, DCCT, GIR, L237, GIR]
+    C4P_DCCT = [
+        GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135,
+        Q1, L170, SDP1, L237, DCCT, GIR, L237, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
-    C4P_VTuneS = [GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135,
-                  Q1, L170, SDP1, L237, VTuneS, GIR, L237, GIR]
+    C4P_TuneShkrV = [
+        GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135,
+        Q1, L170, SDP1, L237, TuneShkrV, GIR, L237, GIR]
 
     # -- girders --
 
@@ -278,11 +310,11 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     SS_S10 = IDB
     SS_S11 = IDP
     SS_S12 = IDB
-    SS_S13 = IDA_HBbBS
+    SS_S13 = IDA_BbBKckrH
     SS_S14 = IDB
     SS_S15 = IDP
     SS_S16 = IDB
-    SS_S17 = IDA_HTuneP
+    SS_S17 = IDA_TunePkupH
     SS_S18 = IDB
     SS_S19 = IDP_GSL15
     SS_S20 = IDB_GSL07
@@ -310,7 +342,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     M2_S10 = M2B
     M1_S11 = M1P
     M2_S11 = M2P
-    M1_S12 = M1B_BbBP
+    M1_S12 = M1B_BbBPkup
     M2_S12 = M2B
     M1_S13 = M1A
     M2_S13 = M2A
@@ -377,7 +409,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     C1_S12 = C1B
     C2_S12 = C2B
     C3_S12 = C3A
-    C4_S12 = C4A_VBbBS
+    C4_S12 = C4A_BbBKckrV
     C1_S13 = C1A
     C2_S13 = C2A
     C3_S13 = C3B
@@ -397,15 +429,15 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     C1_S17 = C1A
     C2_S17 = C2A
     C3_S17 = C3B
-    C4_S17 = C4B_VTuneP
+    C4_S17 = C4B_TunePkupV
     C1_S18 = C1B
     C2_S18 = C2B
     C3_S18 = C3P
-    C4_S18 = C4P_VTuneS
+    C4_S18 = C4P_TuneShkrV
     C1_S19 = C1P
     C2_S19 = C2P
     C3_S19 = C3B
-    C4_S19 = C4B_VPing
+    C4_S19 = C4B_PingV
     C1_S20 = C1B
     C2_S20 = C2B
     C3_S20 = C3A
@@ -501,7 +533,7 @@ def set_num_integ_steps(the_ring):
             nr_steps = int(_math.ceil(the_ring[i].length/len_sexts))
             the_ring[i].nr_steps = nr_steps
         elif the_ring[i].polynom_b[1] or the_ring[i].fam_name in \
-                ['FC', 'FCQ', 'InjDpK', 'InjNLK']:
+                ['FC', 'FCQ', 'InjDpKckr', 'InjNLKckr']:
             nr_steps = int(_math.ceil(the_ring[i].length/len_quads))
             the_ring[i].nr_steps = nr_steps
 
@@ -566,8 +598,10 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     the_ring = _pyaccel.lattice.shift(the_ring, len(the_ring)-bpm[0])
 
     # Set injection vacuum chamber
-    sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjSF')[-1]
-    kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjDpK')[0]
+    sept_in = _pyaccel.lattice.find_indices(
+                                    the_ring, 'fam_name', 'InjSeptF')[-1]
+    kick_in = _pyaccel.lattice.find_indices(
+                                    the_ring, 'fam_name', 'InjDpKckr')[0]
     inj_list = list(range(sept_in, len(the_ring))) + list(range(0, kick_in+1))
     for i in inj_list:
         e = the_ring[i]

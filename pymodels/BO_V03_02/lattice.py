@@ -77,18 +77,18 @@ def create_lattice(**kwargs):
     FIM  = marker('end'  )     # end of the model
     GIR  = marker('girder')
 
-    SIN  = marker('InjS')
-    SEX  = marker('EjeSF')
+    SIN  = marker('InjSept')
+    SEX  = marker('EjeSeptF')
 
     DCCT = marker('DCCT')
     BPM  = marker('BPM')
     Scrn = marker('Scrn')
-    TuneP= marker('TuneP')
-    TuneS= marker('TuneS')
+    TunePkup= marker('TunePkup')
+    TuneShkr= marker('TuneShkr')
     GSL  = marker('GSL')
 
-    KIN  = quadrupole('InjK', 0.40000, 0.0)
-    KEX  = quadrupole('EjeK', 0.40000, 0.0)
+    KIN  = quadrupole('InjKckr', 0.40000, 0.0)
+    KEX  = quadrupole('EjeKckr', 0.40000, 0.0)
     CH   = sextupole ('CH',   0.150, 0.0)
     CV   = sextupole ('CV',   0.150, 0.0)
 
@@ -118,9 +118,9 @@ def create_lattice(**kwargs):
     DS_KE      = [GIR, L03860, KEX, L13460,                    L17960, GIR, QD, D02500]
     DS_CH      = [L01610, CH, GIR, L18210,                     D21460, GIR]
     DS_KI      = [GIR, L03860, KIN, L02500, Scrn, L10960,      L18960, Scrn, D02500, GIR]
-    DS_QS_TuS  = [L01360, QS, GIR, L14460, TuneS, L04500,      L17960, GIR, QD, D02500]
+    DS_QS_TuS  = [L01360, QS, GIR, L14460, TuneShkr, L04500,   L17960, GIR, QD, D02500]
     DS_DCCT    = [GIR, L21320,  DCCT,                          D21460, GIR]
-    DS_QD_TuP  = [GIR, L15120, TuneP, L06200,                  L17960, GIR, QD, D02500]
+    DS_QD_TuP  = [GIR, L15120, TunePkup, L06200,               L17960, GIR, QD, D02500]
 
 
     US_01 = US_SI;        DS_01 = DS_KI;        S01 = [US_01, QF0,DS_01, B];
@@ -284,12 +284,12 @@ def set_vacuum_chamber(the_ring):
     other_vchamber      = [-0.018,   0.018,  -0.018,  0.018]
     extraction_vchamber = [-0.018,   0.026,  -0.018,  0.018]
 
-    sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjS')[0]
-    kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjK')[0]
+    sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjSept')[0]
+    kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjKckr')[0]
 
     b = _np.array(_pyaccel.lattice.find_indices(the_ring, 'fam_name', 'B'))
-    sept_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'EjeSF')[0]
-    kick_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'EjeK')[0]
+    sept_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'EjeSeptF')[0]
+    kick_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'EjeKckr')[0]
     b_ex = b[b > kick_ex]; b_ex = b_ex[b_ex < sept_ex]
 
     for i in range(len(the_ring)):
