@@ -5,9 +5,9 @@ import pyaccel as _pyaccel
 _family_segmentation={
     'B-1'  : 20,'B-2'  : 20,'B'  : 20, 'QF' : 2, 'QD' : 1, 'SD' : 1, 'QS':1,
     'SF' : 1, 'CH' : 1, 'CV' : 1,
-    'BPM' : 1, 'Scrn':1, 'DCCT':1,'TuneP':1,'TuneS':1,'GSL':1,
+    'BPM' : 1, 'Scrn':1, 'DCCT':1,'TunePkup':1,'TuneShkr':1,'GSL':1,
     'P5Cav' : 1, 'start': 1, 'BEND': 14,
-    'InjK': 1, 'EjeK': 1
+    'InjKckr': 1, 'EjeKckr': 1
 }
 
 family_mapping = {
@@ -22,14 +22,14 @@ family_mapping = {
     'SD': 'sextupole',
     'SF': 'sextupole',
 
-    'InjK': 'pulsed_magnet',
-    'EjeK': 'pulsed_magnet',
+    'InjKckr': 'pulsed_magnet',
+    'EjeKckr': 'pulsed_magnet',
 
     'BPM': 'bpm',
     'DCCT':    'beam_current_monitor',
     'Scrn':    'beam_profile_monitor',
-    'TuneP':   'tune_pickup',
-    'TuneS':   'tune_shaker',
+    'TunePkup':   'tune_pickup',
+    'TuneShkr':   'tune_shaker',
 
     'CH': 'horizontal_corrector',
     'CV': 'vertical_corrector',
@@ -59,10 +59,10 @@ def families_rf():
     return ['P5Cav']
 
 def families_pulsed_magnets():
-    return ['InjK', 'EjeK']
+    return ['InjKckr', 'EjeKckr']
 
 def families_di():
-    return ['DCCT','BPM','Scrn','TuneP','TuneS','GSL']
+    return ['DCCT','BPM','Scrn','TunePkup','TuneShkr','GSL']
 
 def get_section_name_mapping(lattice):
         lat = lattice[:]

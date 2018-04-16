@@ -61,8 +61,8 @@ def create_lattice(optics_mode=default_optics_mode):
     fim = marker('end')
 
     # --- slits ---
-    hslit = marker('HSlit')
-    vslit = marker('VSlit')
+    hslit = marker('SlitH')
+    vslit = marker('SlitV')
 
     # --- beam screens ---
     scrn = marker('Scrn')
@@ -94,7 +94,7 @@ def create_lattice(optics_mode=default_optics_mode):
     bn = _segmented_models.dipole(sign=-1)
 
     # -- sep --
-    dip_nam = 'InjS'
+    dip_nam = 'InjSept'
     dip_len = 0.50
     dip_ang = 21.75 * deg_2_rad
     dip_K = 0.0
@@ -105,8 +105,8 @@ def create_lattice(optics_mode=default_optics_mode):
     septins = rbend_sirius(dip_nam, dip_len/2, dip_ang/2,
                            0*dip_ang, 1*dip_ang/2,
                            0, 0, 0, [0, 0, 0], [0, dip_K, dip_S])
-    bseptin = marker('bInjS')
-    eseptin = marker('eInjS')
+    bseptin = marker('bInjSept')
+    eseptin = marker('eInjSept')
     septin = [bseptin, septine, septins, eseptin]
 
     # --- lines ---
@@ -293,8 +293,8 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = +0.018
 
     # -- bo injection septum --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjS')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjS')[0]
+    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSept')[0]
+    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSept')[0]
     for i in range(beg, end+1):
         the_line[i].hmin = -0.0110
         the_line[i].hmax = +0.0075
