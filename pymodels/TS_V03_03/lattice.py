@@ -98,56 +98,56 @@ def create_lattice(optics_mode = default_optics_mode):
             h1, h2, h3, h4, h5, h6, h7, h8, h9, h10]
 
     # -- Thin Septum --
-    dip_nam =  'EjeSF';
+    dip_nam =  'EjeSeptF';
     dip_len =  0.5773;
     dip_ang =  -3.6 * d2r;
     dip_K   =  0.0;
     dip_S   =  0.00;
     h1      = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang,   0,0,0, [0,0,0], [0,dip_K,dip_S])
     h2      = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang/2, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
-    bejesf = marker('bEjeSF') # marker at the beginning of thin septum
-    mejesf = marker('mEjeSF') # marker at the center of thin septum
-    eejesf = marker('eEjeSF') # marker at the end of thin septum
+    bejesf = marker('bEjeSeptF') # marker at the beginning of thin septum
+    mejesf = marker('mEjeSeptF') # marker at the center of thin septum
+    eejesf = marker('eEjeSeptF') # marker at the end of thin septum
     ejesf = [bejesf, h1, mejesf, h2, eejesf];
 
 
     # -- bo thick ejection septum --
-    dip_nam  =  'EjeSG';
+    dip_nam  =  'EjeSeptG';
     dip_len  =  0.5773;
     dip_ang  =  -3.6 * d2r;
     dip_K    =  0.0;
     dip_S    =  0.00;
     h1       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang, 0,0,0, [0,0,0], [0,dip_K,dip_S])
     h2       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
-    bejesg = marker('bEjeSG') # marker at the beginning of thick septum
-    mejesg = marker('mEjeSG') # marker at the center of thick septum
-    eejesg = marker('eEjeSG') # marker at the end of thick septum
+    bejesg = marker('bEjeSeptG') # marker at the beginning of thick septum
+    mejesg = marker('mEjeSeptG') # marker at the center of thick septum
+    eejesg = marker('eEjeSeptG') # marker at the end of thick septum
     ejesg = [bejesg, h1, mejesg, h2, eejesg];
 
     # -- si thick injection septum (2 of these are used) --
-    dip_nam  =  'InjSG';
+    dip_nam  =  'InjSeptG';
     dip_len  =  0.5773;
     dip_ang  =  +3.6 * d2r;
     dip_K    =  0.0;
     dip_S    =  0.00;
     h1       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang, 0,0,0, [0,0,0], [0,dip_K,dip_S])
     h2       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
-    binjsg = marker('bInjSG') # marker at the beginning of thick septum
-    minjsg = marker('mInjSG') # marker at the center of thick septum
-    einjsg = marker('eInjSG') # marker at the end of thick septum
+    binjsg = marker('bInjSeptG') # marker at the beginning of thick septum
+    minjsg = marker('mInjSeptG') # marker at the center of thick septum
+    einjsg = marker('eInjSeptG') # marker at the end of thick septum
     injsg = [binjsg, h1, minjsg, h2, einjsg];
 
     # -- si thin injection septum --
-    dip_nam  =  'InjSF';
+    dip_nam  =  'InjSeptF';
     dip_len  =  0.5773;
     dip_ang  =  +3.118 * d2r;
     dip_K    =  0.0;
     dip_S    =  0.00;
     h1       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang, 0,0,0, [0,0,0], [0,dip_K,dip_S])
     h2       = rbend_sirius(dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2, 0,0,0, [0,0,0], [0,dip_K,dip_S])
-    binjsf = marker('bInjSF') # marker at the beginning of thin septum
-    minjsf = marker('mInjSF') # marker at the center of thin septum
-    einjsf = marker('eInjSF') # marker at the end of thin septum
+    binjsf = marker('bInjSeptF') # marker at the beginning of thin septum
+    minjsf = marker('mInjSeptF') # marker at the center of thin septum
+    einjsf = marker('eInjSeptF') # marker at the end of thin septum
     injsf = [binjsf, h1, minjsf, h2, einjsf];
 
 
@@ -239,8 +239,8 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = +0.012
 
     # -- bo ejection septa --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bEjeSF')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eEjeSG')[0]
+    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bEjeSeptF')[0]
+    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eEjeSeptG')[0]
     for i in range(beg,end+1):
         the_line[i].hmin = -0.0150
         the_line[i].hmax = +0.0150
@@ -248,8 +248,8 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = +0.0040
 
     # -- si thick injection septum --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSG')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSG')[0]
+    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSeptG')[0]
+    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSeptG')[0]
     for i in range(beg,end+1):
         the_line[i].hmin = -0.0045
         the_line[i].hmax = +0.0045
@@ -257,8 +257,8 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = +0.0035
 
     # -- si thin injection septum --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSF')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSF')[0]
+    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSeptF')[0]
+    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSeptF')[0]
     for i in range(beg,end+1):
         the_line[i].hmin = -0.0150
         the_line[i].hmax = +0.0150

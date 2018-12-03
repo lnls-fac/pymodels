@@ -6,8 +6,8 @@ _family_segmentation = {
     'B': 16, 'CH': 1, 'CV': 1,
     'QD1': 1, 'QF1': 1, 'QD2A': 1, 'QF2A': 1, 'QF2B': 1, 'QD2B': 1,
     'QF3': 1, 'QD3': 1, 'QF4': 1, 'QD4': 1,
-    'InjS': 2,
-    'ICT': 1, 'HSlit': 1, 'VSlit': 1, 'Scrn': 1, 'BPM': 1
+    'InjSept': 2,
+    'ICT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
 }
 
 family_mapping = {
@@ -24,10 +24,10 @@ family_mapping = {
     'QD3':     'quadrupole',
     'QF4':     'quadrupole',
     'QD4':     'quadrupole',
-    'InjS':    'pulsed_magnet',
+    'InjSept':    'pulsed_magnet',
     'ICT':     'beam_current_monitor',
-    'HSlit':   'horizontal_slit',
-    'VSlit':   'vertical_slit',
+    'SlitH':   'horizontal_slit',
+    'SlitV':   'vertical_slit',
     'Scrn':    'beam_profile_monitor',
     'BPM':     'bpm'
 }
@@ -40,7 +40,7 @@ def families_dipoles():
 
 def families_pulsed_magnets():
     """Return pulsed magnet families."""
-    return ['InjS']
+    return ['InjSept']
 
 
 def families_quadrupoles():
@@ -76,7 +76,7 @@ def families_rf():
 
 def families_di():
     """Return pulsed magnet families."""
-    return ['ICT', 'BPM', 'Scrn', 'HSlit', 'VSlit']
+    return ['ICT', 'BPM', 'Scrn', 'SlitH', 'SlitV']
 
 
 def get_section_name_mapping(lattice):
