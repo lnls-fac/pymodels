@@ -4,6 +4,7 @@ In this module the lattice of the corresponding accelerator is defined.
 """
 
 import math as _math
+import lnls as _lnls
 import pyaccel as _pyaccel
 import mathphys as _mp
 from . import segmented_models as _segmented_models
@@ -455,7 +456,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
 
     anel = [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10,
             S11, S12, S13, S14, S15, S16, S17, S18, S19, S20]
-    anel = _mp.utils.flatten(anel)
+    anel = _lnls.utils.flatten(anel)
 
     the_ring = _pyaccel.lattice.build(anel)
 
