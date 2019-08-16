@@ -8,7 +8,7 @@ _family_segmentation = {
     'QFA': 1, 'QDA': 1,
     'QFB': 1, 'QDB1': 1, 'QDB2': 1,
     'QFP': 1, 'QDP1': 1, 'QDP2': 1,
-    'Q1': 1, 'Q2': 1, 'Q3': 1,  'Q4': 1,
+    'Q1': 1, 'Q2': 1, 'Q3': 1, 'Q4': 1,
     'SDA0': 1, 'SDB0': 1, 'SDP0': 1,
     'SDA1': 1, 'SDB1': 1, 'SDP1': 1,
     'SDA2': 1, 'SDB2': 1, 'SDP2': 1,
@@ -17,10 +17,10 @@ _family_segmentation = {
     'SFA1': 1, 'SFB1': 1, 'SFP1': 1,
     'SFA2': 1, 'SFB2': 1, 'SFP2': 1,
     'BPM': 1, 'DCCT': 1, 'ScrapH': 1, 'ScrapV': 1, 'GSL15': 1,
-    'GSL07': 1, 'BPME': 1, 'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1,
-    'TuneShkrH': 1, 'TunePkupH': 1, 'TuneShkrV': 1, 'TunePkupV': 1,
+    'GSL07': 1, 'GBPM': 1, 'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1,
+    'BbBKckrL': 1, 'TuneShkrH': 1, 'TuneShkrV': 1, 'TunePkup': 1,
     'FC': 1, 'FCQ': 1,
-    'QS': 1, 'CH': 1,  'CV': 1,
+    'QS': 1, 'CH': 1, 'CV': 1,
     'SRFCav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1, }
 
@@ -78,17 +78,17 @@ family_mapping = {
     'ScrapV': 'vertical_scraper',
     'GSL15': 'generic_stripline_(lambda/4)',
     'GSL07': 'generic_stripline_(lambda/8)',
-    'BPME': 'extra_bpm',
+    'GBPM': 'general_bpm',
     'BbBPkup': 'bunch-by-bunch_pickup',
     'BbBKckrH': 'horizontal_bunch-by-bunch_shaker',
     'BbBKckrV': 'vertical_bunch-by-bunch_shaker',
+    'BbBKckrL': 'longitudinal_bunch-by-bunch_shaker',
     'TuneShkrH': 'horizontal_tune_shaker',
-    'TunePkupH': 'horizontal_tune_pickup',
-    'TuneShkr': 'vertical_tune_shaker',
-    'TunePkupV': 'vertical_tune_pickup',
+    'TuneShkrV': 'vertical_tune_shaker',
+    'TunePkup': 'tune_pickup',
 
-    'FC': 'fast_corrector',
-    'FCQ': 'fast_corrector',
+    'FC1': 'fast_corrector',
+    'FC2': 'fast_corrector',
     'FCH': 'fast_horizontal_corrector',
     'FCV': 'fast_vertical_corrector',
 
@@ -150,8 +150,8 @@ def families_pulsed_magnets():
 def families_di():
     """Return diagnostics families."""
     return ['BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
-            'BPME', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'TuneShkrH',
-            'TunePkupH', 'TuneShkrV', 'TunePkupV', ]
+            'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckL'
+            'TuneShkrH', 'TuneShkrV', 'TunePkup']
 
 
 def get_section_name_mapping(lattice):
@@ -265,14 +265,14 @@ def get_family_data(lattice):
     data['CV'] = sorted(idx, key=get_idx)
 
     # fch - fast horizontal correctors
-    data['FCH'] = sorted(data['FC']+data['FCQ'], key=get_idx)
+    data['FCH'] = sorted(data['FC1']+data['FC2'], key=get_idx)
 
     # fcv - fast vertical correctors
-    data['FCV'] = sorted(data['FC']+data['FCQ'], key=get_idx)
+    data['FCV'] = sorted(data['FC1']+data['FC2'], key=get_idx)
 
     # qs - skew quad correctors
     idx = []
-    fams = ['SFA0', 'SDB0', 'SDP0', 'FCQ', 'SDA2', 'SDB2',
+    fams = ['SFA0', 'SDB0', 'SDP0', 'FC2', 'SDA2', 'SDB2',
             'SDP2', 'SDA3', 'SDB3', 'SDP3']
     for fam in fams:
         if fam in {'SDA2', 'SDB2', 'SDP2'}:
