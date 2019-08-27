@@ -338,7 +338,6 @@ def set_rf_frequency(the_ring):
     rev_frequency = velocity / circumference
     rf_frequency  = harmonic_number * rev_frequency
     idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'P5Cav')
-    print(rf_frequency)
     for i in idx:
         the_ring[i].frequency = rf_frequency
 
