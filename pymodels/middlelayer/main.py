@@ -88,14 +88,16 @@ class Element(ModelElement):
         self._norm = _NormFact.create(name)
         prop_sp = 'Current-SP'
         prop_rb = 'Current-RB'
+        dis = 'PS'
         if self._type == 'linac_quadrupole':
             prop_sp = 'seti'
             prop_rb = 'rdi'
         elif self._type == 'pulsed_magnet':
+            dis = 'PM'
             prop_sp = 'Voltage-SP'
             prop_rb = 'Voltage-RB'
-        self._sp = _PV(self._name.substitute(dis='PS', propty=prop_sp))
-        self._rb = _PV(self._name.substitute(dis='PS', propty=prop_rb))
+        self._sp = _PV(self._name.substitute(dis=dis, propty=prop_sp))
+        self._rb = _PV(self._name.substitute(dis=dis, propty=prop_rb))
 
     @property
     def connected(self):
@@ -125,14 +127,16 @@ class Family():
         self._norm = _NormFact.create(name)
         prop_sp = 'Current-SP'
         prop_rb = 'Current-RB'
+        dis = 'PS'
         if self._type == 'linac_quadrupole':
             prop_sp = 'seti'
             prop_rb = 'rdi'
         elif self._type == 'pulsed_magnet':
+            dis = 'PM'
             prop_sp = 'Voltage-SP'
             prop_rb = 'Voltage-RB'
-        self._sp = _PV(self._name.substitute(dis='PS', propty=prop_sp))
-        self._rb = _PV(self._name.substitute(dis='PS', propty=prop_rb))
+        self._sp = _PV(self._name.substitute(dis=dis, propty=prop_sp))
+        self._rb = _PV(self._name.substitute(dis=dis, propty=prop_rb))
 
     @property
     def model_nrsegs(self):
