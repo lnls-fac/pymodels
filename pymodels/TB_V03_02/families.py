@@ -18,6 +18,9 @@ family_mapping = {
     'CHV':     'general_corrector',
     'CH':      'horizontal_corrector',
     'CV':      'vertical_corrector',
+    'QF2L':    'linac_quadrupole',
+    'QD2L':    'linac_quadrupole',
+    'QF3L':    'linac_quadrupole',
     'QD1':     'quadrupole',
     'QF1':     'quadrupole',
     'QD2A':    'quadrupole',
@@ -28,7 +31,7 @@ family_mapping = {
     'QD3':     'quadrupole',
     'QF4':     'quadrupole',
     'QD4':     'quadrupole',
-    'InjSept':    'pulsed_magnet',
+    'InjSept': 'pulsed_magnet',
     'ICT':     'beam_current_monitor',
     'FCT':     'beam_current_monitor',
     'SlitH':   'horizontal_slit',
@@ -57,12 +60,12 @@ def families_quadrupoles():
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['CHV']
+    return ['CHV', ]
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['CHV']
+    return ['CHV', ]
 
 
 def families_sextupoles():
@@ -132,6 +135,9 @@ def get_family_data(lattice):
             continue
         # create a list of lists for the indexes
         data[key] = [idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)]
+
+    data['CH'] = data['CHV']
+    data['CV'] = data['CHV']
 
     def f(x):
         return '{0:d}'.format(x)
