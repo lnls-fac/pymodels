@@ -50,6 +50,8 @@ class ModelElement():
     def model_strength(self):
         if self._type.endswith('quadrupole'):
             return self.model_KL
+        if self._type.endswith('sextupole'):
+            return self.model_SL
         elif self._type.endswith('horizontal_corrector'):
             return self.model_hkick
         elif self._type.endswith('vertical_corrector'):
@@ -63,7 +65,7 @@ class ModelElement():
             self.model_hkick = value
         elif self._type.endswith('vertical_corrector'):
             self.model_vkick = value
-        elif self._type.endswith('quadrupole'):
+        elif self._type.endswith(('quadrupole', 'sextupole')):
             inival = self.model_strength
             alpha = value/inival
             for idx in self._indcs:
@@ -172,6 +174,8 @@ class Family():
     def model_strength(self):
         if self._type.endswith('quadrupole'):
             return self.model_KL
+        if self._type.endswith('sextupole'):
+            return self.model_SL
         elif self._type.endswith('horizontal_corrector'):
             return self.model_hkick
         elif self._type.endswith('vertical_corrector'):
