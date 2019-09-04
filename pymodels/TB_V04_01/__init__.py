@@ -1,4 +1,4 @@
-"""TB_V03_02 Model."""
+"""TB_V04_01 Model."""
 
 from .lattice import default_optics_mode
 from .lattice import energy
