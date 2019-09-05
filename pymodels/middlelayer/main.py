@@ -15,6 +15,10 @@ class ModelElement():
         self._type = magnet_type
 
     @property
+    def magnet_type(self):
+        return self._type
+
+    @property
     def model_indices(self):
         return self._indcs
 
@@ -33,6 +37,10 @@ class ModelElement():
     @property
     def model_KL(self):
         return sum([self._model[idx].KL for idx in self._indcs])
+
+    @property
+    def model_KsL(self):
+        return sum([self._model[idx].KsL for idx in self._indcs])
 
     @property
     def model_hkick(self):
