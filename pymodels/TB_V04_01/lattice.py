@@ -216,7 +216,7 @@ def get_optics_mode(optics_mode):
             'qd3': -6.891349798498,
             'qf4': 9.84840688362,
             'qd4': -3.114739958144,
-            'injsept_k': 0.3,
+            'injsept_k': -0.3,
             'injsept_ks': 0.0,
             }
 
