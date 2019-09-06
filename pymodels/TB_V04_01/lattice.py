@@ -117,14 +117,15 @@ def create_lattice(optics_mode=default_optics_mode):
     dip_nam = 'InjSept'
     dip_len = 0.50
     dip_ang = 21.75 * deg_2_rad
-    dip_K = 0.0
-    dip_S = 0.00
-    septine = rbend_sirius(dip_nam, dip_len/2, dip_ang/2,
-                           1*dip_ang/2, 0*dip_ang,
-                           0, 0, 0, [0, 0, 0], [0, dip_K, dip_S])
-    septins = rbend_sirius(dip_nam, dip_len/2, dip_ang/2,
-                           0*dip_ang, 1*dip_ang/2,
-                           0, 0, 0, [0, 0, 0], [0, dip_K, dip_S])
+    dip_k = strengths['injsept_k']
+    dip_ks = strengths['injsept_ks']
+    dip_s = 0.00
+    septine = rbend_sirius(
+        dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang,
+        0, 0, 0, [0, dip_ks, 0], [0, dip_k, dip_s])
+    septins = rbend_sirius(
+        dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2,
+        0, 0, 0, [0, dip_ks, 0], [0, dip_k, dip_s])
     bseptin = marker('bInjS')
     eseptin = marker('eInjS')
     # excluded ch to make it consistent with other codes.
@@ -194,6 +195,32 @@ def get_optics_mode(optics_mode):
     """Return magnet strengths of a given opics mode."""
     # -- selection of optics mode --
     if optics_mode == 'M1':
+        # Initial Conditions from Linac measured parameters on 30/08/2019
+        # Linac second quadrupole triplet set to same values used during
+        # measurements
+        # (Sem tripleto)
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(
+            beta=[1.45401, 2.47656], alpha=[-1.57249, 0.527312], etax=[0, 0])
+
+        strengths = {
+            'qf2l': 12.37,
+            'qd2l': -14.85,
+            'qf3l': 6.342735948415,
+            'qd1': -8.822330690694,
+            'qf1': 13.336079810152,
+            'qd2a': -11.779088961602,
+            'qf2a': 14.331275527616,
+            'qf2b': 8.958478776817,
+            'qd2b': -8.99233133968,
+            'qf3': 11.263508962434,
+            'qd3': -6.891349798498,
+            'qf4': 9.84840688362,
+            'qd4': -3.114739958144,
+            'injsept_k': 0.3,
+            'injsept_ks': 0.0,
+            }
+
+    if optics_mode == 'M2':
         # Initial Conditions from Linac measured parameters on 16/07/2019
         # Linac second quadrupole triplet set to same values used during
         # measurements
@@ -216,9 +243,11 @@ def get_optics_mode(optics_mode):
             'qd3': -4.974049498621,
             'qf4': 11.168208453391,
             'qd4': -6.191738912262,
+            'injsept_k': 0.0,
+            'injsept_ks': 0.0,
         }
 
-    elif optics_mode == 'M2':
+    elif optics_mode == 'M3':
         # Initial Conditions from Linac measured parameters on 16/07/2019
         # Linac second quadrupole triplet is used to match the LBT optics
         # (Sem tripleto)
@@ -240,6 +269,8 @@ def get_optics_mode(optics_mode):
             'qd3': -5.519539215470,
             'qf4': 11.635406805193,
             'qd4': -6.936225524796,
+            'injsept_k': 0.0,
+            'injsept_ks': 0.0,
         }
     else:
         Exception('Invalid TB optics mode: ' + optics_mode)
