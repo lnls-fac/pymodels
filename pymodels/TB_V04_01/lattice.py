@@ -199,6 +199,33 @@ def get_optics_mode(optics_mode):
         # Linac second quadrupole triplet set to same values used during
         # measurements
         # (Sem tripleto)
+        # QD4 freed to be focusing in fitting.
+        twiss_at_start = _pyaccel.optics.Twiss.make_new(
+            beta=[1.45401, 2.47656], alpha=[-1.57249, 0.527312], etax=[0, 0])
+
+        strengths = {
+            'qf2l': 12.37,
+            'qd2l': -14.85,
+            'qf3l': 6.323132813302,
+            'qd1': -8.822304948618,
+            'qf1': 13.336091964647,
+            'qd2a': -11.514834402919,
+            'qf2a': 13.75616336376,
+            'qf2b': 8.173865816149,
+            'qd2b': -8.678075891613,
+            'qf3': 11.699139799372,
+            'qd3': -7.185711783366,
+            'qf4': 4.904972954674,
+            'qd4': 4.49489157206,
+            'injsept_k': -0.8,
+            'injsept_ks': 0.0,
+            }
+
+    if optics_mode == 'M2':
+        # Initial Conditions from Linac measured parameters on 30/08/2019
+        # Linac second quadrupole triplet set to same values used during
+        # measurements
+        # (Sem tripleto)
         twiss_at_start = _pyaccel.optics.Twiss.make_new(
             beta=[1.45401, 2.47656], alpha=[-1.57249, 0.527312], etax=[0, 0])
 
@@ -220,7 +247,7 @@ def get_optics_mode(optics_mode):
             'injsept_ks': 0.0,
             }
 
-    if optics_mode == 'M2':
+    if optics_mode == 'M3':
         # Initial Conditions from Linac measured parameters on 16/07/2019
         # Linac second quadrupole triplet set to same values used during
         # measurements
@@ -247,7 +274,7 @@ def get_optics_mode(optics_mode):
             'injsept_ks': 0.0,
         }
 
-    elif optics_mode == 'M3':
+    elif optics_mode == 'M4':
         # Initial Conditions from Linac measured parameters on 16/07/2019
         # Linac second quadrupole triplet is used to match the LBT optics
         # (Sem tripleto)
