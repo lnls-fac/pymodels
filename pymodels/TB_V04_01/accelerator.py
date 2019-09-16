@@ -22,5 +22,5 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode,
 
 
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'TB_V02_01'
+accelerator_data['lattice_version'] = 'TB_V04_01'
 accelerator_data['pressure_profile'] = None

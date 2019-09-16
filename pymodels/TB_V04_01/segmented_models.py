@@ -8,52 +8,55 @@ import pyaccel as _pyaccel
 def dipole(sign, simplified=False):
     """Segmented BC dipole model."""
     segtypes = {
-        'B': ('B', _pyaccel.elements.rbend),
-        'B_EDGE': ('B_EDGE', _pyaccel.elements.marker),
+        'b': ('B', _pyaccel.elements.rbend),
+        'b_edge': ('edgeB', _pyaccel.elements.marker),
+        'b_pb': ('physB', _pyaccel.elements.marker),
     }
 
-    # dipole model 2017-08-25 (150MeV)
-    # ================================
-    # filename:
-    #  2017-08-25_TB_Dipole_Model02_Sim_X=-85_85mm_Z=-500_500mm.txt
+    #  FIELDMAP
+    #  trajectory centered in good-field region. init_rx is set to +9.045 mm
+    #  *** interpolation of fields is now cubic ***
+    #  *** dipole angles were normalized to better close 360 degrees ***
+    #  *** more refined segmented model.
+    #  *** dipole angle is now in units of degrees
+    # --- model polynom_b (rz > 0). units: [m] for length, [rad] for angle and [m],[T] for polynom_b ---
     monomials = [0, 1, 2, 3, 4, 5, 6]
+    # dipole model (150MeV)
+    # =====================
+    # filename: 2018-08-04_TB_Dipole_Model03_Sim_X=-85_85mm_Z=-500_500mm_Imc=249.1A.txt
     segmodel = [
-         # --- model polynom_b (rz > 0). units: [m] for length, [rad] for
-         #     angle and [m^(n-1)] for polynom_b ---
-         # type   len[m]   angle[deg]  PolyB(n=0)   PolyB(n=1)   PolyB(n=2)
-         #                PolyB(n=3)   PolyB(n=4)   PolyB(n=5)   PolyB(n=6)
-         ['B', 0.0800, +3.97053, +0.00e+00, -1.38e-04, +8.83e-03, -1.75e-01,
-          +5.64e+01, +5.21e+03, -8.50e+05],
-         ['B', 0.0200, +0.99101, +0.00e+00, -2.06e-02, -1.98e-01, -2.13e+00,
-          -6.78e+00, +2.46e+04, -1.64e+06],
-         ['B', 0.0200, +0.94099, +0.00e+00, -6.34e-01, -4.53e+00, -5.76e+00,
-          -1.49e+03, +2.90e+04, -1.26e+06],
-         ['B', 0.0200, +0.64345, +0.00e+00, -1.56e+00, -7.53e+00, +1.22e+02,
-          -6.92e+03, +9.34e+04, -2.64e+06],
-         ['B_EDGE', 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         ['B', 0.0200, +0.37798, +0.00e+00, -6.24e-01, -1.60e+01, +2.07e+02,
-          -6.87e+03, +5.18e+04, -6.33e+05],
-         ['B', 0.0200, +0.23850, +0.00e+00, -2.17e-01, -1.62e+01, +1.43e+02,
-          -2.70e+03, -3.65e+03, +3.69e+05],
-         ['B', 0.0300, +0.19919, +0.00e+00, -9.09e-02, -1.04e+01, +6.57e+01,
-          -6.03e+02, -5.99e+03, +1.53e+05],
-         ['B', 0.0300, +0.13835, -3.06e-04, -5.07e-02, -7.02e+00, +3.11e+01,
-          -4.04e+01, -2.97e+03, +4.56e+04],
+        # --- model polynom_b (rz > 0). units: [m] for length, [rad] for angle and [m^(n-1)] for polynom_b ---
+        # type   len[m]  angle[deg]  PolyB(n=0) PolyB(n=1) PolyB(n=2) PolyB(n=3) PolyB(n=4) PolyB(n=5) PolyB(n=6)
+        ['b',      0.0800, +3.96552, +0.00e+00, -6.11e-04, -7.42e-02, -2.19e+00, -2.43e+02, -3.43e+04, -2.11e+06],
+        ['b',      0.0200, +0.98973, +0.00e+00, -2.15e-02, -2.68e-01, -2.01e+00, -1.63e+02, -8.81e+03, -1.15e+06],
+        ['b',      0.0200, +0.93979, +0.00e+00, -6.44e-01, -4.76e+00, -1.42e+01, -7.80e+02, -5.33e+03, -1.42e+06],
+        ['b',      0.0200, +0.64484, +0.00e+00, -1.63e+00, -6.59e+00, +2.42e+01, -5.22e+03, +1.82e+04, -2.67e+06],
+        ['b_edge', 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ['b',      0.0200, +0.38227, +0.00e+00, -7.75e-01, -1.34e+01, +9.09e+01, -5.95e+03, +3.50e+04, -7.03e+05],
+        ['b',      0.0200, +0.24438, +0.00e+00, -3.74e-01, -1.41e+01, +9.51e+01, -2.80e+03, +6.72e+03, +2.36e+05],
+        ['b',      0.0300, +0.20469, +0.00e+00, -2.13e-01, -9.21e+00, +5.84e+01, -8.54e+02, -6.30e+02, +1.14e+05],
+        ['b',      0.0300, +0.12878, +1.04e-04, -1.38e-01, -6.08e+00, +3.36e+01, -2.08e+02, -8.68e+02, +4.60e+04],
+        ['b_pb',   0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]
 
-    # --- manipule polynomialB ---
+    d2r = _math.pi/180.0
     for i in range(len(segmodel)):
-        # invert sign of bending angle, if the case.
         segmodel[i][2] = sign * segmodel[i][2]
-        # invert sign of odd-order polynomb, if the case.
-        for j in range(0, len(monomials)):
-            segmodel[i][3+j] *= sign**monomials[j]
-        # turns deflection angle error off
+        # turns deflection angle error off (convenient for having a nominal model with zero 4d closed orbit)
         segmodel[i][3] = 0.0
+
+    # # --- manipule polynomialB ---
+    # for i in range(len(segmodel)):
+    #     # invert sign of bending angle, if the case.
+    #     segmodel[i][2] = sign * segmodel[i][2]
+    #     # invert sign of odd-order polynomb, if the case.
+    #     for j in range(0, len(monomials)):
+    #         segmodel[i][3+j] *= sign**monomials[j]
+    #     # turns deflection angle error off
+    #     segmodel[i][3] = 0.0
 
     # --- creates half model ---
     model = []
-    d2r = _math.pi/180.0
     PolyB = _np.zeros(1+max(monomials))
     for i in range(len(segmodel)):
         fam_name, element_type = segtypes[segmodel[i][0]]

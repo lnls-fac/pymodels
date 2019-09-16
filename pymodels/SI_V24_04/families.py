@@ -19,7 +19,7 @@ _family_segmentation = {
     'BPM': 1, 'DCCT': 1, 'ScrapH': 1, 'ScrapV': 1, 'GSL15': 1,
     'GSL07': 1, 'GBPM': 1, 'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1,
     'BbBKckrL': 1, 'TuneShkrH': 1, 'TuneShkrV': 1, 'TunePkup': 1,
-    'FC': 1, 'FCQ': 1,
+    'FC1': 1, 'FC2': 1,
     'QS': 1, 'CH': 1, 'CV': 1,
     'SRFCav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1, }

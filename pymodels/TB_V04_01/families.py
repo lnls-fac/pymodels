@@ -3,17 +3,25 @@
 import pyaccel as _pyaccel
 
 _family_segmentation = {
-    'B': 16, 'CH': 1, 'CV': 1,
+    'B': 16, 'CH': 1, 'CV': 1, 'CHV': 1, 'QS': 1,
+    'QF2L': 1, 'QD2L': 1, 'QF3L': 1,
+    'Spect': 2,
     'QD1': 1, 'QF1': 1, 'QD2A': 1, 'QF2A': 1, 'QF2B': 1, 'QD2B': 1,
     'QF3': 1, 'QD3': 1, 'QF4': 1, 'QD4': 1,
     'InjSept': 2,
-    'ICT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
+    'ICT': 1, 'FCT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
 }
 
 family_mapping = {
     'B':       'dipole',
+    'Spect':   'spectrometer',
+    'CHV':     'general_corrector',
     'CH':      'horizontal_corrector',
     'CV':      'vertical_corrector',
+    'QS':      'skew_quadrupole',
+    'QF2L':    'linac_quadrupole',
+    'QD2L':    'linac_quadrupole',
+    'QF3L':    'linac_quadrupole',
     'QD1':     'quadrupole',
     'QF1':     'quadrupole',
     'QD2A':    'quadrupole',
@@ -24,8 +32,9 @@ family_mapping = {
     'QD3':     'quadrupole',
     'QF4':     'quadrupole',
     'QD4':     'quadrupole',
-    'InjSept':    'pulsed_magnet',
+    'InjSept': 'pulsed_magnet',
     'ICT':     'beam_current_monitor',
+    'FCT':     'beam_current_monitor',
     'SlitH':   'horizontal_slit',
     'SlitV':   'vertical_slit',
     'Scrn':    'beam_profile_monitor',
@@ -35,7 +44,7 @@ family_mapping = {
 
 def families_dipoles():
     """Return dipole families."""
-    return ['B']
+    return ['B', 'Spect']
 
 
 def families_pulsed_magnets():
@@ -45,18 +54,19 @@ def families_pulsed_magnets():
 
 def families_quadrupoles():
     """Return quadrupole families."""
-    return ['QD1', 'QF1', 'QD2A', 'QF2A', 'QF2B', 'QD2B', 'QF3', 'QD3',
-            'QF4', 'QD4']
+    return [
+        'QF2L', 'QD2L', 'QF3L', 'QD1', 'QF1', 'QD2A', 'QF2A', 'QF2B', 'QD2B',
+        'QF3', 'QD3', 'QF4', 'QD4']
 
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['CH']
+    return ['CHV', ]
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['CV']
+    return ['CHV', ]
 
 
 def families_sextupoles():
@@ -66,7 +76,7 @@ def families_sextupoles():
 
 def families_skew_correctors():
     """Return skew corrector families."""
-    return []
+    return ['QS']
 
 
 def families_rf():
@@ -76,7 +86,7 @@ def families_rf():
 
 def families_di():
     """Return pulsed magnet families."""
-    return ['ICT', 'BPM', 'Scrn', 'SlitH', 'SlitV']
+    return ['ICT', 'FCT', 'BPM', 'Scrn', 'SlitH', 'SlitV']
 
 
 def get_section_name_mapping(lattice):
@@ -115,10 +125,7 @@ def get_family_data(lattice):
     latt_dict = _pyaccel.lattice.find_dict(lattice, 'fam_name')
     section_map = get_section_name_mapping(lattice)
 
-    def get_idx(x):
-        return x[0]
-
-    # fill the data dictionary with index info ######
+    # fill the data dictionary with index info:
     data = {}
     for key, idx in latt_dict.items():
         nr = _family_segmentation.get(key)
@@ -127,27 +134,37 @@ def get_family_data(lattice):
         # create a list of lists for the indexes
         data[key] = [idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)]
 
-    def f(x):
-        return '{0:d}'.format(x)
+    data['CH'] = list(data['CHV'])
+    data['CV'] = list(data['CHV'])
+
+    # last corrector is now a skew quad and a CV:
+    data['CV'].extend(data['QS'])
 
     # now organize the data dictionary:
     new_data = dict()
     for key, idx in data.items():
         # find out the name of the section each element is installed
-        secs = [section_map[get_idx(i)] for i in idx]
+        secs = [section_map[i[0]] for i in idx]
 
         # find out if there are more than one element per section and
         # attribute a number to it
         num = len(secs)*['']
         if len(secs) > 1:
             j = 1
-            num[0] = f(j) if secs[0] == secs[1] else ''
-            j = j+1 if secs[0] == secs[1] else 1
+            if secs[0] == secs[1]:
+                num[0] = '{0:d}'.format(j)
+                j += 1
             for i in range(1, len(secs)-1):
-                num[i] = f(j) if secs[i] == secs[i+1] or secs[i] == secs[i-1] \
-                    else ''
-                j = j+1 if secs[i] == secs[i+1] else 1
-            num[-1] = f(j) if (secs[-1] == secs[-2]) else ''
+                if secs[i] == secs[i+1] or secs[i] == secs[i-1]:
+                    num[i] = '{0:d}'.format(j)
+
+                if secs[i] == secs[i+1]:
+                    j += 1
+                else:
+                    j = 1
+
+            if secs[-1] == secs[-2]:
+                num[-1] = '{0:d}'.format(j)
 
         new_data[key] = {'index': idx, 'subsection': secs, 'instance': num}
 

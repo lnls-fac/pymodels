@@ -1,4 +1,4 @@
-"""TB_V02_01 Model."""
+"""TB_V04_01 Model."""
 
 from .lattice import default_optics_mode
 from .lattice import energy
@@ -11,5 +11,7 @@ from .accelerator import create_accelerator
 from .families import get_family_data
 from .families import family_mapping
 from .families import get_section_name_mapping
+
+from .control_system import get_control_system_data
 
 lattice_version = accelerator_data['lattice_version']
