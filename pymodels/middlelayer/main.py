@@ -70,9 +70,11 @@ class ModelElement():
     @model_strength.setter
     def model_strength(self, value):
         if self._type.endswith('horizontal_corrector'):
-            self.model_hkick = value * 1e-6
+            for idx in self._indcs:
+                self._model[idx].hkick_polynom = value * 1e-6
         elif self._type.endswith('vertical_corrector'):
-            self.model_vkick = value * 1e-6
+            for idx in self._indcs:
+                self._model[idx].vkick_polynom = value * 1e-6
         elif self._type.endswith(('quadrupole', 'sextupole')):
             inival = self.model_strength
             alpha = value/inival * 1
