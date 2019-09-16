@@ -121,6 +121,24 @@ class Element(ModelElement):
         self._sp.value = self._norm.conv_strength_2_current(
             value, strengths_dipole=self._model.energy*1e-9)
 
+    @property
+    def current(self):
+        return self._rb.value
+
+    @current.setter
+    def current(self, value):
+        self._sp.value = value
+
+    @property
+    def model_current(self):
+        return self._norm.conv_strength_2_current(
+            self.model_strength, strengths_dipole=self._model.energy*1e-9)
+
+    @model_current.setter
+    def model_current(self, value):
+        self.model_strength = self._norm.conv_current_2_strength(
+            value, strengths_dipole=self._model.energy*1e-9)
+
 
 class Family():
 
@@ -214,6 +232,24 @@ class Family():
     @strength.setter
     def strength(self, value):
         self._sp.value = self._norm.conv_strength_2_current(
+            value, strengths_dipole=self._model.energy*1e-9)
+
+    @property
+    def current(self):
+        return self._rb.value
+
+    @current.setter
+    def current(self, value):
+        self._sp.value = value
+
+    @property
+    def model_current(self):
+        return self._norm.conv_strength_2_current(
+            self.model_strength, strengths_dipole=self._model.energy*1e-9)
+
+    @model_current.setter
+    def model_current(self, value):
+        self.model_strength = self._norm.conv_current_2_strength(
             value, strengths_dipole=self._model.energy*1e-9)
 
 
