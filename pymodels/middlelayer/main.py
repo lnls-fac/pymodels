@@ -57,31 +57,31 @@ class ModelElement():
     @property
     def model_strength(self):
         if self._type.endswith('quadrupole'):
-            return self.model_KL
-        if self._type.endswith('sextupole'):
-            return self.model_SL
+            return self.model_KL * 1
+        elif self._type.endswith('sextupole'):
+            return self.model_SL * 1
         elif self._type.endswith('horizontal_corrector'):
-            return self.model_hkick
+            return self.model_hkick * 1e6
         elif self._type.endswith('vertical_corrector'):
-            return self.model_vkick
+            return self.model_vkick * 1e6
         elif self._type.endswith('pulsed_magnet'):
-            return self.model_hkick + self.model_angle
+            return (self.model_hkick + self.model_angle) * 1e3
 
     @model_strength.setter
     def model_strength(self, value):
         if self._type.endswith('horizontal_corrector'):
-            self.model_hkick = value
+            self.model_hkick = value * 1e-6
         elif self._type.endswith('vertical_corrector'):
-            self.model_vkick = value
+            self.model_vkick = value * 1e-6
         elif self._type.endswith(('quadrupole', 'sextupole')):
             inival = self.model_strength
-            alpha = value/inival
+            alpha = value/inival * 1
             for idx in self._indcs:
                 self._model[idx].polynom_b *= alpha
                 self._model[idx].polynom_a *= alpha
         elif self._type.endswith('pulsed_magnet'):
             inival = self.model_strength
-            alpha = value/inival
+            alpha = value/inival * 1e-3
             for idx in self._indcs:
                 ang = self._model[idx].angle
                 self._model[idx].polynom_b *= alpha
@@ -185,15 +185,15 @@ class Family():
     @property
     def model_strength(self):
         if self._type.endswith('quadrupole'):
-            return self.model_KL
-        if self._type.endswith('sextupole'):
-            return self.model_SL
+            return self.model_KL * 1
+        elif self._type.endswith('sextupole'):
+            return self.model_SL * 1
         elif self._type.endswith('horizontal_corrector'):
-            return self.model_hkick
+            return self.model_hkick * 1e6
         elif self._type.endswith('vertical_corrector'):
-            return self.model_vkick
+            return self.model_vkick * 1e6
         elif self._type.endswith('pulsed_magnet'):
-            return self.model_hkick + self.model_angle
+            return (self.model_hkick + self.model_angle) * 1e3
 
     @model_strength.setter
     def model_strength(self, value):
