@@ -293,7 +293,7 @@ def dipole_b2(m_accep_fam_name, simplified=False):
 
 
 def quadrupole_q14(fam_name, strength, simplified=False):
-    """Segmented Q14 dipole model."""
+    """Segmented Q14 quadrupole model."""
     segtypes = {
         fam_name: (fam_name, _pyaccel.elements.quadrupole),
     }
@@ -340,7 +340,7 @@ def quadrupole_q14(fam_name, strength, simplified=False):
 
 
 def quadrupole_q20(fam_name, strength, simplified=False):
-    """Segmented Q20 dipole model."""
+    """Segmented Q20 quadrupole model."""
     segtypes = {
         fam_name: (fam_name, _pyaccel.elements.quadrupole),
     }
@@ -388,7 +388,7 @@ def quadrupole_q20(fam_name, strength, simplified=False):
 
 
 def quadrupole_q30(fam_name, strength, simplified=False):
-    """Segmented Q30 dipole model."""
+    """Segmented Q30 quadrupole model."""
     segtypes = {
         fam_name: (fam_name, _pyaccel.elements.quadrupole),
     }
