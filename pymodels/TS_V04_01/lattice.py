@@ -9,11 +9,11 @@ from . import segmented_models as _segmented_models
 class LatticeError(Exception):
     pass
 
-energy = 3e9  #[eV]
+energy = 3e9  # [eV]
 default_optics_mode = 'M1'
 
-def create_lattice(optics_mode = default_optics_mode):
 
+def create_lattice(optics_mode=default_optics_mode):
     strengths, twiss_at_start = get_optics_mode(optics_mode)
 
     # -- shortcut symbols --
@@ -28,34 +28,37 @@ def create_lattice(optics_mode = default_optics_mode):
     corr_length = 0.07
 
     # --- drift spaces ---
-    ldif = 0.1442
-    l015 = drift('l015', 0.15)
-    l020 = drift('l020', 0.20)
-    l025 = drift('l025', 0.25)
-    l060 = drift('l060', 0.60)
-    l080 = drift('l080', 0.80)
-    l090 = drift('l090', 0.90)
-    l160 = drift('l160', 1.60)
-    l280 = drift('l280', 2.80)
-    l400 = drift('l400', 4.00)
-    la2p = drift('la2p', 0.08323)
-    la3p = drift('la3p', 0.232-ldif)
-    lb1p = drift('lb1p', 0.220-ldif)
-    lb2p = drift('lb2p', 0.83251)
-    lb3p = drift('lb3p', 0.30049)
-    lb4p = drift('lb4p', 0.19897-ldif)
-    lc1p = drift('lc1p', 0.18704-ldif)
-    lc2p = drift('lc2p', 0.07304)
-    lc3p = drift('lc3p', 0.19934)
-    lc4p = drift('lc4p', 0.72666-ldif)
-    ld1p = drift('ld1p', 0.25700-ldif)
-    ld2p = drift('ld2p', 0.05389)
-    ld3p = drift('ld3p', 0.154)
-    ld4p = drift('ld4p', 0.192)
-    ld5p = drift('ld5p', 0.456)
-    ld6p = drift('ld6p', 0.258)
-    ld7p = drift('ld7p', 0.175)
-
+    ldif  = 0.1442
+    lcv   = 0.150
+    l015  = drift('l015', 0.15)
+    l020  = drift('l020', 0.20)
+    l0125 = drift('l0125',0.20-lcv/2)
+    l025  = drift('l025', 0.25)
+    l0175 = drift('l0175',0.25-lcv/2)
+    l060  = drift('l060', 0.60)
+    l0525 = drift('l0525',0.60-lcv/2)
+    l080  = drift('l080', 0.80)
+    l0825 = drift('l0825',0.90-lcv/2)
+    l160  = drift('l160', 1.60)
+    l280  = drift('l280', 2.80)
+    l400  = drift('l400', 4.00)
+    la2p  = drift('la2p', 0.08323)
+    la3p  = drift('la3p', 0.232-ldif)
+    lb1p  = drift('lb1p', 0.220-ldif)
+    lb2p  = drift('lb2p', 0.83251)
+    lb3p  = drift('lb3p', 0.30049)
+    lb4p  = drift('lb4p', 0.19897-ldif)
+    lc1p  = drift('lc1p', 0.18704-ldif)
+    lc2p  = drift('lc2p', 0.07304)
+    lc3p  = drift('lc3p', 0.19934-lcv/2)
+    lc4p  = drift('lc4p', 0.72666-ldif-lcv/2)
+    ld1p  = drift('ld1p', 0.25700-ldif)
+    ld2p  = drift('ld2p', 0.05389)
+    ld3p  = drift('ld3p', 0.154-lcv/2)
+    ld4p  = drift('ld4p', 0.192)
+    ld5p  = drift('ld5p', 0.456)
+    ld6p  = drift('ld6p', 0.258-lcv/2)
+    ld7p  = drift('ld7p', 0.175-lcv/2)
     # --- markers ---
     inicio = marker('start')
     fim    = marker('end')
@@ -71,18 +74,18 @@ def create_lattice(optics_mode = default_optics_mode):
     bpm    = marker('BPM')
 
     # --- correctors ---
-    ch     = hcorrector('CH', 0.0)
-    cv     = vcorrector('CV', 0.0)
+    # CHs are inside quadrupoles
+    cv = sextupole('CV', lcv, 0.0)  # same model as BO correctors
 
     # --- quadrupoles ---
-    qf1a   = quadrupole('QF1A', 0.14, strengths['qf1a'])
-    qf1b   = quadrupole('QF1B', 0.14, strengths['qf1b'])
-    qd2    = quadrupole('QD2',  0.14, strengths['qd2'])
-    qf2    = quadrupole('QF2',  0.20, strengths['qf2'])
-    qf3    = quadrupole('QF3',  0.20, strengths['qf3'])
-    qd4a   = quadrupole('QD4A', 0.14, strengths['qd4a'])
-    qf4    = quadrupole('QF4',  0.20, strengths['qf4'])
-    qd4b   = quadrupole('QD4B', 0.14, strengths['qd4b'])
+    qf1a = _segmented_models.quadrupole_q14('QF1A', strengths['qf1a'])
+    qf1b = _segmented_models.quadrupole_q14('QF1B', strengths['qf1b'])
+    qd2 = _segmented_models.quadrupole_q14('QD2', strengths['qd2'])
+    qf2 = _segmented_models.quadrupole_q20('QF2', strengths['qf2'])
+    qf3 = _segmented_models.quadrupole_q20('QF3', strengths['qf3'])
+    qd4a = _segmented_models.quadrupole_q14('QD4A', strengths['qd4a'])
+    qf4 = _segmented_models.quadrupole_q20('QF4', strengths['qf4'])
+    qd4b = _segmented_models.quadrupole_q14('QD4B', strengths['qd4b'])
 
     # --- bending magnets ---
     d2r = (_math.pi/180)
@@ -145,15 +148,15 @@ def create_lattice(optics_mode = default_optics_mode):
 
     # --- lines ---
     sec01 = [
-        ejesf,l025,ejesg,l060,cv,l090,qf1a,la2p,ict,l280,scrn,bpm,
-            l020,l020,ch,qf1b,l020,cv,l020,la3p,bend
-            ]
-    sec02 = [l080,lb1p,qd2,lb2p,scrn,bpm,lb3p,ch,qf2,l020,cv,l025,l015,lb4p,bend]
-    sec03 = [lc1p,l400,scrn,bpm,l020,lc2p,ch,qf3,lc3p,cv,lc4p,bend]
+        ejesf,l025,ejesg,l0525,cv,l0825,qf1a,la2p,ict,l280,scrn,bpm, l020,l020,
+        qf1b,l0125,cv,l0125,la3p,bend]
+    sec02 = [
+        l080,lb1p,qd2,lb2p,scrn,bpm,lb3p,qf2,l0125,cv,l0175,l015,lb4p,bend]
+    sec03 = [lc1p,l400,scrn,bpm,l020,lc2p,qf3,lc3p,cv,lc4p,bend]
     sec04 = [
-        ld1p,l060,qd4a,ld2p,l160,bpm,scrn,l020,ld3p,cv,l020,ch,qf4,ld4p,fct,
-            ld4p,ict,ld4p,qd4b,ld5p,bpm,scrn,ld6p,cv,ld7p,injsg,l025,injsg,l025,injsf,scrn
-            ]
+        ld1p,l060,qd4a,ld2p,l160,bpm,scrn,l020,ld3p,cv,l0125,qf4,ld4p,fct,
+        ld4p,ict,ld4p,qd4b,ld5p,bpm,scrn,ld6p,cv,ld7p,injsg,l025,injsg,l025,
+        injsf,scrn]
 
     ts  = [inicio,sec01,sec02,sec03,sec04,fim]
 
