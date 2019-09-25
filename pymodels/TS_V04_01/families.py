@@ -106,6 +106,13 @@ def get_family_data(lattice):
         # Create a list of lists for the indexes
         data[key] = [ idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)  ]
 
+    # ch - slow horizontal correctors
+    idx = []
+    fams = ['QF1B', 'QF2', 'QF3', 'QF4']
+    for fam in fams:
+        idx.extend(data[fam])
+    data['CH'] = sorted(idx, key=get_idx)
+
     ### Now organize the data dictionary:
     new_data = dict()
     for key, idx in data.items():
