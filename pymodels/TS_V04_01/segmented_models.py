@@ -100,3 +100,97 @@ def dipole(sign, simplified=False):
         model = [dr, el_b, el, el_e, dr]
 
     return model
+
+def quadrupole_q14(fam_name, strength, simplified=False):
+    """Segmented Q14 quadrupole model."""
+    segtypes = {
+        fam_name: (fam_name, _pyaccel.elements.quadrupole),
+    }
+
+    # Q14 model
+    # =========
+    # this (half) model is based on fieldmap
+    # '2017-02-24_Q14_Model04_Sim_X=-14_14mm_Z=-500_500mm_Imc=146.6A_Itc=10A.txt'
+    monomials = [1, 5, 9, 13]
+    segmodel = [
+        # type  len[m]   angle[deg]  PolyB(n=1)   PolyB(n=5)   PolyB(n=9)
+        #                            PolyB(n=13)
+        [fam_name, 0.0700, +0.00000, -4.06e+00, +6.38e+04, -1.45e+13,
+         +2.90e+20],
+    ]
+
+    # rescale fieldmap data to strength argument
+    quadidx = monomials.index(1)
+    seg_lens = [segmodel[i][1] for i in range(len(segmodel))]
+    model_length = 2 * sum(seg_lens)
+    fmap_strength = [2*segmodel[i][3+quadidx]*seg_lens[i]/model_length for i in
+                     range(len(segmodel))]
+    rescale = [strength / fmap_strength[i] for i in range(len(segmodel))]
+
+    # --- hard-edge 1-segment model ---
+    model = []
+    i = 0
+    fam_name, element_type = segtypes[segmodel[i][0]]
+    PolyB = _np.zeros(1+max(monomials))
+    for j in range(len(monomials)):
+        PolyB[monomials[j]] = segmodel[i][j+3] * rescale[i]
+    PolyA = 0 * PolyB
+    element = element_type(fam_name=fam_name,
+                           length=2*segmodel[i][1], K=PolyB[1])
+    element.polynom_a = PolyA
+    element.polynom_b = PolyB
+    model.append(element)
+
+    if simplified:
+        model[0].polynom_a = model[0].polynom_a[:3]
+        model[0].polynom_b = model[0].polynom_b[:3]
+
+    return model
+
+
+def quadrupole_q20(fam_name, strength, simplified=False):
+    """Segmented Q20 quadrupole model."""
+    segtypes = {
+        fam_name: (fam_name, _pyaccel.elements.quadrupole),
+    }
+
+    # Q20 model
+    # =========
+    # this (half) model is based on fieldmap
+    # '2017-02-24_Q20_Model05_Sim_X=-14_14mm_Z=-500_500mm_Imc=
+    #  154.66A_Itc=10A.txt'
+    monomials = [1, 5, 9, 13]
+    segmodel = [
+        # type  len[m]   angle[deg]  PolyB(n=1)   PolyB(n=5)   PolyB(n=9)
+        #                                                      PolyB(n=13)
+        [fam_name, 0.1000, +0.00000, -4.74e+00, +8.41e+04, -1.83e+13,
+         +3.47e+20],
+    ]
+
+    # rescale fieldmap data to strength argument
+    quadidx = monomials.index(1)
+    seg_lens = [segmodel[i][1] for i in range(len(segmodel))]
+    model_length = 2 * sum(seg_lens)
+    fmap_strength = [2*segmodel[i][3+quadidx]*seg_lens[i]/model_length for i in
+                     range(len(segmodel))]
+    rescale = [strength / fmap_strength[i] for i in range(len(segmodel))]
+
+    # --- hard-edge 1-segment model ---
+    model = []
+    i = 0
+    fam_name, element_type = segtypes[segmodel[i][0]]
+    PolyB = _np.zeros(1+max(monomials))
+    for j in range(len(monomials)):
+        PolyB[monomials[j]] = segmodel[i][j+3] * rescale[i]
+    PolyA = 0 * PolyB
+    element = element_type(fam_name=fam_name,
+                           length=2*segmodel[i][1], K=PolyB[1])
+    element.polynom_a = PolyA
+    element.polynom_b = PolyB
+    model.append(element)
+
+    if simplified:
+        model[0].polynom_a = model[0].polynom_a[:3]
+        model[0].polynom_b = model[0].polynom_b[:3]
+
+    return model
