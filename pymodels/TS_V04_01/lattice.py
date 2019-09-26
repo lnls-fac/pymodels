@@ -30,35 +30,35 @@ def create_lattice(optics_mode=default_optics_mode):
     # --- drift spaces ---
     ldif  = 0.1442
     lcv   = 0.150
-    l015  = drift('l015', 0.15)
-    l020  = drift('l020', 0.20)
-    l0125 = drift('l0125',0.20-lcv/2)
-    l025  = drift('l025', 0.25)
-    l0175 = drift('l0175',0.25-lcv/2)
-    l060  = drift('l060', 0.60)
-    l0525 = drift('l0525',0.60-lcv/2)
-    l080  = drift('l080', 0.80)
-    l0825 = drift('l0825',0.90-lcv/2)
-    l160  = drift('l160', 1.60)
-    l280  = drift('l280', 2.80)
-    l400  = drift('l400', 4.00)
-    la2p  = drift('la2p', 0.08323)
-    la3p  = drift('la3p', 0.232-ldif)
-    lb1p  = drift('lb1p', 0.220-ldif)
-    lb2p  = drift('lb2p', 0.83251)
-    lb3p  = drift('lb3p', 0.30049)
-    lb4p  = drift('lb4p', 0.19897-ldif)
-    lc1p  = drift('lc1p', 0.18704-ldif)
-    lc2p  = drift('lc2p', 0.07304)
-    lc3p  = drift('lc3p', 0.19934-lcv/2)
-    lc4p  = drift('lc4p', 0.72666-ldif-lcv/2)
-    ld1p  = drift('ld1p', 0.25700-ldif)
-    ld2p  = drift('ld2p', 0.05389)
-    ld3p  = drift('ld3p', 0.154-lcv/2)
-    ld4p  = drift('ld4p', 0.192)
-    ld5p  = drift('ld5p', 0.456)
-    ld6p  = drift('ld6p', 0.258-lcv/2)
-    ld7p  = drift('ld7p', 0.175-lcv/2)
+    l015     = drift('l015',  0.15)
+    l020     = drift('l020',  0.20)
+    l0125    = drift('l0125', 0.20-lcv/2)
+    l025     = drift('l025',  0.25)
+    l0175    = drift('l0175', 0.25-lcv/2)
+    l060     = drift('l060',  0.60)
+    l0525    = drift('l0525', 0.60-lcv/2)
+    l080     = drift('l080',  0.80)
+    l0825    = drift('l0825', 0.90-lcv/2)
+    l160     = drift('l160',  1.60)
+    l280     = drift('l280',  2.80)
+    la2p     = drift('la2p', 0.08323)
+    la3p     = drift('la3p', 0.232-ldif)
+    lb1p     = drift('lb1p', 0.220-ldif)
+    lb2p     = drift('lb2p', 0.83251)
+    lb3p     = drift('lb3p', 0.30049)
+    lb4p     = drift('lb4p', 0.19897-ldif)
+    lc1p     = drift('lc1p', 1.314-ldif)
+    lc2p     = drift('lc2p', 0.07304)
+    lc3p     = drift('lc3p', 0.19934-lcv/2)
+    lc4p     = drift('lc4p', 0.72666-ldif-lcv/2)
+    ld1p     = drift('ld1p', 0.25700 + ldif -ldif)
+    # ld1p drift length in the drawing is specified differently
+    ld2p     = drift('ld2p', 0.05428)
+    ld3p     = drift('ld3p', 0.35361-lcv/2)
+    ld4p     = drift('ld4p', 0.192)
+    ld5p     = drift('ld5p', 0.45593)
+    ld6p     = drift('ld6p', 0.48307-lcv/2)
+    ld7p     = drift('ld7p', 0.175-lcv/2)
     # --- markers ---
     inicio = marker('start')
     fim    = marker('end')
@@ -145,18 +145,13 @@ def create_lattice(optics_mode=default_optics_mode):
     einjsf = marker('eInjSeptF') # marker at the end of thin septum
     injsf = [binjsf, h1, minjsf, h2, einjsf]
 
-
     # --- lines ---
-    sec01 = [
-        ejesf,l025,ejesg,l0525,cv,l0825,qf1a,la2p,ict,l280,scrn,bpm, l020,l020,
-        qf1b,l0125,cv,l0125,la3p,bend]
-    sec02 = [
-        l080,lb1p,qd2,lb2p,scrn,bpm,lb3p,qf2,l0125,cv,l0175,l015,lb4p,bend]
-    sec03 = [lc1p,l400,scrn,bpm,l020,lc2p,qf3,lc3p,cv,lc4p,bend]
-    sec04 = [
-        ld1p,l060,qd4a,ld2p,l160,bpm,scrn,l020,ld3p,cv,l0125,qf4,ld4p,fct,
-        ld4p,ict,ld4p,qd4b,ld5p,bpm,scrn,ld6p,cv,ld7p,injsg,l025,injsg,l025,
-        injsf,scrn]
+    sec01 = [ejesf,l025,ejesg,l0525,cv,l0825,qf1a,la2p,ict,l280,scrn,bpm,
+         l020,l020,qf1b,l0125,cv,l0125,la3p,bend]
+    sec02 = [l080,lb1p,qd2,lb2p,scrn,bpm,lb3p,qf2,l0125,cv,l0175,l015,lb4p,bend]
+    sec03 = [lc1p,l280,scrn,bpm,l020,lc2p,qf3,lc3p,cv,lc4p,bend]
+    sec04 = [ld1p,l060,qd4a,ld2p,l160,bpm,scrn,ld3p,cv,l0125,qf4,ld4p,fct,
+         ld4p,ict,ld4p,qd4b,ld5p,bpm,scrn,ld6p,cv,ld7p,injsg,l025,injsg,l025,injsf,scrn]
 
     ts  = [inicio,sec01,sec02,sec03,sec04,fim]
 
