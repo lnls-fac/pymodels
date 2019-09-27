@@ -25,8 +25,6 @@ def create_lattice(optics_mode=default_optics_mode):
     hcorrector   = _pyaccel.elements.hcorrector
     vcorrector   = _pyaccel.elements.vcorrector
 
-    corr_length = 0.07
-
     # --- drift spaces ---
     ldif  = 0.1442
     lcv   = 0.150
