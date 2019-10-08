@@ -105,3 +105,77 @@ def dipole(sign, simplified=False):
         model = [dr, el_b, el, el_e, dr]
 
     return model
+
+
+def septum(strengths, nseg=6, use_matrix=True):
+    if nseg < 2:
+        raise Exception('Number of segments must be >= 2.')
+    rbend_sirius = _pyaccel.elements.rbend
+    m66 = _pyaccel.elements.matrix
+    marker = _pyaccel.elements.marker
+    deg_2_rad = _math.pi / 180.0
+
+    # -- bo injection septum --
+    dip_nam = 'InjSept'
+    matrix_name = 'InjSeptM66'
+    dip_len = 0.50
+    dip_ang = 21.75 * deg_2_rad
+    dip_k = strengths['injsept_k']
+    dip_ks = strengths['injsept_ks']
+    dip_kl = dip_k * dip_len
+    dip_ksl = dip_ks * dip_len
+
+    if not use_matrix:
+        polya = [0, -dip_ks, 0]
+        polyb = [0, dip_k, 0]
+    else:
+        polya = [0, 0, 0]
+        polyb = [0, 0, 0]
+
+    seg_len = dip_len / nseg
+    seg_ang = dip_ang / nseg
+
+    seg_kxl = dip_kl / (nseg - 1)
+    seg_kyl = - seg_kxl
+    seg_ksxl = dip_ksl / (nseg - 1)
+    seg_ksyl = seg_ksxl
+
+    septine = rbend_sirius(
+        fam_name=dip_nam, length=seg_len, angle=seg_ang,
+        angle_in=dip_ang/2, angle_out=0,
+        gap=0, fint_in=0, fint_out=0,
+        polynom_a=polya, polynom_b=polyb)
+    septins = rbend_sirius(
+        fam_name=dip_nam, length=seg_len, angle=seg_ang,
+        angle_in=0, angle_out=dip_ang/2,
+        gap=0, fint_in=0, fint_out=0,
+        polynom_a=polya, polynom_b=polyb)
+
+    matrix = m66(matrix_name, 0)
+    matrix.KxL = seg_kxl
+    matrix.KyL = seg_kyl
+    matrix.KsxL = seg_ksxl
+    matrix.KsyL = seg_ksyl
+
+    if use_matrix:
+        segs = [matrix, ]
+    else:
+        segs = []
+    element = rbend_sirius(
+        fam_name=dip_nam, length=seg_len, angle=seg_ang,
+        angle_in=0, angle_out=0,
+        gap=0, fint_in=0, fint_out=0,
+        polynom_a=polya, polynom_b=polyb)
+
+    if nseg > 2:
+        for _ in range(nseg-2):
+            segs.append(_pyaccel.elements.Element(element))
+            if use_matrix:
+                segs.append(_pyaccel.elements.Element(matrix))
+
+    # excluded ch to make it consistent with other codes.
+    # the corrector can be implemented in the polynomB:
+    bseptin = marker('bInjS')
+    eseptin = marker('eInjS')
+    model = [bseptin, septine] + segs + [septins, eseptin]
+    return model
