@@ -7,7 +7,6 @@ _family_segmentation = {
     'SF': 1, 'CH': 1, 'CV': 1,
     'BPM': 1, 'Scrn': 1, 'DCCT': 1, 'TunePkup': 1, 'TuneShkr': 1, 'GSL': 1,
     'P5Cav': 1, 'start': 1, 'BEND': 14,
-    'InjSept': 1, 'EjeSeptF': 1,
     'InjKckr': 1, 'EjeKckr': 1
 }
 
@@ -23,8 +22,6 @@ family_mapping = {
     'SD': 'sextupole',
     'SF': 'sextupole',
 
-    'InjSept': 'pulsed_magnet',
-    'EjeSeptF': 'pulsed_magnet',
     'InjKckr': 'pulsed_magnet',
     'EjeKckr': 'pulsed_magnet',
 
@@ -70,7 +67,7 @@ def families_rf():
 
 
 def families_pulsed_magnets():
-    return ['InjSept', 'EjeSeptF', 'InjKckr', 'EjeKckr']
+    return ['InjKckr', 'EjeKckr']
 
 
 def families_di():
