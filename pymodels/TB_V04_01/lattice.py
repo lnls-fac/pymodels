@@ -113,24 +113,7 @@ def create_lattice(optics_mode=default_optics_mode):
     bp = _segmented_models.dipole(sign=+1)
     bn = _segmented_models.dipole(sign=-1)
 
-    # -- bo injection septum --
-    dip_nam = 'InjSept'
-    dip_len = 0.50
-    dip_ang = 21.75 * deg_2_rad
-    dip_k = strengths['injsept_k']
-    dip_ks = strengths['injsept_ks']
-    dip_s = 0.00
-    septine = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang,
-        0, 0, 0, [0, dip_ks, 0], [0, dip_k, dip_s])
-    septins = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 0*dip_ang, 1*dip_ang/2,
-        0, 0, 0, [0, dip_ks, 0], [0, dip_k, dip_s])
-    bseptin = marker('bInjS')
-    eseptin = marker('eInjS')
-    # excluded ch to make it consistent with other codes.
-    # the corrector can be implemented in the polynomB:
-    septin = [bseptin, septine, septins, eseptin]
+    septin = _segmented_models.septum(strengths, use_matrix=True)
 
     #  --- lines ---
     s00_1 = [l80, l4, qf2L, l30, l8, qd2L, l30, l8, qf2L, l30, l8, qf3L]
