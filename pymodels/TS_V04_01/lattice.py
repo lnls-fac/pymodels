@@ -9,6 +9,7 @@ from . import segmented_models as _segmented_models
 class LatticeError(Exception):
     pass
 
+
 energy = 3e9  # [eV]
 default_optics_mode = 'M1'
 
@@ -179,28 +180,43 @@ def get_optics_mode(optics_mode):
                                                     alpha=[-2.647, 2.000],
                                                     etax=[0.231, 0.069])
     # -- selection of optics mode --
+
     if optics_mode == 'M1':
+        # Matched alpha and disp
         strengths = {
-            'qf1a'  :  1.70521151606,
-            'qf1b'  :  1.734817173998,
-            'qd2'   : -2.8243902951,
-            'qf2'   :  2.76086143922,
-            'qf3'   :  2.632182549934,
-            'qd4a'  : -3.048732667316,
-            'qf4'   :  3.613066375692,
-            'qd4b'  : -1.46213606815,
+            'qf1a' : 1.22314895041,
+            'qf1b' : 2.299059575866,
+            'qd2'  :-3.070879492423,
+            'qf2'  : 2.430363710606,
+            'qf3'  : 2.490555471028,
+            'qd4a' :-2.571327558104,
+            'qf4'  : 3.560225939232,
+            'qd4b' :-2.205424025451,
         }
     elif optics_mode == 'M2':
+        # Mismatched optics @ NLK
         strengths = {
-            'qf1a' :  1.670801801437,
-            'qf1b' :  2.098494339697,
-            'qd2'  : -2.906779151209,
-            'qf2'  :  2.807031512313,
-            'qf3'  :  2.533815202102,
-            'qd4a' : -2.962460334623,
-            'qf4'  :  3.537403658428,
-            'qd4b' : -1.421177262593,
+            'qf1a' : 1.57459860949,
+            'qf1b' : 2.306737883377,
+            'qd2'  :-2.943141715705,
+            'qf2'  : 2.840609596248,
+            'qf3'  : 2.437797478314,
+            'qd4a' :-2.275600936637,
+            'qf4'  : 3.40501091097,
+            'qd4b' :-2.224265606819,
         }
+    elif optics_mode == 'M3':
+         # Matched optics
+         strengths = {
+             'qf1a'  : 0.801090058058,
+             'qf1b'  : 2.83641570018,
+             'qd2'   :-3.025223032377,
+             'qf2'   : 1.753256050021,
+             'qf3'   : 2.353655122791,
+             'qd4a'  :-2.670345064247,
+             'qf4'   : 3.530990934212,
+             'qd4b'  :-2.073377200462,
+         }
     else:
         Exception('Invalid TS optics mode: ' + optics_mode)
 
