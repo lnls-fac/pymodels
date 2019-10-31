@@ -22,3 +22,4 @@ def get_control_system_data(lattice, fam_data=None):
             dis = 'PM' if 'Sept' in mag else 'MA'
             name = _join_name(sec='TS', dis=dis, sub=sub, idx=inst, dev=mag)
             names[name] = {'index': idx, 'magnet_type': fam_map[mag]}
+    return names
