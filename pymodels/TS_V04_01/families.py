@@ -52,7 +52,6 @@ def families_quadrupoles():
 def families_horizontal_correctors():
     return ['EjeSeptG', 'CH']
 
-
 def families_vertical_correctors():
     return ['CV']
 
