@@ -46,7 +46,7 @@ def families_quadrupoles():
     return ['QF1A','QF1B','QD2','QF2','QF3','QD4A','QF4','QD4B']
 
 def families_horizontal_correctors():
-    return ['EjeSeptG', 'CH']
+    return ['CH']
 
 def families_vertical_correctors():
     return ['CV']
