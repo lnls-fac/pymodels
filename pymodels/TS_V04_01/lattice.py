@@ -241,16 +241,17 @@ def get_optics_mode(optics_mode):
 
 def set_num_integ_steps(the_line):
 
-    for ele in the_line:
-        if ele.angle:
-            length = ele.length
-            ele.nr_steps = max(10, int(_math.ceil(length/0.035)))
-        elif ele.polynom_b[1]:
-            ele.nr_steps = 10
-        elif ele.polynom_b[2]:
-            ele.nr_steps = 5
+    for i in range(len(the_line)):
+        if the_line[i].angle:
+            length = the_line[i].length
+            the_line[i].nr_steps = max(10, int(_math.ceil(length/0.035)))
+            print(the_line[i].nr_steps, the_line[i].fam_name)
+        elif the_line[i].polynom_b[1]:
+            the_line[i].nr_steps = 10
+        elif the_line[i].polynom_b[2]:
+            the_line[i].nr_steps = 5
         else:
-            ele.nr_steps = 1
+            the_line[i].nr_steps = 1
 
 
 def set_vacuum_chamber(the_line):
