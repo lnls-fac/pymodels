@@ -2,13 +2,14 @@
 
 import pyaccel as _pyaccel
 
+
 _family_segmentation = {
     'B': 20, 'CH': 1, 'CV':  1,
     'QF1A': 1, 'QF1B': 1, 'QD2': 1, 'QF2': 1, 'QF3': 1,
     'QD4A': 1, 'QF4': 1, 'QD4B': 1,
     'InjSeptF': 2, 'InjSeptG': 2, 'EjeSeptF': 2, 'EjeSeptG': 2,
     'ICT': 1, 'FCT': 1, 'Scrn': 1, 'BPM': 1
-}
+    }
 
 family_mapping = {
     'B': 'dipole',
@@ -34,7 +35,7 @@ family_mapping = {
     'FCT': 'beam_current_monitor',
     'Scrn': 'beam_profile_monitor',
     'BPM': 'bpm'
-}
+    }
 
 
 def families_dipoles():
@@ -52,8 +53,10 @@ def families_quadrupoles():
 def families_horizontal_correctors():
     return ['CH']
 
+
 def families_vertical_correctors():
     return ['CV']
+
 
 def families_sextupoles():
     return []
@@ -77,7 +80,6 @@ def get_section_name_mapping(lattice):
     # Find indices important to define the change of the names of the sections
     b = _pyaccel.lattice.find_indices(lattice, 'fam_name', 'B')
     b_nrsegs = len(b)//3
-    start = _pyaccel.lattice.find_indices(lattice, 'fam_name', 'start')
 
     # Names of the sections:
     secs = ['01', '02', '03', '04']

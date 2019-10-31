@@ -222,17 +222,17 @@ def get_optics_mode(optics_mode):
             'qd4b': -2.230138095518,
         }
     elif optics_mode == 'M3':
-         # Matched optics (betax_max = 100m)
-         strengths = {
-             'qf1a': 0.801090058058,
-             'qf1b': 2.83641570018,
-             'qd2': -3.025223032377,
-             'qf2': 1.753256050021,
-             'qf3': 2.353655122791,
-             'qd4a': -2.670345064247,
-             'qf4': 3.530990934212,
-             'qd4b': -2.073377200462,
-         }
+        # Matched optics (betax_max = 100m)
+        strengths = {
+            'qf1a': 0.801090058058,
+            'qf1b': 2.83641570018,
+            'qd2': -3.025223032377,
+            'qf2': 1.753256050021,
+            'qf3': 2.353655122791,
+            'qd4a': -2.670345064247,
+            'qf4': 3.530990934212,
+            'qd4b': -2.073377200462,
+        }
     else:
         Exception('Invalid TS optics mode: ' + optics_mode)
 
@@ -245,7 +245,6 @@ def set_num_integ_steps(the_line):
         if the_line[i].angle:
             length = the_line[i].length
             the_line[i].nr_steps = max(10, int(_math.ceil(length/0.035)))
-            print(the_line[i].nr_steps, the_line[i].fam_name)
         elif the_line[i].polynom_b[1]:
             the_line[i].nr_steps = 10
         elif the_line[i].polynom_b[2]:
