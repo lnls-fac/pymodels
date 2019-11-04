@@ -98,8 +98,8 @@ def dipole(sign, simplified=False):
         l2 = sum([s[1] for s in segmodel[14:]])
         dr = _pyaccel.elements.drift('LBC', l2)
         model = [dr, el_b, el, el_e, dr]
-
     return model
+
 
 def quadrupole_q14(fam_name, strength, simplified=False):
     """Segmented Q14 quadrupole model."""
@@ -144,7 +144,6 @@ def quadrupole_q14(fam_name, strength, simplified=False):
     if simplified:
         model[0].polynom_a = model[0].polynom_a[:3]
         model[0].polynom_b = model[0].polynom_b[:3]
-
     return model
 
 
@@ -192,5 +191,70 @@ def quadrupole_q20(fam_name, strength, simplified=False):
     if simplified:
         model[0].polynom_a = model[0].polynom_a[:3]
         model[0].polynom_b = model[0].polynom_b[:3]
+    return model
 
+
+def setpum(sept_name, dip_len, dip_ang, strengths, nseg=6):
+    if nseg < 2:
+        raise Exception('Number of segments must be >= 2.')
+    rbend_sirius = _pyaccel.elements.rbend
+    m66 = _pyaccel.elements.matrix
+    marker = _pyaccel.elements.marker
+    deg_2_rad = _math.pi / 180.0
+
+    polya = [0, 0, 0]
+    polyb = [0, 0, 0]
+
+    dip_nam = sept_name
+    matrix_name = sept_name + 'M66'
+    dip_len = dip_len
+    dip_ang = dip_ang * deg_2_rad
+
+    dip_kxl = strengths[sept_name.lower()+'_kxl']
+    dip_kyl = strengths[sept_name.lower()+'_kyl']
+    dip_ksxl = strengths[sept_name.lower()+'_ksxl']
+    dip_ksyl = strengths[sept_name.lower()+'_ksyl']
+
+    seg_len = dip_len / nseg
+    seg_ang = dip_ang / nseg
+
+    seg_kxl = dip_kxl / (nseg - 1)
+    seg_kyl = dip_kyl / (nseg - 1)
+    seg_ksxl = dip_ksxl / (nseg - 1)
+    seg_ksyl = dip_ksyl / (nseg - 1)
+
+    septe = rbend_sirius(
+        fam_name=dip_nam, length=seg_len, angle=seg_ang,
+        angle_in=dip_ang/2, angle_out=0,
+        gap=0, fint_in=0, fint_out=0,
+        polynom_a=polya, polynom_b=polyb)
+    septs = rbend_sirius(
+        fam_name=dip_nam, length=seg_len, angle=seg_ang,
+        angle_in=0, angle_out=dip_ang/2,
+        gap=0, fint_in=0, fint_out=0,
+        polynom_a=polya, polynom_b=polyb)
+
+    matrix = m66(matrix_name, 0)
+    matrix.KxL = seg_kxl
+    matrix.KyL = seg_kyl
+    matrix.KsxL = seg_ksxl
+    matrix.KsyL = seg_ksyl
+
+    segs = [matrix, ]
+    element = rbend_sirius(
+        fam_name=dip_nam, length=seg_len, angle=seg_ang,
+        angle_in=0, angle_out=0,
+        gap=0, fint_in=0, fint_out=0,
+        polynom_a=polya, polynom_b=polyb)
+
+    if nseg > 2:
+        for _ in range(nseg-2):
+            segs.append(_pyaccel.elements.Element(element))
+            segs.append(_pyaccel.elements.Element(matrix))
+
+    bgn = marker('b'+sept_name)  # marker at the beginning of thin septum
+    mdl = marker('m'+sept_name)  # marker at the center of thin septum
+    fin = marker('e'+sept_name)  # marker at the end of thin septum
+    segs = segs[:len(segs)//2] + [mdl] + segs[len(segs)//2:]
+    model = [bgn, septe] + segs + [septs, fin]
     return model

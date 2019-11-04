@@ -82,78 +82,22 @@ def create_lattice(optics_mode=default_optics_mode):
     qd4b = _segmented_models.quadrupole_q14('QD4B', strengths['qd4b'])
 
     # --- bending magnets ---
-    d2r = (_math.pi/180)
-
     # -- b --
     bend = _segmented_models.dipole(sign=+1)
 
-    # -- Thin Septum --
-    dip_nam = 'EjeSeptF'
-    dip_len = 0.5773
-    dip_ang = -3.6 * d2r
-    dip_K = 0.0
-    dip_S = 0.0
-    h1 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    h2 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 0*dip_ang/2, 1*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    bejesf = marker('bEjeSeptF')  # marker at the beginning of thin septum
-    mejesf = marker('mEjeSeptF')  # marker at the center of thin septum
-    eejesf = marker('eEjeSeptF')  # marker at the end of thin septum
-    ejesf = [bejesf, h1, mejesf, h2, eejesf]
-
-    # -- bo thick ejection septum --
-    dip_nam = 'EjeSeptG'
-    dip_len = 0.5773
-    dip_ang = -3.6 * d2r
-    dip_K = 0.0
-    dip_S = 0.0
-    h1 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    h2 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 0*dip_ang/2, 1*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    bejesg = marker('bEjeSeptG')  # marker at the beginning of thick septum
-    mejesg = marker('mEjeSeptG')  # marker at the center of thick septum
-    eejesg = marker('eEjeSeptG')  # marker at the end of thick septum
-    ejesg = [bejesg, h1, mejesg, h2, eejesg]
-
-    # -- si thick injection septum (2 of these are used) --
-    dip_nam = 'InjSeptG'
-    dip_len = 0.5773
-    dip_ang = +3.6 * d2r
-    dip_K = 0.0
-    dip_S = 0.0
-    h1 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    h2 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 0*dip_ang/2, 1*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    binjsg = marker('bInjSeptG')  # marker at the beginning of thick septum
-    minjsg = marker('mInjSeptG')  # marker at the center of thick septum
-    einjsg = marker('eInjSeptG')  # marker at the end of thick septum
-    injsg = [binjsg, h1, minjsg, h2, einjsg]
-
-    # -- si thin injection septum --
-    dip_nam = 'InjSeptF'
-    dip_len = 0.5773
-    dip_ang = +3.118 * d2r
-    dip_K = 0.0
-    dip_S = 0.0
-    h1 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 1*dip_ang/2, 0*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    h2 = rbend_sirius(
-        dip_nam, dip_len/2, dip_ang/2, 0*dip_ang/2, 1*dip_ang/2, 0, 0, 0,
-        [0, 0, 0], [0, dip_K, dip_S])
-    binjsf = marker('bInjSeptF')  # marker at the beginning of thin septum
-    minjsf = marker('mInjSeptF')  # marker at the center of thin septum
-    einjsf = marker('eInjSeptF')  # marker at the end of thin septum
-    injsf = [binjsf, h1, minjsf, h2, einjsf]
+    # -- septa --
+    ejesf = _segmented_models.setpum(
+        sept_name='EjeSeptF', dip_len=0.5773, dip_ang=-3.6,
+        strengths=strengths)
+    ejesg = _segmented_models.setpum(
+        sept_name='EjeSeptG', dip_len=0.5773, dip_ang=-3.6,
+        strengths=strengths)
+    injsg = _segmented_models.setpum(
+        sept_name='InjSeptG', dip_len=0.5773, dip_ang=+3.6,
+        strengths=strengths)
+    injsf = _segmented_models.setpum(
+        sept_name='InjSeptF', dip_len=0.5773, dip_ang=+3.118,
+        strengths=strengths)
 
     # --- lines ---
     sec01 = [
@@ -208,6 +152,22 @@ def get_optics_mode(optics_mode):
             'qd4a': -2.570893964278,
             'qf4': 3.549734282477,
             'qd4b': -2.209083568757,
+            'ejeseptf_kxl': 0.0,
+            'ejeseptf_kyl': 0.0,
+            'ejeseptf_ksxl': 0.0,
+            'ejeseptf_ksyl': 0.0,
+            'ejeseptg_kxl': 0.0,
+            'ejeseptg_kyl': 0.0,
+            'ejeseptg_ksxl': 0.0,
+            'ejeseptg_ksyl': 0.0,
+            'injseptg_kxl': 0.0,
+            'injseptg_kyl': 0.0,
+            'injseptg_ksxl': 0.0,
+            'injseptg_ksyl': 0.0,
+            'injseptf_kxl': 0.0,
+            'injseptf_kyl': 0.0,
+            'injseptf_ksxl': 0.0,
+            'injseptf_ksyl': 0.0,
         }
     elif optics_mode == 'M2':
         # Mismatched optics @ NLK
@@ -220,6 +180,22 @@ def get_optics_mode(optics_mode):
             'qd4a': -2.295731518617,
             'qf4': 3.413868033048,
             'qd4b': -2.230138095518,
+            'ejeseptf_kxl': 0.0,
+            'ejeseptf_kyl': 0.0,
+            'ejeseptf_ksxl': 0.0,
+            'ejeseptf_ksyl': 0.0,
+            'ejeseptg_kxl': 0.0,
+            'ejeseptg_kyl': 0.0,
+            'ejeseptg_ksxl': 0.0,
+            'ejeseptg_ksyl': 0.0,
+            'injseptg_kxl': 0.0,
+            'injseptg_kyl': 0.0,
+            'injseptg_ksxl': 0.0,
+            'injseptg_ksyl': 0.0,
+            'injseptf_kxl': 0.0,
+            'injseptf_kyl': 0.0,
+            'injseptf_ksxl': 0.0,
+            'injseptf_ksyl': 0.0,
         }
     elif optics_mode == 'M3':
         # Matched optics (betax_max = 100m)
@@ -232,6 +208,22 @@ def get_optics_mode(optics_mode):
             'qd4a': -2.670345064247,
             'qf4': 3.530990934212,
             'qd4b': -2.073377200462,
+            'ejeseptf_kxl': 0.0,
+            'ejeseptf_kyl': 0.0,
+            'ejeseptf_ksxl': 0.0,
+            'ejeseptf_ksyl': 0.0,
+            'ejeseptg_kxl': 0.0,
+            'ejeseptg_kyl': 0.0,
+            'ejeseptg_ksxl': 0.0,
+            'ejeseptg_ksyl': 0.0,
+            'injseptg_kxl': 0.0,
+            'injseptg_kyl': 0.0,
+            'injseptg_ksxl': 0.0,
+            'injseptg_ksyl': 0.0,
+            'injseptf_kxl': 0.0,
+            'injseptf_kyl': 0.0,
+            'injseptf_ksxl': 0.0,
+            'injseptf_ksyl': 0.0,
         }
     else:
         Exception('Invalid TS optics mode: ' + optics_mode)
