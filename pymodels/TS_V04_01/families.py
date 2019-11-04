@@ -7,7 +7,7 @@ _family_segmentation = {
     'B': 20, 'CH': 1, 'CV':  1,
     'QF1A': 1, 'QF1B': 1, 'QD2': 1, 'QF2': 1, 'QF3': 1,
     'QD4A': 1, 'QF4': 1, 'QD4B': 1,
-    'InjSeptF': 2, 'InjSeptG': 2, 'EjeSeptF': 2, 'EjeSeptG': 2,
+    'InjSeptF': 6, 'InjSeptG': 6, 'EjeSeptF': 6, 'EjeSeptG': 6,
     'ICT': 1, 'FCT': 1, 'Scrn': 1, 'BPM': 1
     }
 
