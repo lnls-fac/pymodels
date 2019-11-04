@@ -200,8 +200,10 @@ def get_optics_mode(optics_mode):
             'qd3': -7.185711783366,
             'qf4': 4.904972954674,
             'qd4': 4.49489157206,
-            'injsept_k': -0.8,
-            'injsept_ks': 0.0,
+            'injsept_kxl': -0.39475202,
+            'injsept_kyl': +0.35823882,
+            'injsept_ksxl': -0.04944937,
+            'injsept_ksyl': -0.00393883,
             }
 
     if optics_mode == 'M2':
@@ -226,8 +228,10 @@ def get_optics_mode(optics_mode):
             'qd3': -6.891349798498,
             'qf4': 9.84840688362,
             'qd4': -3.114739958144,
-            'injsept_k': -0.3,
-            'injsept_ks': 0.0,
+            'injsept_kxl': -0.3,
+            'injsept_kyl': 0.3,
+            'injsept_ksxl': 0.0,
+            'injsept_ksyl': 0.0,
             }
 
     if optics_mode == 'M3':
@@ -253,8 +257,10 @@ def get_optics_mode(optics_mode):
             'qd3': -4.974049498621,
             'qf4': 11.168208453391,
             'qd4': -6.191738912262,
-            'injsept_k': 0.0,
-            'injsept_ks': 0.0,
+            'injsept_kxl': 0.0,
+            'injsept_kyl': 0.0,
+            'injsept_ksxl': 0.0,
+            'injsept_ksyl': 0.0,
         }
 
     elif optics_mode == 'M4':
@@ -279,8 +285,10 @@ def get_optics_mode(optics_mode):
             'qd3': -5.519539215470,
             'qf4': 11.635406805193,
             'qd4': -6.936225524796,
-            'injsept_k': 0.0,
-            'injsept_ks': 0.0,
+            'injsept_kxl': 0.0,
+            'injsept_kyl': 0.0,
+            'injsept_ksxl': 0.0,
+            'injsept_ksyl': 0.0,
         }
     else:
         Exception('Invalid TB optics mode: ' + optics_mode)
