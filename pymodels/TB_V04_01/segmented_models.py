@@ -107,7 +107,7 @@ def dipole(sign, simplified=False):
     return model
 
 
-def septum(strengths, nseg=6, use_matrix=True):
+def septum(strengths, nseg=6):
     if nseg < 2:
         raise Exception('Number of segments must be >= 2.')
     rbend_sirius = _pyaccel.elements.rbend
@@ -120,25 +120,22 @@ def septum(strengths, nseg=6, use_matrix=True):
     matrix_name = 'InjSeptM66'
     dip_len = 0.50
     dip_ang = 21.75 * deg_2_rad
-    dip_k = strengths['injsept_k']
-    dip_ks = strengths['injsept_ks']
-    dip_kl = dip_k * dip_len
-    dip_ksl = dip_ks * dip_len
 
-    if not use_matrix:
-        polya = [0, -dip_ks, 0]
-        polyb = [0, dip_k, 0]
-    else:
-        polya = [0, 0, 0]
-        polyb = [0, 0, 0]
+    polya = [0, 0, 0]
+    polyb = [0, 0, 0]
+
+    dip_kxl = strengths['injsept_kxl']
+    dip_kyl = strengths['injsept_kyl']
+    dip_ksxl = strengths['injsept_ksxl']
+    dip_ksyl = strengths['injsept_ksyl']
 
     seg_len = dip_len / nseg
     seg_ang = dip_ang / nseg
 
-    seg_kxl = dip_kl / (nseg - 1)
-    seg_kyl = - seg_kxl
-    seg_ksxl = dip_ksl / (nseg - 1)
-    seg_ksyl = seg_ksxl
+    seg_kxl = dip_kxl / (nseg - 1)
+    seg_kyl = dip_kyl / (nseg - 1)
+    seg_ksxl = dip_ksxl / (nseg - 1)
+    seg_ksyl = dip_ksyl / (nseg - 1)
 
     septine = rbend_sirius(
         fam_name=dip_nam, length=seg_len, angle=seg_ang,
@@ -157,10 +154,7 @@ def septum(strengths, nseg=6, use_matrix=True):
     matrix.KsxL = seg_ksxl
     matrix.KsyL = seg_ksyl
 
-    if use_matrix:
-        segs = [matrix, ]
-    else:
-        segs = []
+    segs = [matrix, ]
     element = rbend_sirius(
         fam_name=dip_nam, length=seg_len, angle=seg_ang,
         angle_in=0, angle_out=0,
@@ -170,8 +164,7 @@ def septum(strengths, nseg=6, use_matrix=True):
     if nseg > 2:
         for _ in range(nseg-2):
             segs.append(_pyaccel.elements.Element(element))
-            if use_matrix:
-                segs.append(_pyaccel.elements.Element(matrix))
+            segs.append(_pyaccel.elements.Element(matrix))
 
     # excluded ch to make it consistent with other codes.
     # the corrector can be implemented in the polynomB:
