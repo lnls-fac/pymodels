@@ -8,7 +8,7 @@ _family_segmentation = {
     'Spect': 2,
     'QD1': 1, 'QF1': 1, 'QD2A': 1, 'QF2A': 1, 'QF2B': 1, 'QD2B': 1,
     'QF3': 1, 'QD3': 1, 'QF4': 1, 'QD4': 1,
-    'InjSept': 6, 'InjSeptM66': 5,
+    'InjSept': 6,
     'ICT': 1, 'FCT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
 }
 
@@ -33,7 +33,6 @@ family_mapping = {
     'QF4':     'quadrupole',
     'QD4':     'quadrupole',
     'InjSept': 'pulsed_magnet',
-    'InjSeptM66': 'pulsed_magnet',
     'ICT':     'beam_current_monitor',
     'FCT':     'beam_current_monitor',
     'SlitH':   'horizontal_slit',
@@ -50,7 +49,7 @@ def families_dipoles():
 
 def families_pulsed_magnets():
     """Return pulsed magnet families."""
-    return ['InjSept', 'InjSeptM66']
+    return ['InjSept']
 
 
 def families_quadrupoles():
