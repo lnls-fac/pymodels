@@ -113,7 +113,7 @@ def create_lattice(optics_mode=default_optics_mode):
     bp = _segmented_models.dipole(sign=+1)
     bn = _segmented_models.dipole(sign=-1)
 
-    septin = _segmented_models.septum(strengths, use_matrix=True)
+    septin = _segmented_models.septum(strengths)
 
     #  --- lines ---
     s00_1 = [l80, l4, qf2L, l30, l8, qd2L, l30, l8, qf2L, l30, l8, qf3L]
@@ -189,17 +189,17 @@ def get_optics_mode(optics_mode):
         strengths = {
             'qf2l': 12.37,
             'qd2l': -14.85,
-            'qf3l': 6.323132813302,
-            'qd1': -8.822304948618,
-            'qf1': 13.336091964647,
-            'qd2a': -11.514834402919,
-            'qf2a': 13.75616336376,
-            'qf2b': 8.173865816149,
-            'qd2b': -8.678075891613,
-            'qf3': 11.699139799372,
-            'qd3': -7.185711783366,
-            'qf4': 4.904972954674,
-            'qd4': 4.49489157206,
+            'qf3l': 6.3387,
+            'qd1':  -8.8224,
+            'qf1':  13.3361,
+            'qd2a': -10.8698,
+            'qf2a': 13.8136,
+            'qf2b': 6.9037,
+            'qd2b': -6.3496,
+            'qf3':  13.4901,
+            'qd3':  -10.8577,
+            'qf4':  8.1889,
+            'qd4':  0.6693,
             'injsept_kxl': -0.39475202,
             'injsept_kyl': +0.35823882,
             'injsept_ksxl': -0.04944937,
@@ -272,9 +272,9 @@ def get_optics_mode(optics_mode):
                                            alpha=[-2.34174, 1.04009],
                                            etax=[0.0, 0.0])
         strengths = {
-            'qf2L':  11.78860,
-            'qd2L': -14.298290,
-            'qf3L': 4.801910,
+            'qf2l':  11.78860,
+            'qd2l': -14.298290,
+            'qf3l': 4.801910,
             'qd1': -8.822256368219,
             'qf1': 13.336060990905,
             'qd2a': -9.382785447106,
