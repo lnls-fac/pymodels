@@ -103,7 +103,7 @@ class Element(ModelElement):
             prop_sp = 'seti'
             prop_rb = 'rdi'
         elif self._type == 'pulsed_magnet':
-            dis = 'PM'
+            dis = 'PU'
             prop_sp = 'Voltage-SP'
             prop_rb = 'Voltage-RB'
         self._sp = _PV(self._name.substitute(dis=dis, propty=prop_sp))
