@@ -87,16 +87,16 @@ def create_lattice(optics_mode=default_optics_mode):
 
     # -- septa --
     ejesf = _segmented_models.setpum(
-        sept_name='EjeSeptF', dip_len=0.5773, dip_ang=-3.6,
+        dip_nam='EjeSeptF', dip_len=0.5773, dip_ang=-3.6,
         strengths=strengths)
     ejesg = _segmented_models.setpum(
-        sept_name='EjeSeptG', dip_len=0.5773, dip_ang=-3.6,
+        dip_nam='EjeSeptG', dip_len=0.5773, dip_ang=-3.6,
         strengths=strengths)
     injsg = _segmented_models.setpum(
-        sept_name='InjSeptG', dip_len=0.5773, dip_ang=+3.6,
+        dip_nam='InjSeptG', dip_len=0.5773, dip_ang=+3.6,
         strengths=strengths)
     injsf = _segmented_models.setpum(
-        sept_name='InjSeptF', dip_len=0.5773, dip_ang=+3.118,
+        dip_nam='InjSeptF', dip_len=0.5773, dip_ang=+3.118,
         strengths=strengths)
 
     # --- lines ---
