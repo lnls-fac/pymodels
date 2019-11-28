@@ -96,7 +96,7 @@ def create_lattice(optics_mode=default_optics_mode):
         dip_nam='InjSeptG', dip_len=0.5773, dip_ang=+3.6,
         strengths=strengths)
     injsf = _segmented_models.setpum(
-        dip_nam='InjSeptF', dip_len=0.5773, dip_ang=+3.118,
+        dip_nam='InjSeptF', dip_len=0.5000, dip_ang=+3.118,
         strengths=strengths)
 
     # --- lines ---
