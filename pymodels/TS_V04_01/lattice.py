@@ -138,7 +138,7 @@ def create_lattice(optics_mode=default_optics_mode):
 
 def get_optics_mode(optics_mode):
     twiss_at_start = _pyaccel.optics.Twiss.make_new(
-        beta=[9.321, 12.881], alpha=[-2.647, 2.000], etax=[0.231, 0.069])
+        beta=[7.906, 11.841], alpha=[-2.4231, 1.8796], etax=[0.21135, 0.06939])
     # -- selection of optics mode --
 
     if optics_mode == 'M1':
