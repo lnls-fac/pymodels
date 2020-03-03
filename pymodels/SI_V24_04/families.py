@@ -306,6 +306,9 @@ def get_family_data(lattice):
     data['B1B2-1'] = sorted(data['B1']+data['B2'], key=get_idx)
     data['B1B2-2'] = sorted(data['B1']+data['B2'], key=get_idx)
 
+    # all dipoles indices
+    data['BN'] = sorted(data['B1']+data['B2']+data['BC'], key=get_idx)
+
     # PingH (in the model the same as InjDpKckr)
     data['PingH'] = sorted(data['InjDpKckr'], key=get_idx)
 
