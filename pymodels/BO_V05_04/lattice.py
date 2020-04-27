@@ -1,9 +1,15 @@
-#!/usr/bin/env python-sirius
+"""Lattice module.
+
+In this module the lattice of the corresponding accelerator is defined.
+"""
 
 import math as _math
 import numpy as _np
-import pyaccel as _pyaccel
+
+from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
+    accelerator as _pyacc_acc, optics as _pyacc_opt
 import mathphys as _mp
+
 from . import segmented_models as _seg_models
 
 
@@ -14,26 +20,24 @@ energy = 0.15e9  # [eV]
 _d2r = _math.pi/180.0
 
 
-def create_lattice(**kwargs):
-
+def create_lattice(energy=energy, optics_mode=None):
+    """Create lattice function."""
     # -- shortcut symbols --
-    marker       = _pyaccel.elements.marker
-    drift        = _pyaccel.elements.drift
-    quadrupole   = _pyaccel.elements.quadrupole
-    sextupole    = _pyaccel.elements.sextupole
-    rfcavity     = _pyaccel.elements.rfcavity
-    hcorrector   = _pyaccel.elements.hcorrector
-    vcorrector   = _pyaccel.elements.vcorrector
+    marker = _pyacc_ele.marker
+    drift = _pyacc_ele.drift
+    quadrupole = _pyacc_ele.quadrupole
+    sextupole = _pyacc_ele.sextupole
+    rfcavity = _pyacc_ele.rfcavity
+    hcorrector = _pyacc_ele.hcorrector
+    vcorrector = _pyacc_ele.vcorrector
 
+    optics_mode = optics_mode or default_optics_mode
 
-    energy = kwargs['energy'] if 'energy' in kwargs else energy
-    optics_mode = kwargs['optics_mode'] if 'optics_mode' in kwargs else default_optics_mode
-
-    strengths = get_optics_mode(optics_mode,energy)
+    strengths = get_optics_mode(optics_mode, energy)
 
     B, b_len_seg = _seg_models.dipole(energy)
     b_len_hdedge = 1.152
-    lenDif       = (b_len_seg - b_len_hdedge)/2.0
+    lenDif = (b_len_seg - b_len_hdedge)/2.0
 
     # ----- DRIFTS ----
     L008100 = drift('l008100', 0.08100)
@@ -88,8 +92,8 @@ def create_lattice(**kwargs):
 
     KIN  = quadrupole('InjKckr', 0.40000, 0.0)
     KEX  = quadrupole('EjeKckr', 0.40000, 0.0)
-    CH   = sextupole ('CH',   0.150, 0.0)
-    CV   = sextupole ('CV',   0.150, 0.0)
+    CH   = sextupole('CH',   0.150, 0.0)
+    CV   = sextupole('CV',   0.150, 0.0)
 
     SF,_  = _seg_models.sx_sextupole(energy, 'SF', strengths['sf'] * 0.105)
     SD,_  = _seg_models.sx_sextupole(energy, 'SD', strengths['sd'] * 0.105)
@@ -104,7 +108,8 @@ def create_lattice(**kwargs):
     # --- lines ---
 
     US_SF = [GIR, L200200, BPM, L189350, GIR, SF, L013350]
-    US_CS = [L010350, SD, L027250, CV, GIR, L137100, BPM, L182100, GIR, CH, L016100]
+    US_CS = [
+        L010350, SD, L027250, CV, GIR, L137100, BPM, L182100, GIR, CH, L016100]
     US_CC = [L008100, CV, GIR, L177100, BPM, L182100, GIR, CH, L016100]
     US_SS = [L010350, SD, GIR, L179350, BPM, L189350, GIR, SF, L013350]
     US_SF_Scrn = [GIR, L200200, BPM, L172600, GIR, Scrn, L016750, SF, L013350]
@@ -275,17 +280,18 @@ def create_lattice(**kwargs):
     S49 = [US_49, QF, DS_49, B]
     S50 = [US_50, QF, DS_50, B]
 
-    elist = [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10,
-             S11, S12, S13, S14, S15, S16, S17, S18, S19, S20,
-             S21, S22, S23, S24, S25, S26, S27, S28, S29, S30,
-             S31, S32, S33, S34, S35, S36, S37, S38, S39, S40,
-             S41, S42, S43, S44, S45, S46, S47, S48, S49, S50]
+    elist = [
+        S01, S02, S03, S04, S05, S06, S07, S08, S09, S10,
+        S11, S12, S13, S14, S15, S16, S17, S18, S19, S20,
+        S21, S22, S23, S24, S25, S26, S27, S28, S29, S30,
+        S31, S32, S33, S34, S35, S36, S37, S38, S39, S40,
+        S41, S42, S43, S44, S45, S46, S47, S48, S49, S50]
 
-    the_ring = _pyaccel.lattice.build(elist)
+    the_ring = _pyacc_lat.build(elist)
 
     # -- shifts model to marker 'start'
-    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'start')
-    the_ring = _pyaccel.lattice.shift(the_ring, idx[0])
+    idx = _pyacc_lat.find_indices(the_ring, 'fam_name', 'start')
+    the_ring = _pyacc_lat.shift(the_ring, idx[0])
 
     # -- sets rf frequency
     set_rf_frequency(the_ring)
@@ -302,8 +308,8 @@ def create_lattice(**kwargs):
     return the_ring
 
 
-def get_optics_mode(optics_mode,energy=energy):
-
+def get_optics_mode(optics_mode, energy=energy):
+    """Return magnet strengths of a given opics mode."""
     if optics_mode == 'M0':
         # 2019-08-01 Murilo
         # tunes fitted to [19.20433 7.31417] for new dipoles segmented model
@@ -319,7 +325,7 @@ def get_optics_mode(optics_mode,energy=energy):
         sf_low_en = 11.32009586848142
         sd_low_en = 10.37672159358045
     else:
-        raise Exception('Optics mode not recognized.')
+        raise _pyacc_acc.AcceleratorException('Optics mode not recognized.')
 
     coeff = (energy-0.15e9)/(3e9-0.15e9)
     strengths = {
@@ -332,68 +338,69 @@ def get_optics_mode(optics_mode,energy=energy):
     return strengths
 
 def set_rf_frequency(the_ring):
-
-    circumference = _pyaccel.lattice.length(the_ring)
+    """Set RF frequency of the lattice."""
+    circumference = _pyacc_lat.length(the_ring)
     velocity = _mp.constants.light_speed
     rev_frequency = velocity / circumference
     rf_frequency  = harmonic_number * rev_frequency
-    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'P5Cav')
+    idx = _pyacc_lat.find_indices(the_ring, 'fam_name', 'P5Cav')
     for i in idx:
         the_ring[i].frequency = rf_frequency
 
 
 def set_rf_voltage(the_ring, energy):
-
+    """Set RF voltage of the lattice."""
     overvoltage = 1.525
     energy0 = 0.15e9
-    rho0   = 1.152*50/(2*_math.pi)
+    rho0 = 1.152*50/(2*_math.pi)
     U0 = (_mp.constants.rad_cgamma*((energy*1e-9)**4)/rho0)*1e9
 
     voltage_inj = 150e3 - overvoltage*((_mp.constants.rad_cgamma*((energy0*1e-9)**4)/rho0)*1e9)
     voltage_eje = 950e3
     voltage = min([(overvoltage*U0 + voltage_inj), voltage_eje])
 
-    idx = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'P5Cav')
+    idx = _pyacc_lat.find_indices(the_ring, 'fam_name', 'P5Cav')
     for i in idx:
         the_ring[i].voltage = voltage
 
 
 def set_num_integ_steps(the_ring):
+    """Set number of integration steps in each lattice element."""
     bends = []
-    for i in range(len(the_ring)):
+    for i, _ in enumerate(the_ring):
         if the_ring[i].angle:
             bends.append(i)
 
-    len_b  = 3e-2
+    len_b = 3e-2
     len_qs = 1.5e-2
 
     zero_polyB = ('InjSept', 'InjKckr', 'EjeSeptF', 'EjeKckr', 'QS')
 
-    for i in range(len(the_ring)):
+    for i, _ in enumerate(the_ring):
         if i in bends:
-            nr_steps = int( _math.ceil(the_ring[i].length/len_b))
+            nr_steps = int(_math.ceil(the_ring[i].length/len_b))
             the_ring[i].nr_steps = nr_steps
-        elif (any(the_ring[i].polynom_b) and i not in bends) or the_ring[i].fam_name in zero_polyB:
-            nr_steps = int( _math.ceil(the_ring[i].length/len_qs))
+        elif any(the_ring[i].polynom_b) or the_ring[i].fam_name in zero_polyB:
+            nr_steps = int(_math.ceil(the_ring[i].length/len_qs))
             the_ring[i].nr_steps = nr_steps
 
 
 def set_vacuum_chamber(the_ring):
-
+    """Set vacuum chamber for all elements."""
     # vchamber = [hmin, hmax, vmin, vmax]
-    bends_vchamber      = [-0.0117, 0.0117, -0.0117, 0.0117]
-    other_vchamber      = [-0.018,   0.018,  -0.018,  0.018]
-    extraction_vchamber = [-0.018,   0.026,  -0.018,  0.018]
+    bends_vchamber = [-0.0117, 0.0117, -0.0117, 0.0117]
+    other_vchamber = [-0.018, 0.018, -0.018, 0.018]
+    extraction_vchamber = [-0.018, 0.026, -0.018, 0.018]
 
-    sept_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjSept')[0]
-    kick_in = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'InjKckr')[0]
+    sept_in = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjSept')[0]
+    kick_in = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjKckr')[0]
 
-    b = _np.array(_pyaccel.lattice.find_indices(the_ring, 'fam_name', 'B'))
-    sept_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'EjeSeptF')[0]
-    kick_ex = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'EjeKckr')[0]
+    b = _np.array(_pyacc_lat.find_indices(the_ring, 'fam_name', 'B'))
+    sept_ex = _pyacc_lat.find_indices(the_ring, 'fam_name', 'EjeSeptF')[0]
+    kick_ex = _pyacc_lat.find_indices(the_ring, 'fam_name', 'EjeKckr')[0]
     b_ex = b[b > kick_ex]; b_ex = b_ex[b_ex < sept_ex]
 
-    for i in range(len(the_ring)):
+    for i, _ in enumerate(the_ring):
         if the_ring[i].angle:
             the_ring[i].hmin = bends_vchamber[0]
             the_ring[i].hmax = bends_vchamber[1]
