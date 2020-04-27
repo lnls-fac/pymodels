@@ -522,16 +522,12 @@ def set_num_integ_steps(the_ring):
 def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     """Set vacuum chamber for all elements."""
     # vchamber = [hmin, hmax, vmin, vmax] (meter)
-    bc_vchamber = [-0.012, 0.012, -0.004, 0.004]
     other_vchamber = [-0.012, 0.012, -0.012, 0.012]
     idb_vchamber = [-0.004, 0.004, -0.00225, 0.00225]
     ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
     bc_hfield_vchamber = [-0.004, 0.004, -0.004, 0.004]
-    if mode.startswith('S05'):
-        idp_vchamber = idb_vchamber
-    else:
-        idp_vchamber = ida_vchamber
     inj_vchamber = [-0.030, 0.030, -0.012, 0.012]
+    idp_vchamber = idb_vchamber if mode.startswith('S05') else ida_vchamber
 
     # Set ordinary Vacuum Chamber
     for i in range(len(the_ring)):
@@ -542,12 +538,6 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     bpm = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'BPM')
     the_ring = _pyaccel.lattice.shift(the_ring, bpm[0])
 
-    # Set bc vacuum chamber
-    bcs = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'mc')
-    for i in bcs:
-        for j in range(i-8, i+9):
-            e = the_ring[j]
-            e.hmin, e.hmax, e.vmin, e.vmax = bc_vchamber
 
     # Set in-vacuum ids vacuum chamber
     idb = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'id_endb')
