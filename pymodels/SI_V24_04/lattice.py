@@ -161,12 +161,12 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     ScrapV = marker('ScrapV')  # vertical scraper
     GSL15 = marker('GSL15')   # Generic Stripline (lambda/4)
     GSL07 = marker('GSL07')   # Generic Stripline (lambda/8)
-    GBPM   = marker('GBPM') # General BPM
+    GBPM = marker('GBPM') # General BPM
     BbBPkup = marker('BbBPkup')    # Bunch-by-Bunch Pickup
     BbBKckrH = marker('BbBKckrH')   # Horizontal Bunch-by-Bunch Shaker
     BbBKckrV = marker('BbBKckrV')   # Vertical Bunch-by-Bunch Shaker
 
-    BbBKckL   = marker('BbBKckrL') # Longitudinal Bunch-by-Bunch Shaker
+    BbBKckL = marker('BbBKckrL') # Longitudinal Bunch-by-Bunch Shaker
 
     TuneShkrH = marker('TuneShkrH')  # Horizontal Tune Shaker
     TuneShkrV = marker('TuneShkrV')  # Vertical Tune Shaker
@@ -526,6 +526,7 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     other_vchamber = [-0.012, 0.012, -0.012, 0.012]
     idb_vchamber = [-0.004, 0.004, -0.00225, 0.00225]
     ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
+    bc_hfield_vchamber = [-0.004, 0.004, -0.004, 0.004]
     if mode.startswith('S05'):
         idp_vchamber = idb_vchamber
     else:
@@ -580,13 +581,26 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
 
     # Set injection vacuum chamber
     sept_in = _pyaccel.lattice.find_indices(
-                                    the_ring, 'fam_name', 'InjSeptF')[-1]
+        the_ring, 'fam_name', 'InjSeptF')[-1]
     kick_in = _pyaccel.lattice.find_indices(
-                                    the_ring, 'fam_name', 'InjDpKckr')[0]
+        the_ring, 'fam_name', 'InjDpKckr')[0]
     inj_list = list(range(sept_in, len(the_ring))) + list(range(0, kick_in+1))
     for i in inj_list:
         e = the_ring[i]
         e.hmin, e.hmax, e.vmin, e.vmax = inj_vchamber
+
+    # Set high field BC vacuum chamber
+    # NOTE: segments with bending radius smaller than this value
+    # are supposed to have reduced vacuum chamber. This should be
+    # replaced by specification of the vacuum chamber
+    rho0 = 5.0  # [m]
+    indices = _pyaccel.lattice.find_indices(the_ring, 'fam_name', 'BC')
+    for i in indices:
+        e = the_ring[i]
+        ang, lng = e.angle, e.length
+        rho = lng/ang
+        if rho < rho0:
+            e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
 
 
 def get_optics_mode(mode=default_optics_mode):
