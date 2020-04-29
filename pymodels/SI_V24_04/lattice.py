@@ -545,7 +545,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     set_num_integ_steps(the_ring)
 
     # -- define vacuum chamber for all elements
-    set_vacuum_chamber(the_ring)
+    the_ring = set_vacuum_chamber(the_ring)
 
     return the_ring
 
@@ -596,10 +596,9 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
         e = the_ring[i]
         e.hmin, e.hmax, e.vmin, e.vmax = other_vchamber
 
-    # Shift the ring to do not begin between id markers
+    # Shift the ring so that lattice does not begin between id markers
     bpm = _pyacc_lat.find_indices(the_ring, 'fam_name', 'BPM')
     the_ring = _pyacc_lat.shift(the_ring, bpm[0])
-
 
     # Set in-vacuum ids vacuum chamber
     idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
@@ -651,6 +650,8 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
         rho = lng/ang
         if rho < rho0:
             e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
+
+    return the_ring
 
 
 def get_optics_mode(mode=default_optics_mode):
