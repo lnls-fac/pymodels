@@ -4,10 +4,13 @@ In this module the lattice of the corresponding accelerator is defined.
 """
 
 import math as _math
+import numpy as _np
+
 import lnls as _lnls
+import mathphys as _mp
 from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
     accelerator as _pyacc_acc
-import mathphys as _mp
+
 from . import segmented_models as _segmented_models
 
 default_optics_mode = 'S05.01'
@@ -588,7 +591,7 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     idb_vchamber = [-0.004, 0.004, -0.00225, 0.00225]
     ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
     bc_hfield_vchamber = [-0.004, 0.004, -0.004, 0.004]
-    inj_vchamber = [-0.030, 0.030, -0.012, 0.012]
+    inj_vchamber = [-0.030, 0.012, -0.012, 0.012]
     idp_vchamber = idb_vchamber if mode.startswith('S05') else ida_vchamber
 
     # Set ordinary Vacuum Chamber
@@ -600,32 +603,36 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     bpm = _pyacc_lat.find_indices(the_ring, 'fam_name', 'BPM')
     the_ring = _pyacc_lat.shift(the_ring, bpm[0])
 
-    # Set in-vacuum ids vacuum chamber
-    idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
-    idb_list = []
-    for i in range(len(idb)//2):
-        idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
-    for i in idb_list:
-        e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
+    # NOTE: Insertion devices vchamber temporarily off
 
-    # Set other ids vacuum chamber
-    ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
-    ida_list = []
-    for i in range(len(ida)//2):
-        ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
-    for i in ida_list:
-        e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
+    # # Set in-vacuum ids vacuum chamber
+    # idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
+    # print(idb)
+    # idb_list = []
+    # for i in range(len(idb)//2):
+    #     idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
+    # print(idb_list)
+    # for i in idb_list:
+    #     e = the_ring[i]
+    #     e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
 
-    # Set other ids vacuum chamber
-    idp = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endp')
-    idp_list = []
-    for i in range(len(idp)//2):
-        idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
-    for i in idp_list:
-        e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
+    # # Set other ids vacuum chamber
+    # ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
+    # ida_list = []
+    # for i in range(len(ida)//2):
+    #     ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
+    # for i in ida_list:
+    #     e = the_ring[i]
+    #     e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
+
+    # # Set other ids vacuum chamber
+    # idp = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endp')
+    # idp_list = []
+    # for i in range(len(idp)//2):
+    #     idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
+    # for i in idp_list:
+    #     e = the_ring[i]
+    #     e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
 
     # Shift the ring back.
     the_ring = _pyacc_lat.shift(the_ring, len(the_ring)-bpm[0])
@@ -650,6 +657,12 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
         rho = lng/ang
         if rho < rho0:
             e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
+    indices = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mc')
+    for i in indices:
+        e = the_ring[i]
+        e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
+        e = the_ring[i + 1]
+        e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
 
     return the_ring
 
