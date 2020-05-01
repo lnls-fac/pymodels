@@ -165,7 +165,7 @@ def create_lattice(optics_mode = default_optics_mode, operation_mode = default_o
     set_num_integ_steps(the_line)
 
     # -- define vacuum chamber for all elements
-    set_vacuum_chamber(the_line)
+    the_line = set_vacuum_chamber(the_line)
 
     return the_line, twiss_at_match
 
@@ -260,3 +260,5 @@ def set_vacuum_chamber(the_line):
         the_line[i].hmax = +0.018
         the_line[i].vmin = -0.018
         the_line[i].vmax = +0.018
+
+    return the_line

@@ -303,7 +303,7 @@ def create_lattice(energy=energy, optics_mode=None):
     set_num_integ_steps(the_ring)
 
     # -- define vacuum chamber for all elements
-    set_vacuum_chamber(the_ring)
+    the_ring = set_vacuum_chamber(the_ring)
 
     return the_ring
 
@@ -434,3 +434,5 @@ def set_vacuum_chamber(the_ring):
         the_ring[i].hmax = extraction_vchamber[1]
         the_ring[i].vmin = extraction_vchamber[2]
         the_ring[i].vmax = extraction_vchamber[3]
+
+    return the_ring
