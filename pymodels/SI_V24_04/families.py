@@ -272,7 +272,7 @@ def get_family_data(lattice):
 
     # qs - skew quad correctors
     idx = []
-    fams = ['SFA0', 'SDB0', 'SDP0', 'FC2', 'SDA2', 'SDB2',
+    fams = ['SFA0', 'SDB0', 'SDP0', 'SDA2', 'SDB2',
             'SDP2', 'SDA3', 'SDB3', 'SDP3']
     for fam in fams:
         if fam in {'SDA2', 'SDB2', 'SDP2'}:
