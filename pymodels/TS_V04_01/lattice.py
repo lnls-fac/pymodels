@@ -233,10 +233,129 @@ def get_optics_mode(optics_mode):
             'injseptf_ksxl': 0.0,
             'injseptf_ksyl': 0.0,
         }
+    elif optics_mode == 'M4':
+        # gradient at septa F1=+1, F2=+1
+        factor1, factor2 = +1, +1
+        gradx, grady = 0.07, -0.03
+        strengths = {
+            'qf1a': 2.076592813232,
+            'qf1b': 2.295191391763,
+            'qd2': -3.67917176299,
+            'qf2': 3.227449468936,
+            'qf3': 2.535168140678,
+            'qd4a': -2.889236103705,
+            'qf4': 2.725105900082,
+            'qd4b': -0.178371654879,
+            'ejeseptf_kxl': factor1*gradx/2,
+            'ejeseptf_kyl': factor1*grady/2,
+            'ejeseptf_ksxl': 0.0,
+            'ejeseptf_ksyl': 0.0,
+            'ejeseptg_kxl': factor1*gradx/2,
+            'ejeseptg_kyl': factor1*grady/2,
+            'ejeseptg_ksxl': 0.0,
+            'ejeseptg_ksyl': 0.0,
+            'injseptg_kxl': factor2*gradx/3,
+            'injseptg_kyl': factor2*grady/3,
+            'injseptg_ksxl': 0.0,
+            'injseptg_ksyl': 0.0,
+            'injseptf_kxl': factor2*gradx/3,
+            'injseptf_kyl': factor2*grady/3,
+            'injseptf_ksxl': 0.0,
+            'injseptf_ksyl': 0.0,
+        }
+    elif optics_mode == 'M5':
+        # gradient at septa F1=-1, F2=-1
+        factor1, factor2 = -1, -1
+        gradx, grady = 0.07, -0.03
+        strengths = {
+            'qf1a': 0.68138381863,
+            'qf1b': 2.540502547179,
+            'qd2': -2.649476796468,
+            'qf2': 2.315523147061,
+            'qf3': 2.466696495959,
+            'qd4a': -2.230749156516,
+            'qf4': 3.607418638025,
+            'qd4b': -3.102318309104,
+            'ejeseptf_kxl': factor1*gradx/2,
+            'ejeseptf_kyl': factor1*grady/2,
+            'ejeseptf_ksxl': 0.0,
+            'ejeseptf_ksyl': 0.0,
+            'ejeseptg_kxl': factor1*gradx/2,
+            'ejeseptg_kyl': factor1*grady/2,
+            'ejeseptg_ksxl': 0.0,
+            'ejeseptg_ksyl': 0.0,
+            'injseptg_kxl': factor2*gradx/3,
+            'injseptg_kyl': factor2*grady/3,
+            'injseptg_ksxl': 0.0,
+            'injseptg_ksyl': 0.0,
+            'injseptf_kxl': factor2*gradx/3,
+            'injseptf_kyl': factor2*grady/3,
+            'injseptf_ksxl': 0.0,
+            'injseptf_ksyl': 0.0,
+        }
+    elif optics_mode == 'M6':
+        # gradient at septa F1=+1, F2=-1
+        factor1, factor2 = +1, -1
+        gradx, grady = 0.07, -0.03
+        strengths = {
+            'qf1a': 1.688714105145,
+            'qf1b': 2.330997431951,
+            'qd2': -3.53198833658,
+            'qf2': 2.963821702234,
+            'qf3': 2.448719143099,
+            'qd4a': -2.633276967216,
+            'qf4': 3.710177668341,
+            'qd4b': -3.030560820915,
+            'ejeseptf_kxl': factor1*gradx/2,
+            'ejeseptf_kyl': factor1*grady/2,
+            'ejeseptf_ksxl': 0.0,
+            'ejeseptf_ksyl': 0.0,
+            'ejeseptg_kxl': factor1*gradx/2,
+            'ejeseptg_kyl': factor1*grady/2,
+            'ejeseptg_ksxl': 0.0,
+            'ejeseptg_ksyl': 0.0,
+            'injseptg_kxl': factor2*gradx/3,
+            'injseptg_kyl': factor2*grady/3,
+            'injseptg_ksxl': 0.0,
+            'injseptg_ksyl': 0.0,
+            'injseptf_kxl': factor2*gradx/3,
+            'injseptf_kyl': factor2*grady/3,
+            'injseptf_ksxl': 0.0,
+            'injseptf_ksyl': 0.0,
+        }
+    elif optics_mode == 'M7':
+        # gradient at septa F1=-1, F2=+1
+        factor1, factor2 = -1, +1
+        gradx, grady = +0.07, -0.03
+        strengths = {
+            'qf1a': 1.442359737759,
+            'qf1b': 2.127511697952,
+            'qd2': -2.662578340021,
+            'qf2': 2.607666816742,
+            'qf3': 2.647218022061,
+            'qd4a': -2.493872488111,
+            'qf4': 2.652564705296,
+            'qd4b': -0.141589759831,
+            'ejeseptf_kxl': factor1*gradx/2,
+            'ejeseptf_kyl': factor1*grady/2,
+            'ejeseptf_ksxl': 0.0,
+            'ejeseptf_ksyl': 0.0,
+            'ejeseptg_kxl': factor1*gradx/2,
+            'ejeseptg_kyl': factor1*grady/2,
+            'ejeseptg_ksxl': 0.0,
+            'ejeseptg_ksyl': 0.0,
+            'injseptg_kxl': factor2*gradx/3,
+            'injseptg_kyl': factor2*grady/3,
+            'injseptg_ksxl': 0.0,
+            'injseptg_ksyl': 0.0,
+            'injseptf_kxl': factor2*gradx/3,
+            'injseptf_kyl': factor2*grady/3,
+            'injseptf_ksxl': 0.0,
+            'injseptf_ksyl': 0.0,
+        }
     else:
         _pyacc_acc.AcceleratorException(
             'Invalid TS optics mode: ' + optics_mode)
-
     return strengths, twiss_at_start
 
 
