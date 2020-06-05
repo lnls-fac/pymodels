@@ -26,6 +26,7 @@ _family_segmentation = {
     'APU22': 2,
     }
 
+
 family_mapping = {
 
     'B1': 'dipole',
@@ -101,7 +102,6 @@ family_mapping = {
 
     'SRFCav': 'superconducting_rf_cavity',
     'APU22': 'insertion_device',
-
     }
 
 
@@ -162,6 +162,7 @@ def families_di():
 def families_ids():
     """Return insertion devices families."""
     return ['APU22', ]
+
 
 def get_section_name_mapping(lattice):
     """Return list with section name of each lattice element."""
