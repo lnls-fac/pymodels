@@ -22,7 +22,10 @@ _family_segmentation = {
     'FC1': 1, 'FC2': 1,
     'QS': 1, 'CH': 1, 'CV': 1,
     'SRFCav': 1, 'start': 1,
-    'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1, }
+    'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
+    'APU22': 2,
+    }
+
 
 family_mapping = {
 
@@ -97,7 +100,9 @@ family_mapping = {
 
     'QS': 'skew_quadrupole',
 
-    'SRFCav': 'superconducting_rf_cavity'}
+    'SRFCav': 'superconducting_rf_cavity',
+    'APU22': 'insertion_device',
+    }
 
 
 def families_dipoles():
@@ -152,6 +157,11 @@ def families_di():
     return ['BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
             'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckL'
             'TuneShkrH', 'TuneShkrV', 'TunePkup']
+
+
+def families_ids():
+    """Return insertion devices families."""
+    return ['APU22', ]
 
 
 def get_section_name_mapping(lattice):
@@ -312,6 +322,14 @@ def get_family_data(lattice):
     # PingH (in the model the same as InjDpKckr)
     data['PingH'] = sorted(data['InjDpKckr'], key=get_idx)
 
+    # IDs
+    idx = []
+    fams = ['APU22',]
+    for fam in fams:
+        idx.extend(data[fam])
+    data['ID'] = sorted(idx, key=get_idx)
+
+    # Girders
     girder = get_girder_data(lattice)
     if girder is not None:
         data['girder'] = girder

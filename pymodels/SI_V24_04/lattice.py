@@ -40,6 +40,8 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     LIP = drift('lip', 1.0879)
     LPMU = drift('lpmu', 0.0600)
     LPMD = drift('lpmd', 0.4929)
+    LID1 = drift('lid1', 1.83425)
+    LID2 = drift('lid2', 0.29965)
 
     L011 = drift('l011', 0.011)
     L049 = drift('l049', 0.049)
@@ -76,6 +78,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
+    L570 = drift('l570', 0.570)
     L715 = drift('l715', 0.715)
 
     # -- dipoles --
@@ -141,6 +144,9 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     # -- rf cavities --
     RFC = rfcavity('SRFCav', 0, 3.0e6, 500e6)
     HCav = marker('H3Cav')
+
+    # -- insertion devices --
+    APU22H = drift('APU22', 1.300/2)
 
     # -- lattice markers --
     START = marker('start')  # start of the model
@@ -321,6 +327,13 @@ def create_lattice(mode=default_optics_mode, simplified=False):
         GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
         SDP1, L237, TuneShkrV, GIR, L237, GIR]
 
+    # -- insertion devices --
+
+    IDA_APU22 = [
+        LID2, FC2, L570, FC2, LID1,
+        MIDA, APU22H, MIA, APU22H, MIDA,
+        LID1, FC2, L570, FC2, LID2]  # high beta ID straight section
+
     # -- girders --
 
     # straight sections
@@ -332,7 +345,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     SS_S06 = IDB
     SS_S07 = IDP
     SS_S08 = IDB
-    SS_S09 = IDA
+    SS_S09 = IDA_APU22
     SS_S10 = IDB
     SS_S11 = IDP
     SS_S12 = IDB
