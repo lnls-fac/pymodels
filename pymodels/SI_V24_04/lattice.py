@@ -75,6 +75,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     L260 = drift('l260', 0.260)
     L325 = drift('l325', 0.325)
     L336 = drift('l336', 0.336)
+    L350 = drift('l350', 0.350)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -333,6 +334,10 @@ def create_lattice(mode=default_optics_mode, simplified=False):
         LID2, FC2, L570, FC2, LID1,
         MIDA, APU22H, MIA, APU22H, MIDA,
         LID1, FC2, L570, FC2, LID2]  # high beta ID straight section
+    IDP_APU22 = [
+        L500, LIP, L500, L350,
+        MIDP, APU22H, MIP, APU22H, MIDP,
+        L350, L500, LIP, L500]  # low beta ID straight section
 
     # -- girders --
 
@@ -343,7 +348,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     SS_S04 = IDB
     SS_S05 = IDA_ScrapH
     SS_S06 = IDB
-    SS_S07 = IDP
+    SS_S07 = IDP_APU22
     SS_S08 = IDB
     SS_S09 = IDA_APU22
     SS_S10 = IDB
