@@ -324,7 +324,7 @@ def get_family_data(lattice):
 
     # IDs
     idx = []
-    fams = ['APU22',]
+    fams = ['APU22', ]
     for fam in fams:
         idx.extend(data[fam])
     data['ID'] = sorted(idx, key=get_idx)
