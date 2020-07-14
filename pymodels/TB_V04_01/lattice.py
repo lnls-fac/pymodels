@@ -4,7 +4,8 @@ In this module the lattice of the corresponding accelerator is defined.
 """
 
 import math as _math
-import pyaccel as _pyaccel
+from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
+    accelerator as _pyacc_acc, optics as _pyacc_opt
 from . import segmented_models as _segmented_models
 
 energy = 0.150e9  # [eV]
@@ -14,19 +15,17 @@ default_optics_mode = 'M1'
 class LatticeError(Exception):
     """LatticeError class."""
 
-    pass
-
 
 def create_lattice(optics_mode=default_optics_mode):
     """Create lattice function."""
     strengths, twiss_at_start = get_optics_mode(optics_mode)
 
     # -- shortcut symbols --
-    marker = _pyaccel.elements.marker
-    drift = _pyaccel.elements.drift
-    quadrupole = _pyaccel.elements.quadrupole
-    rbend_sirius = _pyaccel.elements.rbend
-    sextupole = _pyaccel.elements.sextupole
+    marker = _pyacc_ele.marker
+    drift = _pyacc_ele.drift
+    quadrupole = _pyacc_ele.quadrupole
+    rbend_sirius = _pyacc_ele.rbend
+    sextupole = _pyacc_ele.sextupole
 
     deg_2_rad = _math.pi / 180.0
 
@@ -154,13 +153,13 @@ def create_lattice(optics_mode=default_optics_mode):
     ltlb = [inicio, sector00, sector01, sector02, sector03, sector04, fim]
     elist = ltlb
 
-    the_line = _pyaccel.lattice.build(elist)
+    the_line = _pyacc_lat.build(elist)
 
     # --- shifts model to marker 'start' ---
-    idx = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'start')
-    the_line = _pyaccel.lattice.shift(the_line, idx[0])
+    idx = _pyacc_lat.find_indices(the_line, 'fam_name', 'start')
+    the_line = _pyacc_lat.shift(the_line, idx[0])
 
-    lengths = _pyaccel.lattice.get_attribute(the_line, 'length')
+    lengths = _pyacc_lat.get_attribute(the_line, 'length')
     for length in lengths:
         if length < 0:
             raise LatticeError('Model with negative drift!')
@@ -169,7 +168,7 @@ def create_lattice(optics_mode=default_optics_mode):
     set_num_integ_steps(the_line)
 
     # -- define vacuum chamber for all elements
-    set_vacuum_chamber(the_line)
+    the_line = set_vacuum_chamber(the_line)
 
     return the_line, twiss_at_start
 
@@ -183,21 +182,21 @@ def get_optics_mode(optics_mode):
         # measurements
         # (Sem tripleto)
         # QD4 freed to be focusing in fitting.
-        twiss_at_start = _pyaccel.optics.Twiss.make_new(
+        twiss_at_start = _pyacc_opt.Twiss.make_new(
             beta=[1.45401, 2.47656], alpha=[-1.57249, 0.527312], etax=[0, 0])
 
         strengths = {
             'qf2l': 12.37,
             'qd2l': -14.85,
             'qf3l': 6.3387,
-            'qd1':  -8.8224,
+            'qd1': -8.8224,
             'qf1':  13.3361,
             'qd2a': -10.8698,
             'qf2a': 13.8136,
             'qf2b': 6.9037,
             'qd2b': -6.3496,
             'qf3':  13.4901,
-            'qd3':  -10.8577,
+            'qd3': -10.8577,
             'qf4':  8.1889,
             'qd4':  0.6693,
             'injsept_kxl': -0.39475202,
@@ -211,7 +210,7 @@ def get_optics_mode(optics_mode):
         # Linac second quadrupole triplet set to same values used during
         # measurements
         # (Sem tripleto)
-        twiss_at_start = _pyaccel.optics.Twiss.make_new(
+        twiss_at_start = _pyacc_opt.Twiss.make_new(
             beta=[1.45401, 2.47656], alpha=[-1.57249, 0.527312], etax=[0, 0])
 
         strengths = {
@@ -239,14 +238,13 @@ def get_optics_mode(optics_mode):
         # Linac second quadrupole triplet set to same values used during
         # measurements
         # (Sem tripleto)
-        twiss_at_start = \
-            _pyaccel.optics.Twiss.make_new(beta=[2.71462, 4.69925],
-                                           alpha=[-2.34174, 1.04009],
-                                           etax=[0.0, 0.0])
+        twiss_at_start = _pyacc_opt.Twiss.make_new(
+            beta=[2.71462, 4.69925], alpha=[-2.34174, 1.04009],
+            etax=[0.0, 0.0])
         strengths = {
-            'qf2l':  12.37,
+            'qf2l': 12.37,
             'qd2l': -14.85,
-            'qf3l':  5.713160289024,
+            'qf3l': 5.713160289024,
             'qd1': -8.821809143987,
             'qf1': 13.335946597802,
             'qd2a': -11.859318300947,
@@ -267,10 +265,9 @@ def get_optics_mode(optics_mode):
         # Initial Conditions from Linac measured parameters on 16/07/2019
         # Linac second quadrupole triplet is used to match the LBT optics
         # (Sem tripleto)
-        twiss_at_start = \
-            _pyaccel.optics.Twiss.make_new(beta=[2.71462, 4.69925],
-                                           alpha=[-2.34174, 1.04009],
-                                           etax=[0.0, 0.0])
+        twiss_at_start = _pyacc_opt.Twiss.make_new(
+            beta=[2.71462, 4.69925], alpha=[-2.34174, 1.04009],
+            etax=[0.0, 0.0])
         strengths = {
             'qf2l':  11.78860,
             'qd2l': -14.298290,
@@ -291,7 +288,8 @@ def get_optics_mode(optics_mode):
             'injsept_ksyl': 0.0,
         }
     else:
-        Exception('Invalid TB optics mode: ' + optics_mode)
+        _pyacc_acc.AcceleratorException(
+            'Invalid TB optics mode: ' + optics_mode)
 
     return strengths, twiss_at_start
 
@@ -299,7 +297,7 @@ def get_optics_mode(optics_mode):
 def set_num_integ_steps(the_line):
     """Set number of integration steps in each lattice element."""
     dl = 0.035
-    for i in range(len(the_line)):
+    for i, _ in enumerate(the_line):
         if the_line[i].angle:
             length = the_line[i].length
             the_line[i].nr_steps = max(10, int(_math.ceil(length/dl)))
@@ -310,9 +308,9 @@ def set_num_integ_steps(the_line):
         else:
             the_line[i].nr_steps = 1
 
-    ch_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'CHV')
-    cv_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'CHV')
-    qs_indices = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'QS')
+    ch_indices = _pyacc_lat.find_indices(the_line, 'fam_name', 'CHV')
+    cv_indices = _pyacc_lat.find_indices(the_line, 'fam_name', 'CHV')
+    qs_indices = _pyacc_lat.find_indices(the_line, 'fam_name', 'QS')
     corr_indices = ch_indices + cv_indices + qs_indices
     for idx in corr_indices:
         the_line[idx].nr_steps = 5
@@ -321,15 +319,15 @@ def set_num_integ_steps(the_line):
 def set_vacuum_chamber(the_line):
     """Set vacuum chamber for all elements."""
     # -- default physical apertures --
-    for i in range(len(the_line)):
+    for i, _ in enumerate(the_line):
         the_line[i].hmin = -0.018
         the_line[i].hmax = +0.018
         the_line[i].vmin = -0.018
         the_line[i].vmax = +0.018
 
     # -- bo injection septum --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjS')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjS')[0]
+    beg = _pyacc_lat.find_indices(the_line, 'fam_name', 'bInjS')[0]
+    end = _pyacc_lat.find_indices(the_line, 'fam_name', 'eInjS')[0]
     for i in range(beg, end+1):
         the_line[i].hmin = -0.0075
         the_line[i].hmax = +0.0075
@@ -337,9 +335,11 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = +0.0080
 
     # -- dipoles --
-    bnd = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'B')
+    bnd = _pyacc_lat.find_indices(the_line, 'fam_name', 'B')
     for i in bnd:
         the_line[i].hmin = -0.0117
         the_line[i].hmax = +0.0117
         the_line[i].vmin = -0.0117
         the_line[i].vmax = +0.0117
+
+    return the_line

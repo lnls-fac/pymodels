@@ -1,11 +1,18 @@
+"""Lattice module.
+
+In this module the lattice of the corresponding accelerator is defined.
+"""
 
 import math as _math
-import pyaccel as _pyaccel
+
+from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
+    accelerator as _pyacc_acc, optics as _pyacc_opt
+
 from . import segmented_models as _segmented_models
 
 
 class LatticeError(Exception):
-    pass
+    """LatticeError class."""
 
 
 energy = 3e9  # [eV]
@@ -13,12 +20,13 @@ default_optics_mode = 'M1'
 
 
 def create_lattice(optics_mode=default_optics_mode):
+    """Create lattice function."""
     strengths, twiss_at_start = get_optics_mode(optics_mode)
 
     # -- shortcut symbols --
-    marker = _pyaccel.elements.marker
-    drift = _pyaccel.elements.drift
-    sextupole = _pyaccel.elements.sextupole
+    marker = _pyacc_ele.marker
+    drift = _pyacc_ele.drift
+    sextupole = _pyacc_ele.sextupole
 
     # --- drift spaces ---
     ldif = 0.1442
@@ -115,13 +123,13 @@ def create_lattice(optics_mode=default_optics_mode):
 
     elist = ts
 
-    the_line = _pyaccel.lattice.build(elist)
+    the_line = _pyacc_lat.build(elist)
 
     # shifts model to marker 'start'
-    idx = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'start')
-    the_line = _pyaccel.lattice.shift(the_line, idx[0])
+    idx = _pyacc_lat.find_indices(the_line, 'fam_name', 'start')
+    the_line = _pyacc_lat.shift(the_line, idx[0])
 
-    lengths = _pyaccel.lattice.get_attribute(the_line, 'length')
+    lengths = _pyacc_lat.get_attribute(the_line, 'length')
     for length in lengths:
         if length < 0:
             raise LatticeError('Model with negative drift!')
@@ -130,13 +138,14 @@ def create_lattice(optics_mode=default_optics_mode):
     set_num_integ_steps(the_line)
 
     # -- define vacuum chamber for all elements
-    set_vacuum_chamber(the_line)
+    the_line = set_vacuum_chamber(the_line)
 
     return the_line, twiss_at_start
 
 
 def get_optics_mode(optics_mode):
-    twiss_at_start = _pyaccel.optics.Twiss.make_new(
+    """Return magnet strengths of a given opics mode."""
+    twiss_at_start = _pyacc_opt.Twiss.make_new(
         beta=[7.906, 11.841], alpha=[-2.4231, 1.8796], etax=[0.21135, 0.06939])
     # -- selection of optics mode --
 
@@ -225,14 +234,15 @@ def get_optics_mode(optics_mode):
             'injseptf_ksyl': 0.0,
         }
     else:
-        Exception('Invalid TS optics mode: ' + optics_mode)
+        _pyacc_acc.AcceleratorException(
+            'Invalid TS optics mode: ' + optics_mode)
 
     return strengths, twiss_at_start
 
 
 def set_num_integ_steps(the_line):
-
-    for i in range(len(the_line)):
+    """Set number of integration steps in each lattice element."""
+    for i, _ in enumerate(the_line):
         if the_line[i].angle:
             length = the_line[i].length
             the_line[i].nr_steps = max(10, int(_math.ceil(length/0.035)))
@@ -245,7 +255,7 @@ def set_num_integ_steps(the_line):
 
 
 def set_vacuum_chamber(the_line):
-
+    """Set vacuum chamber for all elements."""
     # -- default physical apertures --
     for ele in the_line:
         ele.hmin = -0.012
@@ -254,8 +264,8 @@ def set_vacuum_chamber(the_line):
         ele.vmax = +0.012
 
     # -- bo ejection septa --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bEjeSeptF')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eEjeSeptG')[0]
+    beg = _pyacc_lat.find_indices(the_line, 'fam_name', 'bEjeSeptF')[0]
+    end = _pyacc_lat.find_indices(the_line, 'fam_name', 'eEjeSeptG')[0]
     for i in range(beg, end+1):
         the_line[i].hmin = -0.0150
         the_line[i].hmax = +0.0150
@@ -263,8 +273,8 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = +0.0040
 
     # -- si thick injection septum --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSeptG')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSeptG')[0]
+    beg = _pyacc_lat.find_indices(the_line, 'fam_name', 'bInjSeptG')[0]
+    end = _pyacc_lat.find_indices(the_line, 'fam_name', 'eInjSeptG')[0]
     for i in range(beg, end+1):
         the_line[i].hmin = -0.0045
         the_line[i].hmax = +0.0045
@@ -272,10 +282,12 @@ def set_vacuum_chamber(the_line):
         the_line[i].vmax = +0.0035
 
     # -- si thin injection septum --
-    beg = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'bInjSeptF')[0]
-    end = _pyaccel.lattice.find_indices(the_line, 'fam_name', 'eInjSeptF')[0]
+    beg = _pyacc_lat.find_indices(the_line, 'fam_name', 'bInjSeptF')[0]
+    end = _pyacc_lat.find_indices(the_line, 'fam_name', 'eInjSeptF')[0]
     for i in range(beg, end+1):
         the_line[i].hmin = -0.0150
         the_line[i].hmax = +0.0150
         the_line[i].vmin = -0.0035
         the_line[i].vmax = +0.0035
+
+    return the_line
