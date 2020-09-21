@@ -137,9 +137,9 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     PingV = marker('PingV')  # Vertical Pinger
 
     # -- fast correctors --
-    # 70 magnets: skew quad poles (CH+CV and CH+CV+QS):
+    # 60 magnets: skew quad poles (CH+CV and CH+CV+QS):
     FC1 = sextupole('FC1', 0.084, S=0.0)
-    # 10 magnets: normal quad poles (CH+CV adn CH+CV+QS):
+    # 20 magnets: normal quad poles (CH+CV and CH+CV+QS):
     FC2 = sextupole('FC2', 0.082, S=0.0)
 
     # -- rf cavities --
@@ -266,7 +266,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     # arc sector in between B2-BC (low beta even-numbered straight sections):
     C2B = [
         GIR, L336, GIR, SDB3, L170, Q3, L230, SFB2, L260, Q4, L200, CV, GIR,
-        L200, GIR, FC1, L118, BPM, L075]
+        L200, GIR, FC2, L118, BPM, L075]
     # arc sector in between B2-BC (low beta even-numbered straight sections):
     C2P = [
         GIR, L336, GIR, SDP3, L170, Q3, L230, SFP2, L260, Q4, L200, CV, GIR,
