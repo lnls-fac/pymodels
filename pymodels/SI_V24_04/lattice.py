@@ -137,9 +137,9 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     PingV = marker('PingV')  # Vertical Pinger
 
     # -- fast correctors --
-    # 60 magnets: skew quad poles (CH+CV and CH+CV+QS):
+    # 60 magnets: normal quad poles (CH+CV and CH+CV+QS):
     FC1 = sextupole('FC1', 0.084, S=0.0)
-    # 20 magnets: normal quad poles (CH+CV and CH+CV+QS):
+    # 20 magnets: skew quad poles (CH+CV and CH+CV+QS):
     FC2 = sextupole('FC2', 0.082, S=0.0)
 
     # -- rf cavities --
