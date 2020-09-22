@@ -338,6 +338,10 @@ def create_lattice(mode=default_optics_mode, simplified=False):
         L500, LIP, L500, L350,
         MIDP, APU22H, MIP, APU22H, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section
+    IDB_APU22 = [
+        L500, LIB, L500, L350,
+        MIDB, APU22H, MIB, APU22H, MIDB,
+        L350, L500, LIB, L500]  # low beta ID straight section
 
     # -- girders --
 
@@ -347,9 +351,9 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     SS_S03 = IDP_CAV
     SS_S04 = IDB
     SS_S05 = IDA_ScrapH
-    SS_S06 = IDB
+    SS_S06 = IDB_APU22
     SS_S07 = IDP_APU22
-    SS_S08 = IDB
+    SS_S08 = IDB_APU22
     SS_S09 = IDA_APU22
     SS_S10 = IDB
     SS_S11 = IDP
