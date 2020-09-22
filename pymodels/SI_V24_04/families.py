@@ -291,6 +291,8 @@ def get_family_data(lattice):
         elif fam in {'SDA3', 'SDB3', 'SDP3'}:
             # for these families there are skew only in C3 sections
             idx.extend([i for i in data[fam] if 'C3' in section_map[i[0]]])
+        elif fam == 'FC2':
+            idx.extend([i for i in data[fam] if 'C2' in section_map[i[0]]])
         else:
             idx.extend(data[fam])
     data['QS'] = sorted(idx, key=get_idx)
