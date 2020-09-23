@@ -266,7 +266,7 @@ def create_lattice(mode=default_optics_mode, simplified=False):
     # arc sector in between B2-BC (low beta even-numbered straight sections):
     C2B = [
         GIR, L336, GIR, SDB3, L170, Q3, L230, SFB2, L260, Q4, L200, CV, GIR,
-        L200, GIR, FC2, L118, BPM, L075]
+        L201, GIR, FC2, L119, BPM, L075]
     # arc sector in between B2-BC (low beta even-numbered straight sections):
     C2P = [
         GIR, L336, GIR, SDP3, L170, Q3, L230, SFP2, L260, Q4, L200, CV, GIR,
