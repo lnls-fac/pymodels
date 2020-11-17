@@ -23,7 +23,7 @@ _family_segmentation = {
     'QS': 1, 'CH': 1, 'CV': 1,
     'SRFCav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    'APU22': 2,
+    'APU22': 2, 'APU58': 2,
     }
 
 
@@ -102,7 +102,7 @@ family_mapping = {
 
     'SRFCav': 'superconducting_rf_cavity',
     'APU22': 'insertion_device',
-    'APU58': 'insertion_devive',
+    'APU58': 'insertion_device',
     }
 
 
@@ -327,7 +327,7 @@ def get_family_data(lattice):
 
     # IDs
     idx = []
-    fams = ['APU22', ]
+    fams = ['APU22', 'APU58', ]
     for fam in fams:
         idx.extend(data[fam])
     data['ID'] = sorted(idx, key=get_idx)
