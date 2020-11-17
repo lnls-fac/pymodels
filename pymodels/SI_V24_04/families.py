@@ -102,6 +102,7 @@ family_mapping = {
 
     'SRFCav': 'superconducting_rf_cavity',
     'APU22': 'insertion_device',
+    'APU58': 'insertion_devives',
     }
 
 
@@ -161,7 +162,7 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', ]
+    return ['APU22', 'APU58', ]
 
 
 def get_section_name_mapping(lattice):
