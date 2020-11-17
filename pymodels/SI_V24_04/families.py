@@ -102,7 +102,7 @@ family_mapping = {
 
     'SRFCav': 'superconducting_rf_cavity',
     'APU22': 'insertion_device',
-    'APU58': 'insertion_devives',
+    'APU58': 'insertion_devive',
     }
 
 
