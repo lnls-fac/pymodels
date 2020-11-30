@@ -337,6 +337,7 @@ def get_optics_mode(optics_mode, energy=energy):
     }
     return strengths
 
+
 def set_rf_frequency(the_ring):
     """Set RF frequency of the lattice."""
     circumference = _pyacc_lat.length(the_ring)
