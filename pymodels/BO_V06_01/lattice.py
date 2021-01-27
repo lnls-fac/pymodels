@@ -28,23 +28,21 @@ def create_lattice(energy=energy, optics_mode=None):
     quadrupole = _pyacc_ele.quadrupole
     sextupole = _pyacc_ele.sextupole
     rfcavity = _pyacc_ele.rfcavity
-    hcorrector = _pyacc_ele.hcorrector
-    vcorrector = _pyacc_ele.vcorrector
 
     optics_mode = optics_mode or default_optics_mode
 
     strengths = get_optics_mode(optics_mode, energy)
 
-    B, b_len_seg = _seg_models.dipole(energy)
-    b_len_hdedge = 1.152
-    lenDif = (b_len_seg - b_len_hdedge)/2.0
+    B, _ = _seg_models.dipole(energy)
+
+    dcircum = 496.78745 - 496.80000
 
     # ----- DRIFTS ----
-    L008100 = drift('l008100', 0.08100)
+    L008100p = drift('l008100p', 0.08100 + dcircum/50/2)
     L008800 = drift('l008800', 0.08800)
-    L010350 = drift('l010350', 0.10350)
-    L010600 = drift('l010600', 0.10600)
+    L010350p = drift('l010350p', 0.10350 + dcircum/50/2)
     L013350 = drift('l013350', 0.13350)
+    L010600p = drift('l010600p', 0.10600 + dcircum/50/2)
     L013600 = drift('l013600', 0.13600)
     L016100 = drift('l016100', 0.16100)
     L016750 = drift('l016750', 0.16750)
@@ -55,7 +53,7 @@ def create_lattice(energy=energy, optics_mode=None):
     L045000 = drift('l045000', 0.45000)
     L053572 = drift('l053572', 0.53572)
     L062000 = drift('l062000', 0.62000)
-    L069811 = drift('l069811', 0.69811)
+    L069811p = drift('l069811p', 0.69811 + dcircum/50/2)
     L072500 = drift('l072500', 0.72500)
     L109600 = drift('l109600', 1.09600)
     L115740 = drift('l115740', 1.15740)
@@ -65,7 +63,7 @@ def create_lattice(energy=energy, optics_mode=None):
     L144600 = drift('l144600', 1.44600)
     L151200 = drift('l151200', 1.51200)
     L159628 = drift('l159628', 1.59628)
-    L165200 = drift('l165200', 1.65200)
+    L165200p = drift('l165200p', 1.65200 + dcircum/50/2)
     L168300 = drift('l168300', 1.68300)
     L172600 = drift('l172600', 1.72600)
     L177100 = drift('l177100', 1.77100)
@@ -73,7 +71,7 @@ def create_lattice(energy=energy, optics_mode=None):
     L179600 = drift('l179600', 1.79600)
     L182100 = drift('l182100', 1.82100)
     L189350 = drift('l189350', 1.89350)
-    L200200 = drift('l200200', 2.00200)
+    L200200p = drift('l200200p', 2.00200 + dcircum/50/2)
     L213200 = drift('l213200', 2.13200)
 
     STR  = marker('start')     # start of the model
@@ -107,24 +105,25 @@ def create_lattice(energy=energy, optics_mode=None):
 
     # --- lines ---
 
-    US_SF = [GIR, L200200, BPM, L189350, GIR, SF, L013350]
+    US_SF = [GIR, L200200p, BPM, L189350, GIR, SF, L013350]
     US_CS = [
-        L010350, SD, L027250, CV, GIR, L137100, BPM, L182100, GIR, CH, L016100]
-    US_CC = [L008100, CV, GIR, L177100, BPM, L182100, GIR, CH, L016100]
-    US_SS = [L010350, SD, GIR, L179350, BPM, L189350, GIR, SF, L013350]
-    US_SF_Scrn = [GIR, L200200, BPM, L172600, GIR, Scrn, L016750, SF, L013350]
-    US_SE = [L008100, CV, GIR, L168300, SEX, L008800, L159628, BPM, L053572, GIR]
-    US_SI = [L008100, CV, GIR, L177100, BPM, L109600, SIN, L072500, GIR, CH, L016100]
-    US_SF_GSL = [GIR, L165200, GSL, L035000, BPM, L189350, GIR, SF, L013350]
-    DS = [GIR, L213200, L200200, GIR]
-    DS_QD = [GIR, L213200, L179600, GIR, QD, L010600]
-    DS_RF = [GIR, L213200, RFC, L200200, GIR]
-    DS_KE = [GIR, L038600, KEX, L134600, L179600, GIR, QD, L010600]
-    DS_CH = [L016100, CH, GIR, L182100, L200200, GIR]
-    DS_KI = [GIR, L038600, KIN, L018860, Scrn, L115740, L130389, Scrn, L069811, GIR]
-    DS_QS_TuS = [L013600, QS, GIR, L144600, TuneShkr, L045000, L179600, GIR, QD, L010600]
-    DS_DCCT = [GIR, L213200, DCCT, L200200, GIR]
-    DS_QD_TuP = [GIR, L151200, TunePkup, L062000, L179600, GIR, QD, L010600]
+        L010350p, SD, L027250, CV, GIR, L137100, BPM, L182100, GIR, CH, L016100]
+    US_CC = [L008100p, CV, GIR, L177100, BPM, L182100, GIR, CH, L016100]
+    US_SS = [L010350p, SD, GIR, L179350, BPM, L189350, GIR, SF, L013350]
+    US_SF_Scrn = [GIR, L200200p, BPM, L172600, GIR, Scrn, L016750, SF, L013350]
+    US_SE = [L008100p, CV, GIR, L168300, SEX, L008800, L159628, BPM, L053572, GIR]
+    US_SI = [L008100p, CV, GIR, L177100, BPM, L109600, SIN, L072500, GIR, CH, L016100]
+    US_SF_GSL = [GIR, L165200p, GSL, L035000, BPM, L189350, GIR, SF, L013350]
+
+    DS = [GIR, L213200, L200200p, GIR]
+    DS_QD = [GIR, L213200, L179600, GIR, QD, L010600p]
+    DS_RF = [GIR, L213200, RFC, L200200p, GIR]
+    DS_KE = [GIR, L038600, KEX, L134600, L179600, GIR, QD, L010600p]
+    DS_CH = [L016100, CH, GIR, L182100, L200200p, GIR]
+    DS_KI = [GIR, L038600, KIN, L018860, Scrn, L115740, L130389, Scrn, L069811p, GIR]
+    DS_QS_TuS = [L013600, QS, GIR, L144600, TuneShkr, L045000, L179600, GIR, QD, L010600p]
+    DS_DCCT = [GIR, L213200, DCCT, L200200p, GIR]
+    DS_QD_TuP = [GIR, L151200, TunePkup, L062000, L179600, GIR, QD, L010600p]
 
     # -- upstream and downstream subsectors
 
@@ -313,17 +312,24 @@ def get_optics_mode(optics_mode, energy=energy):
     if optics_mode == 'M0':
         # 2019-08-01 Murilo
         # tunes fitted to [19.20433 7.31417] for new dipoles segmented model
-        qf_high_en = 1.65458216649285
-        qd_high_en = -0.11276026973021
-        qs_high_en = 0.0
-        sf_high_en = 11.30745884748409
-        sd_high_en = 10.52221952522381
+        #
+        # 2020-11-30 Ximenes
+        # New circumference
 
-        qf_low_en = 1.65380213538720
-        qd_low_en = -0.00097311784326
+        # NOTE: To be updated with strengths of resimmetrized optics (MAD)
+
+        qf_high_en = 1.6546257316588266
+        qd_high_en = -0.11289748549970072
+        qs_high_en = 0.0
+        sf_high_en = 11.308079742311124
+        sd_high_en = 10.519518298912761
+
+        qf_low_en = 1.6538462056686665
+        qd_low_en = -0.0011251597339454525
         qs_low_en = 0.0
-        sf_low_en = 11.32009586848142
-        sd_low_en = 10.37672159358045
+        sf_low_en = 11.320709999244496
+        sd_low_en = 10.374355202009147
+
     else:
         raise _pyacc_acc.AcceleratorException('Optics mode not recognized.')
 
