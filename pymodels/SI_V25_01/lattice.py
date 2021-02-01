@@ -170,6 +170,8 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
     MIDP = marker('id_endp')
     # end of injection septum
     InjSeptF = marker('InjSeptF')
+    # missing pop-corn
+    popcorn_1turn = marker('PIPOCA')
 
     # --- Diagnostic Components ---
     BPM = marker('BPM')
@@ -570,7 +572,7 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
         C3_S20, B2, C4_S20, B1]
 
     anel = [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10,
-            S11, S12, S13, S14, S15, S16, S17, S18, S19, S20]
+            S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, popcorn_1turn]
     anel = _lnls.utils.flatten(anel)
 
     the_ring = _pyacc_lat.build(anel)
