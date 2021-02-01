@@ -19,10 +19,10 @@ harmonic_number = 864
 energy = 3e9  # [eV]
 
 
-def create_lattice(mode=default_optics_mode, simplified=False):
+def create_lattice(optics_mode=default_optics_mode, simplified=False):
     """Return lattice object."""
     # -- selection of optics mode --
-    strengths = get_optics_mode(mode=mode)
+    strengths = get_optics_mode(optics_mode=optics_mode)
 
     # -- shortcut symbols --
     marker = _pyacc_ele.marker
@@ -611,7 +611,7 @@ def set_num_integ_steps(the_ring):
             the_ring[i].nr_steps = nr_steps
 
 
-def set_vacuum_chamber(the_ring, mode=default_optics_mode):
+def set_vacuum_chamber(the_ring, optics_mode=default_optics_mode):
     """Set vacuum chamber for all elements."""
     # vchamber = [hmin, hmax, vmin, vmax] (meter)
     other_vchamber = [-0.012, 0.012, -0.012, 0.012]
@@ -619,7 +619,8 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
     bc_hfield_vchamber = [-0.004, 0.004, -0.004, 0.004]
     inj_vchamber = [-0.030, 0.012, -0.012, 0.012]
-    idp_vchamber = idb_vchamber if mode.startswith('S05') else ida_vchamber
+    idp_vchamber = idb_vchamber if optics_mode.startswith(
+        'S05') else ida_vchamber
 
     # Set ordinary Vacuum Chamber
     for i in range(len(the_ring)):
@@ -694,9 +695,9 @@ def set_vacuum_chamber(the_ring, mode=default_optics_mode):
     return the_ring
 
 
-def get_optics_mode(mode=default_optics_mode):
+def get_optics_mode(optics_mode=default_optics_mode):
     """Return magnet strengths for a given optics mode."""
-    mode, version = mode.split('.')
+    mode, version = optics_mode.split('.')
 
     if mode == 'S05':
         if version == '01':
