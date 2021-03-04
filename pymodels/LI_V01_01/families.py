@@ -64,7 +64,7 @@ _discipline_mapping = {
 family_mapping = {
     'Spect': 'dipole',
     'Lens': 'magnetic_lens',
-    'LensRef': 'magnetic_lens',
+    'LensRev': 'magnetic_lens',
     'QF1': 'quadrupole',
     'QF2': 'quadrupole',
     'QF3': 'quadrupole',
