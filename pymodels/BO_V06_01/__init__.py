@@ -17,6 +17,4 @@ from .lattice import energy
 from .lattice import harmonic_number
 from .lattice import default_optics_mode, lattice_symmetry
 
-from .control_system import get_control_system_data
-
-lattice_version   = accelerator_data['lattice_version']
+lattice_version = accelerator_data['lattice_version']
