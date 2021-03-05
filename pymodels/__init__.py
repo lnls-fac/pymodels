@@ -9,7 +9,6 @@ from . import TS_V04_01
 from . import SI_V24_04
 from . import SI_V25_01
 from . import coordinate_system
-from . import middlelayer
 
 with open(_os.path.join(__path__[0], 'VERSION'), 'r') as _f:
     __version__ = _f.read().strip()

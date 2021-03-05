@@ -1,5 +1,6 @@
 """Element family definitions"""
 
+from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
 
@@ -9,6 +10,28 @@ _family_segmentation = {
     'QD4A': 1, 'QF4': 1, 'QD4B': 1,
     'InjSeptF': 6, 'InjSeptG': 6, 'EjeSeptF': 6, 'EjeSeptG': 6,
     'ICT': 1, 'FCT': 1, 'Scrn': 1, 'BPM': 1
+    }
+
+_discipline_mapping = {
+    'B': 'PS',
+    'CH': 'PS',
+    'CV': 'PS',
+    'QF1A': 'PS',
+    'QF1B': 'PS',
+    'QD2': 'PS',
+    'QF2': 'PS',
+    'QF3': 'PS',
+    'QD4A': 'PS',
+    'QF4': 'PS',
+    'QD4B': 'PS',
+    'InjSeptF': 'PU',
+    'InjSeptG': 'PU',
+    'EjeSeptF': 'PU',
+    'EjeSeptG': 'PU',
+    'ICT': 'DI',
+    'FCT': 'DI',
+    'Scrn': 'DI',
+    'BPM': 'DI'
     }
 
 family_mapping = {
@@ -39,42 +62,52 @@ family_mapping = {
 
 
 def families_dipoles():
+    """."""
     return ['B']
 
 
 def families_pulsed_magnets():
+    """."""
     return ['InjSeptF', 'InjSeptG', 'EjeSeptF', 'EjeSeptG']
 
 
 def families_quadrupoles():
+    """."""
     return ['QF1A', 'QF1B', 'QD2', 'QF2', 'QF3', 'QD4A', 'QF4', 'QD4B']
 
 
 def families_horizontal_correctors():
+    """."""
     return ['CH']
 
 
 def families_vertical_correctors():
+    """."""
     return ['CV']
 
 
 def families_sextupoles():
+    """."""
     return []
 
 
 def families_skew_correctors():
+    """."""
     return []
 
 
 def families_rf():
+    """."""
     return []
 
 
 def families_di():
+    """."""
     return ['ICT', 'FCT', 'BPM', 'Scrn']
 
 
 def get_section_name_mapping(lattice):
+    """."""
     section_map = len(lattice)*['']
 
     # Find indices important to define the change of the names of the sections
@@ -159,5 +192,19 @@ def get_family_data(lattice):
                 num[-1] = '{0:d}'.format(j)
 
         new_data[key] = {'index': idx, 'subsection': secs, 'instance': num}
+
+    # get control system devname
+    for key in new_data:
+        if key not in _discipline_mapping:
+            continue
+        dis = _discipline_mapping[key]
+        dta = new_data[key]
+        devnames = []
+        subs = dta['subsection']
+        insts = dta['instance']
+        for sub, inst in zip(subs, insts):
+            devnames.append(
+                _join_name(sec='TS', dis=dis, sub=sub, idx=inst, dev=key))
+        new_data[key]['devnames'] = devnames
 
     return new_data

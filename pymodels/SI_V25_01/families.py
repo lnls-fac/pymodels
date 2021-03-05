@@ -1,5 +1,6 @@
 """Element family definitions."""
 
+from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
 
@@ -26,6 +27,71 @@ _family_segmentation = {
     'APU22': 2, 'APU58': 2,
     }
 
+_discipline_mapping = {
+    'B1B2-1': 'PS',
+    'B1B2-2': 'PS',
+    'QFA': 'PS',
+    'QDA': 'PS',
+    'QDB2': 'PS',
+    'QFB': 'PS',
+    'QDB1': 'PS',
+    'QDP2': 'PS',
+    'QFP': 'PS',
+    'QDP1': 'PS',
+    'Q1': 'PS',
+    'Q2': 'PS',
+    'Q3': 'PS',
+    'Q4': 'PS',
+    'SDA0': 'PS',
+    'SDB0': 'PS',
+    'SDP0': 'PS',
+    'SDA1': 'PS',
+    'SDB1': 'PS',
+    'SDP1': 'PS',
+    'SDA2': 'PS',
+    'SDB2': 'PS',
+    'SDP2': 'PS',
+    'SDA3': 'PS',
+    'SDB3': 'PS',
+    'SDP3': 'PS',
+    'SFA0': 'PS',
+    'SFB0': 'PS',
+    'SFP0': 'PS',
+    'SFA1': 'PS',
+    'SFB1': 'PS',
+    'SFP1': 'PS',
+    'SFA2': 'PS',
+    'SFB2': 'PS',
+    'SFP2': 'PS',
+    'InjNLKckr': 'PU',
+    'InjDpKckr': 'PU',
+    'PingH': 'PU',
+    'PingV': 'PU',
+    'BPM': 'DI',
+    'DCCT': 'DI',
+    'ScrapH': 'DI',
+    'ScrapV': 'DI',
+    'GSL15': 'DI',
+    'GSL07': 'DI',
+    'GBPM': 'DI',
+    'BbBPkup': 'DI',
+    'BbBKckrH': 'DI',
+    'BbBKckrV': 'DI',
+    'BbBKckrL': 'DI',
+    'TuneShkrH': 'DI',
+    'TuneShkrV': 'DI',
+    'TunePkup': 'DI',
+    'FC1': 'PS',
+    'FC2': 'PS',
+    'FCH': 'PS',
+    'FCV': 'PS',
+    'CH': 'PS',
+    'CV': 'PS',
+    'QS': 'PS',
+    'SRFCav': 'RF',
+    'APU22': 'ID',
+    'APU58': 'ID',
+    }
 
 family_mapping = {
 
@@ -119,13 +185,14 @@ def families_quadrupoles():
 
 def families_sextupoles():
     """Return sextupole families."""
-    return ['SDA0', 'SDB0', 'SDP0',
-            'SDA1', 'SDB1', 'SDP1',
-            'SDA2', 'SDB2', 'SDP2',
-            'SDA3', 'SDB3', 'SDP3',
-            'SFA0', 'SFB0', 'SFP0',
-            'SFA1', 'SFB1', 'SFP1',
-            'SFA2', 'SFB2', 'SFP2', ]
+    return [
+        'SDA0', 'SDB0', 'SDP0',
+        'SDA1', 'SDB1', 'SDP1',
+        'SDA2', 'SDB2', 'SDP2',
+        'SDA3', 'SDB3', 'SDP3',
+        'SFA0', 'SFB0', 'SFP0',
+        'SFA1', 'SFB1', 'SFP1',
+        'SFA2', 'SFB2', 'SFP2', ]
 
 
 def families_horizontal_correctors():
@@ -155,9 +222,10 @@ def families_pulsed_magnets():
 
 def families_di():
     """Return diagnostics families."""
-    return ['BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
-            'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckL'
-            'TuneShkrH', 'TuneShkrV', 'TunePkup']
+    return [
+        'BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
+        'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckL'
+        'TuneShkrH', 'TuneShkrV', 'TunePkup']
 
 
 def families_ids():
@@ -361,7 +429,20 @@ def get_family_data(lattice):
 
         new_data[key] = {'index': idx, 'subsection': secs, 'instance': num}
 
-    # girders
+    # get control system devname
+    for key in new_data:
+        if key not in _discipline_mapping:
+            continue
+        dis = _discipline_mapping[key]
+        dta = new_data[key]
+        devnames = []
+        subs = dta['subsection']
+        insts = dta['instance']
+        for sub, inst in zip(subs, insts):
+            devnames.append(
+                _join_name(sec='SI', dis=dis, sub=sub, idx=inst, dev=key))
+        new_data[key]['devnames'] = devnames
+
     return new_data
 
 

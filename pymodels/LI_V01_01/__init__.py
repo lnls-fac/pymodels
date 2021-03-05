@@ -16,4 +16,4 @@ from .families import family_mapping
 from .families import get_section_name_mapping
 
 # -- default accelerator values for LI_V01_01-
-lattice_version   = accelerator_data['lattice_version']
+lattice_version = accelerator_data['lattice_version']
