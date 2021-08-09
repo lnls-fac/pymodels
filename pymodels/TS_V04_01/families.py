@@ -207,4 +207,18 @@ def get_family_data(lattice):
                 _join_name(sec='TS', dis=dis, sub=sub, idx=inst, dev=key))
         new_data[key]['devnames'] = devnames
 
+    # adapt to non-compliant CV names
+    new_data['CV']['devnames'] = [
+        'TS-01:PS-CV-1',
+        'TS-01:PS-CV-1E2',
+        'TS-01:PS-CV-2',
+        'TS-02:PS-CV-0',
+        'TS-02:PS-CV',
+        'TS-03:PS-CV',
+        'TS-04:PS-CV-0',
+        'TS-04:PS-CV-1',
+        'TS-04:PS-CV-1E2',
+        'TS-04:PS-CV-2',
+    ]
+
     return new_data

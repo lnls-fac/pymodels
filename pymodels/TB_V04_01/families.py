@@ -90,7 +90,7 @@ def families_quadrupoles():
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['CHV', ]
+    return ['CHV', 'CH']
 
 
 def families_vertical_correctors():
@@ -163,7 +163,7 @@ def get_family_data(lattice):
         # create a list of lists for the indexes
         data[key] = [idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)]
 
-    data['CH'] = list(data['CHV'])
+    data['CH'] = list(data['CHV']) + list(data['CH'])
     data['CV'] = list(data['CHV'])
 
     # last corrector is now a skew quad and a CV:

@@ -224,7 +224,7 @@ def families_di():
     """Return diagnostics families."""
     return [
         'BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
-        'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckL'
+        'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckrL',
         'TuneShkrH', 'TuneShkrV', 'TunePkup']
 
 

@@ -23,6 +23,7 @@ def create_lattice(optics_mode=default_optics_mode):
     # -- shortcut symbols --
     marker = _pyacc_ele.marker
     drift = _pyacc_ele.drift
+    corrector = _pyacc_ele.corrector
     quadrupole = _pyacc_ele.quadrupole
     rbend_sirius = _pyacc_ele.rbend
     sextupole = _pyacc_ele.sextupole
@@ -77,6 +78,7 @@ def create_lattice(optics_mode=default_optics_mode):
     bpm = marker('BPM')
 
     # --- correctors ---
+    ch = corrector('CH',0.0)
     chv = sextupole('CHV', corr_length, 0.0)
     qs = quadrupole('QS', corr_length, 0.0)
 
@@ -147,7 +149,7 @@ def create_lattice(optics_mode=default_optics_mode):
     sector01 = [s01_1, qd1, s01_2, qf1, s01_3, bn]
     sector02 = [s02_1, qd2a, s02_2, qf2a, s02_3, qf2b, s02_4, qd2b, s02_5, bp]
     sector03 = [s03_1, qf3, s03_2, qd3, s03_3, bp]
-    sector04 = [s04_1, qf4, s04_2, qd4, s04_3, septin]
+    sector04 = [s04_1, qf4, s04_2, qd4, s04_3, septin, ch]
 
     # TB beamline
     ltlb = [inicio, sector00, sector01, sector02, sector03, sector04, fim]

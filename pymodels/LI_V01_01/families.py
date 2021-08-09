@@ -10,9 +10,8 @@ _family_segmentation = {
     'QF1': 1, 'QF2': 1, 'QF3': 1,
     'QD1': 1, 'QD2': 1,
     'CH': 1, 'CV': 1,
-    'Slnd01': 1, 'Slnd02': 1, 'Slnd03': 1, 'Slnd04': 1, 'Slnd05': 1,
-    'Slnd06': 1, 'Slnd07': 1, 'Slnd08': 1, 'Slnd09': 1, 'Slnd10': 1,
-    'Slnd11': 1, 'Slnd12': 1, 'Slnd13': 1, 'Slnd14': 1, 'Slnd15': 1,
+    'Slnd': 1,
+    'Slnd14': 1, 'Slnd15': 1,
     'Slnd16': 1, 'Slnd17': 1, 'Slnd18': 1, 'Slnd19': 1, 'Slnd20': 1,
     'Slnd21': 1,
     'BPM': 1, 'Scrn': 1, 'ICT': 1,
@@ -31,19 +30,7 @@ _discipline_mapping = {
     'QD2': 'PS',
     'CH': 'PS',
     'CV': 'PS',
-    'Slnd01': 'PS',
-    'Slnd02': 'PS',
-    'Slnd03': 'PS',
-    'Slnd04': 'PS',
-    'Slnd05': 'PS',
-    'Slnd06': 'PS',
-    'Slnd07': 'PS',
-    'Slnd08': 'PS',
-    'Slnd09': 'PS',
-    'Slnd10': 'PS',
-    'Slnd11': 'PS',
-    'Slnd12': 'PS',
-    'Slnd13': 'PS',
+    'Slnd': 'PS',
     'Slnd14': 'PS',
     'Slnd15': 'PS',
     'Slnd16': 'PS',
@@ -74,19 +61,7 @@ family_mapping = {
     'CH': 'horizontal_corrector',
     'CV': 'vertical_corrector',
 
-    'Slnd01': 'solenoid',
-    'Slnd02': 'solenoid',
-    'Slnd03': 'solenoid',
-    'Slnd04': 'solenoid',
-    'Slnd05': 'solenoid',
-    'Slnd06': 'solenoid',
-    'Slnd07': 'solenoid',
-    'Slnd08': 'solenoid',
-    'Slnd09': 'solenoid',
-    'Slnd10': 'solenoid',
-    'Slnd11': 'solenoid',
-    'Slnd12': 'solenoid',
-    'Slnd13': 'solenoid',
+    'Slnd': 'solenoid',
     'Slnd14': 'solenoid',
     'Slnd15': 'solenoid',
     'Slnd16': 'solenoid',
@@ -145,9 +120,8 @@ def families_skew_correctors():
 def families_solenoids():
     """."""
     return [
-        'Slnd01', 'Slnd02', 'Slnd03', 'Slnd04', 'Slnd05', 'Slnd06', 'Slnd07',
-        'Slnd08', 'Slnd09', 'Slnd10', 'Slnd11', 'Slnd12', 'Slnd13', 'Slnd14',
-        'Slnd15', 'Slnd16', 'Slnd17', 'Slnd18', 'Slnd19', 'Slnd20', 'Slnd21'
+        'Slnd',
+        'Slnd14', 'Slnd15', 'Slnd16', 'Slnd17', 'Slnd18', 'Slnd19', 'Slnd20', 'Slnd21'
         ]
 
 

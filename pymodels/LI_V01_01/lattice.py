@@ -77,19 +77,7 @@ def create_lattice(
     dump = marker('Dump')
 
     # --- solenoids ---
-    solnd01 = marker('Slnd01')
-    solnd02 = marker('Slnd02')
-    solnd03 = marker('Slnd03')
-    solnd04 = marker('Slnd04')
-    solnd05 = marker('Slnd05')
-    solnd06 = marker('Slnd06')
-    solnd07 = marker('Slnd07')
-    solnd08 = marker('Slnd08')
-    solnd09 = marker('Slnd09')
-    solnd10 = marker('Slnd10')
-    solnd11 = marker('Slnd11')
-    solnd12 = marker('Slnd12')
-    solnd13 = marker('Slnd13')
+    solnd = marker('Slnd')
     solnd14 = marker('Slnd14')
     solnd15 = marker('Slnd15')
     solnd16 = marker('Slnd16')
@@ -130,9 +118,9 @@ def create_lattice(
         l200, lensrev, shb, l200, lens, l100, scrn, bpm, l100, lens, l100,
         cv, ch]
     L1_Bun = [
-        l300, solnd01, l100, solnd02, l100, solnd03, l100, cv, ch, solnd04,
-        l100, solnd05, l100, solnd06, l100, solnd07, l100, bun, solnd08, l100,
-        solnd09, l100, solnd10, l100, solnd11, l100, solnd12, l100, solnd13,
+        l300, solnd, l100, solnd, l100, solnd, l100, cv, ch, solnd,
+        l100, solnd, l100, solnd, l100, solnd, l100, bun, solnd, l100,
+        solnd, l100, solnd, l100, solnd, l100, solnd, l100, solnd,
         l200]
     L1_4 = [l200, solnd14, l100, solnd14, l100, scrn, bpm, l200]
     L1_Ac1 = [
