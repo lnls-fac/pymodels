@@ -12,8 +12,11 @@ def parameters(accelerator_prefix):
         delta_rx = -0.03
         delta_angle = 0.0143
     elif accelerator_prefix == 'TS':
-        delta_rx = -0.022
-        delta_angle = -0.005
+        # delta_rx = -0.022
+        # delta_angle = -0.005
+        # TODO: Update these values!!!
+        delta_rx = 0
+        delta_angle = 0
     elif accelerator_prefix == 'SI':
         delta_rx = -0.0165
         delta_angle = 0.00537
