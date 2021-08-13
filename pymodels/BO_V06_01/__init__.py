@@ -17,4 +17,5 @@ from .lattice import energy
 from .lattice import harmonic_number
 from .lattice import default_optics_mode, lattice_symmetry
 
+section = 'BO'
 lattice_version = accelerator_data['lattice_version']

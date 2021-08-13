@@ -1,4 +1,6 @@
 
+"""TS_V04_01 Model."""
+
 from .lattice import default_optics_mode
 from .lattice import energy
 
@@ -11,5 +13,5 @@ from .families import get_family_data
 from .families import family_mapping
 from .families import get_section_name_mapping
 
-# -- default accelerator values for TS_V04_01--
+section = 'TS'
 lattice_version = accelerator_data['lattice_version']

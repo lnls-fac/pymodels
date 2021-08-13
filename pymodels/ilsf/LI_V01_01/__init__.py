@@ -1,4 +1,3 @@
-"""LI_V01_01 Model."""
 
 from .lattice import energy
 from .lattice import single_bunch_charge

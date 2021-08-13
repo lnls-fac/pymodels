@@ -1,4 +1,4 @@
-"""SI_V25_01 model."""
+"""SI_V01_01 model."""
 
 from .accelerator import default_cavity_on
 from .accelerator import default_radiation_on

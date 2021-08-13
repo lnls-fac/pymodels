@@ -15,7 +15,7 @@ with open(_os.path.join(__path__[0], 'VERSION'), 'r') as _f:
 
 __all__ = ('LI_V01_01', 'TB_V04_01', 'BO_V05_04', 'BO_V06_01', 'TS_V04_01', 'SI_V24_04', 'SI_V25_01')
 
-
+laboratory = 'sirius'
 li = LI_V01_01
 tb = TB_V04_01
 bo = BO_V06_01
