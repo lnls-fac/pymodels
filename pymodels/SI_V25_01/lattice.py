@@ -36,11 +36,11 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
     dcircum = 518.3899 - 518.3960
 
     # -- drifts --
-    LKK = drift('lkk', 1.9150)
+    LKK = drift('lkk', 0.3150)
     LIA = drift('lia', 1.5179)
     LIB = drift('lib', 1.0879)
     LIP = drift('lip', 1.0879)
-    LPMU = drift('lpmu', 0.0600)
+    LPMU = drift('lpmu', 0.2600)
     LPMD = drift('lpmd', 0.4929)
     LID1 = drift('lid1', 1.83425)
     LID2 = drift('lid2', 0.29965)
@@ -174,8 +174,8 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
     # --- Diagnostic Components ---
     BPM = marker('BPM')
     DCCT = marker('DCCT')  # dcct to measure beam current
-    ScrapH = marker('ScrapH')  # horizontal scraper
-    ScrapV = marker('ScrapV')  # vertical scraper
+    ScrapH = marker('ScrapH')  # horizontal scraper: 01SA, 3092mm upstream MIA
+    ScrapV = marker('ScrapV')  # vertical scraper: 01SA, 1634mm downstream MIA
     GSL15 = marker('GSL15')  # Generic Stripline (lambda/4)
     GSL07 = marker('GSL07')  # Generic Stripline (lambda/8)
     GBPM = marker('GBPM')  # General BPM
@@ -214,24 +214,24 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
     # SS_S17 = IDA17
 
     L500p = drift('L500p', 0.5000 + dcircum/5/2)
-    LKKp = drift('lkkp', 1.9150 + dcircum/5/2)
+    LKKp = drift('lkkp', 0.3150 + dcircum/5/2)
 
-    IDA = [
+    IDA = [  # high beta ID straight section
         L500, LIA, L500, MIDA, L500, L500, MIA, L500, L500, MIDA, L500, LIA,
-        L500]  # high beta ID straight section
-    IDA_INJ = [
-        L500, TuneShkrH, LIA, L419, InjSeptF, L081, L500, L500p, END, START,
-        MIA, LKKp, InjDpKckr, LPMU, ScrapV, L100, ScrapV, L100,
-        InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
-    IDA_BbBKckrH = [
+        L500]
+    IDA_INJ = [  # high beta INJ straight section and Scrapers
+        L350, TuneShkrH, L150, ScrapH, LIA, L419, InjSeptF, L081, L500,
+        L500p, END, START, MIA, L500, L500, L500, L100, ScrapV, LKKp,
+        InjDpKckr, LPMU, InjNLKckr, LPMD]
+    IDA_BbBKckrH = [  # high beta ID straight section
         L500, BbBKckrH, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA,
-        L500, LIA, L500]  # high beta ID straight section
-    IDA_ScrapH = [
-        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500, ScrapH,
-        LIA, L500]  # high beta ID straight section
-    IDA17 = [
+        L500, LIA, L500]
+    IDA_ScrapH = [  # high beta ID straight section
         L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
-        BbBKckrH, LIA, L500]  # high beta ID straight section
+        LIA, L500]
+    IDA17 = [  # high beta ID straight section
+        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
+        BbBKckrH, LIA, L500]
 
     IDB = [
         L500, LIB, L500, MIDB, L500, L500, MIB, L500, L500, MIDB, L500, LIB,
