@@ -257,7 +257,7 @@ def set_num_integ_steps(the_line):
 def set_vacuum_chamber(the_line):
     """Set vacuum chamber for all elements."""
     # -- default physical apertures --
-    for i in range(len(the_line)):
+    for i, _ in enumerate(the_line):
         the_line[i].hmin = -0.012
         the_line[i].hmax = +0.012
         the_line[i].vmin = -0.012
