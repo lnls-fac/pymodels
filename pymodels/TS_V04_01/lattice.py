@@ -257,11 +257,11 @@ def set_num_integ_steps(the_line):
 def set_vacuum_chamber(the_line):
     """Set vacuum chamber for all elements."""
     # -- default physical apertures --
-    for ele in the_line:
-        ele.hmin = -0.012
-        ele.hmax = +0.012
-        ele.vmin = -0.012
-        ele.vmax = +0.012
+    for i, _ in enumerate(the_line):
+        the_line[i].hmin = -0.012
+        the_line[i].hmax = +0.012
+        the_line[i].vmin = -0.012
+        the_line[i].vmax = +0.012
 
     # -- bo ejection septa --
     beg = _pyacc_lat.find_indices(the_line, 'fam_name', 'bEjeSeptF')[0]
