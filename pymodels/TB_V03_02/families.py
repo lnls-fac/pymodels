@@ -1,5 +1,6 @@
 """Element family definitions."""
 
+from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
 _family_segmentation = {
@@ -10,7 +11,35 @@ _family_segmentation = {
     'QF3': 1, 'QD3': 1, 'QF4': 1, 'QD4': 1,
     'InjSept': 2,
     'ICT': 1, 'FCT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
-}
+    }
+
+_discipline_mapping = {
+    'B':       'PS',
+    'Spect':   'PS',
+    'CHV':     'PS',
+    'CH':      'PS',
+    'CV':      'PS',
+    'QF2L':    'PS',
+    'QD2L':    'PS',
+    'QF3L':    'PS',
+    'QD1':     'PS',
+    'QF1':     'PS',
+    'QD2A':    'PS',
+    'QF2A':    'PS',
+    'QF2B':    'PS',
+    'QD2B':    'PS',
+    'QF3':     'PS',
+    'QD3':     'PS',
+    'QF4':     'PS',
+    'QD4':     'PS',
+    'InjSept': 'PU',
+    'ICT':     'DI',
+    'FCT':     'DI',
+    'SlitH':   'DI',
+    'SlitV':   'DI',
+    'Scrn':    'DI',
+    'BPM':     'DI'
+    }
 
 family_mapping = {
     'B':       'dipole',
@@ -38,7 +67,7 @@ family_mapping = {
     'SlitV':   'vertical_slit',
     'Scrn':    'beam_profile_monitor',
     'BPM':     'bpm'
-}
+    }
 
 
 def families_dipoles():
@@ -162,5 +191,21 @@ def get_family_data(lattice):
             num[-1] = f(j) if (secs[-1] == secs[-2]) else ''
 
         new_data[key] = {'index': idx, 'subsection': secs, 'instance': num}
+
+    # get control system devname
+    for key in new_data:
+        if key not in _discipline_mapping:
+            continue
+        dis = _discipline_mapping[key]
+        dta = new_data[key]
+        devnames = []
+        subs = dta['subsection']
+        insts = dta['instance']
+        sec = 'LI' if key.endswith('L') else 'TB'
+        dev = key[:-1] if key.endswith('L') else key
+        for sub, inst in zip(subs, insts):
+            devnames.append(
+                _join_name(sec=sec, dis=dis, sub=sub, idx=inst, dev=dev))
+        new_data[key]['devnames'] = devnames
 
     return new_data

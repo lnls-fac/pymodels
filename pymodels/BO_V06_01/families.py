@@ -126,7 +126,6 @@ def get_section_name_mapping(lattice):
     b = _pyaccel.lattice.find_indices(lat, 'fam_name', 'B')
     qf = _pyaccel.lattice.find_indices(lat, 'fam_name', 'QF')
     b_nrsegs = len(b)//50
-    qf_nrsegs = len(qf)//50
 
     # divide the ring in 50 sectors defined by the b1 dipoles:
     Sects = []
@@ -160,7 +159,7 @@ def get_section_name_mapping(lattice):
 
 
 def get_family_data(lattice):
-    """Get pyaccel lattice model index and segmentation for each family name
+    """Get pyaccel lattice model index and segmentation for each family name.
 
     Keyword argument:
     lattice -- lattice model
@@ -170,7 +169,7 @@ def get_family_data(lattice):
     latt_dict = _pyaccel.lattice.find_dict(lattice, 'fam_name')
     section_map = get_section_name_mapping(lattice)
 
-    # Fill the data dictionary with index info ######
+    # Fill the data dictionary with index info
     data = {}
     for key, idx in latt_dict.items():
         nr = _family_segmentation.get(key)

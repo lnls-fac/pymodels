@@ -28,7 +28,7 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode,
 
 
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'SI_V24_04'
+accelerator_data['lattice_version'] = 'SI_V25_01'
 accelerator_data['global_coupling'] = 0.01  # expected corrected value
 accelerator_data['pressure_profile'] = \
-    _np.array([[0, 518.396], [1.333e-9]*2])  # [s [m], p [mbar]]
+    _np.array([[0, 518.3899], [1.333e-9]*2])  # [s [m], p [mbar]]

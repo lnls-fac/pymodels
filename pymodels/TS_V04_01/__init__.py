@@ -11,7 +11,5 @@ from .families import get_family_data
 from .families import family_mapping
 from .families import get_section_name_mapping
 
-from .control_system import get_control_system_data
-
 # -- default accelerator values for TS_V04_01--
 lattice_version = accelerator_data['lattice_version']

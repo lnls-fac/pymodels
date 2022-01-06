@@ -33,12 +33,14 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
     # -- lattice markers --
     m_accep_fam_name = 'calc_mom_accep'
 
+    dcircum = 518.3899 - 518.3960
+
     # -- drifts --
-    LKK = drift('lkk', 1.9150)
+    LKK = drift('lkk', 0.3150)
     LIA = drift('lia', 1.5179)
     LIB = drift('lib', 1.0879)
     LIP = drift('lip', 1.0879)
-    LPMU = drift('lpmu', 0.0600)
+    LPMU = drift('lpmu', 0.2600)
     LPMD = drift('lpmd', 0.4929)
     LID1 = drift('lid1', 1.83425)
     LID2 = drift('lid2', 0.29965)
@@ -172,8 +174,8 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
     # --- Diagnostic Components ---
     BPM = marker('BPM')
     DCCT = marker('DCCT')  # dcct to measure beam current
-    ScrapH = marker('ScrapH')  # horizontal scraper
-    ScrapV = marker('ScrapV')  # vertical scraper
+    ScrapH = marker('ScrapH')  # horizontal scraper: 01SA, 3092mm upstream MIA
+    ScrapV = marker('ScrapV')  # vertical scraper: 01SA, 1634mm downstream MIA
     GSL15 = marker('GSL15')  # Generic Stripline (lambda/4)
     GSL07 = marker('GSL07')  # Generic Stripline (lambda/8)
     GBPM = marker('GBPM')  # General BPM
@@ -205,22 +207,31 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
         L134, QDB1, L150, SDB0, GIR, L120, BbBPkup, L120, GIR, QFB, L150, SFB0,
         L049, FC1, L052, QDB2, L140, BPM, GIR]
 
-    IDA = [
+    # SS_S01 = IDA_INJ
+    # SS_S05 = IDA_ScrapH
+    # SS_S09 = IDA_APU22
+    # SS_S13 = IDA_BbBKckrH
+    # SS_S17 = IDA17
+
+    L500p = drift('L500p', 0.5000 + dcircum/5/2)
+    LKKp = drift('lkkp', 0.3150 + dcircum/5/2)
+
+    IDA = [  # high beta ID straight section
         L500, LIA, L500, MIDA, L500, L500, MIA, L500, L500, MIDA, L500, LIA,
-        L500]  # high beta ID straight section
-    IDA_INJ = [
-        L500, TuneShkrH, LIA, L419, InjSeptF, L081, L500, L500, END, START,
-        MIA, LKK, InjDpKckr, LPMU, ScrapV, L100, ScrapV, L100,
-        InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
-    IDA_BbBKckrH = [
-        L500, BbBKckrH, LIA, L500, MIDA, L500, L500, MIA, L500, L500, MIDA,
-        L500, LIA, L500]  # high beta ID straight section
-    IDA_ScrapH = [
-        L500, LIA, L500, MIDA, L500, L500, MIA, L500, L500, MIDA, L500, ScrapH,
-        LIA, L500]  # high beta ID straight section
-    IDA17 = [
-        L500, LIA, L500, MIDA, L500, L500, MIA, L500, L500, MIDA, L500,
-        BbBKckrH, LIA, L500]  # high beta ID straight section
+        L500]
+    IDA_INJ = [  # high beta INJ straight section and Scrapers
+        L350, TuneShkrH, L150, ScrapH, LIA, L419, InjSeptF, L081, L500,
+        L500p, END, START, MIA, L500, L500, L500, L100, ScrapV, LKKp,
+        InjDpKckr, LPMU, InjNLKckr, LPMD]
+    IDA_BbBKckrH = [  # high beta ID straight section
+        L500, BbBKckrH, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA,
+        L500, LIA, L500]
+    IDA_ScrapH = [  # high beta ID straight section
+        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
+        LIA, L500]
+    IDA17 = [  # high beta ID straight section
+        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
+        BbBKckrH, LIA, L500]
 
     IDB = [
         L500, LIB, L500, MIDB, L500, L500, MIB, L500, L500, MIDB, L500, LIB,
@@ -333,9 +344,9 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False):
     # -- insertion devices --
 
     IDA_APU22 = [
-        L500, LID3, L500,
+        L500, LID3, L500p,
         MIDA, APU22H, MIA, APU22H, MIDA,
-        L500, LID3, L500]  # high beta ID straight section
+        L500p, LID3, L500]  # high beta ID straight section
     IDP_APU22 = [
         L500, LIP, L500, L350,
         MIDP, APU22H, MIP, APU22H, MIDP,
@@ -709,14 +720,15 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'Q3': +3.218430939674,
                 'Q4': +3.950686823494,
 
-                'QDA': -1.619529595236,
-                'QFA': +3.573170639946,
-                'QFB': +4.115074652461,
-                'QFP': +4.115074652461,
-                'QDB1': -2.006761160751,
-                'QDB2': -3.420551898839,
-                'QDP1': -2.006761160751,
-                'QDP2': -3.420551898839,
+                # NOTE: these values need updating after optics resimetrization with MAD
+                'QDA':  -1.619540412181686,
+                'QFA':  +3.5731777226094446,
+                'QFB':  +4.115082809275146,
+                'QFP':  +4.115082809275146,
+                'QDB1': -2.00677456404202,
+                'QDB2': -3.420574744932221,
+                'QDP1': -2.00677456404202,
+                'QDP2': -3.420574744932221,
 
                 #  SEXTUPOLES
                 #  ===========
@@ -727,21 +739,21 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'SFB0': +73.7401,
                 'SFP0': +73.7401,
 
-                'SDA1': -163.00673496033022,
-                'SDA2': -88.88283372136254,
-                'SDA3': -139.94196759537465,
-                'SFA1': +191.76918761338641,
-                'SFA2': +150.74751943200232,
-                'SDB1': -141.68731012406636,
-                'SDB2': -122.31611630101850,
-                'SDB3': -173.83532728484047,
-                'SFB1': +227.74260050056122,
-                'SFB2': +197.75140194181881,
-                'SDP1': -142.31458860004548,
-                'SDP2': -122.28494860530658,
-                'SDP3': -174.17505598949975,
-                'SFP1': +229.17864087362835,
-                'SFP2': +198.45436904861020
+                'SDA1': -163.0062328090773,
+                'SDA2': -88.88255991288263,
+                'SDA3': -139.94153649641189,
+                'SFA1': +191.76738248436368,
+                'SFA2': +150.74610044115283,
+                'SDB1': -141.68687364847958,
+                'SDB2': -122.31573949946443,
+                'SDB3': -173.8347917755106,
+                'SFB1': +227.7404567527413,
+                'SFB2': +197.7495405020359,
+                'SDP1': -142.31415019209263,
+                'SDP2': -122.28457189976633,
+                'SDP3': -174.1745194336169,
+                'SFP1': +229.17648360831797,
+                'SFP2': +198.4525009917773,
             }
         else:
             raise _pyacc_acc.AcceleratorException('Version not Implemented')

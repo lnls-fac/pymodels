@@ -224,7 +224,7 @@ def families_di():
     """Return diagnostics families."""
     return [
         'BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
-        'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckL'
+        'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckrL',
         'TuneShkrH', 'TuneShkrV', 'TunePkup']
 
 
@@ -325,18 +325,16 @@ def get_family_data(lattice):
 
     # ch - slow horizontal correctors
     idx = []
-    fams = [
-        'SDA0', 'SFB0', 'SFP0', 'SDA1', 'SDB1', 'SDP1',
-        'SFA2', 'SFB2', 'SFP2']
+    fams = ['SDA0', 'SFB0', 'SFP0', 'SDA1', 'SDB1', 'SDP1',
+            'SFA2', 'SFB2', 'SFP2']
     for fam in fams:
         idx.extend(data[fam])
     data['CH'] = sorted(idx, key=get_idx)
 
     # cv - slow vertical correctors
     idx = []
-    fams = [
-        'SDA0', 'SFB0', 'SFP0', 'SDA1', 'SDB1', 'SDP1',
-        'SDA3', 'SDB3', 'SDP3', 'SFA2', 'SFB2', 'SFP2', 'CV']
+    fams = ['SDA0', 'SFB0', 'SFP0', 'SDA1', 'SDB1', 'SDP1',
+            'SDA3', 'SDB3', 'SDP3', 'SFA2', 'SFB2', 'SFP2', 'CV']
     for fam in fams:
         if fam in {'SFA2', 'SFB2', 'SFP2'}:
             # for these families there are skew only in C3 sections

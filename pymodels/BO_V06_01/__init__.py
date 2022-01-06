@@ -1,4 +1,6 @@
 
+"""BO_V06_01 model."""
+
 from .accelerator import default_cavity_on
 from .accelerator import default_radiation_on
 from .accelerator import default_vchamber_on
