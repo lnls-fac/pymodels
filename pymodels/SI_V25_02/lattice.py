@@ -83,6 +83,7 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
+    L600 = drift('l600', 0.600)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
 
@@ -192,7 +193,6 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     ID09H = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
     ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-Delta52'
     ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
-    ID12H = kickmaps['ID12SB']  # COLIBRI   'SI-12SB:ID-Delta52'
 
     IDC = corrector('IDC', 0.0, hkick=0.0, vkick=0.0)  # ID corrector
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
@@ -362,13 +362,13 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     
     IDB_12 = [
         L500, LIB, L665, L100, L135,
-        MIDB, ID12H, MIB, ID12H, MIDB,
-        L135, L100, L665, LIB, L500]  # low beta ID straight section (COLIBRI)
+        MIDB, L600, MIB, L600, MIDB,
+        L135, L100, L665, LIB, L500]  # low beta ID straight section
 
     IDB_16 = [
         L500, LIB, L500,
         MIDB, L500, L500, MIB, L500, L500, MIDB,
-        L500, BbBKckL, LIB, L500]  # low beta ID straight section (INGA)
+        L500, BbBKckL, LIB, L500]  # low beta ID straight section
 
     # --- IDP insertion sectors ---
 
@@ -411,13 +411,13 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     SS_S09 = IDA_09  # MANACA
     SS_S10 = IDB_10  # SABIA
     SS_S11 = IDP_11  # IPE
-    SS_S12 = IDB_12  # COLIBRI
+    SS_S12 = IDB_12
     SS_S13 = IDA_BbBKckrH
-    SS_S14 = IDB  # HARPIA
-    SS_S15 = IDP  # SAGUI
+    SS_S14 = IDB  # PAINEIRA
+    SS_S15 = IDP
     SS_S16 = IDB_16  # INGA
     SS_S17 = IDA_17  # SAPUCAIA
-    SS_S18 = IDB_TunePkup  # PAINEIRA
+    SS_S18 = IDB_TunePkup
     SS_S19 = IDP_GSL15
     SS_S20 = IDB_GSL07
 
@@ -811,55 +811,26 @@ def create_id_kickmaps_dict(ids):
     else:
         idsdict = dict()
 
+    # NOTE: see IDs already defined in
+    # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
+    ids_subsec_drift_lens = {
+        # subsec   idtype   idlen    beamline
+        'ID06SB': ('APU22', 1.3),    # CARNAUBA
+        'ID07SP': ('APU22', 1.3),    # CATERETE
+        'ID08SB': ('APU22', 1.3),    # EMA
+        'ID09SA': ('APU22', 1.3),    # MANACA
+        'ID10SB': ('DELTA52', 1.2),  # SABIA
+        'ID11SP': ('APU58', 1.3),    # IPE
+    }
+
+    # build kickmap dict
     kickmaps = dict()
-    
-    # CARNAUBA
-    idkey = 'ID06SB'
-    if ids is None or idkey not in idsdict:
-        kickmaps[idkey] = drift('APU22', 1.300/2)
-    else:
-        kickmaps[idkey] = idsdict[idkey].get_half_kickmap()
-        
-    # CATERETE
-    idkey = 'ID07SP'
-    if ids is None or idkey not in idsdict:
-        kickmaps[idkey] = drift('APU22', 1.300/2)
-    else:
-        kickmaps[idkey] = idsdict[idkey].get_half_kickmap()
-
-    # EMA
-    idkey = 'ID08SB'
-    if ids is None or idkey not in idsdict:
-        kickmaps[idkey] = drift('APU22', 1.300/2)
-    else:
-        kickmaps[idkey] = idsdict[idkey].get_half_kickmap()
-
-    # MANACA
-    idkey = 'ID09SA'
-    if ids is None or idkey not in idsdict:
-        kickmaps[idkey] = drift('APU22', 1.300/2)
-    else:
-        kickmaps[idkey] = idsdict[idkey].get_half_kickmap()
-
-    # SABIA
-    idkey = 'ID10SB'
-    if ids is None or idkey not in idsdict:
-        kickmaps[idkey] = drift('DELTA52', 1.200/2)
-    else:
-        kickmaps[idkey] = idsdict[idkey].get_half_kickmap()
-
-    # IPE
-    idkey = 'ID11SP'
-    if ids is None or idkey not in idsdict:
-        kickmaps[idkey] = drift('APU58', 1.300/2)
-    else:
-        kickmaps[idkey] = idsdict[idkey].get_half_kickmap()
-
-    # COLIBRI
-    idkey = 'ID12SB'
-    if ids is None or idkey not in idsdict:
-        kickmaps[idkey] = drift('DELTA52', 1.200/2)
-    else:
-        kickmaps[idkey] = idsdict[idkey].get_half_kickmap()
+    for subsec, (idtype, idlen) in ids_subsec_drift_lens.items():
+        if subsec not in idsdict:
+            # ID not in passed ID dictionary, return drift for half ID.
+            kickmaps[subsec] = drift(idtype, idlen/2)
+        else:
+            # return Kickmap for half ID.
+            kickmaps[subsec] = idsdict[subsec].get_half_kickmap()
 
     return kickmaps
