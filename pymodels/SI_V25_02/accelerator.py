@@ -11,10 +11,10 @@ default_vchamber_on = False
 
 
 def create_accelerator(optics_mode=_lattice.default_optics_mode,
-                       simplified=False):
+                       simplified=False, ids=None):
     """Create accelerator model."""
     lattice = _lattice.create_lattice(optics_mode=optics_mode,
-                                      simplified=simplified)
+                                      simplified=simplified, ids=ids)
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=lattice,
         energy=_lattice.energy,
@@ -28,7 +28,7 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode,
 
 
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'SI_V24_04'
+accelerator_data['lattice_version'] = 'SI_V25_02'
 accelerator_data['global_coupling'] = 0.01  # expected corrected value
 accelerator_data['pressure_profile'] = \
-    _np.array([[0, 518.396], [1.333e-9]*2])  # [s [m], p [mbar]]
+    _np.array([[0, 518.3899], [1.333e-9]*2])  # [s [m], p [mbar]]
