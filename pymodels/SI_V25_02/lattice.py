@@ -192,7 +192,6 @@ def create_lattice(
     ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-Delta52'
     ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
 
-    IDC = corrector('IDC', 0.0, hkick=0.0, vkick=0.0)  # ID corrector
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
 
     # -- sectors --
