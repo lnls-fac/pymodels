@@ -17,8 +17,8 @@ def dipole_bc(m_accep_fam_name, simplified=False):
     # Average Dipole Model for BC
     # =============================================
     # date: 2019-06-27
-    # Based on multipole expansion around average segmented model trajectory calculated
-    # from fieldmap analysis of measurement data
+    # Based on multipole expansion around average segmented model trajectory
+    # calculated from fieldmap analysis of measurement data
     # folder = si-dipoles-bc/model-13/analysis/hallprobe/production/x0-0p079mm-reftraj
     # init_rx =  79 um
     # ref_rx  = 7.7030 mm (average model trajectory)

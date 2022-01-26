@@ -19,7 +19,8 @@ energy = 3e9  # [eV]
 
 
 def create_lattice(
-        optics_mode=default_optics_mode, simplified=False, ids=None):
+        optics_mode=default_optics_mode, simplified=False, ids=None,
+        ids_vchamber=True):
     """Return lattice object."""
     # -- selection of optics mode --
     strengths = get_optics_mode(optics_mode=optics_mode)
@@ -92,16 +93,16 @@ def create_lattice(
     # -- quadrupoles --
     QFA = _segmented_models.quadrupole_q20('QFA', strengths['QFA'], simplified)
     QDA = _segmented_models.quadrupole_q14('QDA', strengths['QDA'], simplified)
-    QDB2 = _segmented_models.quadrupole_q14('QDB2', strengths['QDB2'],
-                                            simplified)
+    QDB2 = _segmented_models.quadrupole_q14(
+        'QDB2', strengths['QDB2'], simplified)
     QFB = _segmented_models.quadrupole_q30('QFB', strengths['QFB'], simplified)
-    QDB1 = _segmented_models.quadrupole_q14('QDB1', strengths['QDB1'],
-                                            simplified)
-    QDP2 = _segmented_models.quadrupole_q14('QDP2', strengths['QDP2'],
-                                            simplified)
+    QDB1 = _segmented_models.quadrupole_q14(
+        'QDB1', strengths['QDB1'], simplified)
+    QDP2 = _segmented_models.quadrupole_q14(
+        'QDP2', strengths['QDP2'], simplified)
     QFP = _segmented_models.quadrupole_q30('QFP', strengths['QFP'], simplified)
-    QDP1 = _segmented_models.quadrupole_q14('QDP1', strengths['QDP1'],
-                                            simplified)
+    QDP1 = _segmented_models.quadrupole_q14(
+        'QDP1', strengths['QDP1'], simplified)
     Q1 = _segmented_models.quadrupole_q20('Q1', strengths['Q1'], simplified)
     Q2 = _segmented_models.quadrupole_q20('Q2', strengths['Q2'], simplified)
     Q3 = _segmented_models.quadrupole_q20('Q3', strengths['Q3'], simplified)
@@ -293,7 +294,6 @@ def create_lattice(
     C4P_TuneShkrV = [
         GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
         SDP1, L237, TuneShkrV, GIR, L237, GIR]
-
 
     # --- IDA insertion sectors ---
 
@@ -619,7 +619,7 @@ def create_lattice(
     set_num_integ_steps(the_ring)
 
     # -- define vacuum chamber for all elements
-    set_vacuum_chamber(the_ring)
+    set_vacuum_chamber(the_ring, ids_vchamber=ids_vchamber)
 
     return the_ring
 
@@ -655,7 +655,8 @@ def set_num_integ_steps(the_ring):
             the_ring[i].nr_steps = nr_steps
 
 
-def set_vacuum_chamber(the_ring, optics_mode=default_optics_mode):
+def set_vacuum_chamber(
+        the_ring, optics_mode=default_optics_mode, ids_vchamber=True):
     """Set vacuum chamber for all elements."""
     # vchamber = [hmin, hmax, vmin, vmax] (meter)
     other_vchamber = [-0.012, 0.012, -0.012, 0.012]
@@ -672,33 +673,6 @@ def set_vacuum_chamber(the_ring, optics_mode=default_optics_mode):
     for i in range(len(the_ring)):
         e = the_ring[i]
         e.hmin, e.hmax, e.vmin, e.vmax = other_vchamber
-
-    # Set ids vacuum chamber in straight section of type B
-    idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
-    idb_list = []
-    for i in range(len(idb)//2):
-        idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
-    for i in idb_list:
-        e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
-
-    # Set ids vacuum chamber in straight section of type A
-    ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
-    ida_list = []
-    for i in range(len(ida)//2):
-        ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
-    for i in ida_list:
-        e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
-
-    # Set ids vacuum chamber in straight section of type P
-    idp = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endp')
-    idp_list = []
-    for i in range(len(idp)//2):
-        idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
-    for i in idp_list:
-        e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
 
     # Set injection vacuum chamber
     sept_in = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjSeptF')[-1]
@@ -727,6 +701,36 @@ def set_vacuum_chamber(the_ring, optics_mode=default_optics_mode):
         e = the_ring[i + 1]
         e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
 
+    if not ids_vchamber:
+        return
+
+    # Set ids vacuum chamber in straight section of type B
+    idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
+    idb_list = []
+    for i in range(len(idb)//2):
+        idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
+    for i in idb_list:
+        e = the_ring[i]
+        e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
+
+    # Set ids vacuum chamber in straight section of type A
+    ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
+    ida_list = []
+    for i in range(len(ida)//2):
+        ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
+    for i in ida_list:
+        e = the_ring[i]
+        e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
+
+    # Set ids vacuum chamber in straight section of type P
+    idp = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endp')
+    idp_list = []
+    for i in range(len(idp)//2):
+        idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
+    for i in idp_list:
+        e = the_ring[i]
+        e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
+
 
 def get_optics_mode(optics_mode=default_optics_mode):
     """Return magnet strengths for a given optics mode."""
@@ -742,11 +746,12 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'Q3': +3.218430939674,
                 'Q4': +3.950686823494,
 
-                # NOTE: these values need updating after optics resimetrization with MAD
-                'QDA':  -1.619540412181686,
-                'QFA':  +3.5731777226094446,
-                'QFB':  +4.115082809275146,
-                'QFP':  +4.115082809275146,
+                # NOTE: these values need updating after optics
+                # resimetrization with MAD
+                'QDA': -1.619540412181686,
+                'QFA': +3.5731777226094446,
+                'QFB': +4.115082809275146,
+                'QFP': +4.115082809275146,
                 'QDB1': -2.00677456404202,
                 'QDB2': -3.420574744932221,
                 'QDP1': -2.00677456404202,
