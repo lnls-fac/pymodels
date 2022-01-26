@@ -4,7 +4,6 @@ In this module the lattice of the corresponding accelerator is defined.
 """
 
 import math as _math
-import numpy as _np
 
 import lnls as _lnls
 import mathphys as _mp
@@ -12,8 +11,6 @@ from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
     accelerator as _pyacc_acc
 
 from . import segmented_models as _segmented_models
-from .idmodel import IDModel as _IDModel
-# from .idmodel import create_id_kickmaps as _create_id_kickmaps
 
 default_optics_mode = 'S05.01'
 lattice_symmetry = 5
