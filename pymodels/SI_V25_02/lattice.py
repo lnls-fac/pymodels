@@ -4,7 +4,6 @@ In this module the lattice of the corresponding accelerator is defined.
 """
 
 import math as _math
-import numpy as _np
 
 import lnls as _lnls
 import mathphys as _mp
@@ -12,8 +11,6 @@ from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
     accelerator as _pyacc_acc
 
 from . import segmented_models as _segmented_models
-from .idmodel import IDModel as _IDModel
-# from .idmodel import create_id_kickmaps as _create_id_kickmaps
 
 default_optics_mode = 'S05.01'
 lattice_symmetry = 5
@@ -21,9 +18,10 @@ harmonic_number = 864
 energy = 3e9  # [eV]
 
 
-def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
+def create_lattice(
+        optics_mode=default_optics_mode, simplified=False, ids=None,
+        ids_vchamber=True):
     """Return lattice object."""
-    
     # -- selection of optics mode --
     strengths = get_optics_mode(optics_mode=optics_mode)
 
@@ -95,16 +93,16 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     # -- quadrupoles --
     QFA = _segmented_models.quadrupole_q20('QFA', strengths['QFA'], simplified)
     QDA = _segmented_models.quadrupole_q14('QDA', strengths['QDA'], simplified)
-    QDB2 = _segmented_models.quadrupole_q14('QDB2', strengths['QDB2'],
-                                            simplified)
+    QDB2 = _segmented_models.quadrupole_q14(
+        'QDB2', strengths['QDB2'], simplified)
     QFB = _segmented_models.quadrupole_q30('QFB', strengths['QFB'], simplified)
-    QDB1 = _segmented_models.quadrupole_q14('QDB1', strengths['QDB1'],
-                                            simplified)
-    QDP2 = _segmented_models.quadrupole_q14('QDP2', strengths['QDP2'],
-                                            simplified)
+    QDB1 = _segmented_models.quadrupole_q14(
+        'QDB1', strengths['QDB1'], simplified)
+    QDP2 = _segmented_models.quadrupole_q14(
+        'QDP2', strengths['QDP2'], simplified)
     QFP = _segmented_models.quadrupole_q30('QFP', strengths['QFP'], simplified)
-    QDP1 = _segmented_models.quadrupole_q14('QDP1', strengths['QDP1'],
-                                            simplified)
+    QDP1 = _segmented_models.quadrupole_q14(
+        'QDP1', strengths['QDP1'], simplified)
     Q1 = _segmented_models.quadrupole_q20('Q1', strengths['Q1'], simplified)
     Q2 = _segmented_models.quadrupole_q20('Q2', strengths['Q2'], simplified)
     Q3 = _segmented_models.quadrupole_q20('Q3', strengths['Q3'], simplified)
@@ -194,11 +192,9 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-Delta52'
     ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
 
-    IDC = corrector('IDC', 0.0, hkick=0.0, vkick=0.0)  # ID corrector
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
 
     # -- sectors --
-    
     M1A = [
         L134, QDA, L150, SDA0, GIR, L074, GIR, FC1, L082, QFA, L150, SFA0,
         L135, BPM, GIR]  # high beta xxM1 girder (with fasc corrector)
@@ -298,7 +294,6 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
         GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
         SDP1, L237, TuneShkrV, GIR, L237, GIR]
 
-
     # --- IDA insertion sectors ---
 
     IDA_INJ = [
@@ -311,9 +306,9 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
         L500, LIA, L500]  # high beta ID straight section
 
     IDA_ScrapH = [
-        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500, ScrapH,
-        LIA, L500]  # high beta ID straight section
-    
+        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
+        ScrapH, LIA, L500]  # high beta ID straight section
+
     IDA_09 = [
         L500, LID3, L500p,
         MIDA, ID09H, MIA, ID09H, MIDA,
@@ -329,29 +324,29 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     IDB = [
         L500, LIB, L500, MIDB, L500, L500, MIB, L500, L500, MIDB, L500, LIB,
         L500]  # low beta ID straight section
-    
+
     IDB_GSL07 = [
         L500, GSL07, LIB, L500,
         MIDB, L500, L500, MIB, L500, L500, MIDB,
         L500, LIB, L500]  # low beta ID straight section
-    
+
     IDB_TunePkup = [
         L500, LIB, L500,
         MIDB, L500, L500, MIB, L500, L500, MIDB,
         L500, TunePkup, LIB, L500]  # low beta ID straight section
-    
+
     IDB_02 = [
         L500, LIB, L500,
         MIDB, L500, L500, MIB, L500, L500, MIDB,
         L500, HCav, LIB, L500]  # low beta ID straight section
-    
+
     IDB_06 = [
         L500, LIB, L500,
         L350, MIDB, ID06H, MIB, ID06H, MIDB,
         L350, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDB_08 = [
-        L500, LIB, L500, L350, 
+        L500, LIB, L500, L350,
         MIDB, ID08H, MIB, ID08H, MIDB,
         L350, L500, LIB, L500]  # low beta ID straight section (EMA)
 
@@ -359,7 +354,7 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
         L500, LIB, L665, IDC, L135,
         MIDB, ID10H, MIB, ID10H, MIDB,
         L135, IDC, L665, LIB, L500]  # low beta ID straight section (SABIA)
-    
+
     IDB_12 = [
         L500, LIB, L665, L100, L135,
         MIDB, L600, MIB, L600, MIDB,
@@ -376,16 +371,16 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
         L500, LIP, L500,
         MIDP, L500, L500, MIP, L500, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
-    
+
     IDP_CAV = [
         L500, LIP, L500, L500, L500, MIP, RFC, L500, L500, L500,
         LIP, L500]  # low beta RF cavity straight section
-    
+
     IDP_07 = [
         L500, LIP, L500, L350,
         MIDP, ID07H, MIP, ID07H, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section (CATERETE)
-        
+
     IDP_11 = [
         L500, LIP, L500, L350,
         MIDP, ID11H, MIP, ID11H, MIDP,
@@ -395,7 +390,6 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
         L500, GSL15, LIP, L500,
         MIDP, L500, L500, MIP, L500, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
-
 
     # -- girders --
 
@@ -607,7 +601,6 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
         M1_S20, SS_S20, M2_S20, B1, C1_S20, B2, C2_S20, BC,
         C3_S20, B2, C4_S20, B1]
 
-
     anel = [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10,
             S11, S12, S13, S14, S15, S16, S17, S18, S19, S20]
     anel = _lnls.utils.flatten(anel)
@@ -625,7 +618,7 @@ def create_lattice(optics_mode=default_optics_mode, simplified=False, ids=None):
     set_num_integ_steps(the_ring)
 
     # -- define vacuum chamber for all elements
-    the_ring = set_vacuum_chamber(the_ring)
+    set_vacuum_chamber(the_ring, ids_vchamber=ids_vchamber)
 
     return the_ring
 
@@ -661,59 +654,24 @@ def set_num_integ_steps(the_ring):
             the_ring[i].nr_steps = nr_steps
 
 
-def set_vacuum_chamber(the_ring, optics_mode=default_optics_mode):
+def set_vacuum_chamber(
+        the_ring, optics_mode=default_optics_mode, ids_vchamber=True):
     """Set vacuum chamber for all elements."""
     # vchamber = [hmin, hmax, vmin, vmax] (meter)
     other_vchamber = [-0.012, 0.012, -0.012, 0.012]
-    idb_vchamber = [-0.004, 0.004, -0.00225, 0.00225]
-    ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
     bc_hfield_vchamber = [-0.004, 0.004, -0.004, 0.004]
     inj_vchamber = [-0.030, 0.012, -0.012, 0.012]
-    idp_vchamber = idb_vchamber if optics_mode.startswith(
-        'S05') else ida_vchamber
+
+    ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
+    idb_vchamber = [-0.004, 0.004, -0.00225, 0.00225]
+    idp_vchamber = ida_vchamber
+    if optics_mode.startswith('S05'):
+        idp_vchamber = idb_vchamber
 
     # Set ordinary Vacuum Chamber
     for i in range(len(the_ring)):
         e = the_ring[i]
         e.hmin, e.hmax, e.vmin, e.vmax = other_vchamber
-
-    # Shift the ring so that lattice does not begin between id markers
-    bpm = _pyacc_lat.find_indices(the_ring, 'fam_name', 'BPM')
-    the_ring = _pyacc_lat.shift(the_ring, bpm[0])
-
-    # NOTE: Insertion devices vchamber temporarily off
-
-    # # Set in-vacuum ids vacuum chamber
-    # idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
-    # print(idb)
-    # idb_list = []
-    # for i in range(len(idb)//2):
-    #     idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
-    # print(idb_list)
-    # for i in idb_list:
-    #     e = the_ring[i]
-    #     e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
-
-    # # Set other ids vacuum chamber
-    # ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
-    # ida_list = []
-    # for i in range(len(ida)//2):
-    #     ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
-    # for i in ida_list:
-    #     e = the_ring[i]
-    #     e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
-
-    # # Set other ids vacuum chamber
-    # idp = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endp')
-    # idp_list = []
-    # for i in range(len(idp)//2):
-    #     idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
-    # for i in idp_list:
-    #     e = the_ring[i]
-    #     e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
-
-    # Shift the ring back.
-    the_ring = _pyacc_lat.shift(the_ring, len(the_ring)-bpm[0])
 
     # Set injection vacuum chamber
     sept_in = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjSeptF')[-1]
@@ -742,7 +700,35 @@ def set_vacuum_chamber(the_ring, optics_mode=default_optics_mode):
         e = the_ring[i + 1]
         e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
 
-    return the_ring
+    if not ids_vchamber:
+        return
+
+    # Set ids vacuum chamber in straight section of type B
+    idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
+    idb_list = []
+    for i in range(len(idb)//2):
+        idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
+    for i in idb_list:
+        e = the_ring[i]
+        e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
+
+    # Set ids vacuum chamber in straight section of type A
+    ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
+    ida_list = []
+    for i in range(len(ida)//2):
+        ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
+    for i in ida_list:
+        e = the_ring[i]
+        e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
+
+    # Set ids vacuum chamber in straight section of type P
+    idp = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endp')
+    idp_list = []
+    for i in range(len(idp)//2):
+        idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
+    for i in idp_list:
+        e = the_ring[i]
+        e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
 
 
 def get_optics_mode(optics_mode=default_optics_mode):
@@ -759,11 +745,12 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'Q3': +3.218430939674,
                 'Q4': +3.950686823494,
 
-                # NOTE: these values need updating after optics resimetrization with MAD
-                'QDA':  -1.619540412181686,
-                'QFA':  +3.5731777226094446,
-                'QFB':  +4.115082809275146,
-                'QFP':  +4.115082809275146,
+                # NOTE: these values need updating after optics
+                # resimetrization with MAD
+                'QDA': -1.619540412181686,
+                'QFA': +3.5731777226094446,
+                'QFB': +4.115082809275146,
+                'QFP': +4.115082809275146,
                 'QDB1': -2.00677456404202,
                 'QDB2': -3.420574744932221,
                 'QDP1': -2.00677456404202,
@@ -805,11 +792,10 @@ def get_optics_mode(optics_mode=default_optics_mode):
 def create_id_kickmaps_dict(ids):
     """Return dict with half insertion device kickmaps."""
     drift = _pyacc_ele.drift
-    
+
+    idsdict = dict()
     if ids:
-        idsdict = {id.subsec:id for id in ids}
-    else:
-        idsdict = dict()
+        idsdict = {id.subsec: id for id in ids}
 
     # NOTE: see IDs already defined in
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
