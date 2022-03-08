@@ -48,6 +48,7 @@ def create_lattice(
     LKKp = drift('lkkp', 1.9150 + dcircum/5/2)
     L011 = drift('l011', 0.011)
     L049 = drift('l049', 0.049)
+    L050 = drift('l050', 0.050)
     L052 = drift('l052', 0.052)
     L056 = drift('l056', 0.056)
     L074 = drift('l074', 0.074)
@@ -296,18 +297,18 @@ def create_lattice(
 
     # --- IDA insertion sectors ---
 
+    IDA = [
+        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
+        LIA, L500]  # high beta ID straight section
+
     IDA_INJ = [
-        L500, TuneShkrH, LIA, L419, InjSeptF, L081, L500, L500p, END, START,
-        MIA, LKKp, InjDpKckr, LPMU, ScrapV, L100, ScrapV, L100,
+        ScrapH, L500, TuneShkrH, LIA, L419, InjSeptF, L081, L500, L500p,
+        END, START, MIA, LKKp, InjDpKckr, LPMU, L050, ScrapV, L150,
         InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
 
     IDA_BbBKckrH = [
         L500, BbBKckrH, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA,
         L500, LIA, L500]  # high beta ID straight section
-
-    IDA_ScrapH = [
-        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
-        ScrapH, LIA, L500]  # high beta ID straight section
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -398,7 +399,7 @@ def create_lattice(
     SS_S02 = IDB_02
     SS_S03 = IDP_CAV
     SS_S04 = IDB
-    SS_S05 = IDA_ScrapH
+    SS_S05 = IDA
     SS_S06 = IDB_06  # CARNAUBA
     SS_S07 = IDP_07  # CATERETE
     SS_S08 = IDB_08  # EMA
