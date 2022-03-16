@@ -29,7 +29,7 @@ def create_accelerator(
 
 
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'SI_V25_02'
+accelerator_data['lattice_version'] = 'SI_V25_03'
 accelerator_data['global_coupling'] = 0.01  # expected corrected value
 accelerator_data['pressure_profile'] = \
     _np.array([[0, 518.3899], [1.333e-9]*2])  # [s [m], p [mbar]]
