@@ -47,6 +47,7 @@ def create_lattice(
     L500p = drift('L500p', 0.5000 + dcircum/5/2)
     LKKp = drift('lkkp', 1.9150 + dcircum/5/2)
     L011 = drift('l011', 0.011)
+    L019 = drift('l019', 0.019)
     L049 = drift('l049', 0.049)
     L050 = drift('l050', 0.050)
     L052 = drift('l052', 0.052)
@@ -138,7 +139,7 @@ def create_lattice(
     # -- pulsed magnets --
     InjDpKckr = sextupole('InjDpKckr', 0.400, S=0.0)  # injection kicker
     InjNLKckr = sextupole('InjNLKckr', 0.450, S=0.0)  # pulsed multipole magnet
-    PingV = marker('PingV')  # Vertical Pinger
+    PingV = sextupole('PingV', 0.32, S=0.0)  # Vertical Pinger
 
     # -- fast correctors --
     # 60 magnets: normal quad poles (CH+CV and CH+CV+QS):
@@ -280,7 +281,7 @@ def create_lattice(
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
     C4B_PingV = [
         GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
-        SDB1, L237, PingV, GIR, L237, GIR]
+        SDB1, L135, PingV, GIR, L019, GIR]
 
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4P = [
