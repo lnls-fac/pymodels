@@ -424,13 +424,13 @@ def set_vacuum_chamber(the_ring):
             the_ring[i].vmin = other_vchamber[2]
             the_ring[i].vmax = other_vchamber[3]
 
-    # vaccum chamber on the injection section
+    # vacuum chamber on the injection section
     for i in range(sept_in, len(the_ring)):
         the_ring[i].hmin = -0.05 # Verificar valor real
     for i in range(kick_in):
         the_ring[i].hmin = -0.05 # Verificar valor real
 
-    # vaccum chamber on the extraction section
+    # vacuum chamber on the extraction section
     for i in range(b_ex[0], b_ex[-1]+1): # Verificar
         the_ring[i].hmin = other_vchamber[0]
         the_ring[i].hmax = other_vchamber[1]
