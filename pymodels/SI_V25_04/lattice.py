@@ -11,7 +11,7 @@ import mathphys as _mp
 from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
     accelerator as _pyacc_acc
 
-from ..SI_V25_04 import segmented_models as _segmented_models
+from . import segmented_models as _segmented_models
 
 default_optics_mode = 'S05.01'
 lattice_symmetry = 5
