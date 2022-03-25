@@ -3,10 +3,6 @@
 In this module the lattice of the corresponding accelerator is defined.
 """
 
-
-# kyma - 06/07/08/09/11 (Al)
-
-
 import operator as _opr
 import math as _math
 
