@@ -3,6 +3,11 @@
 In this module the lattice of the corresponding accelerator is defined.
 """
 
+
+# kyma - 06/07/08/09/11 (Al)
+
+
+import operator as _opr
 import math as _math
 
 import lnls as _lnls
@@ -10,7 +15,7 @@ import mathphys as _mp
 from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
     accelerator as _pyacc_acc
 
-from . import segmented_models as _segmented_models
+from ..SI_V25_04 import segmented_models as _segmented_models
 
 default_optics_mode = 'S05.01'
 lattice_symmetry = 5
@@ -69,6 +74,7 @@ def create_lattice(
     L140 = drift('l140', 0.140)
     L150 = drift('l150', 0.150)
     L170 = drift('l170', 0.170)
+    L182 = drift('l182', 0.182)
     L200 = drift('l200', 0.200)
     L201 = drift('l201', 0.201)
     L205 = drift('l205', 0.205)
@@ -86,6 +92,7 @@ def create_lattice(
     L600 = drift('l600', 0.600)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
+    InjVC = drift('InjVC', 0.399)
 
     # -- dipoles --
     BC = _segmented_models.dipole_bc(m_accep_fam_name, simplified)
@@ -303,7 +310,7 @@ def create_lattice(
         LIA, L500]  # high beta ID straight section
 
     IDA_INJ = [
-        ScrapH, L500, TuneShkrH, LIA, L419, InjSeptF, L081, L500, L500p,
+        ScrapH, L500, TuneShkrH, LIA, L419, InjSeptF, InjVC, L182, L500p,
         END, START, MIA, LKKp, InjDpKckr, LPMU, L050, ScrapV, L150,
         InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
 
@@ -661,8 +668,10 @@ def set_vacuum_chamber(
     """Set vacuum chamber for all elements."""
     # vchamber = [hmin, hmax, vmin, vmax] (meter)
     other_vchamber = [-0.012, 0.012, -0.012, 0.012]
-    bc_hfield_vchamber = [-0.004, 0.004, -0.004, 0.004]
-    inj_vchamber = [-0.030, 0.012, -0.012, 0.012]
+    inj1_vchamber = [-0.030, 0.012, -0.012, 0.012]  # closer to injsept
+    inj2_vchamber = [-0.022, 0.012, -0.012, 0.012]  # farther from injsept
+    scraph_vchamber = [-0.012, 0.012, -0.012, 0.012]
+    scrapv_vchamber = [-0.029/2, 0.029/2, -0.0095/2, 0.0095/2]
 
     ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
     idb_vchamber = [-0.004, 0.004, -0.00225, 0.00225]
@@ -670,40 +679,43 @@ def set_vacuum_chamber(
     if optics_mode.startswith('S05'):
         idp_vchamber = idb_vchamber
 
-    # Set ordinary Vacuum Chamber
+    # Set ordinary vchamber
     for i in range(len(the_ring)):
         e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.ellipse
         e.hmin, e.hmax, e.vmin, e.vmax = other_vchamber
 
-    # Set injection vacuum chamber
+    # set scraperH vchamber
+    scraph = _pyacc_lat.find_indices(the_ring, 'fam_name', 'ScrapH')
+    for i in scraph:
+        e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.rectangle
+        e.hmin, e.hmax, e.vmin, e.vmax = scraph_vchamber
+
+    # set scraperV vchamber
+    scrapv = _pyacc_lat.find_indices(the_ring, 'fam_name', 'ScrapV')
+    for i in scrapv:
+        e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.ellipse
+        e.hmin, e.hmax, e.vmin, e.vmax = scrapv_vchamber
+
+    # Set inj vchamber with bigger restriction, longer length
     sept_in = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjSeptF')[-1]
     kick_in = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjDpKckr')[0]
     inj_list = list(range(sept_in, len(the_ring))) + list(range(kick_in+1))
     for i in inj_list:
         e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = inj_vchamber
+        e.vchamber = _pyacc_ele.VChamberShape.rectangle
+        e.hmin, e.hmax, e.vmin, e.vmax = inj2_vchamber
+    # Set inj vchamber with smaller restriction, shorter len closer to septum
+    inj_list = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjVC')
+    for i in inj_list:
+        e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.rectangle
+        e.hmin, e.hmax, e.vmin, e.vmax = inj1_vchamber
 
     # Set high field BC vacuum chamber
-    # NOTE: segments with bending radius smaller than this value
-    # are supposed to have reduced vacuum chamber. This should be
-    # replaced by specification of the vacuum chamber
-    rho0 = 5.0  # [m]
-    indices = _pyacc_lat.find_indices(the_ring, 'fam_name', 'BC')
-    for i in indices:
-        e = the_ring[i]
-        ang, lng = e.angle, e.length
-        rho = lng/ang
-        if rho < rho0:
-            e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
-    indices = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mc')
-    for i in indices:
-        e = the_ring[i]
-        e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
-        e = the_ring[i + 1]
-        e.hmin, e.hmax, e.vmin, e.vmax = bc_hfield_vchamber
-
-    if not ids_vchamber:
-        return
+    set_vacuum_chamber_bc(the_ring)
 
     # Set ids vacuum chamber in straight section of type B
     idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
@@ -712,6 +724,7 @@ def set_vacuum_chamber(
         idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
     for i in idb_list:
         e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.rectangle
         e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
 
     # Set ids vacuum chamber in straight section of type A
@@ -721,6 +734,7 @@ def set_vacuum_chamber(
         ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
     for i in ida_list:
         e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.rectangle
         e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
 
     # Set ids vacuum chamber in straight section of type P
@@ -730,7 +744,55 @@ def set_vacuum_chamber(
         idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
     for i in idp_list:
         e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.rectangle
         e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
+
+
+def set_vacuum_chamber_bc(the_ring):
+    """Set BC vacuum chamber with transition."""
+    mcidx = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mc')
+    print(mcidx)
+    spos = _pyacc_lat.find_spos(the_ring)
+
+    # the following geometry was take from VAC group's drawings
+    len1 = 0.020  # [m] - length of vchamber with smaller radius of 4 mm.
+    len2 = 0.189  # [m] - 4 mm to 12 mm radius transition vchamber length.
+    radius1 = 0.004  # [m] - smaller vchamber radius
+    radius2 = 0.012  # [m] - standard vchamber radius
+
+    def set_vchamber_transition(elem, dspos, sign):
+        elem.vchamber = _pyacc_ele.VChamberShape.ellipse
+        radius = radius1 + (radius2 - radius1)*(dspos - sign * len1/2)/len2
+        elem.hmin = radius
+        elem.hmax = radius
+        elem.vmin = radius
+        elem.vmax = radius
+
+    def loop_vchamber(idxmc, upstream):
+        sign = +1 if upstream else -1
+        spos1 = spos_mc + sign * len1/2
+        spos2 = spos1 + sign * len2
+        opera = _opr.__le__ if upstream else _opr.__ge__
+        idx = idxmc
+        while True:
+            if opera(spos[idx], spos1):
+                # high field region with restricted radius
+                set_vchamber_transition(the_ring[idx], 0, 0)
+            elif opera(spos[idx], spos2):
+                # lower field region with transition radius
+                dspos = spos[idx] - spos[idxmc]
+                set_vchamber_transition(the_ring[idx], dspos, sign)
+            else:
+                break  # outside high field region
+            idx += sign
+
+    # loop over BCs in the ring
+    for mci in mcidx:
+        spos_mc = spos[mci]
+        # downstream vchamber
+        loop_vchamber(mci, +1)
+        # upstream vchamber
+        loop_vchamber(mci, -1)
 
 
 def get_optics_mode(optics_mode=default_optics_mode):
