@@ -24,7 +24,7 @@ _family_segmentation = {
     'QS': 1, 'CH': 1, 'CV': 1,
     'SRFCav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    'APU22': 2, 'APU58': 2,
+    'APU22': 2, 'APU58': 2, 'DELTA52': 2,
     }
 
 _discipline_mapping = {
@@ -91,6 +91,7 @@ _discipline_mapping = {
     'SRFCav': 'RF',
     'APU22': 'ID',
     'APU58': 'ID',
+    'DELTA52': 'ID',
     }
 
 family_mapping = {
@@ -169,6 +170,7 @@ family_mapping = {
     'SRFCav': 'superconducting_rf_cavity',
     'APU22': 'insertion_device',
     'APU58': 'insertion_device',
+    'DELTA52': 'insertion_device',
     }
 
 
@@ -230,7 +232,7 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', 'APU58', ]
+    return ['APU22', 'APU58', 'DELTA52']
 
 
 def get_section_name_mapping(lattice):
@@ -395,7 +397,7 @@ def get_family_data(lattice):
 
     # IDs
     idx = []
-    fams = ['APU22', 'APU58', ]
+    fams = families_ids()
     for fam in fams:
         idx.extend(data[fam])
     data['ID'] = sorted(idx, key=get_idx)
