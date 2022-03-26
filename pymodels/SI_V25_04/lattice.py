@@ -3,9 +3,7 @@
 In this module the lattice of the corresponding accelerator is defined.
 """
 
-import operator as _opr
 import math as _math
-import numpy as _np
 
 import lnls as _lnls
 import mathphys as _mp
