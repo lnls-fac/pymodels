@@ -17,8 +17,8 @@ def dipole_bc(m_accep_fam_name, simplified=False):
     # Average Dipole Model for BC
     # =============================================
     # date: 2019-06-27
-    # Based on multipole expansion around average segmented model trajectory calculated
-    # from fieldmap analysis of measurement data
+    # Based on multipole expansion around average segmented model trajectory
+    # calculated from fieldmap analysis of measurement data
     # folder = si-dipoles-bc/model-13/analysis/hallprobe/production/x0-0p079mm-reftraj
     # init_rx =  79 um
     # ref_rx  = 7.7030 mm (average model trajectory)
@@ -66,11 +66,11 @@ def dipole_bc(m_accep_fam_name, simplified=False):
             for j in range(len(monomials)):
                 PolyB[monomials[j]] = segmodel[i][j+3]
             PolyA = 0 * PolyB
-            element = element_type(fam_name=fam_name, length=segmodel[i][1],
-                                   angle=d2r * segmodel[i][2],
-                                   angle_in=0, angle_out=0,
-                                   gap=0, fint_in=0, fint_out=0,
-                                   polynom_a=PolyA, polynom_b=PolyB)
+            element = element_type(
+                fam_name=fam_name, length=segmodel[i][1],
+                angle=d2r * segmodel[i][2], angle_in=0, angle_out=0,
+                gap=0, fint_in=0, fint_out=0,
+                polynom_a=PolyA, polynom_b=PolyB)
         else:
             element = element_type(fam_name)
         model.append(element)
@@ -86,10 +86,10 @@ def dipole_bc(m_accep_fam_name, simplified=False):
         ang1 = sum([s[2] for s in segmodel[:8]]) * d2r
         k = sum([s[4]*s[1] for s in segmodel[:8]])/le
         s = sum([s[5]*s[1] for s in segmodel[:8]])/le
-        el = _pyaccel.elements.rbend(fam_name='BC', length=2*le, angle=2*ang1,
-                                     angle_in=0, angle_out=0,
-                                     gap=0, fint_in=0, fint_out=0,
-                                     polynom_a=[0, 0, 0], polynom_b=[0, k, s])
+        el = _pyaccel.elements.rbend(
+            fam_name='BC', length=2*le, angle=2*ang1,
+            angle_in=0, angle_out=0, gap=0, fint_in=0, fint_out=0,
+            polynom_a=[0, 0, 0], polynom_b=[0, k, s])
         le = sum([s[1] for s in segmodel[9:14]])
         ang2 = sum([s[2] for s in segmodel[9:]]) * d2r
         k = sum([s[4]*s[1] for s in segmodel[9:]])/le
@@ -168,11 +168,11 @@ def dipole_b1(m_accep_fam_name, simplified=False):
             for j in range(len(monomials)):
                 PolyB[monomials[j]] = segmodel[i][j+3]
             PolyA = 0 * PolyB
-            element = element_type(fam_name=fam_name, length=segmodel[i][1],
-                                   angle=d2r * segmodel[i][2],
-                                   angle_in=0, angle_out=0,
-                                   gap=0, fint_in=0, fint_out=0,
-                                   polynom_a=PolyA, polynom_b=PolyB)
+            element = element_type(
+                fam_name=fam_name, length=segmodel[i][1],
+                angle=d2r * segmodel[i][2], angle_in=0, angle_out=0,
+                gap=0, fint_in=0, fint_out=0,
+                polynom_a=PolyA, polynom_b=PolyB)
         else:
             element = element_type(fam_name)
         model.append(element)
@@ -281,10 +281,9 @@ def dipole_b2(m_accep_fam_name, simplified=False):
         k = sum([s[4]*s[1] for s in segmodel])/le
         s = sum([s[5]*s[1] for s in segmodel])/le
         el = _pyaccel.elements.rbend(
-                fam_name='B2', length=2*le, angle=2*ang,
-                angle_in=0*ang, angle_out=0*ang,
-                gap=0, fint_in=0, fint_out=0,
-                polynom_a=[0, 0, 0], polynom_b=[0, k, s])
+            fam_name='B2', length=2*le, angle=2*ang,
+            angle_in=0*ang, angle_out=0*ang, gap=0, fint_in=0, fint_out=0,
+            polynom_a=[0, 0, 0], polynom_b=[0, k, s])
         l2 = sum([s[1] for s in segmodel[15:]])
         dr = _pyaccel.elements.drift('LB2', l2)
         model = [dr, el, dr]
@@ -326,8 +325,8 @@ def quadrupole_q14(fam_name, strength, simplified=False):
     for j in range(len(monomials)):
         PolyB[monomials[j]] = segmodel[i][j+3] * rescale[i]
     PolyA = 0 * PolyB
-    element = element_type(fam_name=fam_name,
-                           length=2*segmodel[i][1], K=PolyB[1])
+    element = element_type(
+        fam_name=fam_name, length=2*segmodel[i][1], K=PolyB[1])
     element.polynom_a = PolyA
     element.polynom_b = PolyB
     model.append(element)
@@ -371,11 +370,11 @@ def quadrupole_q20(fam_name, strength, simplified=False):
     i = 0
     fam_name, element_type = segtypes[segmodel[i][0]]
     PolyB = _np.zeros(1+max(monomials))
-    for j in range(len(monomials)):
-        PolyB[monomials[j]] = segmodel[i][j+3] * rescale[i]
+    for j, mon in enumerate(monomials):
+        PolyB[mon] = segmodel[i][j+3] * rescale[i]
     PolyA = 0 * PolyB
-    element = element_type(fam_name=fam_name,
-                           length=2*segmodel[i][1], K=PolyB[1])
+    element = element_type(
+        fam_name=fam_name, length=2*segmodel[i][1], K=PolyB[1])
     element.polynom_a = PolyA
     element.polynom_b = PolyB
     model.append(element)
@@ -409,21 +408,21 @@ def quadrupole_q30(fam_name, strength, simplified=False):
     # rescale fieldmap data to strength argument
     quadidx = monomials.index(1)
     seg_lens = [segmodel[i][1] for i in range(len(segmodel))]
-    model_length = 2 * sum(seg_lens)
-    fmap_strength = [2*segmodel[i][3+quadidx]*seg_lens[i]/model_length for i in
-                     range(len(segmodel))]
-    rescale = [strength / fmap_strength[i] for i in range(len(segmodel))]
+    modleng = 2 * sum(seg_lens)
+    fmap_strength = [
+        2*seg[3+quadidx]*seg_lens[i]/modleng for i, seg in enumerate(segmodel)]
+    rescale = [strength / stre for i, stre in enumerate(fmap_strength)]
 
     # --- hard-edge 1-segment model ---
     model = []
     i = 0
     fam_name, element_type = segtypes[segmodel[i][0]]
     PolyB = _np.zeros(1+max(monomials))
-    for j in range(len(monomials)):
-        PolyB[monomials[j]] = segmodel[i][j+3] * rescale[i]
+    for j, mon in enumerate(monomials):
+        PolyB[mon] = segmodel[i][j+3] * rescale[i]
     PolyA = 0 * PolyB
-    element = element_type(fam_name=fam_name,
-                           length=2*segmodel[i][1], K=PolyB[1])
+    element = element_type(
+        fam_name=fam_name, length=2*segmodel[i][1], K=PolyB[1])
     element.polynom_a = PolyA
     element.polynom_b = PolyB
     model.append(element)
