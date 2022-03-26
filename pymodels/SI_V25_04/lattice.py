@@ -724,7 +724,7 @@ def set_vacuum_chamber(
     idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
     idb_list = []
     for i in range(len(idb)//2):
-        idb_list.extend(range(idb[2*i], idb[2*i+1]+1))
+        idb_list.extend(range(idb[2*i]+1, idb[2*i+1]+1))
     for i in idb_list:
         e = the_ring[i]
         e.vchamber = _pyacc_ele.VChamberShape.rectangle
@@ -765,10 +765,8 @@ def set_vacuum_chamber_bc(the_ring):
     def set_vchamber_transition(elem, dspos, sign):
         elem.vchamber = _pyacc_ele.VChamberShape.ellipse
         radius = radius1 + (radius2 - radius1)*(dspos - sign * len1/2)/len2
-        elem.hmin = -radius
-        elem.hmax = radius
-        elem.vmin = -radius
-        elem.vmax = radius
+        elem.hmin, elem.hmax = -radius, radius
+        elem.vmin, elem.vmax = -radius, radius
 
     def loop_vchamber(mci, upstream):
         sign = -1 if upstream else +1
@@ -783,6 +781,7 @@ def set_vacuum_chamber_bc(the_ring):
                 set_vchamber_transition(the_ring[idx], dspos, 1)
                 pass
             else:
+                # end of transition vchamber
                 break
             idx += sign
 
