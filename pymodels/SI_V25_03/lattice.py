@@ -193,6 +193,7 @@ def create_lattice(
     ID09H = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
     ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-Delta52'
     ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
+    ID15H = kickmaps['ID15SP']  # ???
 
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
 
@@ -388,10 +389,15 @@ def create_lattice(
         MIDP, ID11H, MIP, ID11H, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section (IPE)
 
+    # IDP_GSL15 = [
+    #     L500, GSL15, LIP, L500,
+    #     MIDP, L500, L500, MIP, L500, L500, MIDP,
+    #     L500, LIP, L500]  # low beta ID straight section
+
     IDP_GSL15 = [
-        L500, GSL15, LIP, L500,
-        MIDP, L500, L500, MIP, L500, L500, MIDP,
-        L500, LIP, L500]  # low beta ID straight section
+        L500, GSL15, LIP, L100,
+        MIDP, ID15H, MIP, ID15H, MIDP,
+        L100, LIP, L500]  # low beta ID straight section
 
     # -- girders --
 
@@ -809,6 +815,7 @@ def create_id_kickmaps_dict(ids):
         'ID09SA': ('APU22', 1.3),    # MANACA
         'ID10SB': ('DELTA52', 1.2),  # SABIA
         'ID11SP': ('APU58', 1.3),    # IPE
+        'ID15SP': ('EPU50', 2.8),    # ???
     }
 
     # build kickmap dict
