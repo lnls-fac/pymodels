@@ -13,14 +13,13 @@ class IDModel:
         ID10SB = 'ID10SB'
         ID11SP = 'ID11SP'
         ID14SB = 'ID14SB'
-        ID15SP = 'ID15SP'
         ID17SA = 'ID17SA'
         ALL = (
             ID06SB, ID07SP, ID08SB, ID09SA,
-            ID10SB, ID11SP, ID14SB, ID15SP, ID17SA)
+            ID10SB, ID11SP, ID14SB, ID17SA)
 
     def __init__(self,
-            subsec, file_name, fam_name=None, 
+            subsec, file_name, fam_name=None,
             nr_steps=1, rescale_kicks=1.0, rescale_length=1.0):
         if subsec not in IDModel.SUBSECTIONS.ALL:
             raise ValueError('Invalid subsection definition')
@@ -60,7 +59,7 @@ class IDModel:
     def rescale_length(self):
         """Length rescale factor applied to kickmap data from file.."""
         return self._rescale_length
-    
+
     def get_half_kickmap(self):
         """Return trackcpp half-kickmap."""
         kickmap = _pyacc_ele.kickmap(
@@ -70,3 +69,14 @@ class IDModel:
             rescale_kicks=0.5*self._rescale_kicks,
             rescale_length=0.5*self._rescale_length)
         return kickmap
+
+    def __str__(self):
+        """."""
+        strs = ''
+        strs += f'fam_name       : {self.fam_name}\n'
+        strs += f'subector       : {self.subsec}\n'
+        strs += f'file_name      : {self.file_name}\n'
+        strs += f'nr_steps       : {self.nr_steps}\n'
+        strs += f'rescale_kicks  : {self.rescale_kicks}\n'
+        strs += f'rescale_length : {self.rescale_length}'
+        return strs
