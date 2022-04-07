@@ -873,7 +873,7 @@ def create_id_kickmaps_dict(ids):
         'ID09SA': ('APU22', 1.3),    # MANACA
         'ID10SB': ('DELTA52', 1.2),  # SABIA
         # 'ID11SP': ('APU58', 1.3),    # IPE
-        'ID11SP': ('APU58', 2.8),    # IPE
+        'ID11SP': ('EPU50', 2.8),    # IPE
     }
 
     # build kickmap dict
