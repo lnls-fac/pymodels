@@ -397,9 +397,9 @@ def create_lattice(
     #     MIDP, ID11H, MIP, ID11H, MIDP,
     #     L350, L500, LIP, L500]  # low beta ID straight section (IPE) L=1.3m
     IDP_11 = [
-        L500, LIP, L100,
+        L500, LIP, IDC,
         MIDP, ID11H, MIP, ID11H, MIDP,
-        L100, LIP, L500]  # low beta ID straight section (IPE) L=2.8m
+        IDC, LIP, L500]  # low beta ID straight section (IPE) L=2.8m
 
     IDP_GSL15 = [
         L500, GSL15, LIP, L500,
