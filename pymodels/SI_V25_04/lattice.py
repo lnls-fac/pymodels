@@ -30,7 +30,6 @@ def create_lattice(
     drift = _pyacc_ele.drift
     sextupole = _pyacc_ele.sextupole
     rfcavity = _pyacc_ele.rfcavity
-    corrector = _pyacc_ele.corrector
 
     # -- lattice markers --
     m_accep_fam_name = 'calc_mom_accep'
@@ -186,7 +185,8 @@ def create_lattice(
     BbBKckL = marker('BbBKckrL')  # Longitudinal Bunch-by-Bunch Shaker
     TuneShkrH = marker('TuneShkrH')  # Horizontal Tune Shaker
     TuneShkrV = marker('TuneShkrV')  # Vertical Tune Shaker
-    TunePkup = marker('TunePkup')  # Tune Pickup
+    TunePkupH = marker('TunePkupH')  # Horizontal Tune Pickup
+    TunePkupV = marker('TunePkupV')  # Vertical Tune Pickup
     InjVCb = marker('InjVCb')  # Bigger injection vaccum chamber limits
     InjVCs = marker('InjVCs')  # Smaller injection vchamber limits
     SVVC = marker('SVVC')  # VScrap vchamber limits (drawing: len = 398 mm)
@@ -217,9 +217,9 @@ def create_lattice(
     M2B = M1B[::-1]  # low beta xxM2 girder
     M2P = M1P[::-1]  # low beta xxM2 girder
 
-    M1B_BbBPkup = [
-        L134, QDB1, L150, SDB0, GIR, L120, BbBPkup, L120, GIR, QFB, L150, SFB0,
-        L049, FC1, L052, QDB2, L140, BPM, GIR]
+    M2B_BbBPkup = [
+        GIR, BPM, L140, QDB2, L052, FC1, L049, SFB0, L150, QFB, GIR, L120,
+        BbBPkup, L120, GIR, SDB0, L150, QDB1, L134]
 
     # arc sector in between B1-B2 (high beta odd-numbered straight sections):
     C1A = [
@@ -282,9 +282,9 @@ def create_lattice(
         GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
         SDB1, L237, DCCT, GIR, L237, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
-    C4B_TunePkup = [
+    C4B_TunePkupV = [
         GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
-        SDB1, L237, TunePkup, GIR, L237, GIR]
+        SDB1, L237, TunePkupV, GIR, L237, GIR]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
     C4B_PingV = [
         GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
@@ -316,10 +316,6 @@ def create_lattice(
         SVVC, LPMU, L050, ScrapV, L150, SVVC,
         InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
 
-    IDA_BbBKckrH = [
-        L500, BbBKckrH, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA,
-        L500, LIA, L500]  # high beta ID straight section
-
     IDA_09 = [
         L500, LID3, L500p,
         MIDA, ID09H, MIA, ID09H, MIDA,
@@ -341,10 +337,10 @@ def create_lattice(
         MIDB, L500, L500, MIB, L500, L500, MIDB,
         L500, LIB, L500]  # low beta ID straight section
 
-    IDB_TunePkup = [
+    IDB_TunePkupH = [
         L500, LIB, L500,
         MIDB, L500, L500, MIB, L500, L500, MIDB,
-        L500, TunePkup, LIB, L500]  # low beta ID straight section
+        L500, TunePkupH, LIB, L500]  # low beta ID straight section
 
     IDB_02 = [
         L500, LIB, L500,
@@ -417,12 +413,12 @@ def create_lattice(
     SS_S10 = IDB_10  # SABIA
     SS_S11 = IDP_11  # IPE
     SS_S12 = IDB_12
-    SS_S13 = IDA_BbBKckrH
+    SS_S13 = IDA
     SS_S14 = IDB  # PAINEIRA
     SS_S15 = IDP
     SS_S16 = IDB_16  # INGA
     SS_S17 = IDA_17  # SAPUCAIA
-    SS_S18 = IDB_TunePkup
+    SS_S18 = IDB_TunePkupH
     SS_S19 = IDP_GSL15
     SS_S20 = IDB_GSL07
 
@@ -449,7 +445,7 @@ def create_lattice(
     M2_S10 = M2B
     M1_S11 = M1P
     M2_S11 = M2P
-    M1_S12 = M1B_BbBPkup
+    M1_S12 = M1B
     M2_S12 = M2B
     M1_S13 = M1A
     M2_S13 = M2A
@@ -458,7 +454,7 @@ def create_lattice(
     M1_S15 = M1P
     M2_S15 = M2P
     M1_S16 = M1B
-    M2_S16 = M2B
+    M2_S16 = M2B_BbBPkup
     M1_S17 = M1A
     M2_S17 = M2A
     M1_S18 = M1B
@@ -536,7 +532,7 @@ def create_lattice(
     C1_S17 = C1A
     C2_S17 = C2A
     C3_S17 = C3B
-    C4_S17 = C4B_TunePkup
+    C4_S17 = C4B_TunePkupV
     C1_S18 = C1B
     C2_S18 = C2B
     C3_S18 = C3P
