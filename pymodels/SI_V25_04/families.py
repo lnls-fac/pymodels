@@ -25,7 +25,8 @@ _family_segmentation = {
     'SRFCav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     # 'APU22': 2, 'APU58': 2, 'DELTA52': 2,
-    'APU22': 2, 'EPU50': 2, 'DELTA52': 2,
+    # 'APU22': 2, 'EPU50': 2, 'DELTA52': 2,
+    'APU22': 2, 'EPU50': 2,
     }
 
 _discipline_mapping = {
@@ -93,7 +94,7 @@ _discipline_mapping = {
     'APU22': 'ID',
     # 'APU58': 'ID',
     'EPU50': 'ID',
-    'DELTA52': 'ID',
+    # 'DELTA52': 'ID',
     }
 
 family_mapping = {
@@ -173,7 +174,7 @@ family_mapping = {
     'APU22': 'insertion_device',
     # 'APU58': 'insertion_device',
     'EPU50': 'insertion_device',
-    'DELTA52': 'insertion_device',
+    # 'DELTA52': 'insertion_device',
     }
 
 
@@ -236,7 +237,8 @@ def families_di():
 def families_ids():
     """Return insertion devices families."""
     # return ['APU22', 'APU58', 'DELTA52']
-    return ['APU22', 'EPU50', 'DELTA52']
+    # return ['APU22', 'EPU50', 'DELTA52']
+    return ['APU22', 'EPU50']
 
 
 def get_section_name_mapping(lattice):
