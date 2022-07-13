@@ -3,6 +3,7 @@
 
 from .accelerator import default_cavity_on
 from .accelerator import default_radiation_on
+from .accelerator import default_quantdiff_on
 from .accelerator import default_vchamber_on
 from .accelerator import accelerator_data
 from .accelerator import create_accelerator
