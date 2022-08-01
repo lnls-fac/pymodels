@@ -6,8 +6,7 @@ from . import lattice as _lattice
 
 
 default_cavity_on = False
-default_radiation_on = False
-default_quantdiff_on = False
+default_radiation_on = 'off'
 default_vchamber_on = False
 
 
@@ -24,7 +23,6 @@ def create_accelerator(
         harmonic_number=_lattice.harmonic_number,
         cavity_on=default_cavity_on,
         radiation_on=default_radiation_on,
-        quantdiff_on=default_quantdiff_on,
         vchamber_on=default_vchamber_on)
 
     return accelerator

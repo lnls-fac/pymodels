@@ -5,9 +5,8 @@ import pyaccel as _pyaccel
 from . import lattice as _lattice
 
 
-default_radiation_on = False
-default_quantdiff_on = False
-default_vchamber_on = False
+default_radiation_on = 0
+default_vchamber_on = 'off'
 
 
 def create_accelerator(optics_mode=_lattice.default_optics_mode):
@@ -16,7 +15,6 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode):
         lattice=latt,
         energy=_lattice.energy,
         radiation_on=default_radiation_on,
-        quantdiff_on=default_quantdiff_on,
         vchamber_on=default_vchamber_on
     )
     return accelerator, twiss_at_start
