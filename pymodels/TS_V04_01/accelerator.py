@@ -5,7 +5,7 @@ import pyaccel as _pyaccel
 from . import lattice as _lattice
 
 
-default_radiation_on = 0
+default_radiation_on = 'off'
 default_vchamber_on = False
 
 
