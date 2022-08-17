@@ -4,30 +4,31 @@ from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
 
-_family_segmentation = {
-    'B1': 30, 'B2': 36, 'BC': 34,
-    'QFA': 1, 'QDA': 1,
-    'QFB': 1, 'QDB1': 1, 'QDB2': 1,
-    'QFP': 1, 'QDP1': 1, 'QDP2': 1,
-    'Q1': 1, 'Q2': 1, 'Q3': 1, 'Q4': 1,
-    'SDA0': 1, 'SDB0': 1, 'SDP0': 1,
-    'SDA1': 1, 'SDB1': 1, 'SDP1': 1,
-    'SDA2': 1, 'SDB2': 1, 'SDP2': 1,
-    'SDA3': 1, 'SDB3': 1, 'SDP3': 1,
-    'SFA0': 1, 'SFB0': 1, 'SFP0': 1,
-    'SFA1': 1, 'SFB1': 1, 'SFP1': 1,
-    'SFA2': 1, 'SFB2': 1, 'SFP2': 1,
-    'BPM': 1, 'DCCT': 1, 'ScrapH': 1, 'ScrapV': 1, 'GSL15': 1,
-    'GSL07': 1, 'GBPM': 1, 'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1,
-    'BbBKckrL': 1, 'TuneShkrH': 1, 'TuneShkrV': 1, 'TunePkup': 1,
-    'FC1': 1, 'FC2': 1,
-    'QS': 1, 'CH': 1, 'CV': 1,
-    'SRFCav': 1, 'start': 1,
+_family_number_of_elements = {
+    'B1': 40, 'B2': 40, 'BC': 20,
+    'QFA': 10, 'QDA': 10,
+    'QFB': 20, 'QDB1': 20, 'QDB2': 20,
+    'QFP': 10, 'QDP1': 10, 'QDP2': 10,
+    'Q1': 40, 'Q2': 40, 'Q3': 40, 'Q4': 40,
+    'SDA0': 10, 'SDB0': 20, 'SDP0': 10,
+    'SDA1': 10, 'SDB1': 20, 'SDP1': 10,
+    'SDA2': 10, 'SDB2': 20, 'SDP2': 10,
+    'SDA3': 10, 'SDB3': 20, 'SDP3': 10,
+    'SFA0': 10, 'SFB0': 20, 'SFP0': 10,
+    'SFA1': 10, 'SFB1': 20, 'SFP1': 10,
+    'SFA2': 10, 'SFB2': 20, 'SFP2': 10,
+    'DCCT': 2, 'ScrapH': 1, 'ScrapV': 1,
+    'BPM': 160, 'GSL15': 1, 'GSL07': 1, 'GBPM': 1,
+    'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1, 'BbBKckrL': 1,
+    'TuneShkrH': 1, 'TuneShkrV': 1, 'TunePkupH': 1, 'TunePkupV': 1,
+    'FC1': 60, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
+    'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    # 'APU22': 2, 'APU58': 2, 'DELTA52': 2,
-    # 'APU22': 2, 'EPU50': 2, 'DELTA52': 2,
-    'APU22': 2, 'EPU50': 2,
+    # 'APU22': 4, 'APU58': 1, 'DELTA52': 1,
+    # 'APU22': 4, 'EPU50': 2, 'DELTA52': 1,
+    'APU22': 4, 'EPU50': 2, 'DELTA52': 1,
     }
+
 
 _discipline_mapping = {
     'B1B2-1': 'PS',
@@ -82,7 +83,8 @@ _discipline_mapping = {
     'BbBKckrL': 'DI',
     'TuneShkrH': 'DI',
     'TuneShkrV': 'DI',
-    'TunePkup': 'DI',
+    'TunePkupH': 'DI',
+    'TunePkupV': 'DI',
     'FC1': 'PS',
     'FC2': 'PS',
     'FCH': 'PS',
@@ -91,11 +93,13 @@ _discipline_mapping = {
     'CV': 'PS',
     'QS': 'PS',
     'SRFCav': 'RF',
+    'H3Cav': 'RF',
     'APU22': 'ID',
     # 'APU58': 'ID',
     'EPU50': 'ID',
     # 'DELTA52': 'ID',
     }
+
 
 family_mapping = {
 
@@ -158,7 +162,8 @@ family_mapping = {
     'BbBKckrL': 'longitudinal_bunch-by-bunch_shaker',
     'TuneShkrH': 'horizontal_tune_shaker',
     'TuneShkrV': 'vertical_tune_shaker',
-    'TunePkup': 'tune_pickup',
+    'TunePkupH': 'horizontal_tune_pickup',
+    'TunePkupV': 'vertical_tune_pickup',
 
     'FC1': 'fast_corrector',
     'FC2': 'fast_corrector',
@@ -171,6 +176,7 @@ family_mapping = {
     'QS': 'skew_quadrupole',
 
     'SRFCav': 'superconducting_rf_cavity',
+    'H3Cav': 'third_harmonic_rf_cavity',
     'APU22': 'insertion_device',
     # 'APU58': 'insertion_device',
     'EPU50': 'insertion_device',
@@ -231,7 +237,7 @@ def families_di():
     return [
         'BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
         'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckrL',
-        'TuneShkrH', 'TuneShkrV', 'TunePkup']
+        'TuneShkrH', 'TuneShkrV', 'TunePkupH', 'TunePkupV']
 
 
 def families_ids():
@@ -325,11 +331,15 @@ def get_family_data(lattice):
     # fill the data dictionary with index info ######
     data = {}
     for key, idx in latt_dict.items():
-        nr = _family_segmentation.get(key)
-        if nr is None:
+        nr_el = _family_number_of_elements.get(key)
+        if nr_el is None:
             continue
+        nr_seg = len(idx)//nr_el
+        if not nr_seg:
+            nr_seg = 1
+            nr_el = len(idx)
         # Create a list of lists for the indexes
-        data[key] = [idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)]
+        data[key] = [idx[i*nr_seg:(i+1)*nr_seg] for i in range(nr_el)]
 
     # ch - slow horizontal correctors
     idx = []

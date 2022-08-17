@@ -12,6 +12,8 @@ from .families import get_family_data
 from .families import get_girder_data
 from .families import get_section_name_mapping
 
+from . import fitted_models
+
 from .lattice import energy
 from .lattice import harmonic_number
 from .lattice import default_optics_mode, lattice_symmetry
