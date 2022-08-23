@@ -195,8 +195,6 @@ def create_lattice(
 
     # --- insertion devices (half devices) ---
     kickmaps = create_id_kickmaps_dict(ids)
-    # for k,v in kickmaps.items():
-    #     print(k, v)
     ID06H = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07H = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08H = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
