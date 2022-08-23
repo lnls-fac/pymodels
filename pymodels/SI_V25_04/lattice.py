@@ -43,7 +43,7 @@ def create_lattice(
     LPMU = drift('lpmu', 0.0600)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
-    L500p = drift('L500p', 0.5000 + dcircum/5/2)
+    L500p = drift('l500p', 0.5000 + dcircum/5/2)
     LKKp = drift('lkkp', 1.9150 + dcircum/5/2)
     L011 = drift('l011', 0.011)
     L019 = drift('l019', 0.019)
@@ -195,12 +195,16 @@ def create_lattice(
 
     # --- insertion devices (half devices) ---
     kickmaps = create_id_kickmaps_dict(ids)
+    # for k,v in kickmaps.items():
+    #     print(k, v)
     ID06H = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07H = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08H = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
     ID09H = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
-    ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'  SI-10SB:ID-Delta52
-    ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'  EPU50?
+    ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
+    ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
+    ID14H = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
+    ID17H = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
 
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
 
@@ -349,8 +353,8 @@ def create_lattice(
         L500, HCav, LIB, L500]  # low beta ID straight section
 
     IDB_06 = [
-        L500, LIB, L500,
-        L350, MIDB, ID06H, MIB, ID06H, MIDB,
+        L500, LIB, L500, L350,
+        MIDB, ID06H, MIB, ID06H, MIDB,
         L350, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDB_08 = [
@@ -373,6 +377,11 @@ def create_lattice(
         MIDB, L600, MIB, L600, MIDB,
         L135, L100, L665, LIB, L500]  # low beta ID straight section
 
+    IDB_14 = [
+        L365, LIB, IDC, L135,
+        MIDB, ID14H, MIB, ID14H, MIDB,
+        L135, IDC, LIB, L365]  # low beta ID straight section (PAINEIRA)
+
     IDB_16 = [
         L500, LIB, L500,
         MIDB, L500, L500, MIB, L500, L500, MIDB,
@@ -394,14 +403,15 @@ def create_lattice(
         MIDP, ID07H, MIP, ID07H, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
-    # IDP_11 = [
-    #     L500, LIP, L500, L350,
-    #     MIDP, ID11H, MIP, ID11H, MIDP,
-    #     L350, L500, LIP, L500]  # low beta ID straight section (IPE) L=1.3m
     IDP_11 = [
-        L500, LIP, IDC,
+        L500, LIP, L500, L350,
         MIDP, ID11H, MIP, ID11H, MIDP,
-        IDC, LIP, L500]  # low beta ID straight section (IPE) L=2.8m
+        L350, L500, LIP, L500]  # low beta ID straight section (IPE) L=1.3m
+
+    # IDP_11 = [
+    #     L500, LIP, IDC,
+    #     MIDP, ID11H, MIP, ID11H, MIDP,
+    #     IDC, LIP, L500]  # low beta ID straight section (IPE) L=2.8m
 
     IDP_GSL15 = [
         L500, GSL15, LIP, L500,
@@ -424,7 +434,7 @@ def create_lattice(
     SS_S11 = IDP_11  # IPE
     SS_S12 = IDB_12
     SS_S13 = IDA
-    SS_S14 = IDB  # PAINEIRA
+    SS_S14 = IDB_14  # PAINEIRA
     SS_S15 = IDP
     SS_S16 = IDB_16  # INGA
     SS_S17 = IDA_17  # SAPUCAIA
@@ -866,6 +876,7 @@ def create_id_kickmaps_dict(ids):
         idsdict = {id.subsec: id for id in ids}
 
     # NOTE: see IDs already defined in
+    # https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocation
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
     ids_subsec_drift_lens = {
         # subsec   idtype   idlen    beamline
@@ -873,10 +884,10 @@ def create_id_kickmaps_dict(ids):
         'ID07SP': ('APU22', 1.3),    # CATERETE
         'ID08SB': ('APU22', 1.3),    # EMA
         'ID09SA': ('APU22', 1.3),    # MANACA
-        #'ID10SB': ('DELTA52', 1.2),  # SABIA
-        'ID10SB': ('EPU50', 2.8),  # SABIA
-        # 'ID11SP': ('APU58', 1.3),    # IPE
-        'ID11SP': ('EPU50', 2.8),    # IPE
+        'ID10SB': ('EPU50', 2.8),    # SABIA
+        'ID11SP': ('APU58', 1.3),    # IPE
+        'ID14SB': ('WIG180', 2.8),   # PAINEIRA
+        'ID17SA': ('APU22', 2.6),    # SAPUCAIA
     }
 
     # build kickmap dict

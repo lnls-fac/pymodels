@@ -6,6 +6,7 @@ from pyaccel import elements as _pyacc_ele
 class IDModel:
     """ID Model (currently based on Kickmap files)."""
     class SUBSECTIONS:
+        # See https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocation
         ID06SB = 'ID06SB'
         ID07SP = 'ID07SP'
         ID08SB = 'ID08SB'

@@ -24,9 +24,7 @@ _family_number_of_elements = {
     'FC1': 60, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    # 'APU22': 4, 'APU58': 1, 'DELTA52': 1,
-    # 'APU22': 4, 'EPU50': 2, 'DELTA52': 1,
-    'APU22': 4, 'EPU50': 2, 'DELTA52': 1,
+    'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1,
     }
 
 
@@ -95,9 +93,9 @@ _discipline_mapping = {
     'SRFCav': 'RF',
     'H3Cav': 'RF',
     'APU22': 'ID',
-    # 'APU58': 'ID',
+    'APU58': 'ID',
     'EPU50': 'ID',
-    # 'DELTA52': 'ID',
+    'WIG180': 'ID',
     }
 
 
@@ -178,9 +176,9 @@ family_mapping = {
     'SRFCav': 'superconducting_rf_cavity',
     'H3Cav': 'third_harmonic_rf_cavity',
     'APU22': 'insertion_device',
-    # 'APU58': 'insertion_device',
+    'APU58': 'insertion_device',
     'EPU50': 'insertion_device',
-    # 'DELTA52': 'insertion_device',
+    'WIG180': 'insertion_device',
     }
 
 
@@ -242,9 +240,7 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    # return ['APU22', 'APU58', 'DELTA52']
-    # return ['APU22', 'EPU50', 'DELTA52']
-    return ['APU22', 'EPU50']
+    return ['APU22', 'APU58', 'EPU50', 'WIG180']
 
 
 def get_section_name_mapping(lattice):
