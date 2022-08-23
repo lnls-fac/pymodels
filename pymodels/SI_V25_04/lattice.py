@@ -202,7 +202,6 @@ def create_lattice(
     ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
     ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14H = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
-    ID17H = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
 
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
 
@@ -306,124 +305,118 @@ def create_lattice(
         GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
         SDP1, L237, TuneShkrV, GIR, L237, GIR]
 
-    # --- IDA insertion sectors ---
+    # --- insertion sectors ---
 
     IDA = [
         L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
         LIA, L500]  # high beta ID straight section
 
-    IDA_INJ = [
-        SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
-        InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-        START, MIA, LKKp, InjDpKckr, InjVCs,
-        SVVC, LPMU, L050, ScrapV, L150, SVVC,
-        InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
-
-    IDA_09 = [
-        L500, LID3, L500p,
-        MIDA, ID09H, MIA, ID09H, MIDA,
-        L500p, LID3, L500]  # high beta ID straight section (MANACA)
-
-    IDA_17 = [
-        L500, LIA, L500,
-        MIDA, L500, L500p, MIA, L500p, L500, MIDA,
-        L500, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
-
-    # --- IDB insertion sectors ---
-
     IDB = [
         L500, LIB, L500, MIDB, L500, L500, MIB, L500, L500, MIDB, L500, LIB,
         L500]  # low beta ID straight section
-
-    IDB_GSL07 = [
-        L500, GSL07, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
-        L500, LIB, L500]  # low beta ID straight section
-
-    IDB_TunePkupH = [
-        L500, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
-        L500, TunePkupH, LIB, L500]  # low beta ID straight section
-
-    IDB_02 = [
-        L500, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
-        L500, HCav, LIB, L500]  # low beta ID straight section
-
-    IDB_06 = [
-        L500, LIB, L500, L350,
-        MIDB, ID06H, MIB, ID06H, MIDB,
-        L350, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
-
-    IDB_08 = [
-        L500, LIB, L500, L350,
-        MIDB, ID08H, MIB, ID08H, MIDB,
-        L350, L500, LIB, L500]  # low beta ID straight section (EMA)
-
-    # IDB_10 = [
-    #     L500, LIB, L665, IDC, L135,
-    #     MIDB, ID10H, MIB, ID10H, MIDB,
-    #     L135, IDC, L665, LIB, L500]  # low beta ID straight section (SABIA)
-
-    IDB_10 = [
-        L365, LIB, IDC, L135,
-        MIDB, ID10H, MIB, ID10H, MIDB,
-        L135, IDC, LIB, L365]  # low beta ID straight section (SABIA)
-
-    IDB_12 = [
-        L500, LIB, L665, L100, L135,
-        MIDB, L600, MIB, L600, MIDB,
-        L135, L100, L665, LIB, L500]  # low beta ID straight section
-
-    IDB_14 = [
-        L365, LIB, IDC, L135,
-        MIDB, ID14H, MIB, ID14H, MIDB,
-        L135, IDC, LIB, L365]  # low beta ID straight section (PAINEIRA)
-
-    IDB_16 = [
-        L500, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
-        L500, BbBKckL, LIB, L500]  # low beta ID straight section
-
-    # --- IDP insertion sectors ---
 
     IDP = [
         L500, LIP, L500,
         MIDP, L500, L500, MIP, L500, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
-    IDP_CAV = [
+    IDA_01_INJ = [
+        SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
+        InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
+        START, MIA, LKKp, InjDpKckr, InjVCs,
+        SVVC, LPMU, L050, ScrapV, L150, SVVC,
+        InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
+
+    IDB_02 = [
+        L500, LIB, L500,
+        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        L500, HCav, LIB, L500]  # low beta ID straight section
+
+    IDP_03_CAV = [
         L500, LIP, L500, L500, L500, MIP, RFC, L500, L500, L500,
         LIP, L500]  # low beta RF cavity straight section
+
+    IDB_04 = IDB
+
+    IDA_05 = IDA
+
+    IDB_06 = [
+        L500, LIB, L500, L350,
+        MIDB, ID06H, MIB, ID06H, MIDB,
+        L350, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDP_07 = [
         L500, LIP, L500, L350,
         MIDP, ID07H, MIP, ID07H, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
+    IDB_08 = [
+        L500, LIB, L500, L350,
+        MIDB, ID08H, MIB, ID08H, MIDB,
+        L350, L500, LIB, L500]  # low beta ID straight section (EMA)
+
+    IDA_09 = [
+        L500, LID3, L500p,
+        MIDA, ID09H, MIA, ID09H, MIDA,
+        L500p, LID3, L500]  # high beta ID straight section (MANACA)
+
+    IDB_10 = [
+        L365, LIB, IDC, L135,
+        MIDB, ID10H, MIB, ID10H, MIDB,
+        L135, IDC, LIB, L365]  # low beta ID straight section (SABIA)
+
     IDP_11 = [
         L500, LIP, L500, L350,
         MIDP, ID11H, MIP, ID11H, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section (IPE) L=1.3m
 
-    # IDP_11 = [
-    #     L500, LIP, IDC,
-    #     MIDP, ID11H, MIP, ID11H, MIDP,
-    #     IDC, LIP, L500]  # low beta ID straight section (IPE) L=2.8m
+    IDB_12 = [
+        L500, LIB, L665, L100, L135,
+        MIDB, L600, MIB, L600, MIDB,
+        L135, L100, L665, LIB, L500]  # low beta ID straight section
 
-    IDP_GSL15 = [
+    IDA_13 = IDA
+
+    IDB_14 = [
+        L365, LIB, IDC, L135,
+        MIDB, ID14H, MIB, ID14H, MIDB,
+        L135, IDC, LIB, L365]  # low beta ID straight section (PAINEIRA)
+
+    IDP_15 = IDP
+
+    IDB_16 = [
+        L500, LIB, L500,
+        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        L500, BbBKckL, LIB, L500]  # low beta ID straight section
+
+    IDA_17 = [
+        L500, LIA, L500,
+        MIDA, L500, L500p, MIA, L500p, L500, MIDA,
+        L500, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
+
+    IDB_18_TUNEPKUPH = [
+        L500, LIB, L500,
+        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        L500, TunePkupH, LIB, L500]  # low beta ID straight section
+
+    IDB_19_GSL15 = [
         L500, GSL15, LIP, L500,
         MIDP, L500, L500, MIP, L500, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
+    IDB_20_GSL07 = [
+        L500, GSL07, LIB, L500,
+        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        L500, LIB, L500]  # low beta ID straight section
+
     # -- girders --
 
     # straight sections
-    SS_S01 = IDA_INJ  # INJECTION
+    SS_S01 = IDA_01_INJ  # INJECTION
     SS_S02 = IDB_02
-    SS_S03 = IDP_CAV
-    SS_S04 = IDB
-    SS_S05 = IDA
+    SS_S03 = IDP_03_CAV
+    SS_S04 = IDB_04
+    SS_S05 = IDA_05
     SS_S06 = IDB_06  # CARNAUBA
     SS_S07 = IDP_07  # CATERETE
     SS_S08 = IDB_08  # EMA
@@ -431,14 +424,14 @@ def create_lattice(
     SS_S10 = IDB_10  # SABIA
     SS_S11 = IDP_11  # IPE
     SS_S12 = IDB_12
-    SS_S13 = IDA
+    SS_S13 = IDA_13
     SS_S14 = IDB_14  # PAINEIRA
-    SS_S15 = IDP
+    SS_S15 = IDP_15
     SS_S16 = IDB_16  # INGA
     SS_S17 = IDA_17  # SAPUCAIA
-    SS_S18 = IDB_TunePkupH
-    SS_S19 = IDP_GSL15
-    SS_S20 = IDB_GSL07
+    SS_S18 = IDB_18_TUNEPKUPH
+    SS_S19 = IDB_19_GSL15
+    SS_S20 = IDB_20_GSL07
 
     # down and upstream straight sections
     M1_S01 = M1A
