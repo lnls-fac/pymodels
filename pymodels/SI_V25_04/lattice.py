@@ -194,7 +194,7 @@ def create_lattice(
     SHVC = marker('SHVC')  # HScrap vchamber limits (drawing: len = 313 mm)
 
     # --- insertion devices (half devices) ---
-    kickmaps = create_id_kickmaps_dict(ids)
+    kickmaps = create_id_kickmaps_dict(ids, energy=energy)
     ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
@@ -859,7 +859,7 @@ def get_optics_mode(optics_mode=default_optics_mode):
     return strengths
 
 
-def create_id_kickmaps_dict(ids):
+def create_id_kickmaps_dict(ids, energy):
     """Return dict with half insertion device kickmaps."""
     drift = _pyacc_ele.drift
 
@@ -892,12 +892,13 @@ def create_id_kickmaps_dict(ids):
                 )
         else:
             # return two kickmaps for half ID
+            brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
             id_u = idsdict[subsec].get_half_kickmap()
             id_d = idsdict[subsec].get_half_kickmap()
-            id_u.t_in[1] = idsdict[subsec].kickx_upstream
-            id_u.t_in[3] = idsdict[subsec].kicky_upstream
-            id_d.t_in[1] = idsdict[subsec].kickx_downstream
-            id_d.t_in[3] = idsdict[subsec].kicky_downstream
+            id_u.t_in[1] = idsdict[subsec].kickx_upstream / brho**2
+            id_u.t_in[3] = idsdict[subsec].kicky_upstream / brho**2
+            id_d.t_out[1] = idsdict[subsec].kickx_downstream / brho**2
+            id_d.t_out[3] = idsdict[subsec].kicky_downstream / brho**2
             kickmaps[subsec] = (id_u, id_d)
 
     return kickmaps

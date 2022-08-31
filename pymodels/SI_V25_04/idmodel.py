@@ -93,7 +93,7 @@ class IDModel:
             nr_steps=self._nr_steps,
             rescale_kicks=0.5*self._rescale_kicks,
             rescale_length=0.5*self._rescale_length)
-        return kickmap, self.termination_kicks
+        return kickmap
 
     def __str__(self):
         """."""
@@ -104,8 +104,8 @@ class IDModel:
         strs += f'nr_steps        : {self.nr_steps}\n'
         strs += f'rescale_kicks   : {self.rescale_kicks}\n'
         strs += f'rescale_length  : {self.rescale_length}\n'
-        strs += f'kickx_upstream  : {self.termination_kicks[0]}\n'
-        strs += f'kicky_upstream  : {self.termination_kicks[1]}\n'
-        strs += f'kickx_downtream : {self.termination_kicks[2]}\n'
-        strs += f'kicky_downtream : {self.termination_kicks[3]}\n'
+        strs += f'kickx_upstream  : {self.kickx_upstream}\n'
+        strs += f'kicky_upstream  : {self.kicky_upstream}\n'
+        strs += f'kickx_downtream : {self.kickx_downstream}\n'
+        strs += f'kicky_downtream : {self.kicky_downstream}'
         return strs
