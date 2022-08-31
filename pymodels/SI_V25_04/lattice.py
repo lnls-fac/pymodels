@@ -195,13 +195,13 @@ def create_lattice(
 
     # --- insertion devices (half devices) ---
     kickmaps = create_id_kickmaps_dict(ids)
-    ID06H = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
-    ID07H = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
-    ID08H = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
-    ID09H = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
-    ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
-    ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
-    ID14H = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
+    ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
+    ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
+    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
+    ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
+    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
+    ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
+    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
 
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
 
@@ -342,32 +342,33 @@ def create_lattice(
 
     IDB_06 = [
         L500, LIB, L500, L350,
-        MIDB, ID06H, MIB, ID06H, MIDB,
+        MIDB, ID06Hu, MIB, ID06Hd, MIDB,
         L350, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
+
 
     IDP_07 = [
         L500, LIP, L500, L350,
-        MIDP, ID07H, MIP, ID07H, MIDP,
+        MIDP, ID07Hu, MIP, ID07Hd, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
         L500, LIB, L500, L350,
-        MIDB, ID08H, MIB, ID08H, MIDB,
+        MIDB, ID08Hu, MIB, ID08Hd, MIDB,
         L350, L500, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
-        MIDA, ID09H, MIA, ID09H, MIDA,
+        MIDA, ID09Hu, MIA, ID09Hd, MIDA,
         L500p, LID3, L500]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
         L365, LIB, IDC, L135,
-        MIDB, ID10H, MIB, ID10H, MIDB,
+        MIDB, ID10Hu, MIB, ID10Hd, MIDB,
         L135, IDC, LIB, L365]  # low beta ID straight section (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350,
-        MIDP, ID11H, MIP, ID11H, MIDP,
+        MIDP, ID11Hu, MIP, ID11Hd, MIDP,
         L350, L500, LIP, L500]  # low beta ID straight section (IPE) L=1.3m
 
     IDB_12 = [
@@ -379,7 +380,7 @@ def create_lattice(
 
     IDB_14 = [
         L365, LIB, IDC, L135,
-        MIDB, ID14H, MIB, ID14H, MIDB,
+        MIDB, ID14Hu, MIB, ID14Hd, MIDB,
         L135, IDC, LIB, L365]  # low beta ID straight section (PAINEIRA)
 
     IDP_15 = IDP
@@ -886,9 +887,17 @@ def create_id_kickmaps_dict(ids):
     for subsec, (idtype, idlen) in ids_subsec_drift_lens.items():
         if subsec not in idsdict:
             # ID not in passed ID dictionary, return drift for half ID.
-            kickmaps[subsec] = drift(idtype, idlen/2)
+            kickmaps[subsec] = (
+                drift(idtype, idlen/2), drift(idtype, idlen/2)
+                )
         else:
-            # return Kickmap for half ID.
-            kickmaps[subsec] = idsdict[subsec].get_half_kickmap()
+            # return two kickmaps for half ID
+            id_u = idsdict[subsec].get_half_kickmap()
+            id_d = idsdict[subsec].get_half_kickmap()
+            id_u.t_in[1] = idsdict[subsec].kickx_upstream
+            id_u.t_in[3] = idsdict[subsec].kicky_upstream
+            id_d.t_in[1] = idsdict[subsec].kickx_downstream
+            id_d.t_in[3] = idsdict[subsec].kicky_downstream
+            kickmaps[subsec] = (id_u, id_d)
 
     return kickmaps

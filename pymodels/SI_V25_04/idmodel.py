@@ -21,15 +21,19 @@ class IDModel:
 
     def __init__(self,
             subsec, file_name, fam_name=None,
-            nr_steps=1, rescale_kicks=1.0, rescale_length=1.0):
+            nr_steps=1, rescale_kicks=1.0, rescale_length=1.0,
+            termination_kicks=None):
         if subsec not in IDModel.SUBSECTIONS.ALL:
             raise ValueError('Invalid subsection definition')
+        if termination_kicks is None:
+            termination_kicks = [0, 0, 0, 0]
         self._subsec = subsec
         self._file_name = file_name
         self._fam_name = fam_name or 'ID'
         self._nr_steps = nr_steps
         self._rescale_kicks = rescale_kicks
         self._rescale_length = rescale_length
+        self._termination_kicks = termination_kicks
 
     @property
     def subsec(self):
@@ -61,6 +65,26 @@ class IDModel:
         """Length rescale factor applied to kickmap data from file.."""
         return self._rescale_length
 
+    @property
+    def kickx_upstream(self):
+        """Return kick in [T2m2] units."""
+        return self._termination_kicks[0]
+
+    @property
+    def kicky_upstream(self):
+        """Return kick in [T2m2] units."""
+        return self._termination_kicks[1]
+
+    @property
+    def kickx_downstream(self):
+        """Return kick in [T2m2] units."""
+        return self._termination_kicks[2]
+
+    @property
+    def kicky_downstream(self):
+        """Return kick in [T2m2] units."""
+        return self._termination_kicks[3]
+
     def get_half_kickmap(self):
         """Return trackcpp half-kickmap."""
         kickmap = _pyacc_ele.kickmap(
@@ -69,15 +93,19 @@ class IDModel:
             nr_steps=self._nr_steps,
             rescale_kicks=0.5*self._rescale_kicks,
             rescale_length=0.5*self._rescale_length)
-        return kickmap
+        return kickmap, self.termination_kicks
 
     def __str__(self):
         """."""
         strs = ''
-        strs += f'fam_name       : {self.fam_name}\n'
-        strs += f'subector       : {self.subsec}\n'
-        strs += f'file_name      : {self.file_name}\n'
-        strs += f'nr_steps       : {self.nr_steps}\n'
-        strs += f'rescale_kicks  : {self.rescale_kicks}\n'
-        strs += f'rescale_length : {self.rescale_length}'
+        strs += f'fam_name        : {self.fam_name}\n'
+        strs += f'subector        : {self.subsec}\n'
+        strs += f'file_name       : {self.file_name}\n'
+        strs += f'nr_steps        : {self.nr_steps}\n'
+        strs += f'rescale_kicks   : {self.rescale_kicks}\n'
+        strs += f'rescale_length  : {self.rescale_length}\n'
+        strs += f'kickx_upstream  : {self.termination_kicks[0]}\n'
+        strs += f'kicky_upstream  : {self.termination_kicks[1]}\n'
+        strs += f'kickx_downtream : {self.termination_kicks[2]}\n'
+        strs += f'kicky_downtream : {self.termination_kicks[3]}\n'
         return strs
