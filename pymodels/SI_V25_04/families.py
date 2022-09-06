@@ -25,6 +25,7 @@ _family_number_of_elements = {
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1,
+    'IDC': 4,
     }
 
 
@@ -89,6 +90,7 @@ _discipline_mapping = {
     'FCV': 'PS',
     'CH': 'PS',
     'CV': 'PS',
+    'IDC': 'PS',
     'QS': 'PS',
     'SRFCav': 'RF',
     'H3Cav': 'RF',
@@ -170,6 +172,7 @@ family_mapping = {
 
     'CH': 'slow_horizontal_corrector',
     'CV': 'slow_vertical_corrector',
+    'IDC': 'id_corrector',
 
     'QS': 'skew_quadrupole',
 
@@ -207,12 +210,12 @@ def families_sextupoles():
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['FCH', 'CH', ]
+    return ['FCH', 'CH', 'IDC']
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['FCV', 'CV', ]
+    return ['FCV', 'CV', 'IDC']
 
 
 def families_skew_correctors():
@@ -241,6 +244,11 @@ def families_di():
 def families_ids():
     """Return insertion devices families."""
     return ['APU22', 'APU58', 'EPU50', 'WIG180']
+
+
+def families_id_correctors():
+    """Return insertion device correctors families."""
+    return ['IDC', ]
 
 
 def get_section_name_mapping(lattice):
@@ -413,6 +421,13 @@ def get_family_data(lattice):
     for fam in fams:
         idx.extend(data[fam])
     data['ID'] = sorted(idx, key=get_idx)
+
+    # ID correctors
+    idx = []
+    fams = families_id_correctors()
+    for fam in fams:
+        idx.extend(data[fam])
+    data['IDC'] = sorted(idx, key=get_idx)
 
     # Girders
     girder = get_girder_data(lattice)
