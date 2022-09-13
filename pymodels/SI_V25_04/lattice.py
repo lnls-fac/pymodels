@@ -883,7 +883,7 @@ def create_id_kickmaps_dict(ids, energy):
     }
 
     # build kickmap dict
-    kickmaps = dict()
+    kickmaps, brho = dict(), None
     for subsec, (idtype, idlen) in ids_subsec_drift_lens.items():
         if subsec not in idsdict:
             # ID not in passed ID dictionary, return drift for half ID.
@@ -892,7 +892,8 @@ def create_id_kickmaps_dict(ids, energy):
                 )
         else:
             # return two kickmaps for half ID
-            brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
+            if brho is None:
+                brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
             id_u = idsdict[subsec].get_half_kickmap()
             id_d = idsdict[subsec].get_half_kickmap()
             id_u.t_in[1] = idsdict[subsec].kickx_upstream / brho**2
