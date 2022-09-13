@@ -73,6 +73,7 @@ def create_lattice(
     L200 = drift('l200', 0.200)
     L201 = drift('l201', 0.201)
     L205 = drift('l205', 0.205)
+    L208 = drift('l208', 0.208)
     L216 = drift('l216', 0.216)
     L230 = drift('l230', 0.230)
     L237 = drift('l237', 0.237)
@@ -379,9 +380,9 @@ def create_lattice(
     IDA_13 = IDA
 
     IDB_14 = [
-        L365, LIB, IDC, L135,
+        L365, LIB, L208, IDC,
         MIDB, ID14Hu, MIB, ID14Hd, MIDB,
-        L135, IDC, LIB, L365]  # low beta ID straight section (PAINEIRA)
+        IDC, L208, LIB, L365]  # low beta ID straight section (PAINEIRA)
 
     IDP_15 = IDP
 
@@ -872,14 +873,14 @@ def create_id_kickmaps_dict(ids, energy):
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
     ids_subsec_drift_lens = {
         # subsec   idtype   idlen    beamline
-        'ID06SB': ('APU22', 1.3),    # CARNAUBA
-        'ID07SP': ('APU22', 1.3),    # CATERETE
-        'ID08SB': ('APU22', 1.3),    # EMA
-        'ID09SA': ('APU22', 1.3),    # MANACA
-        'ID10SB': ('EPU50', 2.8),    # SABIA
-        'ID11SP': ('APU58', 1.3),    # IPE
-        'ID14SB': ('WIG180', 2.8),   # PAINEIRA
-        'ID17SA': ('APU22', 2.6),    # SAPUCAIA
+        'ID06SB': ('APU22',  1.300),   # CARNAUBA
+        'ID07SP': ('APU22',  1.300),   # CATERETE
+        'ID08SB': ('APU22',  1.300),   # EMA
+        'ID09SA': ('APU22',  1.300),   # MANACA
+        'ID10SB': ('EPU50',  2.800),   # SABIA
+        'ID11SP': ('APU58',  1.300),   # IPE
+        'ID14SB': ('WIG180', 2.654),   # PAINEIRA
+        'ID17SA': ('APU22',  2.600),   # SAPUCAIA
     }
 
     # build kickmap dict
