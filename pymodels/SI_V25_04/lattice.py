@@ -34,7 +34,9 @@ def create_lattice(
     # -- lattice markers --
     m_accep_fam_name = 'calc_mom_accep'
 
-    dcircum = 518.3899 - 518.3960
+    circum_new = 518.3899
+    circum_old = 518.3960
+    dcircum = circum_new - circum_old
 
     # -- drifts --
     LIA = drift('lia', 1.5179)
@@ -43,8 +45,13 @@ def create_lattice(
     LPMU = drift('lpmu', 0.0600)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
-    L500p = drift('L500p', 0.5000 + dcircum/5/2)
-    LKKp = drift('lkkp', 1.9150 + dcircum/5/2)
+    # divide circumference difference in all 20 straight sections
+    dcircum_frac = dcircum/20/2
+    L135p = drift('l135p', 0.135 + dcircum_frac)
+    L350p = drift('l350p', 0.350 + dcircum_frac)
+    L500p = drift('L500p', 0.500 + dcircum_frac)
+    L600p = drift('l600p', 0.600 + dcircum_frac)
+    LKKp = drift('lkkp', 1.9150 + dcircum_frac)
     L011 = drift('l011', 0.011)
     L019 = drift('l019', 0.019)
     L049 = drift('l049', 0.049)
@@ -80,12 +87,10 @@ def create_lattice(
     L260 = drift('l260', 0.260)
     L325 = drift('l325', 0.325)
     L336 = drift('l336', 0.336)
-    L350 = drift('l350', 0.350)
     L399 = drift('l399', 0.399)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
-    L600 = drift('l600', 0.600)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
 
@@ -329,73 +334,73 @@ def create_lattice(
     # --- IDB insertion sectors ---
 
     IDB = [
-        L500, LIB, L500, MIDB, L500, L500, MIB, L500, L500, MIDB, L500, LIB,
+        L500, LIB, L500, MIDB, L500, L500p, MIB, L500p, L500, MIDB, L500, LIB,
         L500]  # low beta ID straight section
 
     IDB_GSL07 = [
         L500, GSL07, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
         L500, LIB, L500]  # low beta ID straight section
 
     IDB_TunePkupH = [
         L500, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
         L500, TunePkupH, LIB, L500]  # low beta ID straight section
 
     IDB_02 = [
         L500, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
         L500, HCav, LIB, L500]  # low beta ID straight section
 
     IDB_06 = [
         L500, LIB, L500,
-        L350, MIDB, ID06H, MIB, ID06H, MIDB,
-        L350, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
+        L350p, MIDB, ID06H, MIB, ID06H, MIDB,
+        L350p, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDB_08 = [
-        L500, LIB, L500, L350,
+        L500, LIB, L500, L350p,
         MIDB, ID08H, MIB, ID08H, MIDB,
-        L350, L500, LIB, L500]  # low beta ID straight section (EMA)
+        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
 
     IDB_10 = [
-        L500, LIB, L665, IDC, L135,
+        L500, LIB, L665, IDC, L135p,
         MIDB, ID10H, MIB, ID10H, MIDB,
-        L135, IDC, L665, LIB, L500]  # low beta ID straight section (SABIA)
+        L135p, IDC, L665, LIB, L500]  # low beta ID straight section (SABIA)
 
     IDB_12 = [
         L500, LIB, L665, L100, L135,
-        MIDB, L600, MIB, L600, MIDB,
+        MIDB, L600p, MIB, L600p, MIDB,
         L135, L100, L665, LIB, L500]  # low beta ID straight section
 
     IDB_16 = [
         L500, LIB, L500,
-        MIDB, L500, L500, MIB, L500, L500, MIDB,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
         L500, BbBKckL, LIB, L500]  # low beta ID straight section
 
     # --- IDP insertion sectors ---
 
     IDP = [
         L500, LIP, L500,
-        MIDP, L500, L500, MIP, L500, L500, MIDP,
+        MIDP, L500, L500p, MIP, L500p, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
     IDP_CAV = [
-        L500, LIP, L500, L500, L500, MIP, RFC, L500, L500, L500,
+        L500, LIP, L500, L500, L500p, MIP, RFC, L500p, L500, L500,
         LIP, L500]  # low beta RF cavity straight section
 
     IDP_07 = [
-        L500, LIP, L500, L350,
+        L500, LIP, L500, L350p,
         MIDP, ID07H, MIP, ID07H, MIDP,
-        L350, L500, LIP, L500]  # low beta ID straight section (CATERETE)
+        L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDP_11 = [
-        L500, LIP, L500, L350,
+        L500, LIP, L500, L350p,
         MIDP, ID11H, MIP, ID11H, MIDP,
-        L350, L500, LIP, L500]  # low beta ID straight section (IPE)
+        L350p, L500, LIP, L500]  # low beta ID straight section (IPE)
 
     IDP_GSL15 = [
         L500, GSL15, LIP, L500,
-        MIDP, L500, L500, MIP, L500, L500, MIDP,
+        MIDP, L500, L500p, MIP, L500p, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
     # -- girders --
