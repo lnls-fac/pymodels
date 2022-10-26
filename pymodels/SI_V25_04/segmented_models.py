@@ -113,11 +113,14 @@ def dipole_bc(m_accep_fam_name, simplified=False):
 
 def dipole_b1(m_accep_fam_name, simplified=False):
     """Segmented B1 dipole model."""
+    src_point_angle = 3.2e-3  # [rad]
+
     segtypes = {
         'B1': ('B1', _pyaccel.elements.rbend),
         'B1_EDGE': ('B1_EDGE', _pyaccel.elements.marker),
         'mb1': ('mb1', _pyaccel.elements.marker),
         'm_accep': (m_accep_fam_name, _pyaccel.elements.marker),
+        'B1_SRC': ('B1_SRC', _pyaccel.elements.marker),
     }
 
     # Average Dipole Model for B1 at current 403p6A
@@ -164,23 +167,33 @@ def dipole_b1(m_accep_fam_name, simplified=False):
     PolyB = _np.zeros(1+max(monomials))
     for i in range(len(segmodel)):
         fam_name, element_type = segtypes[segmodel[i][0]]
+        angle = d2r * segmodel[i][2]
         if element_type == _pyaccel.elements.rbend:
             for j in range(len(monomials)):
                 PolyB[monomials[j]] = segmodel[i][j+3]
             PolyA = 0 * PolyB
             element = element_type(
                 fam_name=fam_name, length=segmodel[i][1],
-                angle=d2r * segmodel[i][2], angle_in=0, angle_out=0,
+                angle=angle, angle_in=0, angle_out=0,
                 gap=0, fint_in=0, fint_out=0,
                 polynom_a=PolyA, polynom_b=PolyB)
         else:
             element = element_type(fam_name)
         model.append(element)
 
+    # --- add source point marker to half-model ---
+    imodel = model[::-1]
+    angles = _np.array([elem.angle for elem in imodel])
+    angles_cumsum = _np.cumsum(angles)
+    src_idx = _np.argmin(_np.abs(angles_cumsum - src_point_angle))
+    fam_name, element_type = segtypes['B1_SRC']
+    src_element = element_type(fam_name=fam_name)
+    imodel = imodel[:src_idx+1] + [src_element, ] + imodel[src_idx+1:]
+
     # --- adds additional markers ---
     mb1 = segtypes['mb1'][1](segtypes['mb1'][0])
     maccep = segtypes['m_accep'][1](segtypes['m_accep'][0])
-    model = model[::-1] + [mb1, maccep] + model
+    model = imodel + [mb1, maccep] + model
 
     if simplified:
         le = sum([s[1] for s in segmodel[:12]])
