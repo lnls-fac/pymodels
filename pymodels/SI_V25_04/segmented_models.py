@@ -113,7 +113,7 @@ def dipole_bc(m_accep_fam_name, simplified=False):
 
 def dipole_b1(m_accep_fam_name, simplified=False):
     """Segmented B1 dipole model."""
-    src_point_angle = 3.2e-3  # [rad]
+    src_point_angle = 3.2e-3  # [rad] - at SI-01C1:MA-B1 for Carcará.
 
     segtypes = {
         'B1': ('B1', _pyaccel.elements.rbend),
@@ -188,6 +188,7 @@ def dipole_b1(m_accep_fam_name, simplified=False):
     src_idx = _np.argmin(_np.abs(angles_cumsum - src_point_angle))
     fam_name, element_type = segtypes['B1_SRC']
     src_element = element_type(fam_name=fam_name)
+    # add marker at soiurce point [actually at 3.208 mrad]
     imodel = imodel[:src_idx+1] + [src_element, ] + imodel[src_idx+1:]
 
     # --- adds additional markers ---
