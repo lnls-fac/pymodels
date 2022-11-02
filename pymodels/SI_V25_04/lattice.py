@@ -90,7 +90,7 @@ def create_lattice(
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
-    L576p = drift('lib2', 0.5759)
+    L576p = drift('l576p', 0.5759)
     L600 = drift('l600', 0.600)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
