@@ -25,7 +25,8 @@ _family_number_of_elements = {
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1,
-    'IDC': 4,
+    'IDC': 4, 'IDCH': 4, 'IDCV': 4,
+    'IDQS': 2,
     }
 
 
@@ -90,8 +91,10 @@ _discipline_mapping = {
     'FCV': 'PS',
     'CH': 'PS',
     'CV': 'PS',
-    'IDC': 'PS',
+    'IDCH': 'PS',
+    'IDCV': 'PS',
     'QS': 'PS',
+    'IDQS': 'PS',
     'SRFCav': 'RF',
     'H3Cav': 'RF',
     'APU22': 'ID',
@@ -172,7 +175,9 @@ family_mapping = {
 
     'CH': 'slow_horizontal_corrector',
     'CV': 'slow_vertical_corrector',
-    'IDC': 'id_corrector',
+    'IDCH': 'id_horizontal_corrector',
+    'IDCV': 'id_vertical_corrector',
+    'IDQS': 'id_skew_quadrupole',
 
     'QS': 'skew_quadrupole',
 
@@ -220,7 +225,7 @@ def families_vertical_correctors():
 
 def families_skew_correctors():
     """Return skew corrector families."""
-    return ['QS', ]
+    return ['QS', 'IDQS']
 
 
 def families_rf():
@@ -249,6 +254,11 @@ def families_ids():
 def families_id_correctors():
     """Return insertion device correctors families."""
     return ['IDC', ]
+
+
+def families_id_skew_correctors():
+    """Return insertion device skew correctors families."""
+    return ['IDQS', ]
 
 
 def get_section_name_mapping(lattice):
@@ -365,6 +375,20 @@ def get_family_data(lattice):
             idx.extend(data[fam])
     data['CV'] = sorted(idx, key=get_idx)
 
+    # idch - id horizontal correctors
+    idx = []
+    fams = ['IDC', ]
+    for fam in fams:
+        idx.extend(data[fam])
+    data['IDCH'] = sorted(idx, key=get_idx)
+
+    # idcv - id vertical correctors
+    idx = []
+    fams = ['IDC', ]
+    for fam in fams:
+        idx.extend(data[fam])
+    data['IDCV'] = sorted(idx, key=get_idx)
+
     # fch - fast horizontal correctors
     data['FCH'] = sorted(data['FC1']+data['FC2'], key=get_idx)
 
@@ -422,12 +446,12 @@ def get_family_data(lattice):
         idx.extend(data[fam])
     data['ID'] = sorted(idx, key=get_idx)
 
-    # ID correctors
+    # ID skew correctors
     idx = []
-    fams = families_id_correctors()
+    fams = families_id_skew_correctors()
     for fam in fams:
         idx.extend(data[fam])
-    data['IDC'] = sorted(idx, key=get_idx)
+    data['IDQS'] = sorted(idx, key=get_idx)
 
     # Girders
     girder = get_girder_data(lattice)
@@ -462,14 +486,19 @@ def get_family_data(lattice):
     for key in new_data:
         if key not in _discipline_mapping:
             continue
+        if key in ('IDC', ):
+            continue
         dis = _discipline_mapping[key]
         dta = new_data[key]
         devnames = []
         subs = dta['subsection']
         insts = dta['instance']
+        dev = key
+        if dev in ('IDCH', 'IDCV', 'IDQS'):
+            dev = dev[2:]
         for sub, inst in zip(subs, insts):
             devnames.append(
-                _join_name(sec='SI', dis=dis, sub=sub, idx=inst, dev=key))
+                _join_name(sec='SI', dis=dis, sub=sub, idx=inst, dev=dev))
         new_data[key]['devnames'] = devnames
 
     return new_data
