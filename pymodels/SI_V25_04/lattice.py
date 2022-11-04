@@ -351,7 +351,7 @@ def create_lattice(
     IDA_05 = IDA
 
     IDB_06 = [
-L500, LIB, L500, L350p,
+        L500, LIB, L500, L350p,
         MIDB, ID06Hu, MIB, ID06Hd, MIDB,
         L350p, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
