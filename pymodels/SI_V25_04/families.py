@@ -4,8 +4,11 @@ from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
 
+_NR_B1 = 40
+_NR_B2 = 40
+
 _family_number_of_elements = {
-    'B1': 40, 'B2': 40, 'BC': 20,
+    'B1': _NR_B1, 'B2': _NR_B2, 'BC': 20,
     'QFA': 10, 'QDA': 10,
     'QFB': 20, 'QDB1': 20, 'QDB2': 20,
     'QFP': 10, 'QDP1': 10, 'QDP2': 10,
@@ -25,6 +28,7 @@ _family_number_of_elements = {
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1,
+    'IDBPM': 2,
     'IDC': 4, 'IDCH': 4, 'IDCV': 4,
     'IDQS': 2,
     }
@@ -71,6 +75,7 @@ _discipline_mapping = {
     'PingH': 'PU',
     'PingV': 'PU',
     'BPM': 'DI',
+    'IDBPM': 'DI',
     'DCCT': 'DI',
     'ScrapH': 'DI',
     'ScrapV': 'DI',
@@ -153,6 +158,7 @@ family_mapping = {
     'PingV': 'pulsed_magnet',
 
     'BPM': 'bpm',
+    'IDBPM': 'bpm',
     'DCCT': 'dcct_to_measure_beam_current',
     'ScrapH': 'horizontal_scraper',
     'ScrapV': 'vertical_scraper',
@@ -241,7 +247,7 @@ def families_pulsed_magnets():
 def families_di():
     """Return diagnostics families."""
     return [
-        'BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
+        'BPM', 'IDBPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
         'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckrL',
         'TuneShkrH', 'TuneShkrV', 'TunePkupH', 'TunePkupV']
 
@@ -281,9 +287,9 @@ def get_section_name_mapping(lattice):
     # find indices important to define the change of the names of
     # the subsections.
     b1 = _pyaccel.lattice.find_indices(lat, 'fam_name', 'B1')
-    b1_nrsegs = len(b1)//40
+    b1_nrsegs = len(b1)//_NR_B1
     b2 = _pyaccel.lattice.find_indices(lat, 'fam_name', 'B2')
-    # b2_nrsegs = len(b2)//40
+    # b2_nrsegs = len(b2)//_NR_B2
     bc = _pyaccel.lattice.find_indices(lat, 'fam_name', 'BC')
     bpm = _pyaccel.lattice.find_indices(lat, 'fam_name', 'BPM')
 
@@ -478,7 +484,7 @@ def get_family_data(lattice):
                 num[i] = f(j) if secs[i] == secs[i+1] or secs[i] == secs[i-1] \
                     else ''
                 j = j+1 if secs[i] == secs[i+1] else 1
-            num[-1] = f(j)if (secs[-1] == secs[-2]) else ''
+            num[-1] = f(j) if (secs[-1] == secs[-2]) else ''
 
         new_data[key] = {'index': idx, 'subsection': secs, 'instance': num}
 
@@ -494,7 +500,7 @@ def get_family_data(lattice):
         subs = dta['subsection']
         insts = dta['instance']
         dev = key
-        if dev in ('IDCH', 'IDCV', 'IDQS'):
+        if dev in ('IDCH', 'IDCV', 'IDQS', 'IDBPM'):
             dev = dev[2:]
         for sub, inst in zip(subs, insts):
             devnames.append(

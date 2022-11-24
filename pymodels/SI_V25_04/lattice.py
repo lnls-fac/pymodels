@@ -65,6 +65,7 @@ def create_lattice(
     L082 = drift('l082', 0.082)
     L090 = drift('l090', 0.090)
     L100 = drift('l100', 0.100)
+    L109 = drift('l109', 0.109)
     L112 = drift('l112', 0.112)
     L119 = drift('l119', 0.119)
     L120 = drift('l120', 0.120)
@@ -81,6 +82,7 @@ def create_lattice(
     L188 = drift('l188', 0.188)
     L200 = drift('l200', 0.200)
     L201 = drift('l201', 0.201)
+    L203 = drift('l203', 0.203)
     L205 = drift('l205', 0.205)
     L216 = drift('l216', 0.216)
     L230 = drift('l230', 0.230)
@@ -88,7 +90,6 @@ def create_lattice(
     L240 = drift('l240', 0.240)
     L260 = drift('l260', 0.260)
     L297 = drift('l297', 0.297)
-    L312 = drift('l312', 0.312)
     L325 = drift('l325', 0.325)
     L336 = drift('l336', 0.336)
     L365 = drift('l365', 0.365)
@@ -183,6 +184,7 @@ def create_lattice(
 
     # --- diagnostic components ---
     BPM = marker('BPM')
+    IDBPM = marker('IDBPM')
     DCCT = marker('DCCT')  # dcct to measure beam current
     ScrapH = marker('ScrapH')  # horizontal scraper
     ScrapV = marker('ScrapV')  # vertical scraper
@@ -371,9 +373,9 @@ def create_lattice(
         L500p, LID3, L500]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
-        L297, L576p, IDQS, L312, IDC, L218p,
+        L297, L576p, IDQS, L203, IDBPM, L109, IDC, L218p,
         MIDB, ID10Hu, MIB, ID10Hd, MIDB,
-        L218p, IDC, L312, IDQS, L576p, L297]  # low beta ID straight (SABIA)
+        L218p, IDC, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350p,
