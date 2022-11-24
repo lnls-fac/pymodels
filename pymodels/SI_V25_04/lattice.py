@@ -34,8 +34,8 @@ def create_lattice(
     # -- lattice markers --
     m_accep_fam_name = 'calc_mom_accep'
 
-    circum_new = 518.3899
-    circum_old = 518.3960
+    circum_new = 518.3899  # [m]
+    circum_old = 518.3960  # [m]
     dcircum = circum_new - circum_old
 
     # -- drifts --
@@ -47,9 +47,11 @@ def create_lattice(
     LID3 = drift('lid3', 1.8679)
     # divide circumference difference in all 20 straight sections
     dcircum_frac = dcircum/20/2
-    L135p = drift('l135p', 0.135 + dcircum_frac)
+    L208p = drift('l208p', 0.208 + dcircum_frac)
+    L218p = drift('l218p', 0.218 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L500p = drift('L500p', 0.500 + dcircum_frac)
+    L576p = drift('l576p', 0.5759)
     L600p = drift('l600p', 0.600 + dcircum_frac)
     LKKp = drift('lkkp', 1.9150 + dcircum_frac)
     L011 = drift('l011', 0.011)
@@ -63,6 +65,7 @@ def create_lattice(
     L082 = drift('l082', 0.082)
     L090 = drift('l090', 0.090)
     L100 = drift('l100', 0.100)
+    L109 = drift('l109', 0.109)
     L112 = drift('l112', 0.112)
     L119 = drift('l119', 0.119)
     L120 = drift('l120', 0.120)
@@ -79,14 +82,17 @@ def create_lattice(
     L188 = drift('l188', 0.188)
     L200 = drift('l200', 0.200)
     L201 = drift('l201', 0.201)
+    L203 = drift('l203', 0.203)
     L205 = drift('l205', 0.205)
     L216 = drift('l216', 0.216)
     L230 = drift('l230', 0.230)
     L237 = drift('l237', 0.237)
     L240 = drift('l240', 0.240)
     L260 = drift('l260', 0.260)
+    L297 = drift('l297', 0.297)
     L325 = drift('l325', 0.325)
     L336 = drift('l336', 0.336)
+    L365 = drift('l365', 0.365)
     L399 = drift('l399', 0.399)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
@@ -178,6 +184,7 @@ def create_lattice(
 
     # --- diagnostic components ---
     BPM = marker('BPM')
+    IDBPM = marker('IDBPM')
     DCCT = marker('DCCT')  # dcct to measure beam current
     ScrapH = marker('ScrapH')  # horizontal scraper
     ScrapV = marker('ScrapV')  # vertical scraper
@@ -198,15 +205,17 @@ def create_lattice(
     SHVC = marker('SHVC')  # HScrap vchamber limits (drawing: len = 313 mm)
 
     # --- insertion devices (half devices) ---
-    kickmaps = create_id_kickmaps_dict(ids)
-    ID06H = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
-    ID07H = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
-    ID08H = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
-    ID09H = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
-    ID10H = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-Delta52'
-    ID11H = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
+    kickmaps = create_id_kickmaps_dict(ids, energy=energy)
+    ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
+    ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
+    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
+    ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
+    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
+    ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
+    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
 
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
+    IDQS = sextupole('IDQS', 0.2, S=0)  # ID quadskew corrector
 
     # -- sectors --
     M1A = [
@@ -308,109 +317,118 @@ def create_lattice(
         GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
         SDP1, L237, TuneShkrV, GIR, L237, GIR]
 
-    # --- IDA insertion sectors ---
+    # --- insertion sectors ---
 
     IDA = [
         L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
         LIA, L500]  # high beta ID straight section
 
-    IDA_INJ = [
-        SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
-        InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-        START, MIA, LKKp, InjDpKckr, InjVCs,
-        SVVC, LPMU, L050, ScrapV, L150, SVVC,
-        InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
-
-    IDA_09 = [
-        L500, LID3, L500p,
-        MIDA, ID09H, MIA, ID09H, MIDA,
-        L500p, LID3, L500]  # high beta ID straight section (MANACA)
-
-    IDA_17 = [
-        L500, LIA, L500,
-        MIDA, L500, L500p, MIA, L500p, L500, MIDA,
-        L500, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
-
-    # --- IDB insertion sectors ---
-
     IDB = [
         L500, LIB, L500, MIDB, L500, L500p, MIB, L500p, L500, MIDB, L500, LIB,
         L500]  # low beta ID straight section
-
-    IDB_GSL07 = [
-        L500, GSL07, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, LIB, L500]  # low beta ID straight section
-
-    IDB_TunePkupH = [
-        L500, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, TunePkupH, LIB, L500]  # low beta ID straight section
-
-    IDB_02 = [
-        L500, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, HCav, LIB, L500]  # low beta ID straight section
-
-    IDB_06 = [
-        L500, LIB, L500,
-        L350p, MIDB, ID06H, MIB, ID06H, MIDB,
-        L350p, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
-
-    IDB_08 = [
-        L500, LIB, L500, L350p,
-        MIDB, ID08H, MIB, ID08H, MIDB,
-        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
-
-    IDB_10 = [
-        L500, LIB, L665, IDC, L135p,
-        MIDB, ID10H, MIB, ID10H, MIDB,
-        L135p, IDC, L665, LIB, L500]  # low beta ID straight section (SABIA)
-
-    IDB_12 = [
-        L500, LIB, L665, L100, L135,
-        MIDB, L600p, MIB, L600p, MIDB,
-        L135, L100, L665, LIB, L500]  # low beta ID straight section
-
-    IDB_16 = [
-        L500, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, BbBKckL, LIB, L500]  # low beta ID straight section
-
-    # --- IDP insertion sectors ---
 
     IDP = [
         L500, LIP, L500,
         MIDP, L500, L500p, MIP, L500p, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
-    IDP_CAV = [
+    IDA_01_INJ = [
+        SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
+        InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
+        START, MIA, LKKp, InjDpKckr, InjVCs,
+        SVVC, LPMU, L050, ScrapV, L150, SVVC,
+        InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
+
+    IDB_02 = [
+        L500, LIB, L500,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
+        L500, HCav, LIB, L500]  # low beta ID straight section
+
+    IDP_03_CAV = [
         L500, LIP, L500, L500, L500p, MIP, RFC, L500p, L500, L500,
         LIP, L500]  # low beta RF cavity straight section
 
+    IDB_04 = IDB
+
+    IDA_05 = IDA
+
+    IDB_06 = [
+        L500, LIB, L500, L350p,
+        MIDB, ID06Hu, MIB, ID06Hd, MIDB,
+        L350p, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
+
     IDP_07 = [
         L500, LIP, L500, L350p,
-        MIDP, ID07H, MIP, ID07H, MIDP,
+        MIDP, ID07Hu, MIP, ID07Hd, MIDP,
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
+
+    IDB_08 = [
+        L500, LIB, L500, L350p,
+        MIDB, ID08Hu, MIB, ID08Hd, MIDB,
+        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
+
+    IDA_09 = [
+        L500, LID3, L500p,
+        MIDA, ID09Hu, MIA, ID09Hd, MIDA,
+        L500p, LID3, L500]  # high beta ID straight section (MANACA)
+
+    IDB_10 = [
+        L297, L576p, IDQS, L203, IDBPM, L109, IDC, L218p,
+        MIDB, ID10Hu, MIB, ID10Hd, MIDB,
+        L218p, IDC, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350p,
-        MIDP, ID11H, MIP, ID11H, MIDP,
-        L350p, L500, LIP, L500]  # low beta ID straight section (IPE)
+        MIDP, ID11Hu, MIP, ID11Hd, MIDP,
+        L350p, L500, LIP, L500]  # low beta ID straight section (IPE) L=1.3m
 
-    IDP_GSL15 = [
+    IDB_12 = [
+        L500, LIB, L665, L100, L135,
+        MIDB, L600p, MIB, L600p, MIDB,
+        L135, L100, L665, LIB, L500]  # low beta ID straight section
+
+    IDA_13 = IDA
+
+    IDB_14 = [
+        L365, LIB, L208p, IDC,
+        MIDB, ID14Hu, MIB, ID14Hd, MIDB,
+        IDC, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
+
+    IDP_15 = IDP
+
+    IDB_16 = [
+        L500, LIB, L500,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
+        L500, BbBKckL, LIB, L500]  # low beta ID straight section
+
+    IDA_17 = [
+        L500, LIA, L500,
+        MIDA, L500, L500p, MIA, L500p, L500, MIDA,
+        L500, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
+
+    IDB_18_TUNEPKUPH = [
+        L500, LIB, L500,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
+        L500, TunePkupH, LIB, L500]  # low beta ID straight section
+
+    IDB_19_GSL15 = [
         L500, GSL15, LIP, L500,
         MIDP, L500, L500p, MIP, L500p, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
+    IDB_20_GSL07 = [
+        L500, GSL07, LIB, L500,
+        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
+        L500, LIB, L500]  # low beta ID straight section
+
     # -- girders --
 
     # straight sections
-    SS_S01 = IDA_INJ  # INJECTION
+    SS_S01 = IDA_01_INJ  # INJECTION
     SS_S02 = IDB_02
-    SS_S03 = IDP_CAV
-    SS_S04 = IDB
-    SS_S05 = IDA
+    SS_S03 = IDP_03_CAV
+    SS_S04 = IDB_04
+    SS_S05 = IDA_05
     SS_S06 = IDB_06  # CARNAUBA
     SS_S07 = IDP_07  # CATERETE
     SS_S08 = IDB_08  # EMA
@@ -418,14 +436,14 @@ def create_lattice(
     SS_S10 = IDB_10  # SABIA
     SS_S11 = IDP_11  # IPE
     SS_S12 = IDB_12
-    SS_S13 = IDA
-    SS_S14 = IDB  # PAINEIRA
-    SS_S15 = IDP
+    SS_S13 = IDA_13
+    SS_S14 = IDB_14  # PAINEIRA
+    SS_S15 = IDP_15
     SS_S16 = IDB_16  # INGA
     SS_S17 = IDA_17  # SAPUCAIA
-    SS_S18 = IDB_TunePkupH
-    SS_S19 = IDP_GSL15
-    SS_S20 = IDB_GSL07
+    SS_S18 = IDB_18_TUNEPKUPH
+    SS_S19 = IDB_19_GSL15
+    SS_S20 = IDB_20_GSL07
 
     # down and upstream straight sections
     M1_S01 = M1A
@@ -852,7 +870,7 @@ def get_optics_mode(optics_mode=default_optics_mode):
     return strengths
 
 
-def create_id_kickmaps_dict(ids):
+def create_id_kickmaps_dict(ids, energy):
     """Return dict with half insertion device kickmaps."""
     drift = _pyacc_ele.drift
 
@@ -861,25 +879,38 @@ def create_id_kickmaps_dict(ids):
         idsdict = {id.subsec: id for id in ids}
 
     # NOTE: see IDs already defined in
+    # https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocation
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
     ids_subsec_drift_lens = {
         # subsec   idtype   idlen    beamline
-        'ID06SB': ('APU22', 1.3),    # CARNAUBA
-        'ID07SP': ('APU22', 1.3),    # CATERETE
-        'ID08SB': ('APU22', 1.3),    # EMA
-        'ID09SA': ('APU22', 1.3),    # MANACA
-        'ID10SB': ('DELTA52', 1.2),  # SABIA
-        'ID11SP': ('APU58', 1.3),    # IPE
+        'ID06SB': ('APU22',  1.300),   # CARNAUBA
+        'ID07SP': ('APU22',  1.300),   # CATERETE
+        'ID08SB': ('APU22',  1.300),   # EMA
+        'ID09SA': ('APU22',  1.300),   # MANACA
+        'ID10SB': ('EPU50',  2.770),   # SABIA
+        'ID11SP': ('APU58',  1.300),   # IPE
+        'ID14SB': ('WIG180', 2.654),   # PAINEIRA
+        'ID17SA': ('APU22',  2.600),   # SAPUCAIA
     }
 
     # build kickmap dict
-    kickmaps = dict()
+    kickmaps, brho = dict(), None
     for subsec, (idtype, idlen) in ids_subsec_drift_lens.items():
         if subsec not in idsdict:
             # ID not in passed ID dictionary, return drift for half ID.
-            kickmaps[subsec] = drift(idtype, idlen/2)
+            kickmaps[subsec] = (
+                drift(idtype, idlen/2), drift(idtype, idlen/2)
+                )
         else:
-            # return Kickmap for half ID.
-            kickmaps[subsec] = idsdict[subsec].get_half_kickmap()
+            # return two kickmaps for half ID
+            if brho is None:
+                brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
+            id_u = idsdict[subsec].get_half_kickmap()
+            id_d = idsdict[subsec].get_half_kickmap()
+            id_u.t_in[1] = idsdict[subsec].kickx_upstream / brho**2
+            id_u.t_in[3] = idsdict[subsec].kicky_upstream / brho**2
+            id_d.t_out[1] = idsdict[subsec].kickx_downstream / brho**2
+            id_d.t_out[3] = idsdict[subsec].kicky_downstream / brho**2
+            kickmaps[subsec] = (id_u, id_d)
 
     return kickmaps

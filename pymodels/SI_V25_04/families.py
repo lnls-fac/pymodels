@@ -4,8 +4,11 @@ from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
 
+_NR_B1 = 40
+_NR_B2 = 40
+
 _family_number_of_elements = {
-    'B1': 40, 'B2': 40, 'BC': 20,
+    'B1': _NR_B1, 'B2': _NR_B2, 'BC': 20,
     'QFA': 10, 'QDA': 10,
     'QFB': 20, 'QDB1': 20, 'QDB2': 20,
     'QFP': 10, 'QDP1': 10, 'QDP2': 10,
@@ -24,8 +27,12 @@ _family_number_of_elements = {
     'FC1': 60, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    'APU22': 4, 'APU58': 1, 'DELTA52': 1,
+    'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1,
+    'IDBPM': 2,
+    'IDC': 4, 'IDCH': 4, 'IDCV': 4,
+    'IDQS': 2,
     }
+
 
 _discipline_mapping = {
     'B1B2-1': 'PS',
@@ -68,6 +75,7 @@ _discipline_mapping = {
     'PingH': 'PU',
     'PingV': 'PU',
     'BPM': 'DI',
+    'IDBPM': 'DI',
     'DCCT': 'DI',
     'ScrapH': 'DI',
     'ScrapV': 'DI',
@@ -88,13 +96,18 @@ _discipline_mapping = {
     'FCV': 'PS',
     'CH': 'PS',
     'CV': 'PS',
+    'IDCH': 'PS',
+    'IDCV': 'PS',
     'QS': 'PS',
+    'IDQS': 'PS',
     'SRFCav': 'RF',
     'H3Cav': 'RF',
     'APU22': 'ID',
     'APU58': 'ID',
-    'DELTA52': 'ID',
+    'EPU50': 'ID',
+    'WIG180': 'ID',
     }
+
 
 family_mapping = {
 
@@ -145,6 +158,7 @@ family_mapping = {
     'PingV': 'pulsed_magnet',
 
     'BPM': 'bpm',
+    'IDBPM': 'bpm',
     'DCCT': 'dcct_to_measure_beam_current',
     'ScrapH': 'horizontal_scraper',
     'ScrapV': 'vertical_scraper',
@@ -167,6 +181,9 @@ family_mapping = {
 
     'CH': 'slow_horizontal_corrector',
     'CV': 'slow_vertical_corrector',
+    'IDCH': 'id_horizontal_corrector',
+    'IDCV': 'id_vertical_corrector',
+    'IDQS': 'id_skew_quadrupole',
 
     'QS': 'skew_quadrupole',
 
@@ -174,7 +191,8 @@ family_mapping = {
     'H3Cav': 'third_harmonic_rf_cavity',
     'APU22': 'insertion_device',
     'APU58': 'insertion_device',
-    'DELTA52': 'insertion_device',
+    'EPU50': 'insertion_device',
+    'WIG180': 'insertion_device',
     }
 
 
@@ -203,17 +221,17 @@ def families_sextupoles():
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['FCH', 'CH', ]
+    return ['FCH', 'CH', 'IDC']
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['FCV', 'CV', ]
+    return ['FCV', 'CV', 'IDC']
 
 
 def families_skew_correctors():
     """Return skew corrector families."""
-    return ['QS', ]
+    return ['QS', 'IDQS']
 
 
 def families_rf():
@@ -229,14 +247,24 @@ def families_pulsed_magnets():
 def families_di():
     """Return diagnostics families."""
     return [
-        'BPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
+        'BPM', 'IDBPM', 'DCCT', 'ScrapH', 'ScrapV', 'GSL15', 'GSL07',
         'GBPM', 'BbBPkup', 'BbBKckrH', 'BbBKckrV', 'BbBKckrL',
         'TuneShkrH', 'TuneShkrV', 'TunePkupH', 'TunePkupV']
 
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', 'APU58', 'DELTA52']
+    return ['APU22', 'APU58', 'EPU50', 'WIG180']
+
+
+def families_id_correctors():
+    """Return insertion device correctors families."""
+    return ['IDC', ]
+
+
+def families_id_skew_correctors():
+    """Return insertion device skew correctors families."""
+    return ['IDQS', ]
 
 
 def get_section_name_mapping(lattice):
@@ -259,9 +287,9 @@ def get_section_name_mapping(lattice):
     # find indices important to define the change of the names of
     # the subsections.
     b1 = _pyaccel.lattice.find_indices(lat, 'fam_name', 'B1')
-    b1_nrsegs = len(b1)//40
+    b1_nrsegs = len(b1)//_NR_B1
     b2 = _pyaccel.lattice.find_indices(lat, 'fam_name', 'B2')
-    # b2_nrsegs = len(b2)//40
+    # b2_nrsegs = len(b2)//_NR_B2
     bc = _pyaccel.lattice.find_indices(lat, 'fam_name', 'BC')
     bpm = _pyaccel.lattice.find_indices(lat, 'fam_name', 'BPM')
 
@@ -353,6 +381,20 @@ def get_family_data(lattice):
             idx.extend(data[fam])
     data['CV'] = sorted(idx, key=get_idx)
 
+    # idch - id horizontal correctors
+    idx = []
+    fams = ['IDC', ]
+    for fam in fams:
+        idx.extend(data[fam])
+    data['IDCH'] = sorted(idx, key=get_idx)
+
+    # idcv - id vertical correctors
+    idx = []
+    fams = ['IDC', ]
+    for fam in fams:
+        idx.extend(data[fam])
+    data['IDCV'] = sorted(idx, key=get_idx)
+
     # fch - fast horizontal correctors
     data['FCH'] = sorted(data['FC1']+data['FC2'], key=get_idx)
 
@@ -410,6 +452,13 @@ def get_family_data(lattice):
         idx.extend(data[fam])
     data['ID'] = sorted(idx, key=get_idx)
 
+    # ID skew correctors
+    idx = []
+    fams = families_id_skew_correctors()
+    for fam in fams:
+        idx.extend(data[fam])
+    data['IDQS'] = sorted(idx, key=get_idx)
+
     # Girders
     girder = get_girder_data(lattice)
     if girder is not None:
@@ -435,7 +484,7 @@ def get_family_data(lattice):
                 num[i] = f(j) if secs[i] == secs[i+1] or secs[i] == secs[i-1] \
                     else ''
                 j = j+1 if secs[i] == secs[i+1] else 1
-            num[-1] = f(j)if (secs[-1] == secs[-2]) else ''
+            num[-1] = f(j) if (secs[-1] == secs[-2]) else ''
 
         new_data[key] = {'index': idx, 'subsection': secs, 'instance': num}
 
@@ -443,14 +492,19 @@ def get_family_data(lattice):
     for key in new_data:
         if key not in _discipline_mapping:
             continue
+        if key in ('IDC', ):
+            continue
         dis = _discipline_mapping[key]
         dta = new_data[key]
         devnames = []
         subs = dta['subsection']
         insts = dta['instance']
+        dev = key
+        if dev in ('IDCH', 'IDCV', 'IDQS', 'IDBPM'):
+            dev = dev[2:]
         for sub, inst in zip(subs, insts):
             devnames.append(
-                _join_name(sec='SI', dis=dis, sub=sub, idx=inst, dev=key))
+                _join_name(sec='SI', dis=dis, sub=sub, idx=inst, dev=dev))
         new_data[key]['devnames'] = devnames
 
     return new_data
