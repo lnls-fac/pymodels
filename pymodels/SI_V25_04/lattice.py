@@ -363,9 +363,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L500, L350p,
+        L325, LIB, L325, L350p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
+        L350p, L325, LIB, L325]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -885,7 +885,7 @@ def create_id_kickmaps_dict(ids, energy):
         # subsec   idtype   idlen    beamline
         'ID06SB': ('APU22',  1.300),   # CARNAUBA
         'ID07SP': ('APU22',  1.300),   # CATERETE
-        'ID08SB': ('APU22',  1.300),   # EMA
+        'ID08SB': ('IVU18',  2.000),   # EMA
         'ID09SA': ('APU22',  1.300),   # MANACA
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
