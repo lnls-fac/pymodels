@@ -3,7 +3,7 @@
 import numpy as _np
 import pyaccel as _pyaccel
 from . import lattice as _lattice
-
+from mathphys.functions import repository_info as _repo_info
 
 default_cavity_on = False
 default_radiation_on = 'off'
@@ -28,8 +28,16 @@ def create_accelerator(
     return accelerator
 
 
+_info = _repo_info(__file__)
+lattice_version = 'SI_V25_04'
+lattice_version += f"_tag={_info['last_tag']:s}"
+lattice_version += f"_commit={_info['last_commit']:s}"
+if _info['is_dirty']:
+    lattice_version += f"_dirty"
+
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'SI_V25_04'
-accelerator_data['global_coupling'] = 0.01  # expected corrected value
-accelerator_data['pressure_profile'] = \
-    _np.array([[0, 518.3899], [1.333e-9]*2])  # [s [m], p [mbar]]
+accelerator_data['lattice_version'] = lattice_version
+# Measured value, uncertainty: +/- 0.003
+accelerator_data['global_coupling'] = 0.006
+# [s [m], p [mbar]]
+accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8]*2])
