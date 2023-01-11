@@ -2,7 +2,8 @@
 
 import pyaccel as _pyaccel
 from . import lattice as _lattice
-from mathphys.functions import repository_info as _repo_info
+from mathphys.functions import repo_info as _repo_info, \
+        get_path_from_package as _get_path, is_git_repo as _is_git_repo
 
 
 default_radiation_on = 'off'
@@ -24,12 +25,16 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode,
     return accelerator, twiss_at_start
 
 
-_info = _repo_info(__file__)
 lattice_version = 'TB_V04_01'
-lattice_version += f"_tag={_info['last_tag']:s}"
-lattice_version += f"_commit={_info['last_commit']:s}"
-if _info['is_dirty']:
-    lattice_version += f"_dirty"
+_path, _ver = _get_path('pymodels')
+if _is_git_repo(_path):
+    _info = _repo_info(_path)
+    lattice_version += f"_tag={_info['last_tag']:s}"
+    lattice_version += f"_commit={_info['last_commit']:s}"
+    if _info['is_dirty']:
+        lattice_version += f"_dirty"
+else:
+    lattice_version += f"_v{_ver:s}"
 
 accelerator_data = dict()
 accelerator_data['lattice_version'] = lattice_version
