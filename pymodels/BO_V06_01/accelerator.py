@@ -31,12 +31,15 @@ def create_accelerator(
 lattice_version = 'BO_V06_01'
 _path, _ver = _get_path('pymodels')
 if _is_git_repo(_path):
+    # appending repo info only if make develop-install was used to
+    # install pymodels
     _info = _repo_info(_path)
     lattice_version += f"_tag={_info['last_tag']:s}"
     lattice_version += f"_commit={_info['last_commit']:s}"
     if _info['is_dirty']:
         lattice_version += f"_dirty"
 else:
+    # if make install was used, only append the module version
     lattice_version += f"_v{_ver:s}"
 
 accelerator_data = dict()
