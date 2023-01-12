@@ -22,7 +22,7 @@ class IDModel:
     def __init__(self,
             subsec, file_name, fam_name=None,
             nr_steps=1, rescale_kicks=1.0, rescale_length=1.0,
-            termination_kicks=None):
+            termination_kicks=None, shift_kicks=[0.0, 0.0]):
         if subsec not in IDModel.SUBSECTIONS.ALL:
             raise ValueError('Invalid subsection definition')
         if termination_kicks is None:
@@ -32,6 +32,7 @@ class IDModel:
         self._fam_name = fam_name or 'ID'
         self._nr_steps = nr_steps
         self._rescale_kicks = rescale_kicks
+        self._shift_kicks = shift_kicks
         self._rescale_length = rescale_length
         self._termination_kicks = termination_kicks
 
@@ -59,6 +60,16 @@ class IDModel:
     def rescale_kicks(self):
         """Kick rescale factor applied to kickmap data from file.."""
         return self._rescale_kicks
+
+    @property
+    def shift_kickx(self):
+        """Kick shift applied to x kicks"""
+        return self._shift_kicks[0]
+
+    @property
+    def shift_kicky(self):
+        """Kick shift applied to y kicks"""
+        return self._shift_kicks[1]
 
     @property
     def rescale_length(self):
