@@ -15,7 +15,6 @@ def create_accelerator(
         optics_mode=_lattice.default_optics_mode, energy=_lattice.energy):
     """Create accelerator model."""
     lattice = _lattice.create_lattice(optics_mode=optics_mode, energy=energy)
-    lattice_version = 'BO_V06_01'
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=lattice,
         lattice_version=lattice_version,

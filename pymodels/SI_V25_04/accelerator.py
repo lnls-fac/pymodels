@@ -18,7 +18,6 @@ def create_accelerator(
     lattice = _lattice.create_lattice(
         optics_mode=optics_mode, simplified=simplified, ids=ids,
         ids_vchamber=ids_vchamber)
-    lattice_version = 'SI_V25_04'
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=lattice,
         lattice_version=lattice_version,

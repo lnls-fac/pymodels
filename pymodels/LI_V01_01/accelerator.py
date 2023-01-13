@@ -15,7 +15,6 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode,
     """Create accelerator model."""
     lattice, twiss_at_match = _lattice.create_lattice(
         optics_mode=optics_mode, operation_mode=operation_mode)
-    lattice_version = 'LI_V01'
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=lattice,
         lattice_version=lattice_version,
