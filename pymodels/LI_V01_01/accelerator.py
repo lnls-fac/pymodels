@@ -2,8 +2,7 @@
 
 import pyaccel as _pyaccel
 from . import lattice as _lattice
-from mathphys.functions import repo_info as _repo_info, \
-        get_path_from_package as _get_path, is_git_repo as _is_git_repo
+from mathphys.functions import get_package_string as _get_pkg_str
 
 default_cavity_on = False
 default_radiation_on = 'off'
@@ -26,18 +25,7 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode,
 
 
 lattice_version = 'LI_V01_01'
-_path, _ver = _get_path('pymodels')
-if _is_git_repo(_path):
-    # appending repo info only if make develop-install was used to
-    # install pymodels
-    _info = _repo_info(_path)
-    lattice_version += f"_tag={_info['last_tag']:s}"
-    lattice_version += f"_commit={_info['last_commit']:s}"
-    if _info['is_dirty']:
-        lattice_version += f"_dirty"
-else:
-    # if make install was used, only append the module version
-    lattice_version += f"_v{_ver:s}"
+lattice_version += '_' + _get_pkg_str('pymodels')
 
 accelerator_data = dict()
 accelerator_data['global_coupling'] = 1.00  # expected corrected value
