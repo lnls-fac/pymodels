@@ -914,9 +914,6 @@ def create_id_kickmaps_dict(ids, energy):
             id_d.t_out[1] = idsdict[subsec].kickx_downstream / brho**2
             id_d.t_out[3] = idsdict[subsec].kicky_downstream / brho**2
 
-            # insert shift kicks
-            id_d.t_out[1] += idsdict[subsec].shift_kickx
-            id_d.t_out[3] += idsdict[subsec].shift_kicky
             kickmaps[subsec] = (id_u, id_d)
 
     return kickmaps
