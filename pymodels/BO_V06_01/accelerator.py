@@ -1,9 +1,9 @@
+"""Accelerator module."""
 
 import numpy as _np
-import lnls as _lnls
 import pyaccel as _pyaccel
 from . import lattice as _lattice
-
+from mathphys.functions import get_package_string as _get_pkg_str
 
 default_cavity_on = False
 default_radiation_on = 'off'
@@ -16,6 +16,7 @@ def create_accelerator(
     lattice = _lattice.create_lattice(optics_mode=optics_mode, energy=energy)
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=lattice,
+        lattice_version=lattice_version,
         energy=energy,
         harmonic_number=_lattice.harmonic_number,
         cavity_on=default_cavity_on,
@@ -25,8 +26,12 @@ def create_accelerator(
     return accelerator
 
 
+lattice_version = 'BO_V06_01'
+lattice_version += '_' + _get_pkg_str('pymodels')
+
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'BO_V06_01'
-accelerator_data['global_coupling'] = 0.006  # Measured value, uncertainty: +/- 0.003
-accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8]*2])  # [s [m], p [mbar]]o
-496.78745
+accelerator_data['lattice_version'] = lattice_version
+# Measured value, uncertainty: +/- 0.003
+accelerator_data['global_coupling'] = 0.006
+# [s [m], p [mbar]]
+accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8]*2])

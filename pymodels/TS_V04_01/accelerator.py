@@ -1,8 +1,8 @@
+"""Accelerator module."""
 
-import numpy as _np
-import lnls as _lnls
 import pyaccel as _pyaccel
 from . import lattice as _lattice
+from mathphys.functions import get_package_string as _get_pkg_str
 
 
 default_radiation_on = 'off'
@@ -10,9 +10,11 @@ default_vchamber_on = False
 
 
 def create_accelerator(optics_mode=_lattice.default_optics_mode):
+    """Create accelerator model."""
     latt, twiss_at_start = _lattice.create_lattice(optics_mode=optics_mode)
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=latt,
+        lattice_version=lattice_version,
         energy=_lattice.energy,
         radiation_on=default_radiation_on,
         vchamber_on=default_vchamber_on
@@ -20,6 +22,9 @@ def create_accelerator(optics_mode=_lattice.default_optics_mode):
     return accelerator, twiss_at_start
 
 
+lattice_version = 'TS_V04_01'
+lattice_version += '_' + _get_pkg_str('pymodels')
+
 accelerator_data = dict()
-accelerator_data['lattice_version'] = 'TS_V04_01'
+accelerator_data['lattice_version'] = lattice_version
 accelerator_data['pressure_profile'] = None

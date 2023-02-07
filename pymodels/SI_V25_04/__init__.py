@@ -3,6 +3,7 @@
 from .accelerator import default_cavity_on
 from .accelerator import default_radiation_on
 from .accelerator import default_vchamber_on
+from .accelerator import lattice_version
 from .accelerator import accelerator_data
 from .accelerator import create_accelerator
 
@@ -20,5 +21,3 @@ from .lattice import default_optics_mode, lattice_symmetry
 from .lattice import create_id_kickmaps_dict
 
 from .idmodel import IDModel
-
-lattice_version = accelerator_data['lattice_version']
