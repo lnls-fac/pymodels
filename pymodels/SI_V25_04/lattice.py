@@ -363,9 +363,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L500, L350p,
+        L500, LIB, L150, L350p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
+        L350p, L150, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -885,7 +885,7 @@ def create_id_kickmaps_dict(ids, energy):
         # subsec   idtype   idlen    beamline
         'ID06SB': ('APU22',  1.300),   # CARNAUBA
         'ID07SP': ('APU22',  1.300),   # CATERETE
-        'ID08SB': ('APU22',  1.300),   # EMA
+        'ID08SB': ('IVU18',  2.000),   # EMA
         'ID09SA': ('APU22',  1.300),   # MANACA
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
@@ -905,12 +905,15 @@ def create_id_kickmaps_dict(ids, energy):
             # return two kickmaps for half ID
             if brho is None:
                 brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
+            # create up and down stream hald models
             id_u = idsdict[subsec].get_half_kickmap()
             id_d = idsdict[subsec].get_half_kickmap()
+            # insert border kicks
             id_u.t_in[1] = idsdict[subsec].kickx_upstream / brho**2
             id_u.t_in[3] = idsdict[subsec].kicky_upstream / brho**2
             id_d.t_out[1] = idsdict[subsec].kickx_downstream / brho**2
             id_d.t_out[3] = idsdict[subsec].kicky_downstream / brho**2
+
             kickmaps[subsec] = (id_u, id_d)
 
     return kickmaps

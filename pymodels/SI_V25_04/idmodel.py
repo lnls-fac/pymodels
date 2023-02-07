@@ -68,31 +68,36 @@ class IDModel:
     @property
     def kickx_upstream(self):
         """Return kick in [T2m2] units."""
-        return self._termination_kicks[0]
+        return self._rescale_kicks * self._termination_kicks[0]
 
     @property
     def kicky_upstream(self):
         """Return kick in [T2m2] units."""
-        return self._termination_kicks[1]
+        return self._rescale_kicks * self._termination_kicks[1]
 
     @property
     def kickx_downstream(self):
         """Return kick in [T2m2] units."""
-        return self._termination_kicks[2]
+        return self._rescale_kicks * self._termination_kicks[2]
 
     @property
     def kicky_downstream(self):
         """Return kick in [T2m2] units."""
-        return self._termination_kicks[3]
+        return self._rescale_kicks * self._termination_kicks[3]
 
     def get_half_kickmap(self):
-        """Return trackcpp half-kickmap."""
+        """Return trackcpp half-kickmap withou border kicks."""
+        # NOTE: rescale_length is multipled by the total length in kickmap
+        # file. An additional 0.5 factor is in order to account for half
+        # kickmap model. Same for kicks rescaling.
+        half_rescale_length = 0.5 * self._rescale_length
+        half_rescale_kicks = 0.5 * self._rescale_kicks
         kickmap = _pyacc_ele.kickmap(
             fam_name=self._fam_name,
             kicktable_fname=self._file_name,
             nr_steps=self._nr_steps,
-            rescale_kicks=0.5*self._rescale_kicks,
-            rescale_length=0.5*self._rescale_length)
+            rescale_kicks=half_rescale_kicks,
+            rescale_length=half_rescale_length)
         return kickmap
 
     def __str__(self):
