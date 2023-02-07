@@ -50,6 +50,7 @@ def create_lattice(
     L208p = drift('l208p', 0.208 + dcircum_frac)
     L218p = drift('l218p', 0.218 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
+    L400p = drift('l400p', 0.400 + dcircum_frac)
     L500p = drift('L500p', 0.500 + dcircum_frac)
     L576p = drift('l576p', 0.5759)
     L600p = drift('l600p', 0.600 + dcircum_frac)
@@ -94,7 +95,7 @@ def create_lattice(
     L336 = drift('l336', 0.336)
     L365 = drift('l365', 0.365)
     L399 = drift('l399', 0.399)
-    L400 = drift('l399', 0.400)
+    L400 = drift('l400', 0.400)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -353,7 +354,7 @@ def create_lattice(
     IDB_04 = IDB
 
     IDA_05 = [
-        L500, LIA, L500, MIDA, L400, ID05Hu, MIA, ID05Hd, L400, MIDA, L500,
+        L500, LIA, L500, MIDA, L400p, ID05Hu, MIA, ID05Hd, L400p, MIDA, L500,
         LIA, L500]  # high beta ID straight section (PAPU22)
 
     IDB_06 = [
