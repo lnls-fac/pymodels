@@ -94,7 +94,7 @@ def create_lattice(
     L336 = drift('l336', 0.336)
     L365 = drift('l365', 0.365)
     L399 = drift('l399', 0.399)
-    L400 = drift('l399', 0.400)
+    L400 = drift('l400', 0.400)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -207,7 +207,7 @@ def create_lattice(
 
     # --- insertion devices (half devices) ---
     kickmaps = create_id_kickmaps_dict(ids, energy=energy)
-    ID05Hu, ID05Hd = kickmaps['ID05SA']  # CARNAUBA  'SI-05SA:ID-PAPU50'
+    ID05Hu, ID05Hd = kickmaps['ID05SA']  # (CARNAUBA-TEST)'SI-05SA:ID-PAPU50'
     ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
