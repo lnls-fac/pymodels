@@ -389,21 +389,28 @@ def get_family_data(lattice):
     idx = []
     fams = ['IDC', ]
     for fam in fams:
-        idx.extend(data[fam])
+        if fam in data:
+            idx.extend(data[fam])
     data['IDCH'] = sorted(idx, key=get_idx)
 
     # idcv - id vertical correctors
     idx = []
     fams = ['IDC', ]
     for fam in fams:
-        idx.extend(data[fam])
+        if fam in data:
+            idx.extend(data[fam])
     data['IDCV'] = sorted(idx, key=get_idx)
 
     # fch - fast horizontal correctors
-    data['FCH'] = sorted(data['FC1']+data['FC2'], key=get_idx)
+    idx = []
+    fams = ['FC1', 'FC2', ]
+    for fam in fams:
+        if fam in data:
+            idx.extend(data[fam])
+    data['FCH'] = sorted(idx, key=get_idx)
 
     # fcv - fast vertical correctors
-    data['FCV'] = sorted(data['FC1']+data['FC2'], key=get_idx)
+    data['FCV'] = sorted(idx, key=get_idx)
 
     # qs - skew quad correctors
     idx = []
@@ -453,14 +460,16 @@ def get_family_data(lattice):
     idx = []
     fams = families_ids()
     for fam in fams:
-        idx.extend(data[fam])
+        if fam in data:
+            idx.extend(data[fam])
     data['ID'] = sorted(idx, key=get_idx)
 
     # ID skew correctors
     idx = []
     fams = families_id_skew_correctors()
     for fam in fams:
-        idx.extend(data[fam])
+        if fam in data:
+            idx.extend(data[fam])
     data['IDQS'] = sorted(idx, key=get_idx)
 
     # Girders
