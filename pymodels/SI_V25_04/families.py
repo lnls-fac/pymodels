@@ -27,7 +27,7 @@ _family_number_of_elements = {
     'FC1': 60, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    'APU22': 5, 'PAPU50': 1, 'APU58': 1, 'EPU50': 1, 'WIG180': 1, 'IVU18': 1,
+    'APU22': 3, 'PAPU50': 3, 'APU58': 1, 'EPU50': 1, 'WIG180': 1, 'IVU18': 1,
     'IDBPM': 2,
     'IDC': 4, 'IDCH': 4, 'IDCV': 4,
     'IDQS': 2,
