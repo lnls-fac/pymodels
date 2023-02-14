@@ -293,7 +293,7 @@ def create_lattice(energy=energy, optics_mode=None):
     the_ring = _pyacc_lat.shift(the_ring, idx[0])
 
     # -- sets rf frequency
-    set_rf_frequency(the_ring)
+    set_rf_frequency(the_ring, energy)
 
     # -- sets rf voltage
     set_rf_voltage(the_ring, energy)
@@ -344,10 +344,12 @@ def get_optics_mode(optics_mode, energy=energy):
     return strengths
 
 
-def set_rf_frequency(the_ring):
+def set_rf_frequency(the_ring, energy):
     """Set RF frequency of the lattice."""
     circumference = _pyacc_lat.length(the_ring)
-    velocity = _mp.constants.light_speed
+    _, beam_velocity, _, _, _ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
+    velocity = beam_velocity
+    # velocity = _mp.constants.light_speed
     rev_frequency = velocity / circumference
     rf_frequency  = harmonic_number * rev_frequency
     idx = _pyacc_lat.find_indices(the_ring, 'fam_name', 'P5Cav')
