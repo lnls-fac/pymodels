@@ -47,6 +47,7 @@ def create_lattice(
     LID3 = drift('lid3', 1.8679)
     # divide circumference difference in all 20 straight sections
     dcircum_frac = dcircum/20/2
+    L200p = drift('l200p', 0.200 + dcircum_frac)
     L208p = drift('l208p', 0.208 + dcircum_frac)
     L218p = drift('l218p', 0.218 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
@@ -370,9 +371,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L150, L350p,
+        L500, LIB, L050, L200p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L350p, L150, LIB, L500]  # low beta ID straight section (EMA)
+        L200p, L050, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -896,7 +897,7 @@ def create_id_kickmaps_dict(ids, energy):
         'ID05SA': ('PAPU50', 1.200),   # HIGH BETA TEST
         'ID06SB': ('APU22',  1.300),   # CARNAUBA
         'ID07SP': ('APU22',  1.300),   # CATERETE
-        'ID08SB': ('IVU18',  2.000),   # EMA
+        'ID08SB': ('IVU18',  2.500),   # EMA
         'ID09SA': ('APU22',  1.300),   # MANACA
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
