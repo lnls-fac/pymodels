@@ -34,30 +34,27 @@ def create_lattice(
     # -- lattice markers --
     m_accep_fam_name = 'calc_mom_accep'
 
-    circum_new = 518.3899  # [m]
-    circum_old = 518.3960  # [m]
-    dcircum = circum_new - circum_old
+    # --- injection sector
+    SI_INJ, params = get_injection_sector(inj_sel='NLK_END')
+    dcircum_frac = params['dcircum_frac']
+    L500p = params['L500p']
+    L150 = params['L150']
+    MIA = params['MIA']
 
     # -- drifts --
     LIA = drift('lia', 1.5179)
     LIB = drift('lib', 1.0879)
     LIP = drift('lip', 1.0879)
-    LPMU = drift('lpmu', 0.0600)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
-    # divide circumference difference in all 20 straight sections
-    dcircum_frac = dcircum/20/2
     L208p = drift('l208p', 0.208 + dcircum_frac)
     L218p = drift('l218p', 0.218 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
-    L500p = drift('L500p', 0.500 + dcircum_frac)
     L576p = drift('l576p', 0.5759)
     L600p = drift('l600p', 0.600 + dcircum_frac)
-    LKKp = drift('lkkp', 1.9150 + dcircum_frac)
     L011 = drift('l011', 0.011)
     L019 = drift('l019', 0.019)
     L049 = drift('l049', 0.049)
-    L050 = drift('l050', 0.050)
     L052 = drift('l052', 0.052)
     L056 = drift('l056', 0.056)
     L074 = drift('l074', 0.074)
@@ -75,10 +72,8 @@ def create_lattice(
     L134 = drift('l134', 0.134)
     L135 = drift('l135', 0.135)
     L140 = drift('l140', 0.140)
-    L150 = drift('l150', 0.150)
     L156 = drift('l156', 0.156)
     L170 = drift('l170', 0.170)
-    L182 = drift('l182', 0.182)
     L188 = drift('l188', 0.188)
     L200 = drift('l200', 0.200)
     L201 = drift('l201', 0.201)
@@ -93,7 +88,6 @@ def create_lattice(
     L325 = drift('l325', 0.325)
     L336 = drift('l336', 0.336)
     L365 = drift('l365', 0.365)
-    L399 = drift('l399', 0.399)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -150,8 +144,6 @@ def create_lattice(
     CV = sextupole('CV', 0.150, 0.0)  # same model as BO correctors
 
     # -- pulsed magnets --
-    InjDpKckr = sextupole('InjDpKckr', 0.400, S=0.0)  # injection kicker
-    InjNLKckr = sextupole('InjNLKckr', 0.450, S=0.0)  # pulsed multipole magnet
     PingV = sextupole('PingV', 0.32, S=0.0)  # Vertical Pinger
 
     # -- fast correctors --
@@ -165,9 +157,6 @@ def create_lattice(
     HCav = marker('H3Cav')
 
     # -- lattice markers --
-    START = marker('start')  # start of the model
-    END = marker('end')  # end of the model
-    MIA = marker('mia')  # center of long straight sections (even-numbered)
     MIB = marker('mib')  # center of short straight sections (odd-numbered)
     MIP = marker('mip')  # center of short straight sections (odd-numbered)
     # marker used to delimitate girders.
@@ -187,7 +176,6 @@ def create_lattice(
     IDBPM = marker('IDBPM')
     DCCT = marker('DCCT')  # dcct to measure beam current
     ScrapH = marker('ScrapH')  # horizontal scraper
-    ScrapV = marker('ScrapV')  # vertical scraper
     GSL15 = marker('GSL15')  # Generic Stripline (lambda/4)
     GSL07 = marker('GSL07')  # Generic Stripline (lambda/8)
     GBPM = marker('GBPM')  # General BPM
@@ -199,9 +187,6 @@ def create_lattice(
     TuneShkrV = marker('TuneShkrV')  # Vertical Tune Shaker
     TunePkupH = marker('TunePkupH')  # Horizontal Tune Pickup
     TunePkupV = marker('TunePkupV')  # Vertical Tune Pickup
-    InjVCb = marker('InjVCb')  # Bigger injection vaccum chamber limits
-    InjVCs = marker('InjVCs')  # Smaller injection vchamber limits
-    SVVC = marker('SVVC')  # VScrap vchamber limits (drawing: len = 398 mm)
     SHVC = marker('SHVC')  # HScrap vchamber limits (drawing: len = 313 mm)
 
     # --- insertion devices (half devices) ---
@@ -332,12 +317,16 @@ def create_lattice(
         MIDP, L500, L500p, MIP, L500p, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
+    # IDA_01_INJ = [
+    #     SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
+    #     InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
+    #     START, MIA, LKKp, InjDpKckr, InjVCs,
+    #     SVVC, LPMU, L050, ScrapV, L150, SVVC,
+    #     InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
+
     IDA_01_INJ = [
         SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
-        InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-        START, MIA, LKKp, InjDpKckr, InjVCs,
-        SVVC, LPMU, L050, ScrapV, L150, SVVC,
-        InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
+        SI_INJ, LPMD]  # high beta INJ straight section and Scrapers
 
     IDB_02 = [
         L500, LIB, L500,
@@ -651,6 +640,80 @@ def create_lattice(
     set_vacuum_chamber(the_ring, ids_vchamber=ids_vchamber)
 
     return the_ring
+
+
+def get_injection_sector(inj_sel=None):
+    """Return injection sector starting at the end of TS thin septa.
+
+    inj_sel :   None - no elements
+                'DPK' - up to the beginning of DpKckr
+                'DPK_END' - up to the end of DpKckr
+                'NLK' - up to the beginning of NLKckr
+                'NLK_END' - up to the end of NLKckr
+    """
+    if not inj_sel:
+        return None
+    # -- shortcut symbols --
+    marker = _pyacc_ele.marker
+    drift = _pyacc_ele.drift
+    sextupole = _pyacc_ele.sextupole
+
+    circum_new = 518.3899  # [m]
+    circum_old = 518.3960  # [m]
+    dcircum = circum_new - circum_old
+    # divide circumference difference in all 20 straight sections
+    dcircum_frac = dcircum/20/2
+
+    L500p = drift('L500p', 0.500 + dcircum_frac)
+    LKKp = drift('lkkp', 1.9150 + dcircum_frac)
+    LPMU = drift('lpmu', 0.0600)
+    L050 = drift('l050', 0.050)
+    L150 = drift('l150', 0.150)
+    L182 = drift('l182', 0.182)
+    L399 = drift('l399', 0.399)
+
+    START = marker('start')  # start of the model
+    END = marker('end')  # end of the model
+    MIA = marker('mia')  # center of long straight sections (even-numbered)
+    InjVCb = marker('InjVCb')  # Bigger injection vaccum chamber limits
+    InjVCs = marker('InjVCs')  # Smaller injection vchamber limits
+    SVVC = marker('SVVC')  # VScrap vchamber limits (drawing: len = 398 mm)
+    ScrapV = marker('ScrapV')  # vertical scraper
+
+    # -- pulsed magnets --
+    InjDpKckr = sextupole('InjDpKckr', 0.400, S=0.0)  # injection kicker
+    InjNLKckr = sextupole('InjNLKckr', 0.450, S=0.0)  # pulsed multipole magnet
+
+    if inj_sel == 'DPK':
+        INJ_SEC = [
+            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
+            START, MIA, LKKp,
+            ]
+    elif inj_sel == 'DPK_END':
+        INJ_SEC = [
+            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
+            START, MIA, LKKp, InjDpKckr,
+            ]
+    elif inj_sel == 'NLK':
+        INJ_SEC = [
+            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
+            START, MIA, LKKp, InjDpKckr, InjVCs,
+            SVVC, LPMU, L050, ScrapV, L150, SVVC,
+            ]
+    elif inj_sel == 'NLK_END':
+        INJ_SEC = [
+            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
+            START, MIA, LKKp, InjDpKckr, InjVCs,
+            SVVC, LPMU, L050, ScrapV, L150, SVVC,
+            InjNLKckr]
+    else:
+        raise ValueError('Invalid inj_sel: {}'.format(inj_sel))
+    params = dict()
+    params['dcircum_frac'] = dcircum_frac
+    params['L150'] = L150
+    params['L500p'] = L500p
+    params['MIA'] = MIA
+    return INJ_SEC, params
 
 
 def set_rf_frequency(the_ring):

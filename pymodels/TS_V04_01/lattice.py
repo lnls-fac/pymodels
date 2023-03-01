@@ -8,6 +8,7 @@ import math as _math
 from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
     accelerator as _pyacc_acc, optics as _pyacc_opt
 
+from ..version_symbols import si as _si
 from . import segmented_models as _segmented_models
 
 
@@ -19,8 +20,11 @@ energy = 3e9  # [eV]
 default_optics_mode = 'M1'
 
 
-def create_lattice(optics_mode=default_optics_mode, si_inj_flag=False):
-    """Create lattice function."""
+def create_lattice(optics_mode=default_optics_mode, si_inj_sel=None):
+    """Create lattice function.
+
+    si_inj_select : None, 'DPK', 'DPK_END', 'NLK', 'NLK_END'.
+    """
     strengths, twiss_at_start = get_optics_mode(optics_mode)
 
     # -- shortcut symbols --
@@ -119,11 +123,12 @@ def create_lattice(optics_mode=default_optics_mode, si_inj_flag=False):
         fct, ld4p, ict, ld4p, qd4b, ld5p, bpm, scrn, ld6p, cv, ld7p, injsg,
         l025, injsg, l025, injsf, scrn]
 
-    if si_inj_flag:
-        si_inj = create_si_inj_section()
-        ts = [inicio, sec01, sec02, sec03, sec04, si_inj, fim]
-    else:
+    res = _si.lattice.get_injection_sector(inj_sel=si_inj_sel)
+    if res is None:
         ts = [inicio, sec01, sec02, sec03, sec04, fim]
+    else:
+        si_inj, *_ = res
+        ts = [inicio, sec01, sec02, sec03, sec04, si_inj, fim]
 
     elist = ts
 
@@ -145,45 +150,6 @@ def create_lattice(optics_mode=default_optics_mode, si_inj_flag=False):
     the_line = set_vacuum_chamber(the_line)
 
     return the_line, twiss_at_start
-
-
-def create_si_inj_section():
-    """."""
-    # -- shortcut symbols --
-    marker = _pyacc_ele.marker
-    drift = _pyacc_ele.drift
-    sextupole = _pyacc_ele.sextupole
-
-    InjVCb = marker('InjVCb')  # Bigger injection vaccum chamber limits
-    InjVCs = marker('InjVCs')  # Smaller injection vchamber limits
-    SVVC = marker('SVVC')  # VScrap vchamber limits (drawing: len = 398 mm)
-    START = marker('start')  # start of the model
-    END = marker('end')  # end of the model
-    MIA = marker('mia')  # center of long straight sections (even-numbered)
-    ScrapV = marker('ScrapV')  # vertical scraper
-
-    circum_new = 518.3899  # [m]
-    circum_old = 518.3960  # [m]
-    dcircum = circum_new - circum_old
-    dcircum_frac = dcircum/20/2
-    L500p = drift('L500p', 0.500 + dcircum_frac)
-    L050 = drift('l050', 0.050)
-    L150 = drift('l150', 0.150)
-    L182 = drift('l182', 0.182)
-    LPMU = drift('lpmu', 0.0600)
-    L399 = drift('l399', 0.399)
-    LKKp = drift('lkkp', 1.9150 + dcircum_frac)
-    InjDpKckr = sextupole('InjDpKckr', 0.400, S=0.0)  # injection kicker
-    # InjNLKckr = sextupole('InjNLKckr', 0.450, S=0.0)  # pulsed multipole magnet
-
-    SI_INJ = [
-        InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-        START, MIA, LKKp, InjDpKckr, InjVCs,
-        SVVC, LPMU, L050, ScrapV, L150, SVVC,
-        # InjNLKckr,
-        ]  # high beta INJ straight section and Scrapers
-
-    return SI_INJ
 
 
 def get_optics_mode(optics_mode):

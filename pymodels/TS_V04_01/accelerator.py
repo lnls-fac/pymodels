@@ -10,10 +10,10 @@ default_vchamber_on = False
 
 
 def create_accelerator(
-        optics_mode=_lattice.default_optics_mode, si_inj_flag=False):
+        optics_mode=_lattice.default_optics_mode, si_inj_sel=None):
     """Create accelerator model."""
     latt, twiss_at_start = _lattice.create_lattice(
-        optics_mode=optics_mode, si_inj_flag=si_inj_flag)
+        optics_mode=optics_mode, si_inj_sel=si_inj_sel)
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=latt,
         lattice_version=lattice_version,
