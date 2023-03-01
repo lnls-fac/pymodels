@@ -317,13 +317,6 @@ def create_lattice(
         MIDP, L500, L500p, MIP, L500p, L500, MIDP,
         L500, LIP, L500]  # low beta ID straight section
 
-    # IDA_01_INJ = [
-    #     SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
-    #     InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-    #     START, MIA, LKKp, InjDpKckr, InjVCs,
-    #     SVVC, LPMU, L050, ScrapV, L150, SVVC,
-    #     InjNLKckr, LPMD]  # high beta INJ straight section and Scrapers
-
     IDA_01_INJ = [
         SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
         SI_INJ, LPMD]  # high beta INJ straight section and Scrapers
