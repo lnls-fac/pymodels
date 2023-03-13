@@ -921,12 +921,6 @@ def create_id_kickmaps_dict(ids, energy):
             # create up and down stream hald models
             id_u = idsdict[subsec].get_half_kickmap()
             id_d = idsdict[subsec].get_half_kickmap()
-            # insert border kicks
-            id_u.t_in[1] = idsdict[subsec].kickx_upstream / brho**2
-            id_u.t_in[3] = idsdict[subsec].kicky_upstream / brho**2
-            id_d.t_out[1] = idsdict[subsec].kickx_downstream / brho**2
-            id_d.t_out[3] = idsdict[subsec].kicky_downstream / brho**2
-
             kickmaps[subsec] = (id_u, id_d)
 
     return kickmaps
