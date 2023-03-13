@@ -894,14 +894,12 @@ def create_id_kickmaps_dict(ids, energy):
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
     ids_subsec_drift_lens = {
         # subsec   idtype   idlen    beamline
-        'ID05SA': ('PAPU50', 1.200),   # HIGH BETA TEST
         'ID06SB': ('APU22',  1.300),   # CARNAUBA
         'ID07SP': ('APU22',  1.300),   # CATERETE
         'ID08SB': ('IVU18',  2.500),   # EMA
         'ID09SA': ('APU22',  1.300),   # MANACA
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
-        'ID13SA': ('PAPU50', 1.200),   # HIGH BETA TEST
         'ID14SB': ('WIG180', 2.654),   # PAINEIRA
         'ID17SA': ('PAPU50', 1.200),   # SAPUCAIA
     }
