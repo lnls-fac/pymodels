@@ -6,25 +6,23 @@ from pyaccel import elements as _pyacc_ele
 class IDModel:
     """ID Model (currently based on Kickmap files)."""
     class SUBSECTIONS:
-        # See https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocation
-        ID05SA = 'ID05SA'
+        # See https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocations
         ID06SB = 'ID06SB'
         ID07SP = 'ID07SP'
         ID08SB = 'ID08SB'
         ID09SA = 'ID09SA'
         ID10SB = 'ID10SB'
         ID11SP = 'ID11SP'
-        ID13SA = 'ID13SA'
         ID14SB = 'ID14SB'
         ID17SA = 'ID17SA'
         ALL = (
-            ID05SA, ID06SB, ID07SP, ID08SB, ID09SA,
-            ID10SB, ID11SP, ID13SA, ID14SB, ID17SA)
+            ID06SB, ID07SP, ID08SB, ID09SA,
+            ID10SB, ID11SP, ID14SB, ID17SA)
 
     def __init__(self,
-            subsec, file_name, fam_name=None,
-            nr_steps=1, rescale_kicks=1.0, rescale_length=1.0,
-            termination_kicks=None):
+                 subsec, file_name, fam_name=None,
+                 nr_steps=1, rescale_kicks=1.0, rescale_length=1.0,
+                 termination_kicks=None):
         if subsec not in IDModel.SUBSECTIONS.ALL:
             raise ValueError('Invalid subsection definition')
         if termination_kicks is None:
