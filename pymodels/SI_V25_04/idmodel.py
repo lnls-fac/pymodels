@@ -20,8 +20,8 @@ class IDModel:
             ID10SB, ID11SP, ID14SB, ID17SA)
 
     def __init__(self,
-            subsec, file_name, fam_name=None,
-            nr_steps=1, rescale_kicks=1.0, rescale_length=1.0):
+                 subsec, file_name, fam_name=None,
+                 nr_steps=1, rescale_kicks=1.0, rescale_length=1.0):
         if subsec not in IDModel.SUBSECTIONS.ALL:
             raise ValueError('Invalid subsection definition')
         self._subsec = subsec
