@@ -92,10 +92,12 @@ def create_lattice(
     L240 = drift('l240', 0.240)
     L260 = drift('l260', 0.260)
     L297 = drift('l297', 0.297)
+    L300 = drift('l300', 0.300)
     L325 = drift('l325', 0.325)
     L336 = drift('l336', 0.336)
     L365 = drift('l365', 0.365)
     L399 = drift('l399', 0.399)
+    L400 = drift('l400', 0.400)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -356,9 +358,9 @@ def create_lattice(
     IDA_05 = IDA
 
     IDB_06 = [
-        L500, LIB, L500, L350p,
+        L500, LIB, L400, L350p,
         MIDB, ID06Hu, MIB, ID06Hd, MIDB,
-        L350p, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
+        L350p, L400, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDP_07 = [
         L500, LIP, L500, L350p,
@@ -366,9 +368,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L050, L200p,
+        L500, LIB, L300, L200p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L200p, L050, LIB, L500]  # low beta ID straight section (EMA)
+        L200p, L300, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -730,7 +732,7 @@ def set_vacuum_chamber(
 
     # Set smaller inj vchamber (farther from injseptum)
     injva = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjVCs')
-    injva = list(range(injva[-1], len(the_ring)))  + list(range(0, injva[0]+1))
+    injva = list(range(injva[-1], len(the_ring))) + list(range(0, injva[0]+1))
     for i in injva:
         e = the_ring[i]
         e.vchamber = _pyacc_ele.VChamberShape.rectangle
@@ -886,9 +888,9 @@ def create_id_kickmaps_dict(ids, energy):
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
     ids_subsec_drift_lens = {
         # subsec   idtype   idlen    beamline
-        'ID06SB': ('APU22',  1.300),   # CARNAUBA
+        'ID06SB': ('VPU29',  1.500),   # CARNAUBA
         'ID07SP': ('APU22',  1.300),   # CATERETE
-        'ID08SB': ('IVU18',  2.500),   # EMA
+        'ID08SB': ('IVU18',  2.000),   # EMA
         'ID09SA': ('APU22',  1.300),   # MANACA
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
