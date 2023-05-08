@@ -8,6 +8,7 @@ import math as _math
 from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
     accelerator as _pyacc_acc, optics as _pyacc_opt
 
+from ..version_symbols import si as _si
 from . import segmented_models as _segmented_models
 
 
@@ -19,8 +20,11 @@ energy = 3e9  # [eV]
 default_optics_mode = 'M1'
 
 
-def create_lattice(optics_mode=default_optics_mode):
-    """Create lattice function."""
+def create_lattice(optics_mode=default_optics_mode, si_inj_sel=None):
+    """Create lattice function.
+
+    si_inj_select : None, 'DPK', 'DPK_END', 'NLK', 'NLK_END'.
+    """
     strengths, twiss_at_start = get_optics_mode(optics_mode)
 
     # -- shortcut symbols --
@@ -119,7 +123,12 @@ def create_lattice(optics_mode=default_optics_mode):
         fct, ld4p, ict, ld4p, qd4b, ld5p, bpm, scrn, ld6p, cv, ld7p, injsg,
         l025, injsg, l025, injsf, scrn]
 
-    ts = [inicio, sec01, sec02, sec03, sec04, fim]
+    res = _si.lattice.get_injection_sector(inj_sel=si_inj_sel)
+    if res is None:
+        ts = [inicio, sec01, sec02, sec03, sec04, fim]
+    else:
+        si_inj, *_ = res
+        ts = [inicio, sec01, sec02, sec03, sec04, si_inj, fim]
 
     elist = ts
 
