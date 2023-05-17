@@ -106,9 +106,10 @@ _discipline_mapping = {
     'APU22': 'ID',
     'PAPU50': 'ID',
     'APU58': 'ID',
-    'EPU50': 'ID',
+    'DELTA52': 'ID',
     'WIG180': 'ID',
     'IVU18': 'ID',
+    'VPU29': 'ID',
     }
 
 
@@ -195,9 +196,10 @@ family_mapping = {
     'APU22': 'insertion_device',
     'PAPU50': 'insertion_device',
     'APU58': 'insertion_device',
-    'EPU50': 'insertion_device',
+    'DELTA52': 'insertion_device',
     'WIG180': 'insertion_device',
     'IVU18': 'insertion_device',
+    'VPU29': 'insertion_device',
     }
 
 
@@ -259,7 +261,7 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', 'PAPU50', 'APU58', 'EPU50', 'WIG180', 'IVU18']
+    return ['APU22', 'PAPU50', 'APU58', 'DELTA52', 'WIG180', 'IVU18', 'VPU29']
 
 
 def families_id_correctors():
