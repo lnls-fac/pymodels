@@ -49,7 +49,6 @@ def create_lattice(
     LID3 = drift('lid3', 1.8679)
     L208p = drift('l208p', 0.208 + dcircum_frac)
     L218p = drift('l218p', 0.218 + dcircum_frac)
-    L319p = drift('l319p', 0.319 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L576p = drift('l576p', 0.5759)
     L600p = drift('l600p', 0.600 + dcircum_frac)
@@ -58,6 +57,7 @@ def create_lattice(
     L049 = drift('l049', 0.049)
     L052 = drift('l052', 0.052)
     L056 = drift('l056', 0.056)
+    L063 = drift('l063', 0.063)
     L074 = drift('l074', 0.074)
     L075 = drift('l075', 0.075)
     L082 = drift('l082', 0.082)
@@ -95,6 +95,7 @@ def create_lattice(
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
+    L511 = drift('l511', 0.511)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
 
@@ -390,9 +391,9 @@ def create_lattice(
         L500, BbBKckL, LIB, L500]  # low beta ID straight section
 
     IDA_17 = [
-        L500, LIA, L500, L319p, IDC2, L105,
+        L500, LIA, L511, L350p, IDC2, L063,
         MIDA, ID17Hu, MIA, ID17Hd, MIDA,
-        L105, IDC2, L319p, L500, BbBKckrH, LIA, L500]  # high beta ID straight
+        L063, IDC2, L350p, L511, BbBKckrH, LIA, L500]  # high beta ID straight
                                                        # section (SAPUCAIA)
 
     IDB_18_TUNEPKUPH = [
