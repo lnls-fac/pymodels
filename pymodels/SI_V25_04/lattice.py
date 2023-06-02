@@ -197,12 +197,12 @@ def create_lattice(
     kickmaps = create_id_kickmaps_dict(ids, energy=energy)
     ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
-    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-IVU18'
+    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
     ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
     ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
-    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA TEST PAPU50
+    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
 
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
     IDQS = sextupole('IDQS', 0.2, S=0)  # ID quadskew corrector
@@ -340,9 +340,9 @@ def create_lattice(
     IDA_05 = IDA
 
     IDB_06 = [
-        L500, LIB, L400, L350p,
+        L500, LIB, L500, L350p,
         MIDB, ID06Hu, MIB, ID06Hd, MIDB,
-        L350p, L400, LIB, L500]  # low beta ID straight section (CARNAUBA)
+        L350p, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDP_07 = [
         L500, LIP, L500, L350p,
@@ -350,9 +350,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L300, L200p,
+        L500, LIB, L500, L350p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L200p, L300, LIB, L500]  # low beta ID straight section (EMA)
+        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -946,6 +946,7 @@ def create_id_kickmaps_dict(ids, energy):
         # subsec   idtype   idlen    beamline
         'ID06SB': ('APU22',  1.300),   # CARNAUBA
         'ID07SP': ('APU22',  1.300),   # CATERETE
+        'ID08SB': ('APU22',  1.300),   # EMA
         'ID09SA': ('APU22',  1.300),   # MANACA
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
