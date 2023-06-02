@@ -47,9 +47,9 @@ def create_lattice(
     LIP = drift('lip', 1.0879)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
-    L200p = drift('l200p', 0.200 + dcircum_frac)
     L208p = drift('l208p', 0.208 + dcircum_frac)
     L218p = drift('l218p', 0.218 + dcircum_frac)
+    L319p = drift('l319p', 0.319 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L400p = drift('l400p', 0.400 + dcircum_frac)
     L576p = drift('l576p', 0.5759)
@@ -64,6 +64,7 @@ def create_lattice(
     L082 = drift('l082', 0.082)
     L090 = drift('l090', 0.090)
     L100 = drift('l100', 0.100)
+    L105 = drift('l105', 0.105)
     L109 = drift('l109', 0.109)
     L112 = drift('l112', 0.112)
     L119 = drift('l119', 0.119)
@@ -205,6 +206,7 @@ def create_lattice(
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
 
     IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
+    IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corrector used in PAPU50
     IDQS = sextupole('IDQS', 0.2, S=0)  # ID quadskew corrector
 
     # -- sectors --
@@ -389,9 +391,10 @@ def create_lattice(
         L500, BbBKckL, LIB, L500]  # low beta ID straight section
 
     IDA_17 = [
-        L500, LIA, L500,
-        MIDA, L400p, ID17Hu, MIA, ID17Hd, L400p, MIDA,
-        L500, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
+        L500, LIA, L500, L319p, IDC2, L105,
+        MIDA, ID17Hu, MIA, ID17Hd, MIDA,
+        L105, IDC2, L319p, L500, BbBKckrH, LIA, L500]  # high beta ID straight
+                                                       # section (SAPUCAIA)
 
     IDB_18_TUNEPKUPH = [
         L500, LIB, L500,
@@ -951,7 +954,7 @@ def create_id_kickmaps_dict(ids, energy):
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
         'ID14SB': ('WIG180', 2.654),   # PAINEIRA
-        'ID17SA': ('PAPU50', 1.200),   # SAPUCAIA
+        'ID17SA': ('PAPU50', 0.984),   # SAPUCAIA
     }
 
     # build kickmap dict

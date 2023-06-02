@@ -30,7 +30,8 @@ _family_number_of_elements = {
     'APU22': 4, 'APU58': 1, 'EPU50': 1,
     'WIG180': 1, 'PAPU50': 1,
     'IDBPM': 2,
-    'IDC': 4, 'IDCH': 4, 'IDCV': 4,
+    'IDC2': 2,
+    'IDC': 4, 'IDCH': 6, 'IDCV': 6,
     'IDQS': 2,
     }
 
@@ -224,12 +225,12 @@ def families_sextupoles():
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['FCH', 'CH', 'IDC']
+    return ['FCH', 'CH', 'IDC', 'IDC2']
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['FCV', 'CV', 'IDC']
+    return ['FCV', 'CV', 'IDC', 'IDC2']
 
 
 def families_skew_correctors():
@@ -262,7 +263,7 @@ def families_ids():
 
 def families_id_correctors():
     """Return insertion device correctors families."""
-    return ['IDC', ]
+    return ['IDC', 'IDC2']
 
 
 def families_id_skew_correctors():
@@ -386,7 +387,7 @@ def get_family_data(lattice):
 
     # idch - id horizontal correctors
     idx = []
-    fams = ['IDC', ]
+    fams = ['IDC', 'IDC2']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -394,7 +395,7 @@ def get_family_data(lattice):
 
     # idcv - id vertical correctors
     idx = []
-    fams = ['IDC', ]
+    fams = ['IDC', 'IDC2']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -504,7 +505,7 @@ def get_family_data(lattice):
     for key in new_data:
         if key not in _discipline_mapping:
             continue
-        if key in ('IDC', ):
+        if key in ('IDC', 'IDC2'):
             continue
         dis = _discipline_mapping[key]
         dta = new_data[key]
