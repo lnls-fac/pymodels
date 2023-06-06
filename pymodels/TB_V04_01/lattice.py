@@ -10,15 +10,18 @@ from . import segmented_models as _segmented_models
 
 energy = 0.150e9  # [eV]
 default_optics_mode = 'M1'
-add_li_triplets = True
+default_add_from_li_triplets = True
 
 class LatticeError(Exception):
     """LatticeError class."""
 
 
-def create_lattice(optics_mode=default_optics_mode):
+def create_lattice(
+        optics_mode=default_optics_mode,
+        add_from_li_triplets=default_add_from_li_triplets):
     """Create lattice function."""
-    strengths, twiss_at_start = get_optics_mode(optics_mode)
+    strengths, twiss_at_start = \
+        get_optics_mode(optics_mode, add_from_li_triplets)
 
     # -- shortcut symbols --
     marker = _pyacc_ele.marker
@@ -150,7 +153,7 @@ def create_lattice(optics_mode=default_optics_mode):
     sector04 = [s04_1, qf4, s04_2, qd4, s04_3, septin]
 
     # TB beamline
-    if add_li_triplets:
+    if add_from_li_triplets:
         ltlb = [
             inicio, sector00, sector01, sector02, sector03, sector04, fim]
     else:
@@ -177,7 +180,7 @@ def create_lattice(optics_mode=default_optics_mode):
     return the_line, twiss_at_start
 
 
-def get_optics_mode(optics_mode):
+def get_optics_mode(optics_mode ,add_from_li_triplets):
     """Return magnet strengths of a given opics mode."""
     # -- selection of optics mode --
     if optics_mode == 'M1':
@@ -186,7 +189,7 @@ def get_optics_mode(optics_mode):
         # measurements
         # (Sem tripleto)
         # QD4 freed to be focusing in fitting.
-        if add_li_triplets:
+        if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[1.45401, 2.47656],
                 alpha=[-1.57249, 0.527312], etax=[0, 0])
@@ -222,7 +225,7 @@ def get_optics_mode(optics_mode):
         # Linac second quadrupole triplet set to same values used during
         # measurements
         # (Sem tripleto)
-        if add_li_triplets:
+        if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[1.45401, 2.47656],
                 alpha=[-1.57249, 0.527312], etax=[0, 0])
@@ -257,7 +260,7 @@ def get_optics_mode(optics_mode):
         # Linac second quadrupole triplet set to same values used during
         # measurements
         # (Sem tripleto)
-        if add_li_triplets:
+        if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[2.71462, 4.69925], alpha=[-2.34174, 1.04009],
                 etax=[0.0, 0.0])
@@ -291,7 +294,7 @@ def get_optics_mode(optics_mode):
         # Initial Conditions from Linac measured parameters on 16/07/2019
         # Linac second quadrupole triplet is used to match the LBT optics
         # (Sem tripleto)
-        if add_li_triplets:
+        if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[2.71462, 4.69925], alpha=[-2.34174, 1.04009],
                 etax=[0.0, 0.0])
