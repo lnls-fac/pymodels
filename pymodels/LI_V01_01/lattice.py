@@ -50,8 +50,8 @@ def create_lattice(
     la4p = drift('la4p', 0.0512)
 
     # --- markers ---
-    inicio = marker('start')
-    fim = marker('end')
+    start = marker('start')
+    end = marker('end')
     match_start = marker('match_start')
 
     egun = marker('EGun')
@@ -125,7 +125,7 @@ def create_lattice(
     spec = [spech, spech]
 
     # --- lists ---
-    L1_1 = [inicio, egun, l100, lens, l100, ict, l100, cv, ch, l100, lens]
+    L1_1 = [start, egun, l100, lens, l100, ict, l100, cv, ch, l100, lens]
     L1_2 = [
         l200, lensrev, shb, l200, lens, l100, scrn, bpm, l100, lens, l100,
         cv, ch]
@@ -155,7 +155,7 @@ def create_lattice(
     L2 = [l500, l500, scrn, l500, dump]
     L3 = [l500, l500, scrn, l200, dump]
 
-    elist = [L1] + ([L2] if mode0 else [] if mode1 else [L3]) + [fim]
+    elist = [L1] + ([L2] if mode0 else [] if mode1 else [L3]) + [end]
 
     the_line = _pyaccel.lattice.build(elist)
 

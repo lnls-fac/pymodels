@@ -62,8 +62,8 @@ def create_lattice(
     l200 = drift('l200', 0.200)
 
     # --- markers ---
-    inicio = marker('start')
-    fim = marker('end')
+    start = marker('start')
+    end = marker('end')
 
     # --- slits ---
     slith = marker('SlitH')
@@ -155,9 +155,9 @@ def create_lattice(
     # TB beamline
     if add_from_li_triplets:
         ltlb = [
-            inicio, sector00, sector01, sector02, sector03, sector04, fim]
+            start, sector00, sector01, sector02, sector03, sector04, end]
     else:
-        ltlb = [inicio, sector01, sector02, sector03, sector04, fim]
+        ltlb = [start, sector01, sector02, sector03, sector04, end]
     elist = ltlb
 
     the_line = _pyacc_lat.build(elist)

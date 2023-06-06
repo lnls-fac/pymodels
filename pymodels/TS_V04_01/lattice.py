@@ -65,8 +65,8 @@ def create_lattice(optics_mode=default_optics_mode, si_inj_sel=None):
     ld6p = drift('ld6p', 0.48307-lcv/2)
     ld7p = drift('ld7p', 0.175-lcv/2)
     # --- markers ---
-    inicio = marker('start')
-    fim = marker('end')
+    start = marker('start')
+    end = marker('end')
 
     # --- beam screens ---
     scrn = marker('Scrn')
@@ -125,10 +125,10 @@ def create_lattice(optics_mode=default_optics_mode, si_inj_sel=None):
 
     res = _si.lattice.get_injection_sector(inj_sel=si_inj_sel)
     if res is None:
-        ts = [inicio, sec01, sec02, sec03, sec04, fim]
+        ts = [start, sec01, sec02, sec03, sec04, end]
     else:
         si_inj, *_ = res
-        ts = [inicio, sec01, sec02, sec03, sec04, si_inj, fim]
+        ts = [start, sec01, sec02, sec03, sec04, si_inj, end]
 
     elist = ts
 
