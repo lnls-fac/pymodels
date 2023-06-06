@@ -3,25 +3,26 @@
 from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
+from .lattice import add_li_triplets
+
+
 _family_segmentation = {
     'B': 16, 'CH': 1, 'CV': 1, 'CHV': 1, 'QS': 1,
     'QF2L': 1, 'QD2L': 1, 'QF3L': 1,
-    'Spect': 2,
     'QD1': 1, 'QF1': 1, 'QD2A': 1, 'QF2A': 1, 'QF2B': 1, 'QD2B': 1,
     'QF3': 1, 'QD3': 1, 'QF4': 1, 'QD4': 1,
     'InjSept': 6,
     'ICT': 1, 'FCT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
     }
+if add_li_triplets:
+    _family_segmentation.update({'Spect': 2})
+
 
 _discipline_mapping = {
     'B':       'PS',
-    'Spect':   'PS',
     'CHV':     'PS',
     'CH':      'PS',
     'CV':      'PS',
-    'QF2L':    'PS',
-    'QD2L':    'PS',
-    'QF3L':    'PS',
     'QD1':     'PS',
     'QF1':     'PS',
     'QD2A':    'PS',
@@ -40,17 +41,17 @@ _discipline_mapping = {
     'Scrn':    'DI',
     'BPM':     'DI'
     }
+if add_li_triplets:
+    _discipline_mapping.update(
+        {'Spect': 'PS', 'QF2L': 'PS', 'QD2L': 'PS', 'QF3L': 'PS'})
+
 
 family_mapping = {
     'B':       'dipole',
-    'Spect':   'spectrometer',
     'CHV':     'general_corrector',
     'CH':      'horizontal_corrector',
     'CV':      'vertical_corrector',
     'QS':      'skew_quadrupole',
-    'QF2L':    'linac_quadrupole',
-    'QD2L':    'linac_quadrupole',
-    'QF3L':    'linac_quadrupole',
     'QD1':     'quadrupole',
     'QF1':     'quadrupole',
     'QD2A':    'quadrupole',
@@ -69,11 +70,21 @@ family_mapping = {
     'Scrn':    'beam_profile_monitor',
     'BPM':     'bpm'
     }
+if add_li_triplets:
+    family_mapping.update({
+        'Spect': 'spectrometer',
+        'QF2L': 'linac_quadrupole',
+        'QD2L': 'linac_quadrupole',
+        'QF3L': 'linac_quadrupole',
+    })
 
 
 def families_dipoles():
     """Return dipole families."""
-    return ['B', 'Spect']
+    if add_li_triplets:
+        return ['B', 'Spect']
+    else:
+        return ['B']
 
 
 def families_pulsed_magnets():
@@ -83,19 +94,23 @@ def families_pulsed_magnets():
 
 def families_quadrupoles():
     """Return quadrupole families."""
-    return [
-        'QF2L', 'QD2L', 'QF3L', 'QD1', 'QF1', 'QD2A', 'QF2A', 'QF2B', 'QD2B',
+    quads = [
+        'QD1', 'QF1', 'QD2A', 'QF2A', 'QF2B', 'QD2B',
         'QF3', 'QD3', 'QF4', 'QD4']
+    if add_li_triplets:
+        return quads + ['QF2L', 'QD2L', 'QF3L']
+    else:
+        return quads
 
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['CHV', ]
+    return ['CH', ]
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['CHV', ]
+    return ['CV', ]
 
 
 def families_sextupoles():
