@@ -227,12 +227,12 @@ def families_sextupoles():
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['FCH', 'FFCH', 'CH', 'IDCH']
+    return ['FCH', 'FFCH', 'CH']
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['FCV', 'FFCV', 'CV', 'IDCV']
+    return ['FCV', 'FFCV', 'CV']
 
 
 def families_skew_correctors():
