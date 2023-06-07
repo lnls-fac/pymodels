@@ -202,9 +202,10 @@ def create_lattice(
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
 
-    IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
+    IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corrector
     IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corrector used in PAPU50
-    IDQS = sextupole('IDQS', 0.2, S=0)  # ID quadskew corrector
+    IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corrector (only IDCH)
+    IDQS = sextupole('IDQS', 0.200, S=0)  # ID quadskew corrector
 
     # -- sectors --
     M1A = [
@@ -359,9 +360,9 @@ def create_lattice(
         L500p, LID3, L500]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
-        L297, L576p, IDQS, L203, IDBPM, L109, IDC, L218p,
+        L297, L576p, IDQS, L203, IDBPM, L109, IDC1, L218p,
         MIDB, ID10Hu, MIB, ID10Hd, MIDB,
-        L218p, IDC, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
+        L218p, IDC1, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350p,
@@ -376,9 +377,9 @@ def create_lattice(
     IDA_13 = IDA
 
     IDB_14 = [
-        L365, LIB, L208p, IDC,
+        L365, LIB, L208p, IDC3,
         MIDB, ID14Hu, MIB, ID14Hd, MIDB,
-        IDC, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
+        IDC3, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
 
     IDP_15 = IDP
 
