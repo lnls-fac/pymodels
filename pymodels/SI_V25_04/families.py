@@ -299,9 +299,9 @@ def get_section_name_mapping(lattice):
     Sects = []
     ini = 0
     for i in range(len(b1)//(2*b1_nrsegs)):
-        fim = b1[(i+1)*2*b1_nrsegs-1] + 1
-        Sects.append(list(range(ini, fim)))
-        ini = fim
+        end = b1[(i+1)*2*b1_nrsegs-1] + 1
+        Sects.append(list(range(ini, end)))
+        ini = end
 
     # Names of the subsections:
     sub_secs = ['M1', 'SX', 'M2', 'C1', 'C2', 'BC', 'C3', 'C4']

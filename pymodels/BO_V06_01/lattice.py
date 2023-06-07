@@ -75,7 +75,7 @@ def create_lattice(energy=energy, optics_mode=None):
     L213200 = drift('l213200', 2.13200)
 
     STR  = marker('start')     # start of the model
-    FIM  = marker('end'  )     # end of the model
+    END  = marker('end'  )     # end of the model
     GIR  = marker('girder')
 
     SIN  = marker('InjSept')
@@ -99,7 +99,7 @@ def create_lattice(energy=energy, optics_mode=None):
     QD,_  = _seg_models.qd_quadrupole(energy, 'QD', strengths['qd'] * 0.100)
     QF,_  = _seg_models.qf_quadrupole(energy, 'QF', strengths['qf'] * 0.228)
     QS    = quadrupole('QS', 0.100, strengths['qs'])
-    QF0   = [QF[0], FIM, STR, QF[1:]]
+    QF0   = [QF[0], END, STR, QF[1:]]
 
     RFC = rfcavity('P5Cav', 0, 0, 0) # RF frequency will be set later.
 
