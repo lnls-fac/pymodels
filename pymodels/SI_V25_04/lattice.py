@@ -149,6 +149,7 @@ def create_lattice(
     # -- fast correctors --
     # 60 magnets: normal quad poles (CH+CV and CH+CV+QS):
     FC1 = sextupole('FC1', 0.084, S=0.0)
+    FC1FF = sextupole('FC1FF', 0.084, S=0.0)  # feedforward
     # 20 magnets: skew quad poles (CH+CV and CH+CV+QS):
     FC2 = sextupole('FC2', 0.082, S=0.0)
 
@@ -205,7 +206,10 @@ def create_lattice(
     # -- sectors --
     M1A = [
         L134, QDA, L150, SDA0, GIR, L074, GIR, FC1, L082, QFA, L150, SFA0,
-        L135, BPM, GIR]  # high beta xxM1 girder (with fasc corrector)
+        L135, BPM, GIR]  # high beta xxM1 girder (with fast corrector)
+    M1AFF = [
+        L134, QDA, L150, SDA0, GIR, L074, GIR, FC1FF, L082, QFA, L150, SFA0,
+        L135, BPM, GIR]  # high beta xxM1 girder (with ff corrector)
     M1B = [
         L134, QDB1, L150, SDB0, GIR, L240, GIR, QFB, L150, SFB0, L049, FC1,
         L052, QDB2, L140, BPM, GIR]  # low beta xxM1 girder
@@ -213,6 +217,7 @@ def create_lattice(
         L134, QDP1, L150, SDP0, GIR, L240, GIR, QFP, L150, SFP0, L049, FC1,
         L052, QDP2, L140, BPM, GIR]  # low beta xxM1 girder
     M2A = M1A[::-1]  # high beta xxM2 girder (with fast correctors)
+    M2AFF = M1AFF[::-1]  # high beta xxM2 girder (with ff correctors)
     M2B = M1B[::-1]  # low beta xxM2 girder
     M2P = M1P[::-1]  # low beta xxM2 girder
 
@@ -428,8 +433,8 @@ def create_lattice(
     SS_S20 = IDB_20_GSL07
 
     # down and upstream straight sections
-    M1_S01 = M1A
-    M2_S01 = M2A
+    M1_S01 = M1AFF
+    M2_S01 = M2AFF
     M1_S02 = M1B
     M2_S02 = M2B
     M1_S03 = M1P

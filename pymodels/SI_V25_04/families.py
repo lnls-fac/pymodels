@@ -24,7 +24,7 @@ _family_number_of_elements = {
     'BPM': 160, 'GSL15': 1, 'GSL07': 1, 'GBPM': 1,
     'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1, 'BbBKckrL': 1,
     'TuneShkrH': 1, 'TuneShkrV': 1, 'TunePkupH': 1, 'TunePkupV': 1,
-    'FC1': 60, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
+    'FC1': 58, 'FC1FF': 2, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1, 'IVU18': 1,
@@ -94,6 +94,8 @@ _discipline_mapping = {
     'FC2': 'PS',
     'FCH': 'PS',
     'FCV': 'PS',
+    'FFCH': 'PS',
+    'FFCV': 'PS',
     'CH': 'PS',
     'CV': 'PS',
     'IDCH': 'PS',
@@ -179,6 +181,8 @@ family_mapping = {
     'FC2': 'fast_corrector',
     'FCH': 'fast_horizontal_corrector',
     'FCV': 'fast_vertical_corrector',
+    'FFCH': 'feedforward_horizontal_corrector',
+    'FFCV': 'feedforward_vertical_corrector',
 
     'CH': 'slow_horizontal_corrector',
     'CV': 'slow_vertical_corrector',
@@ -223,12 +227,12 @@ def families_sextupoles():
 
 def families_horizontal_correctors():
     """Return horizontal corrector families."""
-    return ['FCH', 'CH', 'IDC']
+    return ['FCH', 'FFCH', 'CH', 'IDCH']
 
 
 def families_vertical_correctors():
     """Return vertical corrector families."""
-    return ['FCV', 'CV', 'IDC']
+    return ['FCV', 'FFCV', 'CV', 'IDCV']
 
 
 def families_skew_correctors():
@@ -401,7 +405,7 @@ def get_family_data(lattice):
 
     # fch - fast horizontal correctors
     idx = []
-    fams = ['FC1', 'FC2', ]
+    fams = ['FC1', 'FC1FF', 'FC2', ]
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -409,6 +413,17 @@ def get_family_data(lattice):
 
     # fcv - fast vertical correctors
     data['FCV'] = sorted(idx, key=get_idx)
+
+    # ffch - feedforward horizontal correctors
+    idx = []
+    fams = ['FC1FF', ]
+    for fam in fams:
+        if fam in data:
+            idx.extend(data[fam])
+    data['FFCH'] = sorted(idx, key=get_idx)
+
+    # ffcv - feedforward vertical correctors
+    data['FFCV'] = sorted(idx, key=get_idx)
 
     # qs - skew quad correctors
     idx = []
