@@ -31,7 +31,6 @@ _family_number_of_elements = {
     'WIG180': 1, 'PAPU50': 1,
     'IDBPM': 2,
     'IDC1': 2, 'IDC2': 2, 'IDC3': 2,
-    'IDCH': 6, 'IDCV': 6,
     'IDQS': 2,
     }
 
