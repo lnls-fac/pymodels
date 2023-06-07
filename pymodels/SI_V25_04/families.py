@@ -24,7 +24,7 @@ _family_number_of_elements = {
     'BPM': 160, 'GSL15': 1, 'GSL07': 1, 'GBPM': 1,
     'BbBPkup': 1, 'BbBKckrH': 1, 'BbBKckrV': 1, 'BbBKckrL': 1,
     'TuneShkrH': 1, 'TuneShkrV': 1, 'TunePkupH': 1, 'TunePkupV': 1,
-    'FC1': 60, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
+    'FC1': 58, 'FC1FF': 2, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1, 'IVU18': 1,
@@ -401,7 +401,7 @@ def get_family_data(lattice):
 
     # fch - fast horizontal correctors
     idx = []
-    fams = ['FC1', 'FC2', ]
+    fams = ['FC1', 'FC1FF', 'FC2', ]
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
