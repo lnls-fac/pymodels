@@ -27,9 +27,10 @@ _family_number_of_elements = {
     'FC1': 58, 'FC1FF': 2, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    'APU22': 5, 'APU58': 1, 'EPU50': 1, 'WIG180': 1, 'IVU18': 1,
+    'APU22': 4, 'APU58': 1, 'EPU50': 1,
+    'WIG180': 1, 'PAPU50': 1,
     'IDBPM': 2,
-    'IDC': 4, 'IDCH': 4, 'IDCV': 4,
+    'IDC1': 2, 'IDC2': 2, 'IDC3': 2,
     'IDQS': 2,
     }
 
@@ -108,7 +109,7 @@ _discipline_mapping = {
     'APU58': 'ID',
     'EPU50': 'ID',
     'WIG180': 'ID',
-    'IVU18': 'ID',
+    'PAPU50': 'ID',
     }
 
 
@@ -198,7 +199,7 @@ family_mapping = {
     'APU58': 'insertion_device',
     'EPU50': 'insertion_device',
     'WIG180': 'insertion_device',
-    'IVU18': 'insertion_device',
+    'PAPU50': 'insertion_device',
     }
 
 
@@ -260,12 +261,12 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', 'APU58', 'EPU50', 'WIG180', 'IVU18']
+    return ['APU22', 'APU58', 'EPU50', 'WIG180', 'PAPU50']
 
 
 def families_id_correctors():
     """Return insertion device correctors families."""
-    return ['IDC', ]
+    return ['IDC1', 'IDC2', 'IDC3']
 
 
 def families_id_skew_correctors():
@@ -303,9 +304,9 @@ def get_section_name_mapping(lattice):
     Sects = []
     ini = 0
     for i in range(len(b1)//(2*b1_nrsegs)):
-        fim = b1[(i+1)*2*b1_nrsegs-1] + 1
-        Sects.append(list(range(ini, fim)))
-        ini = fim
+        end = b1[(i+1)*2*b1_nrsegs-1] + 1
+        Sects.append(list(range(ini, end)))
+        ini = end
 
     # Names of the subsections:
     sub_secs = ['M1', 'SX', 'M2', 'C1', 'C2', 'BC', 'C3', 'C4']
@@ -389,7 +390,7 @@ def get_family_data(lattice):
 
     # idch - id horizontal correctors
     idx = []
-    fams = ['IDC', ]
+    fams = ['IDC1', 'IDC2', 'IDC3']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -397,7 +398,7 @@ def get_family_data(lattice):
 
     # idcv - id vertical correctors
     idx = []
-    fams = ['IDC', ]
+    fams = ['IDC1', 'IDC2']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -518,7 +519,7 @@ def get_family_data(lattice):
     for key in new_data:
         if key not in _discipline_mapping:
             continue
-        if key in ('IDC', ):
+        if key in ('IDC1', 'IDC2', 'IDC3'):
             continue
         dis = _discipline_mapping[key]
         dta = new_data[key]

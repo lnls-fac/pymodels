@@ -3,25 +3,22 @@
 from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
 
+
 _family_segmentation = {
     'B': 16, 'CH': 1, 'CV': 1, 'CHV': 1, 'QS': 1,
     'QF2L': 1, 'QD2L': 1, 'QF3L': 1,
-    'Spect': 2,
     'QD1': 1, 'QF1': 1, 'QD2A': 1, 'QF2A': 1, 'QF2B': 1, 'QD2B': 1,
     'QF3': 1, 'QD3': 1, 'QF4': 1, 'QD4': 1,
     'InjSept': 6,
     'ICT': 1, 'FCT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
     }
 
+
 _discipline_mapping = {
     'B':       'PS',
-    'Spect':   'PS',
     'CHV':     'PS',
     'CH':      'PS',
     'CV':      'PS',
-    'QF2L':    'PS',
-    'QD2L':    'PS',
-    'QF3L':    'PS',
     'QD1':     'PS',
     'QF1':     'PS',
     'QD2A':    'PS',
@@ -41,16 +38,13 @@ _discipline_mapping = {
     'BPM':     'DI'
     }
 
+
 family_mapping = {
     'B':       'dipole',
-    'Spect':   'spectrometer',
     'CHV':     'general_corrector',
     'CH':      'horizontal_corrector',
     'CV':      'vertical_corrector',
     'QS':      'skew_quadrupole',
-    'QF2L':    'linac_quadrupole',
-    'QD2L':    'linac_quadrupole',
-    'QF3L':    'linac_quadrupole',
     'QD1':     'quadrupole',
     'QF1':     'quadrupole',
     'QD2A':    'quadrupole',
@@ -67,53 +61,73 @@ family_mapping = {
     'SlitH':   'horizontal_slit',
     'SlitV':   'vertical_slit',
     'Scrn':    'beam_profile_monitor',
-    'BPM':     'bpm'
+    'BPM':     'bpm',
+    'Spect': 'spectrometer',  # only when LI sector is included
+    'QF2L': 'linac_quadrupole',  # only when LI sector is included
+    'QD2L': 'linac_quadrupole',  # only when LI sector is included
+    'QF3L': 'linac_quadrupole',  # only when LI sector is included
     }
 
 
-def families_dipoles():
+def _check_li_sector(lattice):
+    """."""
+    if lattice is None or _pyaccel.lattice.find_indices(
+            lattice, attribute_name='fam_name', value='Spect'):
+        return True
+    else:
+        return False
+
+
+def families_dipoles(lattice=None):
     """Return dipole families."""
-    return ['B', 'Spect']
+    if _check_li_sector(lattice):
+        return ['B', 'Spect']
+    else:
+        return ['B']
 
 
-def families_pulsed_magnets():
+def families_pulsed_magnets(lattice=None):
     """Return pulsed magnet families."""
     return ['InjSept']
 
 
-def families_quadrupoles():
+def families_quadrupoles(lattice=None):
     """Return quadrupole families."""
-    return [
-        'QF2L', 'QD2L', 'QF3L', 'QD1', 'QF1', 'QD2A', 'QF2A', 'QF2B', 'QD2B',
+    quads = [
+        'QD1', 'QF1', 'QD2A', 'QF2A', 'QF2B', 'QD2B',
         'QF3', 'QD3', 'QF4', 'QD4']
+    if _check_li_sector(lattice):
+        return quads + ['QF2L', 'QD2L', 'QF3L']
+    else:
+        return quads
 
 
-def families_horizontal_correctors():
+def families_horizontal_correctors(lattice=None):
     """Return horizontal corrector families."""
-    return ['CHV', ]
+    return ['CH', ]
 
 
-def families_vertical_correctors():
+def families_vertical_correctors(lattice=None):
     """Return vertical corrector families."""
-    return ['CHV', ]
+    return ['CV', ]
 
 
-def families_sextupoles():
+def families_sextupoles(lattice=None):
     """Return sextupole families."""
     return []
 
 
-def families_skew_correctors():
+def families_skew_correctors(lattice=None):
     """Return skew corrector families."""
     return ['QS']
 
 
-def families_rf():
+def families_rf(lattice=None):
     """Return RF families."""
     return []
 
 
-def families_di():
+def families_di(lattice=None):
     """Return pulsed magnet families."""
     return ['ICT', 'FCT', 'BPM', 'Scrn', 'SlitH', 'SlitV']
 
@@ -154,10 +168,20 @@ def get_family_data(lattice):
     latt_dict = _pyaccel.lattice.find_dict(lattice, 'fam_name')
     section_map = get_section_name_mapping(lattice)
 
+    if _check_li_sector(lattice):
+        _family_segmentation_local = _family_segmentation.copy()
+        _family_segmentation_local.update({'Spect': 2})
+        _discipline_mapping_local = _discipline_mapping.copy()
+        _discipline_mapping_local.update(
+            {'Spect': 'PS', 'QF2L': 'PS', 'QD2L': 'PS', 'QF3L': 'PS'})
+    else:
+        _family_segmentation_local = _family_segmentation
+        _discipline_mapping_local = _discipline_mapping
+
     # fill the data dictionary with index info:
     data = {}
     for key, idx in latt_dict.items():
-        nr = _family_segmentation.get(key)
+        nr = _family_segmentation_local.get(key)
         if nr is None:
             continue
         # create a list of lists for the indexes
