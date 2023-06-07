@@ -6,7 +6,7 @@ from pyaccel import elements as _pyacc_ele
 class IDModel:
     """ID Model (currently based on Kickmap files)."""
     class SUBSECTIONS:
-        # See https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocation
+        # See https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocations
         ID06SB = 'ID06SB'
         ID07SP = 'ID07SP'
         ID08SB = 'ID08SB'
@@ -20,20 +20,16 @@ class IDModel:
             ID10SB, ID11SP, ID14SB, ID17SA)
 
     def __init__(self,
-            subsec, file_name, fam_name=None,
-            nr_steps=1, rescale_kicks=1.0, rescale_length=1.0,
-            termination_kicks=None):
+                 subsec, file_name, fam_name=None,
+                 nr_steps=1, rescale_kicks=1.0, rescale_length=1.0):
         if subsec not in IDModel.SUBSECTIONS.ALL:
             raise ValueError('Invalid subsection definition')
-        if termination_kicks is None:
-            termination_kicks = [0, 0, 0, 0]
         self._subsec = subsec
         self._file_name = file_name
         self._fam_name = fam_name or 'ID'
         self._nr_steps = nr_steps
         self._rescale_kicks = rescale_kicks
         self._rescale_length = rescale_length
-        self._termination_kicks = termination_kicks
 
     @property
     def subsec(self):
@@ -65,26 +61,6 @@ class IDModel:
         """Length rescale factor applied to kickmap data from file.."""
         return self._rescale_length
 
-    @property
-    def kickx_upstream(self):
-        """Return kick in [T2m2] units."""
-        return self._rescale_kicks * self._termination_kicks[0]
-
-    @property
-    def kicky_upstream(self):
-        """Return kick in [T2m2] units."""
-        return self._rescale_kicks * self._termination_kicks[1]
-
-    @property
-    def kickx_downstream(self):
-        """Return kick in [T2m2] units."""
-        return self._rescale_kicks * self._termination_kicks[2]
-
-    @property
-    def kicky_downstream(self):
-        """Return kick in [T2m2] units."""
-        return self._rescale_kicks * self._termination_kicks[3]
-
     def get_half_kickmap(self):
         """Return trackcpp half-kickmap withou border kicks."""
         # NOTE: rescale_length is multipled by the total length in kickmap
@@ -109,8 +85,4 @@ class IDModel:
         strs += f'nr_steps        : {self.nr_steps}\n'
         strs += f'rescale_kicks   : {self.rescale_kicks}\n'
         strs += f'rescale_length  : {self.rescale_length}\n'
-        strs += f'kickx_upstream  : {self.kickx_upstream}\n'
-        strs += f'kicky_upstream  : {self.kicky_upstream}\n'
-        strs += f'kickx_downtream : {self.kickx_downstream}\n'
-        strs += f'kicky_downtream : {self.kicky_downstream}'
         return strs

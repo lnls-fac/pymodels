@@ -57,6 +57,7 @@ def create_lattice(
     L049 = drift('l049', 0.049)
     L052 = drift('l052', 0.052)
     L056 = drift('l056', 0.056)
+    L063 = drift('l063', 0.063)
     L074 = drift('l074', 0.074)
     L075 = drift('l075', 0.075)
     L082 = drift('l082', 0.082)
@@ -91,6 +92,7 @@ def create_lattice(
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
+    L511 = drift('l511', 0.511)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
 
@@ -198,9 +200,12 @@ def create_lattice(
     ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
+    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
 
-    IDC = sextupole('IDC', 0.1, S=0)  # ID corrector
-    IDQS = sextupole('IDQS', 0.2, S=0)  # ID quadskew corrector
+    IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corrector
+    IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corrector used in PAPU50
+    IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corrector (only IDCH)
+    IDQS = sextupole('IDQS', 0.200, S=0)  # ID quadskew corrector
 
     # -- sectors --
     M1A = [
@@ -345,9 +350,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L150, L350p,
+        L500, LIB, L500, L350p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L350p, L150, LIB, L500]  # low beta ID straight section (EMA)
+        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -355,9 +360,9 @@ def create_lattice(
         L500p, LID3, L500]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
-        L297, L576p, IDQS, L203, IDBPM, L109, IDC, L218p,
+        L297, L576p, IDQS, L203, IDBPM, L109, IDC1, L218p,
         MIDB, ID10Hu, MIB, ID10Hd, MIDB,
-        L218p, IDC, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
+        L218p, IDC1, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350p,
@@ -372,9 +377,9 @@ def create_lattice(
     IDA_13 = IDA
 
     IDB_14 = [
-        L365, LIB, L208p, IDC,
+        L365, LIB, L208p, IDC3,
         MIDB, ID14Hu, MIB, ID14Hd, MIDB,
-        IDC, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
+        IDC3, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
 
     IDP_15 = IDP
 
@@ -384,9 +389,10 @@ def create_lattice(
         L500, BbBKckL, LIB, L500]  # low beta ID straight section
 
     IDA_17 = [
-        L500, LIA, L500,
-        MIDA, L500, L500p, MIA, L500p, L500, MIDA,
-        L500, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
+        L500, LIA, L511, L350p, IDC2, L063,
+        MIDA, ID17Hu, MIA, ID17Hd, MIDA,
+        L063, IDC2, L350p, L511, BbBKckrH, LIA, L500]  # high beta ID straight
+                                                       # section (SAPUCAIA)
 
     IDB_18_TUNEPKUPH = [
         L500, LIB, L500,
@@ -783,7 +789,7 @@ def set_vacuum_chamber(
 
     # Set smaller inj vchamber (farther from injseptum)
     injva = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjVCs')
-    injva = list(range(injva[-1], len(the_ring)))  + list(range(0, injva[0]+1))
+    injva = list(range(injva[-1], len(the_ring))) + list(range(0, injva[0]+1))
     for i in injva:
         e = the_ring[i]
         e.vchamber = _pyacc_ele.VChamberShape.rectangle
@@ -941,12 +947,12 @@ def create_id_kickmaps_dict(ids, energy):
         # subsec   idtype   idlen    beamline
         'ID06SB': ('APU22',  1.300),   # CARNAUBA
         'ID07SP': ('APU22',  1.300),   # CATERETE
-        'ID08SB': ('IVU18',  2.000),   # EMA
+        'ID08SB': ('APU22',  1.300),   # EMA
         'ID09SA': ('APU22',  1.300),   # MANACA
         'ID10SB': ('EPU50',  2.770),   # SABIA
         'ID11SP': ('APU58',  1.300),   # IPE
         'ID14SB': ('WIG180', 2.654),   # PAINEIRA
-        'ID17SA': ('APU22',  2.600),   # SAPUCAIA
+        'ID17SA': ('PAPU50', 0.984),   # SAPUCAIA
     }
 
     # build kickmap dict
@@ -964,12 +970,6 @@ def create_id_kickmaps_dict(ids, energy):
             # create up and down stream hald models
             id_u = idsdict[subsec].get_half_kickmap()
             id_d = idsdict[subsec].get_half_kickmap()
-            # insert border kicks
-            id_u.t_in[1] = idsdict[subsec].kickx_upstream / brho**2
-            id_u.t_in[3] = idsdict[subsec].kicky_upstream / brho**2
-            id_d.t_out[1] = idsdict[subsec].kickx_downstream / brho**2
-            id_d.t_out[3] = idsdict[subsec].kicky_downstream / brho**2
-
             kickmaps[subsec] = (id_u, id_d)
 
     return kickmaps
