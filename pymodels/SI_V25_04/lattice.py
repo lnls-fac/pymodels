@@ -86,6 +86,7 @@ def create_lattice(
     L260 = drift('l260', 0.260)
     L297 = drift('l297', 0.297)
     L325 = drift('l325', 0.325)
+    L329 = drift('l230', 0.329)
     L336 = drift('l336', 0.336)
     L365 = drift('l365', 0.365)
     L419 = drift('l419', 0.419)
@@ -197,7 +198,7 @@ def create_lattice(
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
     ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
-    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
+    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
@@ -364,9 +365,9 @@ def create_lattice(
         L500p, LID3, L500]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
-        L297, L576p, IDQS, L203, IDBPM, L109, IDC1, L218p,
+        L297, L576p, L200, L203, IDBPM, L665, L329, L218p,
         MIDB, ID10Hu, MIB, ID10Hd, MIDB,
-        L218p, IDC1, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
+        L218p, L329, L665, IDBPM, L203, L200, L576p, L297]  # low beta (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350p,
@@ -959,7 +960,7 @@ def create_id_kickmaps_dict(ids, energy):
         # MANACA
         'ID09SA': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
         # SABIA
-        'ID10SB': ('EPU50',  2.770, [-0.015, 0.015, -0.009, 0.009], 2),
+        'ID10SB': ('DELTA52', 1.200, [-0.0065, 0.0065, -0.0038, 0.0038], 2),
         # IPE
         'ID11SP': ('APU58',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
         # PAINEIRA
