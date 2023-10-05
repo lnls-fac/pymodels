@@ -19,8 +19,7 @@ energy = 3e9  # [eV]
 
 
 def create_lattice(
-        optics_mode=default_optics_mode, simplified=False, ids=None,
-        ids_vchamber=True):
+        optics_mode=default_optics_mode, simplified=False, ids=None):
     """Return lattice object."""
     # -- selection of optics mode --
     strengths = get_optics_mode(optics_mode=optics_mode)
@@ -193,7 +192,7 @@ def create_lattice(
     SHVC = marker('SHVC')  # HScrap vchamber limits (drawing: len = 313 mm)
 
     # --- insertion devices (half devices) ---
-    kickmaps = create_id_kickmaps_dict(ids, energy=energy)
+    kickmaps, ids_vchamber = create_id_kickmaps_dict(ids, energy=energy)
     ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
@@ -641,7 +640,7 @@ def create_lattice(
     set_num_integ_steps(the_ring)
 
     # -- define vacuum chamber for all elements
-    set_vacuum_chamber(the_ring, ids_vchamber=ids_vchamber)
+    set_vacuum_chamber(the_ring, ids_vchamber)
 
     return the_ring
 
@@ -751,8 +750,7 @@ def set_num_integ_steps(the_ring):
             the_ring[i].nr_steps = nr_steps
 
 
-def set_vacuum_chamber(
-        the_ring, optics_mode=default_optics_mode, ids_vchamber=True):
+def set_vacuum_chamber(the_ring, ids_vchamber):
     """Set vacuum chamber for all elements."""
     # vchamber = [hmin, hmax, vmin, vmax] (meter)
     other_vchamber = [-0.012, 0.012, -0.012, 0.012]
@@ -761,11 +759,10 @@ def set_vacuum_chamber(
     scrapv_vchamber = [-0.0145, 0.0145, -0.00475, 0.00475]
     scraph_vchamber = [-0.012, 0.012, -0.012, 0.012]
 
-    ida_vchamber = [-0.012, 0.012, -0.004, 0.004]
-    idb_vchamber = [-0.004, 0.004, -0.00225, 0.00225]
-    idp_vchamber = ida_vchamber
-    if optics_mode.startswith('S05'):
-        idp_vchamber = idb_vchamber
+    # BSC v defined by IVU gap + copper foil = 2 mm @ 1 m from ss center
+    # BSC h defined by vaccum chamber - no limitant
+    BSCa_vchamber = [-0.011696, 0.011696, -0.0026, 0.0026]
+    BSCb_vchamber = [-0.003453, 0.003453, -0.00164, 0.00164]
 
     # Set ordinary vchamber
     for i in range(len(the_ring)):
@@ -803,38 +800,41 @@ def set_vacuum_chamber(
     # Set high field BC vacuum chamber
     set_vacuum_chamber_bc(the_ring)
 
-    if not ids_vchamber:
-        return
-
-    # Set ids vacuum chamber in straight section of type B
-    idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
-    idb_list = []
-    for i in range(len(idb)//2):
-        idb_list.extend(range(idb[2*i]+1, idb[2*i+1]+1))
-    for i in idb_list:
+    # Set limits of BSC on mia markers
+    mia = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mia')
+    for i in mia:
         e = the_ring[i]
-        e.vchamber = _pyacc_ele.VChamberShape.rectangle
-        e.hmin, e.hmax, e.vmin, e.vmax = idb_vchamber
+        e.vchamber = _pyacc_ele.VChamberShape.rhombus
+        e.hmin, e.hmax, e.vmin, e.vmax = BSCa_vchamber
 
-    # Set ids vacuum chamber in straight section of type A
+    # Set limits of BSC on mib markers
+    mib = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mib')
+    for i in mib:
+        e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.rhombus
+        e.hmin, e.hmax, e.vmin, e.vmax = BSCb_vchamber
+
+    # Set limits of BSC on mip markers
+    mip = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mip')
+    for i in mip:
+        e = the_ring[i]
+        e.vchamber = _pyacc_ele.VChamberShape.rhombus
+        e.hmin, e.hmax, e.vmin, e.vmax = BSCb_vchamber
+
+    # Set ids vacumm chamber
     ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
-    ida_list = []
-    for i in range(len(ida)//2):
-        ida_list.extend(range(ida[2*i], ida[2*i+1]+1))
-    for i in ida_list:
-        e = the_ring[i]
-        e.vchamber = _pyacc_ele.VChamberShape.rectangle
-        e.hmin, e.hmax, e.vmin, e.vmax = ida_vchamber
-
-    # Set ids vacuum chamber in straight section of type P
+    idb = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endb')
     idp = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_endp')
-    idp_list = []
-    for i in range(len(idp)//2):
-        idp_list.extend(range(idp[2*i], idp[2*i+1]+1))
-    for i in idp_list:
-        e = the_ring[i]
-        e.vchamber = _pyacc_ele.VChamberShape.rectangle
-        e.hmin, e.hmax, e.vmin, e.vmax = idp_vchamber
+    id_end = ida + idb + idp
+    id_end.sort()
+    id_init = id_end[0::2]
+    id_end = id_end[1::2]
+    for subsec, (vch_dim, vch_shape) in ids_vchamber.items():
+        ss_idx = int(subsec[2:4]) - 3
+        for i in range(id_init[ss_idx], id_end[ss_idx] + 1):
+            e = the_ring[i]
+            e.vchamber = vch_shape
+            e.hmin, e.hmax, e.vmin, e.vmax = vch_dim
 
 
 def set_vacuum_chamber_bc(the_ring):
@@ -949,20 +949,29 @@ def create_id_kickmaps_dict(ids, energy):
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocation
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
     ids_subsec_drift_lens = {
-        # subsec   idtype   idlen    beamline
-        'ID06SB': ('APU22',  1.300),   # CARNAUBA
-        'ID07SP': ('APU22',  1.300),   # CATERETE
-        'ID08SB': ('APU22',  1.300),   # EMA
-        'ID09SA': ('APU22',  1.300),   # MANACA
-        'ID10SB': ('EPU50',  2.770),   # SABIA
-        'ID11SP': ('APU58',  1.300),   # IPE
-        'ID14SB': ('WIG180', 2.654),   # PAINEIRA
-        'ID17SA': ('PAPU50', 0.984),   # SAPUCAIA
+        # subsec   idtype   idlen   id_vchamber    vchamber_shape
+        # CARNAUBA
+        'ID06SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        # CATERETE
+        'ID07SP': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        # EMA
+        'ID08SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        # MANACA
+        'ID09SA': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        # SABIA
+        'ID10SB': ('EPU50',  2.770, [-0.015, 0.015, -0.009, 0.009], 2),
+        # IPE
+        'ID11SP': ('APU58',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        # PAINEIRA
+        'ID14SB': ('WIG180', 2.654, [-0.012, 0.012, -0.012, 0.012], 2),
+        # SAPUCAIA
+        'ID17SA': ('PAPU50', 0.984, [-0.012, 0.012, -0.012, 0.012], 2),
     }
 
     # build kickmap dict
-    kickmaps, brho = dict(), None
-    for subsec, (idtype, idlen) in ids_subsec_drift_lens.items():
+    kickmaps, ids_vchamber, brho = dict(), dict(), None
+    for subsec, (idtype, idlen, vc_d, vc_shp) in ids_subsec_drift_lens.items():
+        ids_vchamber[subsec] = (vc_d, vc_shp)
         if subsec not in idsdict:
             # ID not in passed ID dictionary, return drift for half ID.
             kickmaps[subsec] = (
@@ -972,9 +981,9 @@ def create_id_kickmaps_dict(ids, energy):
             # return two kickmaps for half ID
             if brho is None:
                 brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
-            # create up and down stream hald models
+            # create up and down stream half models
             id_u = idsdict[subsec].get_half_kickmap()
             id_d = idsdict[subsec].get_half_kickmap()
             kickmaps[subsec] = (id_u, id_d)
 
-    return kickmaps
+    return kickmaps, ids_vchamber
