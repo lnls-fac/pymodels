@@ -831,7 +831,7 @@ def set_vacuum_chamber(the_ring, ids_vchamber):
     id_init = id_end[0::2]
     id_end = id_end[1::2]
     for subsec, (vch_dim, vch_shape) in ids_vchamber.items():
-        ss_idx = int(subsec[2:4]) - 3
+        ss_idx = int(subsec[2:4]) - 3  # ss 1 and 2 doesn't have id_end markers
         for i in range(id_init[ss_idx], id_end[ss_idx] + 1):
             e = the_ring[i]
             e.vchamber = vch_shape
@@ -949,7 +949,7 @@ def create_id_kickmaps_dict(ids, energy):
     # NOTE: see IDs already defined in
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocation
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
-    ids_subsec_drift_lens = {
+    ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
         # CARNAUBA
         'ID06SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
@@ -971,7 +971,7 @@ def create_id_kickmaps_dict(ids, energy):
 
     # build kickmap dict
     kickmaps, ids_vchamber, brho = dict(), dict(), None
-    for subsec, (idtype, idlen, vc_d, vc_shp) in ids_subsec_drift_lens.items():
+    for subsec, (idtype, idlen, vc_d, vc_shp) in ids_subsec_info.items():
         ids_vchamber[subsec] = (vc_d, vc_shp)
         if subsec not in idsdict:
             # ID not in passed ID dictionary, return drift for half ID.
