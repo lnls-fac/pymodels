@@ -760,8 +760,10 @@ def set_vacuum_chamber(the_ring, ids_vchamber):
     scrapv_vchamber = [-0.0145, 0.0145, -0.00475, 0.00475]
     scraph_vchamber = [-0.012, 0.012, -0.012, 0.012]
 
-    # BSC v defined by IVU gap + copper foil = 2 mm @ 1 m from ss center
-    # BSC h defined by standard vchamber = 12 mm @ 3.96 m from H beta ss center
+    #  BSC v: defined by IVU magnetic gap + copper foil, 4-mm gap
+    #       (@ 1m from low beta ss center)
+    #  BSC h: defined by standard circular vacuum chamber of 24-mm diameter
+    #       (@ 3.96 meters from high beta ss center)
     BSCa_vchamber = [-0.011696, 0.011696, -0.0026, 0.0026]
     BSCb_vchamber = [-0.003453, 0.003453, -0.00164, 0.00164]
 
