@@ -760,13 +760,6 @@ def set_vacuum_chamber(the_ring, ids_vchamber):
     scrapv_vchamber = [-0.0145, 0.0145, -0.00475, 0.00475]
     scraph_vchamber = [-0.012, 0.012, -0.012, 0.012]
 
-    #  BSC v: defined by IVU magnetic gap + copper foil, 4-mm gap
-    #       (@ 1m from low beta ss center)
-    #  BSC h: defined by standard circular vacuum chamber of 24-mm diameter
-    #       (@ 3.96 meters from high beta ss center)
-    BSCa_vchamber = [-0.011696, 0.011696, -0.0026, 0.0026]
-    BSCb_vchamber = [-0.003453, 0.003453, -0.00164, 0.00164]
-
     # Set ordinary vchamber
     for i in range(len(the_ring)):
         e = the_ring[i]
@@ -802,27 +795,6 @@ def set_vacuum_chamber(the_ring, ids_vchamber):
 
     # Set high field BC vacuum chamber
     set_vacuum_chamber_bc(the_ring)
-
-    # Set limits of BSC on mia markers
-    mia = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mia')
-    for i in mia:
-        e = the_ring[i]
-        e.vchamber = _pyacc_ele.VChamberShape.ellipse
-        e.hmin, e.hmax, e.vmin, e.vmax = BSCa_vchamber
-
-    # Set limits of BSC on mib markers
-    mib = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mib')
-    for i in mib:
-        e = the_ring[i]
-        e.vchamber = _pyacc_ele.VChamberShape.ellipse
-        e.hmin, e.hmax, e.vmin, e.vmax = BSCb_vchamber
-
-    # Set limits of BSC on mip markers
-    mip = _pyacc_lat.find_indices(the_ring, 'fam_name', 'mip')
-    for i in mip:
-        e = the_ring[i]
-        e.vchamber = _pyacc_ele.VChamberShape.ellipse
-        e.hmin, e.hmax, e.vmin, e.vmax = BSCb_vchamber
 
     # Set ids vacumm chamber
     ida = _pyacc_lat.find_indices(the_ring, 'fam_name', 'id_enda')
