@@ -46,11 +46,11 @@ def create_lattice(
     LIP = drift('lip', 1.0879)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
+    L145p = drift('l145p', 0.145 + dcircum_frac)
     L208p = drift('l208p', 0.208 + dcircum_frac)
-    L218p = drift('l218p', 0.218 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
-    L576p = drift('l576p', 0.5759)
     L600p = drift('l600p', 0.600 + dcircum_frac)
+    L800p = drift('l800p', 0.7999)
     L011 = drift('l011', 0.011)
     L019 = drift('l019', 0.019)
     L049 = drift('l049', 0.049)
@@ -84,6 +84,7 @@ def create_lattice(
     L237 = drift('l237', 0.237)
     L240 = drift('l240', 0.240)
     L260 = drift('l260', 0.260)
+    L261 = drift('l261', 0.261)
     L297 = drift('l297', 0.297)
     L325 = drift('l325', 0.325)
     L329 = drift('l230', 0.329)
@@ -95,6 +96,7 @@ def create_lattice(
     L511 = drift('l511', 0.511)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
+    L848 = drift('l848', 0.848)
 
     # -- dipoles --
     BC = _segmented_models.dipole_bc(m_accep_fam_name, simplified)
@@ -198,7 +200,7 @@ def create_lattice(
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
     ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
-    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-EPU50'
+    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
@@ -365,9 +367,9 @@ def create_lattice(
         L500p, LID3, L500]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
-        L297, L576p, IDQS, L203, IDBPM, L109, IDC1, L218p,
+        L848, L800p, IDQS, L261, IDBPM, L134, IDC1, L145p,
         MIDB, ID10Hu, MIB, ID10Hd, MIDB,
-        L218p, IDC1, L109, IDBPM, L203, IDQS, L576p, L297]  # low beta (SABIA)
+        L145p, IDC1, L134, IDBPM, L261, IDQS, L800p, L848]  # low beta (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350p,
@@ -926,17 +928,17 @@ def create_id_kickmaps_dict(ids, energy):
     ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
         # CARNAUBA
-        'ID06SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        'ID06SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # CATERETE
-        'ID07SP': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        'ID07SP': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # EMA
-        'ID08SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        'ID08SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # MANACA
-        'ID09SA': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        'ID09SA': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # SABIA
-        'ID10SB': ('EPU50', 2.770, [-0.015, 0.015, -0.009, 0.009], 2),
+        'ID10SB': ('DELTA52', 1.200, [-0.0065, 0.0065, -0.0038, 0.0038], 2),
         # IPE
-        'ID11SP': ('APU58',  1.300, [-0.020, 0.020, -0.003, 0.003], 1),
+        'ID11SP': ('APU58',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # PAINEIRA
         'ID14SB': ('WIG180', 2.654, [-0.012, 0.012, -0.012, 0.012], 2),
         # SAPUCAIA
