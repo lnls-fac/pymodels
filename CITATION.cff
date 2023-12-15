@@ -3,14 +3,16 @@ message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Resende"
   given-names: "Ximenes"
+- family-names: "Mukai"
+  given-names: "Afonso Haruo"
+- family-names: "Vilela"
+  given-names: "Luana Nayara"
 - family-names: "de Sá"
   given-names: "Fernando Henrique"
 - family-names: "Alves"
   given-names: "Murilo"
 - family-names: "Ascenção"
   given-names: "Gabriel"
-- family-names: "Oliveira"
-  given-names: "Ana Clara"
 title: "PyModels. Sirius parameters and pyaccel models "
 version: 1.18.0
 doi: 10.5281/zenodo.10391165
