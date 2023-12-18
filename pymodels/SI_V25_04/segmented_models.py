@@ -188,7 +188,7 @@ def dipole_b1(m_accep_fam_name, simplified=False):
     src_idx = _np.argmin(_np.abs(angles_cumsum - src_point_angle))
     fam_name, element_type = segtypes['B1_SRC']
     src_element = element_type(fam_name=fam_name)
-    # add marker at soiurce point [actually at 3.208 mrad]
+    # add marker at source point [actually at 3.208 mrad]
     imodel = imodel[:src_idx+1] + [src_element, ] + imodel[src_idx+1:]
 
     # --- adds additional markers ---
