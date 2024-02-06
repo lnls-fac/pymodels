@@ -46,7 +46,7 @@ def create_lattice(
     LIP = drift('lip', 1.0879)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
-    L145p = drift('l145p', 0.145 + dcircum_frac)
+    L144p = drift('l144p', 0.144 + dcircum_frac)
     L208p = drift('l208p', 0.208 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L600p = drift('l600p', 0.600 + dcircum_frac)
@@ -84,7 +84,7 @@ def create_lattice(
     L237 = drift('l237', 0.237)
     L240 = drift('l240', 0.240)
     L260 = drift('l260', 0.260)
-    L261 = drift('l261', 0.261)
+    L270 = drift('l270', 0.270)
     L297 = drift('l297', 0.297)
     L325 = drift('l325', 0.325)
     L329 = drift('l230', 0.329)
@@ -96,7 +96,7 @@ def create_lattice(
     L511 = drift('l511', 0.511)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
-    L848 = drift('l848', 0.848)
+    L839 = drift('l839', 0.839)
 
     # -- dipoles --
     BC = _segmented_models.dipole_bc(m_accep_fam_name, simplified)
@@ -367,9 +367,9 @@ def create_lattice(
         L500p, LID3, L500]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
-        L848, L800p, IDQS, L261, IDBPM, L134, IDC1, L145p,
+        L839, L800p, IDQS, L270, IDBPM, L135, IDC1, L144p,
         MIDB, ID10Hu, MIB, ID10Hd, MIDB,
-        L145p, IDC1, L134, IDBPM, L261, IDQS, L800p, L848]  # low beta (SABIA)
+        L144p, IDC1, L135, IDBPM, L270, IDQS, L800p, L839]  # low beta (SABIA)
 
     IDP_11 = [
         L500, LIP, L500, L350p,
