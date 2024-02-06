@@ -14,7 +14,7 @@ authors:
 - family-names: "Ascenção"
   given-names: "Gabriel"
 title: "PyModels. Sirius parameters and pyaccel models "
-version: 1.18.0
+version: 1.18.1
 doi: 10.5281/zenodo.10391165
 date-released: 2023-12-05
 url: "https://github.com/lnls-fac/pymodels"
