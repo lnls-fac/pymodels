@@ -725,9 +725,10 @@ def get_injection_sector(inj_sel=None):
 def set_rf_frequency(the_ring):
     """Set RF frequency of the lattice."""
     circumference = _pyacc_lat.length(the_ring)
-    # _, beam_velocity, _, _, _ = _mp.beam_optics.beam_rigidity(energy=energy)
-    # velocity = beam_velocity
-    velocity = _mp.constants.light_speed
+    _, beam_velocity, _, _, _ = _mp.beam_optics.beam_rigidity(energy=energy/1e9) # beam_rigidity receive energy in GeV
+    velocity = beam_velocity
+    print("vel =", velocity)
+    # velocity = _mp.constants.light_speed
     rev_frequency = velocity / circumference
     rf_frequency = harmonic_number * rev_frequency
     idx = _pyacc_lat.find_indices(the_ring, 'fam_name', 'SRFCav')
