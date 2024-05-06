@@ -99,7 +99,6 @@ def create_lattice(energy=energy, optics_mode=None):
     QD,_  = _seg_models.qd_quadrupole(energy, 'QD', strengths['qd'] * 0.100)
     QF,_  = _seg_models.qf_quadrupole(energy, 'QF', strengths['qf'] * 0.228)
     QS    = quadrupole('QS', 0.100, strengths['qs'])
-    QF0   = [QF[0], END, STR, QF[1:]]
 
     RFC = rfcavity('P5Cav', 0, 0, 0) # RF frequency will be set later.
 
@@ -112,7 +111,7 @@ def create_lattice(energy=energy, optics_mode=None):
     US_SS = [L010350p, SD, GIR, L179350, BPM, L189350, GIR, SF, L013350]
     US_SF_Scrn = [GIR, L200200p, BPM, L172600, GIR, Scrn, L016750, SF, L013350]
     US_SE = [L008100p, CV, GIR, L168300, SEX, L008800, L159628, BPM, L053572, GIR]
-    US_SI = [L008100p, CV, GIR, L177100, BPM, L109600, SIN, L072500, GIR, CH, L016100]
+    US_SI = [L008100p, CV, GIR, L177100, BPM, L109600, END, STR, SIN, L072500, GIR, CH, L016100]
     US_SF_GSL = [GIR, L165200p, GSL, L035000, BPM, L189350, GIR, SF, L013350]
 
     DS = [GIR, L213200, L200200p, GIR]
@@ -228,7 +227,7 @@ def create_lattice(energy=energy, optics_mode=None):
     US_50 = US_SF
     DS_50 = DS_QD
 
-    S01 = [US_01, QF0, DS_01, B]
+    S01 = [US_01, QF, DS_01, B]
     S02 = [US_02, QF, DS_02, B]
     S03 = [US_03, QF, DS_03, B]
     S04 = [US_04, QF, DS_04, B]
