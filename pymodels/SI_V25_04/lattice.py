@@ -46,6 +46,7 @@ def create_lattice(
     LIP = drift('lip', 1.0879)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
+    L050p = drift('l050p', 0.050 + dcircum_frac)
     L144p = drift('l144p', 0.144 + dcircum_frac)
     L208p = drift('l208p', 0.208 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
@@ -373,9 +374,9 @@ def create_lattice(
         L144p, IDC1, L135, IDBPM, L270, IDQS, L800p, L839]  # low beta (SABIA)
 
     IDP_11 = [
-        L165, LIP, L100, L350p,
+        L150, LIP, L100, L050p,
         MIDP, ID11Hu, MIP, ID11Hd, MIDP,
-        L350p, L100, LIP, L165]  # low beta ID straight section (IPE) L=2.77m
+        L050p, L100, LIP, L150]  # low beta ID straight section (IPE) L=3.4m
 
     IDB_12 = [
         L500, LIB, L665, L100, L135,
@@ -939,7 +940,7 @@ def create_id_kickmaps_dict(ids, energy):
         # SABIA
         'ID10SB': ('DELTA52', 1.200, [-0.0065, 0.0065, -0.0038, 0.0038], 2),
         # IPE
-        'ID11SP': ('EPU50',  2.770, [-0.020, 0.020, -0.0045, 0.0045], 2),
+        'ID11SP': ('UE44',  3.4, [-0.020, 0.020, -0.0045, 0.0045], 2),
         # PAINEIRA
         'ID14SB': ('WIG180', 2.654, [-0.012, 0.012, -0.012, 0.012], 2),
         # SAPUCAIA
