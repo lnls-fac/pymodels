@@ -102,6 +102,7 @@ _discipline_mapping = {
     'IDCH': 'PS',
     'IDCV': 'PS',
     'QS': 'PS',
+    'QN': 'PS',
     'IDQS': 'PS',
     'SRFCav': 'RF',
     'H3Cav': 'RF',
@@ -192,6 +193,7 @@ family_mapping = {
     'IDQS': 'id_skew_quadrupole',
 
     'QS': 'skew_quadrupole',
+    'QN': 'quadrupole',
 
     'SRFCav': 'superconducting_rf_cavity',
     'H3Cav': 'third_harmonic_rf_cavity',
