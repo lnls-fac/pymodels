@@ -528,10 +528,14 @@ def get_family_data(lattice):
         devnames = []
         subs = dta['subsection']
         insts = dta['instance']
+        idcs = dta['index']
         dev = key
         if dev in ('IDCH', 'IDCV', 'IDQS', 'IDBPM'):
             dev = dev[2:]
-        for sub, inst in zip(subs, insts):
+        for idx, sub, inst in zip(idcs, subs, insts):
+            if key == 'QN':
+                dev = lattice[idx[0]].fam_name
+                inst = ''
             devnames.append(
                 _join_name(sec='SI', dis=dis, sub=sub, idx=inst, dev=dev))
         new_data[key]['devnames'] = devnames
