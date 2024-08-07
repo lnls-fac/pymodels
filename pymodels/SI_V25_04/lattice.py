@@ -359,9 +359,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L100, LIB, L050, L350p,
+        L500, LIB, L150, L350p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L350p, L050, LIB, L100]  # low beta ID straight section (EMA)
+        L350p, L150, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -934,7 +934,7 @@ def create_id_kickmaps_dict(ids, energy):
         # CATERETE
         'ID07SP': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # EMA
-        'ID08SB': ('IVU18', 3.000, [-0.020, 0.020, -0.002, 0.002], 0),
+        'ID08SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # MANACA
         'ID09SA': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # SABIA
