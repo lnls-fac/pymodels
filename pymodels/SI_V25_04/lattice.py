@@ -54,6 +54,7 @@ def create_lattice(
     L011 = drift('l011', 0.011)
     L019 = drift('l019', 0.019)
     L049 = drift('l049', 0.049)
+    L050 = drift('l050', 0.050)
     L052 = drift('l052', 0.052)
     L056 = drift('l056', 0.056)
     L063 = drift('l063', 0.063)
@@ -72,6 +73,7 @@ def create_lattice(
     L134 = drift('l134', 0.134)
     L135 = drift('l135', 0.135)
     L140 = drift('l140', 0.140)
+    L150 = drift('l150', 0.150)
     L156 = drift('l156', 0.156)
     L170 = drift('l170', 0.170)
     L188 = drift('l188', 0.188)
@@ -198,7 +200,7 @@ def create_lattice(
     kickmaps, ids_vchamber = create_id_kickmaps_dict(ids, energy=energy)
     ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
-    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-APU22'
+    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-IVU18'
     ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
     ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
@@ -357,9 +359,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L500, L350p,
+        L500, LIB, L150, L350p,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L350p, L500, LIB, L500]  # low beta ID straight section (EMA)
+        L350p, L150, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -928,17 +930,17 @@ def create_id_kickmaps_dict(ids, energy):
     ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
         # CARNAUBA
-        'ID06SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID06SB': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # CATERETE
-        'ID07SP': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID07SP': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # EMA
-        'ID08SB': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID08SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # MANACA
-        'ID09SA': ('APU22',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID09SA': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # SABIA
         'ID10SB': ('DELTA52', 1.200, [-0.0065, 0.0065, -0.0038, 0.0038], 2),
         # IPE
-        'ID11SP': ('APU58',  1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID11SP': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # PAINEIRA
         'ID14SB': ('WIG180', 2.654, [-0.012, 0.012, -0.012, 0.012], 2),
         # SAPUCAIA
