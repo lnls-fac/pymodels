@@ -198,6 +198,8 @@ def create_lattice(
 
     # --- insertion devices (half devices) ---
     kickmaps, ids_vchamber = create_id_kickmaps_dict(ids, energy=energy)
+    ID04Hu, ID04Hd = kickmaps['ID04SB']  # TIMBÓ  'SI-04SB:ID-CPMU14'
+    ID05Hu, ID05Hd = kickmaps['ID05SA']  # HIBISCO  'SI-05SA:ID-CPMU14'
     ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-IVU18'
@@ -344,9 +346,15 @@ def create_lattice(
         L500, LIP, L500, L500, L500p, MIP, RFC, L500p, L500, L500,
         LIP, L500]  # low beta RF cavity straight section
 
-    IDB_04 = IDB
+    IDB_04 = [
+            L500, LIB, L500p,
+            MIDB, ID04Hu, MIB, ID04Hd, MIDB,
+            L500p, LIB, L500]  # low beta ID straight section (TIMBÓ)
 
-    IDA_05 = IDA
+    IDA_05 = [
+            L500, LIA, L500p,
+            MIDA, ID05Hu, MIA, ID05Hd, MIDA,
+            L500p, LIA, L500]  # high beta ID straight section (HIBISCO)
 
     IDB_06 = [
         L500, LIB, L500, L350p,
@@ -929,6 +937,10 @@ def create_id_kickmaps_dict(ids, energy):
     # https://wiki-sirius.lnls.br/mediawiki/index.php/Machine:Insertion_Devices
     ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
+        # TIMBÓ
+        'ID04SB': ('CPMU14', 2.000, [-0.020, 0.020, -0.0018, 0.0018], 2),
+        # HIBISCO
+        'ID05SA': ('CPMU14', 2.000, [-0.020, 0.020, -0.002325, 0.002325], 2),
         # CARNAUBA
         'ID06SB': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # CATERETE
