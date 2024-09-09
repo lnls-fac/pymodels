@@ -9,7 +9,7 @@ acc = si.create_accelerator()
 fam = si.families.get_family_data(acc)
 strengs = get_optics_mode()
 
-use_rbend = True # Define dipoles as RBEND instead of SBEND
+use_rbend = False # Define dipoles as RBEND instead of SBEND
 if use_rbend:
     bendtype = "RBEND"
 else:
