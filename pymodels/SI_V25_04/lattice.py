@@ -7,8 +7,8 @@ import math as _math
 
 import lnls as _lnls
 import mathphys as _mp
-from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
-    accelerator as _pyacc_acc
+from pyaccel import accelerator as _pyacc_acc, elements as _pyacc_ele, \
+    lattice as _pyacc_lat
 
 from . import segmented_models as _segmented_models
 
@@ -204,7 +204,7 @@ def create_lattice(
     ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
     ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
-    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
+    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-IVU18'
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
 
     IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corrector
@@ -386,9 +386,13 @@ def create_lattice(
     IDA_13 = IDA
 
     IDB_14 = [
-        L365, LIB, L208p, IDC3,
+        L500, LIB, L150, L350p,
         MIDB, ID14Hu, MIB, ID14Hd, MIDB,
-        IDC3, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
+        L350p, L150, LIB, L500]  # low beta ID straight section (PAINEIRA)
+    # IDB_14 = [
+    #     L365, LIB, L208p, IDC3,
+    #     MIDB, ID14Hu, MIB, ID14Hd, MIDB,
+    #     IDC3, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
 
     IDP_15 = IDP
 
@@ -942,7 +946,7 @@ def create_id_kickmaps_dict(ids, energy):
         # IPE
         'ID11SP': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # PAINEIRA
-        'ID14SB': ('WIG180', 2.654, [-0.012, 0.012, -0.012, 0.012], 2),
+        'ID14SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # SAPUCAIA
         'ID17SA': ('PAPU50', 0.984, [-0.012, 0.012, -0.012, 0.012], 2),
     }

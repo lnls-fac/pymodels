@@ -1,8 +1,7 @@
 """Element family definitions."""
 
-from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
-
+from siriuspy.namesys import join_name as _join_name
 
 _NR_B1 = 40
 _NR_B2 = 40
@@ -28,7 +27,7 @@ _family_number_of_elements = {
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 4, 'APU58': 1, 'DELTA52': 1,
-    'WIG180': 1, 'PAPU50': 1, 'IVU18' : 1,
+    'PAPU50': 1, 'IVU18' : 2,
     'IDBPM': 2,
     'IDC1': 2, 'IDC2': 2, 'IDC3': 2,
     'IDQS': 2,
