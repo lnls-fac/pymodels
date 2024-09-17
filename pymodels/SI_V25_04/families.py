@@ -29,6 +29,7 @@ _family_number_of_elements = {
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 4, 'APU58': 1, 'DELTA52': 1,
     'WIG180': 1, 'PAPU50': 1, 'IVU18' : 1,
+    'WLS': 1,
     'IDBPM': 2,
     'IDC1': 2, 'IDC2': 2, 'IDC3': 2,
     'IDQS': 2,
@@ -111,6 +112,7 @@ _discipline_mapping = {
     'WIG180': 'ID',
     'PAPU50': 'ID',
     'IVU18': 'ID',
+    'WLS': 'ID',
     }
 
 
@@ -202,6 +204,7 @@ family_mapping = {
     'WIG180': 'insertion_device',
     'PAPU50': 'insertion_device',
     'IVU18': 'insertion_device',
+    'WLS': 'insertion_device',
     }
 
 
@@ -263,7 +266,7 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', 'APU58', 'DELTA52', 'WIG180', 'PAPU50', 'IVU18']
+    return ['APU22', 'APU58', 'DELTA52', 'WIG180', 'PAPU50', 'IVU18', 'WLS']
 
 
 def families_id_correctors():

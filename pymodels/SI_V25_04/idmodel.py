@@ -14,10 +14,11 @@ class IDModel:
         ID10SB = 'ID10SB'
         ID11SP = 'ID11SP'
         ID14SB = 'ID14SB'
+        ID15SP = 'ID15SP'
         ID17SA = 'ID17SA'
         ALL = (
             ID06SB, ID07SP, ID08SB, ID09SA,
-            ID10SB, ID11SP, ID14SB, ID17SA)
+            ID10SB, ID11SP, ID14SB, ID15SP, ID17SA)
 
     def __init__(self,
                  subsec, file_name, fam_name=None,
