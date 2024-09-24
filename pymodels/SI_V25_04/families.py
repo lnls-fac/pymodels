@@ -29,7 +29,7 @@ _family_number_of_elements = {
     'APU22': 4, 'APU58': 1, 'DELTA52': 1,
     'PAPU50': 1, 'IVU18' : 2,
     'IDBPM': 2,
-    'IDC1': 2, 'IDC2': 2, 'IDC3': 2,
+    'IDC1': 2, 'IDC4': 4,
     'IDQS': 2,
     }
 
