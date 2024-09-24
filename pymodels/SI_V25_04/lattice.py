@@ -29,7 +29,6 @@ def create_lattice(
     drift = _pyacc_ele.drift
     sextupole = _pyacc_ele.sextupole
     rfcavity = _pyacc_ele.rfcavity
-    hcorrector = _pyacc_ele.hcorrector
 
     # -- lattice markers --
     m_accep_fam_name = 'calc_mom_accep'
@@ -48,7 +47,7 @@ def create_lattice(
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
     L144p = drift('l144p', 0.144 + dcircum_frac)
-    L120p = drift('ll20p', 0.120 + dcircum_frac)
+    L120p = drift('l120p', 0.120 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L600p = drift('l600p', 0.600 + dcircum_frac)
     L800p = drift('l800p', 0.7999)
