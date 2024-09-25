@@ -199,7 +199,7 @@ def create_lattice(
     ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-IVU18'
-    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
+    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
 
     IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corr
     # IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corr used in PAPU50
