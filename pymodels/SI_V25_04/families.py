@@ -1,8 +1,7 @@
 """Element family definitions."""
 
-from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
-
+from siriuspy.namesys import join_name as _join_name
 
 _NR_B1 = 40
 _NR_B2 = 40
@@ -27,10 +26,9 @@ _family_number_of_elements = {
     'FC1': 58, 'FC1FF': 2, 'FC2': 20, 'QS': 100, 'CH': 120, 'CV': 160,
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
-    'APU22': 4, 'APU58': 1, 'DELTA52': 1,
-    'WIG180': 1, 'PAPU50': 1, 'IVU18' : 1,
+    'APU22': 4, 'APU58': 1, 'DELTA52': 1, 'IVU18' : 2,
     'IDBPM': 2,
-    'IDC1': 2, 'IDC2': 2, 'IDC3': 2,
+    'IDC1': 2, 'IDC4': 4,
     'IDQS': 2,
     }
 
@@ -263,12 +261,12 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', 'APU58', 'DELTA52', 'WIG180', 'PAPU50', 'IVU18']
+    return ['APU22', 'APU58', 'DELTA52', 'IVU18']
 
 
 def families_id_correctors():
     """Return insertion device correctors families."""
-    return ['IDC1', 'IDC2', 'IDC3']
+    return ['IDC1', 'IDC4']
 
 
 def families_id_skew_correctors():

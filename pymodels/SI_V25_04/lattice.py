@@ -7,8 +7,8 @@ import math as _math
 
 import lnls as _lnls
 import mathphys as _mp
-from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
-    accelerator as _pyacc_acc
+from pyaccel import accelerator as _pyacc_acc, elements as _pyacc_ele, \
+    lattice as _pyacc_lat
 
 from . import segmented_models as _segmented_models
 
@@ -47,23 +47,20 @@ def create_lattice(
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
     L144p = drift('l144p', 0.144 + dcircum_frac)
-    L208p = drift('l208p', 0.208 + dcircum_frac)
+    L120p = drift('l120p', 0.120 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L600p = drift('l600p', 0.600 + dcircum_frac)
     L800p = drift('l800p', 0.7999)
     L011 = drift('l011', 0.011)
     L019 = drift('l019', 0.019)
     L049 = drift('l049', 0.049)
-    L050 = drift('l050', 0.050)
     L052 = drift('l052', 0.052)
     L056 = drift('l056', 0.056)
-    L063 = drift('l063', 0.063)
     L074 = drift('l074', 0.074)
     L075 = drift('l075', 0.075)
     L082 = drift('l082', 0.082)
     L090 = drift('l090', 0.090)
     L100 = drift('l100', 0.100)
-    L109 = drift('l109', 0.109)
     L112 = drift('l112', 0.112)
     L119 = drift('l119', 0.119)
     L120 = drift('l120', 0.120)
@@ -79,7 +76,6 @@ def create_lattice(
     L188 = drift('l188', 0.188)
     L200 = drift('l200', 0.200)
     L201 = drift('l201', 0.201)
-    L203 = drift('l203', 0.203)
     L205 = drift('l205', 0.205)
     L216 = drift('l216', 0.216)
     L230 = drift('l230', 0.230)
@@ -87,15 +83,13 @@ def create_lattice(
     L240 = drift('l240', 0.240)
     L260 = drift('l260', 0.260)
     L270 = drift('l270', 0.270)
-    L297 = drift('l297', 0.297)
     L325 = drift('l325', 0.325)
-    L329 = drift('l230', 0.329)
+    L335 = drift('l335', 0.335)
     L336 = drift('l336', 0.336)
-    L365 = drift('l365', 0.365)
+    L350 = drift('l350', 0.350)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
-    L511 = drift('l511', 0.511)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
     L839 = drift('l839', 0.839)
@@ -204,13 +198,14 @@ def create_lattice(
     ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
     ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
-    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-WIG180'
-    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-PAPU50'
+    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-IVU18'
+    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
 
-    IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corrector
-    IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corrector used in PAPU50
-    IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corrector (only IDCH)
-    IDQS = sextupole('IDQS', 0.200, S=0)  # ID quadskew corrector
+    IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corr
+    # IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corr used in PAPU50
+    # IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corr (only IDCH)
+    IDC4 = sextupole('IDC4', 0.045, S=0)  # ID corr IVU18 (CH: 38mm, CV: 49mm)
+    IDQS = sextupole('IDQS', 0.200, S=0)  # ID corr quadskew
 
     # -- sectors --
     M1A = [
@@ -359,9 +354,9 @@ def create_lattice(
         L350p, L500, LIP, L500]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L150, L350p,
+        L500, LIB, L120p, IDC4, L335,
         MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L350p, L150, LIB, L500]  # low beta ID straight section (EMA)
+        L335, IDC4, L120p, LIB, L500]  # low beta ID straight section (EMA)
 
     IDA_09 = [
         L500, LID3, L500p,
@@ -386,9 +381,9 @@ def create_lattice(
     IDA_13 = IDA
 
     IDB_14 = [
-        L365, LIB, L208p, IDC3,
+        L500, LIB, L120p, IDC4, L335,
         MIDB, ID14Hu, MIB, ID14Hd, MIDB,
-        IDC3, L208p, LIB, L365]  # low beta ID straight section (PAINEIRA)
+        L335, IDC4, L120p, LIB, L500]  # low beta ID straight section (PAINEIRA)
 
     IDP_15 = IDP
 
@@ -398,10 +393,9 @@ def create_lattice(
         L500, BbBKckL, LIB, L500]  # low beta ID straight section
 
     IDA_17 = [
-        L500, LIA, L511, L350p, IDC2, L063,
+        L500, LID3, L500p,
         MIDA, ID17Hu, MIA, ID17Hd, MIDA,
-        L063, IDC2, L350p, L511, BbBKckrH, LIA, L500]  # high beta ID straight
-                                                       # section (SAPUCAIA)
+        L500p, L350, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
 
     IDB_18_TUNEPKUPH = [
         L500, LIB, L500,
@@ -942,9 +936,9 @@ def create_id_kickmaps_dict(ids, energy):
         # IPE
         'ID11SP': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # PAINEIRA
-        'ID14SB': ('WIG180', 2.654, [-0.012, 0.012, -0.012, 0.012], 2),
+        'ID14SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # SAPUCAIA
-        'ID17SA': ('PAPU50', 0.984, [-0.012, 0.012, -0.012, 0.012], 2),
+        'ID17SA': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
     }
 
     # build kickmap dict
