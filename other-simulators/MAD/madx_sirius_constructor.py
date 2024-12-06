@@ -990,6 +990,6 @@ ENDEDIT;
 """
 
 # write MAD-X SIRIUS sequence output
-f = open("sirius_SI_V25_04.seq", "w")
+f = open("sirius.seq", "w")
 f.write(stri)
 f.close()
