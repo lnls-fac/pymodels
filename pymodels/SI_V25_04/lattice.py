@@ -192,7 +192,7 @@ def create_lattice(
 
     # --- insertion devices (half devices) ---
     kickmaps, ids_vchamber = create_id_kickmaps_dict(ids, energy=energy)
-    ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-APU22'
+    ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-VPU29'
     ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-APU22'
     ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-IVU18'
     ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
@@ -344,9 +344,9 @@ def create_lattice(
     IDA_05 = IDA
 
     IDB_06 = [
-        L500, LIB, L500, L350p,
+        L500, LIB, L325, L350p,
         MIDB, ID06Hu, MIB, ID06Hd, MIDB,
-        L350p, L500, LIB, L500]  # low beta ID straight section (CARNAUBA)
+        L350p, L325, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDP_07 = [
         L500, LIP, L500, L350p,
@@ -924,7 +924,7 @@ def create_id_kickmaps_dict(ids, energy):
     ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
         # CARNAUBA
-        'ID06SB': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID06SB': ('VPU29', 1.650, [-0.0038, 0.0038, -0.0065, 0.0065], 2),
         # CATERETE
         'ID07SP': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # EMA
