@@ -29,7 +29,7 @@ _family_number_of_elements = {
     'APU22': 3, 'APU58': 1, 'DELTA52': 1, 
     'IVU18': 2, 'VPU29': 1,
     'IDBPM': 2,
-    'IDC1': 2, 'IDC4': 4,
+    'IDC1': 2, 'IDC4': 4, 'IDC5': 2,
     'IDQS': 2,
     }
 
@@ -269,7 +269,7 @@ def families_ids():
 
 def families_id_correctors():
     """Return insertion device correctors families."""
-    return ['IDC1', 'IDC4']
+    return ['IDC1', 'IDC4', 'IDC5']
 
 
 def families_id_skew_correctors():
