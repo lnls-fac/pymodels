@@ -83,6 +83,7 @@ def create_lattice(
     L240 = drift('l240', 0.240)
     L260 = drift('l260', 0.260)
     L270 = drift('l270', 0.270)
+    L324 = drift('l324', 0.324)
     L325 = drift('l325', 0.325)
     L335 = drift('l335', 0.335)
     L336 = drift('l336', 0.336)
@@ -205,6 +206,7 @@ def create_lattice(
     # IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corr used in PAPU50
     # IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corr (only IDCH)
     IDC4 = sextupole('IDC4', 0.045, S=0)  # ID corr IVU18 (CH: 38mm, CV: 49mm)
+    IDC5 = sextupole('IDC5', 0.001, S=0, nr_steps=2)  # ID corr VPU29
     IDQS = sextupole('IDQS', 0.200, S=0)  # ID corr quadskew
 
     # -- sectors --
@@ -344,9 +346,9 @@ def create_lattice(
     IDA_05 = IDA
 
     IDB_06 = [
-        L500, LIB, L325, L350p,
+        L500, LIB, L324, L350p, IDC5,
         MIDB, ID06Hu, MIB, ID06Hd, MIDB,
-        L350p, L325, LIB, L500]  # low beta ID straight section (CARNAUBA)
+        IDC5, L350p, L324, LIB, L500]  # low beta ID straight section (CARNAUBA)
 
     IDP_07 = [
         L500, LIP, L500, L350p,
