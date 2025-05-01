@@ -243,7 +243,7 @@ def get_optics_mode(optics_mode):
             'injseptf_ksyl': 0.0,
         }
     else:
-        _pyacc_acc.AcceleratorException(
+        _pyacc_acc.AcceleratorError(
             'Invalid TS optics mode: ' + optics_mode)
 
     return strengths, twiss_at_start

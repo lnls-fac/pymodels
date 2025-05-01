@@ -905,9 +905,9 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'SFP2': +198.4525009917773,
             }
         else:
-            raise _pyacc_acc.AcceleratorException('Version not Implemented')
+            raise _pyacc_acc.AcceleratorError('Version not Implemented')
     else:
-        raise _pyacc_acc.AcceleratorException('Mode not Implemented.')
+        raise _pyacc_acc.AcceleratorError('Mode not Implemented.')
 
     return strengths
 
