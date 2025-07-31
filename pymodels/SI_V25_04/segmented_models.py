@@ -215,11 +215,14 @@ def dipole_b1(m_accep_fam_name, simplified=False):
 
 def dipole_b2(m_accep_fam_name, simplified=False):
     """Segmented B2 dipole model."""
+    src_point_angle = 20.0e-3  # [rad]
+    
     segtypes = {
         'B2': ('B2', _pyaccel.elements.rbend),
         'B2_EDGE': ('B2_EDGE', _pyaccel.elements.marker),
         'mb2': ('mb2', _pyaccel.elements.marker),
         'm_accep': (m_accep_fam_name, _pyaccel.elements.marker),
+        'B2_SRC': ('B2_SRC', _pyaccel.elements.marker),
     }
 
     #  Average Dipole Model for B2 at current 401p8A
@@ -245,7 +248,8 @@ def dipole_b2(m_accep_fam_name, simplified=False):
         ['B2', 0.00500, 0.01618, +1.7001e-06, -7.5218e-01, -2.1312e-01, +3.8486e-01, -3.9031e+02, +1.2889e+04, +1.7072e+06],
         ['B2', 0.01000, 0.03254, +1.3585e-06, -7.6428e-01, -4.1565e-02, +6.7680e-01, -4.0577e+02, +1.0602e+04, +1.8735e+06],
         ['B2', 0.01000, 0.03269, +2.9027e-07, -7.7165e-01, -8.0002e-03, +1.7812e+00, -3.2568e+02, +8.2067e+03, +1.7365e+06],
-        ['B2', 0.17500, 0.57073, -1.1637e-07, -7.7428e-01, +6.8988e-02, +4.1024e+00, -5.1871e+01, +7.5752e+02, +5.9943e+05],
+        ['B2', 0.04500, 0.14676, -1.1637e-07, -7.7428e-01, +6.8988e-02, +4.1024e+00, -5.1871e+01, +7.5752e+02, +5.9943e+05],
+        ['B2', 0.13000, 0.42397, -1.1637e-07, -7.7428e-01, +6.8988e-02, +4.1024e+00, -5.1871e+01, +7.5752e+02, +5.9943e+05],
         ['B2', 0.17500, 0.57034, -3.3225e-07, -7.7352e-01, +7.8447e-02, +5.4514e+00, +1.9975e+02, +3.3621e+03, -3.1314e+05],
         ['B2', 0.02000, 0.06315, +2.2577e-08, -7.8534e-01, -1.4538e-01, +9.2976e+00, -1.5715e+02, +1.2311e+04, +1.1408e+06],
         ['B2', 0.01000, 0.02719, +8.7645e-08, -6.7626e-01, -3.1354e-01, +1.6050e+01, -3.9938e+02, +1.6288e+04, +8.1085e+05],
@@ -284,10 +288,20 @@ def dipole_b2(m_accep_fam_name, simplified=False):
             element = element_type(fam_name)
         model.append(element)
 
+    # --- add source point marker to half-model ---
+    imodel = model[::-1]
+    angles = _np.array([elem.angle for elem in imodel])
+    angles_cumsum = _np.cumsum(angles)
+    src_idx = _np.argmin(_np.abs(angles_cumsum - src_point_angle))
+    fam_name, element_type = segtypes['B2_SRC']
+    src_element = element_type(fam_name=fam_name)
+    # add marker at source point [actually at 20.1 mrad]
+    imodel = imodel[:src_idx+1] + [src_element, ] + imodel[src_idx+1:]
+
     # --- adds additional markers ---
     mb2 = segtypes['mb2'][1](segtypes['mb2'][0])
     maccep = segtypes['m_accep'][1](segtypes['m_accep'][0])
-    model = model[::-1] + [mb2, maccep] + model
+    model = imodel + [mb2, maccep] + model
 
     if simplified:
         le = sum([s[1] for s in segmodel[:15]])
