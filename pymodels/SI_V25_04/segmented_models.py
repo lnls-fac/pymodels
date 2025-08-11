@@ -114,6 +114,12 @@ def dipole_bc(m_accep_fam_name, simplified=False):
 def dipole_b1(m_accep_fam_name, simplified=False):
     """Segmented B1 dipole model."""
     src_point_angle = 3.0e-3  # [rad] - at SI-01C1:MA-B1 for Carcará.
+    # The source point is downstream from the longitudinal center. i.e
+    # it is located at 3.0 mrad after the beginning of the bending field
+    # (following the beam direction).
+
+    # NOTE: A link to a CAD file containing the source
+    #  point angles relative to the bending will be added soon.
 
     segtypes = {
         'B1': ('B1', _pyaccel.elements.rbend),
@@ -189,7 +195,7 @@ def dipole_b1(m_accep_fam_name, simplified=False):
     src_idx = _np.argmin(_np.abs(angles_cumsum - src_point_angle))
     fam_name, element_type = segtypes['B1_SRC']
     src_element = element_type(fam_name=fam_name)
-    # add marker at source point [actually at 3.208 mrad]
+    # add marker at source point
     imodel = imodel[:src_idx+1] + [src_element, ] + imodel[src_idx+1:]
 
     # --- adds additional markers ---
@@ -217,6 +223,12 @@ def dipole_b1(m_accep_fam_name, simplified=False):
 def dipole_b2(m_accep_fam_name, simplified=False):
     """Segmented B2 dipole model."""
     src_point_angle = 20.0e-3  # [rad]
+    # The source point is downstream from the longitudinal center. i.e
+    # it is located at 20.0 mrad after the beginning of the dipole field
+    # (following the beam direction).
+
+    # NOTE: A link to a CAD file containing the source
+    #  point angles relative to the bending will be added soon.
     
     segtypes = {
         'B2': ('B2', _pyaccel.elements.rbend),
