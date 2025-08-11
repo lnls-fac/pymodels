@@ -27,9 +27,9 @@ _family_number_of_elements = {
     'SRFCav': 1, 'H3Cav': 1, 'start': 1,
     'InjDpKckr': 1, 'InjNLKckr': 1, 'PingH': 1, 'PingV': 1,
     'APU22': 3, 'APU58': 1, 'DELTA52': 1, 
-    'IVU18': 2, 'VPU29': 1,
+    'IVU18': 2, 'VPU29': 2,
     'IDBPM': 2,
-    'IDC1': 2, 'IDC4': 4, 'IDC5': 2,
+    'IDC1': 2, 'IDC4': 4, 'IDC5': 4,
     'IDQS': 2,
     }
 
