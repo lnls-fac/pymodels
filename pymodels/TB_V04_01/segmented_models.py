@@ -1,6 +1,7 @@
 """Segmented models of the lattice."""
 
 import math as _math
+
 import numpy as _np
 import pyaccel as _pyaccel
 
@@ -27,22 +28,111 @@ def dipole(sign, simplified=False):
     segmodel = [
         # --- model polynom_b (rz > 0). units: [m] for length, [rad] for angle and [m^(n-1)] for polynom_b ---
         # type   len[m]  angle[deg]  PolyB(n=0) PolyB(n=1) PolyB(n=2) PolyB(n=3) PolyB(n=4) PolyB(n=5) PolyB(n=6)
-        ['b',      0.0800, +3.96552, +0.00e+00, -6.11e-04, -7.42e-02, -2.19e+00, -2.43e+02, -3.43e+04, -2.11e+06],
-        ['b',      0.0200, +0.98973, +0.00e+00, -2.15e-02, -2.68e-01, -2.01e+00, -1.63e+02, -8.81e+03, -1.15e+06],
-        ['b',      0.0200, +0.93979, +0.00e+00, -6.44e-01, -4.76e+00, -1.42e+01, -7.80e+02, -5.33e+03, -1.42e+06],
-        ['b',      0.0200, +0.64484, +0.00e+00, -1.63e+00, -6.59e+00, +2.42e+01, -5.22e+03, +1.82e+04, -2.67e+06],
+        [
+            'b',
+            0.0800,
+            +3.96552,
+            +0.00e00,
+            -6.11e-04,
+            -7.42e-02,
+            -2.19e00,
+            -2.43e02,
+            -3.43e04,
+            -2.11e06,
+        ],
+        [
+            'b',
+            0.0200,
+            +0.98973,
+            +0.00e00,
+            -2.15e-02,
+            -2.68e-01,
+            -2.01e00,
+            -1.63e02,
+            -8.81e03,
+            -1.15e06,
+        ],
+        [
+            'b',
+            0.0200,
+            +0.93979,
+            +0.00e00,
+            -6.44e-01,
+            -4.76e00,
+            -1.42e01,
+            -7.80e02,
+            -5.33e03,
+            -1.42e06,
+        ],
+        [
+            'b',
+            0.0200,
+            +0.64484,
+            +0.00e00,
+            -1.63e00,
+            -6.59e00,
+            +2.42e01,
+            -5.22e03,
+            +1.82e04,
+            -2.67e06,
+        ],
         ['b_edge', 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ['b',      0.0200, +0.38227, +0.00e+00, -7.75e-01, -1.34e+01, +9.09e+01, -5.95e+03, +3.50e+04, -7.03e+05],
-        ['b',      0.0200, +0.24438, +0.00e+00, -3.74e-01, -1.41e+01, +9.51e+01, -2.80e+03, +6.72e+03, +2.36e+05],
-        ['b',      0.0300, +0.20469, +0.00e+00, -2.13e-01, -9.21e+00, +5.84e+01, -8.54e+02, -6.30e+02, +1.14e+05],
-        ['b',      0.0300, +0.12878, +1.04e-04, -1.38e-01, -6.08e+00, +3.36e+01, -2.08e+02, -8.68e+02, +4.60e+04],
-        ['b_pb',   0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [
+            'b',
+            0.0200,
+            +0.38227,
+            +0.00e00,
+            -7.75e-01,
+            -1.34e01,
+            +9.09e01,
+            -5.95e03,
+            +3.50e04,
+            -7.03e05,
+        ],
+        [
+            'b',
+            0.0200,
+            +0.24438,
+            +0.00e00,
+            -3.74e-01,
+            -1.41e01,
+            +9.51e01,
+            -2.80e03,
+            +6.72e03,
+            +2.36e05,
+        ],
+        [
+            'b',
+            0.0300,
+            +0.20469,
+            +0.00e00,
+            -2.13e-01,
+            -9.21e00,
+            +5.84e01,
+            -8.54e02,
+            -6.30e02,
+            +1.14e05,
+        ],
+        [
+            'b',
+            0.0300,
+            +0.12878,
+            +1.04e-04,
+            -1.38e-01,
+            -6.08e00,
+            +3.36e01,
+            -2.08e02,
+            -8.68e02,
+            +4.60e04,
+        ],
+        ['b_pb', 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]
 
-    d2r = _math.pi/180.0
+    d2r = _math.pi / 180.0
     for i in range(len(segmodel)):
         segmodel[i][2] = sign * segmodel[i][2]
-        # turns deflection angle error off (convenient for having a nominal model with zero 4d closed orbit)
+        # turns deflection angle error off (convenient for having a nominal
+        # model with zero 4d closed orbit)
         segmodel[i][3] = 0.0
 
     # # --- manipule polynomialB ---
@@ -57,18 +147,25 @@ def dipole(sign, simplified=False):
 
     # --- creates half model ---
     model = []
-    PolyB = _np.zeros(1+max(monomials))
+    PolyB = _np.zeros(1 + max(monomials))
     for i in range(len(segmodel)):
         fam_name, element_type = segtypes[segmodel[i][0]]
         if element_type == _pyaccel.elements.rbend:
             for j in range(len(monomials)):
-                PolyB[monomials[j]] = segmodel[i][j+3]
+                PolyB[monomials[j]] = segmodel[i][j + 3]
             PolyA = 0 * PolyB
-            element = element_type(fam_name=fam_name, length=segmodel[i][1],
-                                   angle=d2r * segmodel[i][2],
-                                   angle_in=0, angle_out=0,
-                                   gap=0, fint_in=0, fint_out=0,
-                                   polynom_a=PolyA, polynom_b=PolyB)
+            element = element_type(
+                fam_name=fam_name,
+                length=segmodel[i][1],
+                angle=d2r * segmodel[i][2],
+                angle_in=0,
+                angle_out=0,
+                gap=0,
+                fint_in=0,
+                fint_out=0,
+                polynom_a=PolyA,
+                polynom_b=PolyB,
+            )
         else:
             element = element_type(fam_name)
         model.append(element)
@@ -80,26 +177,48 @@ def dipole(sign, simplified=False):
     if simplified:
         le = sum([s[1] for s in segmodel[:8]])
         ang1 = sum([s[2] for s in segmodel[:8]]) * d2r
-        k = sum([s[4]*s[1] for s in segmodel[:8]])/le
-        s = sum([s[5]*s[1] for s in segmodel[:8]])/le
-        el = _pyaccel.elements.rbend(fam_name='B', length=2*le, angle=2*ang1,
-                                     angle_in=0, angle_out=0,
-                                     gap=0, fint_in=0, fint_out=0,
-                                     polynom_a=[0, 0, 0], polynom_b=[0, k, s])
+        k = sum([s[4] * s[1] for s in segmodel[:8]]) / le
+        s = sum([s[5] * s[1] for s in segmodel[:8]]) / le
+        el = _pyaccel.elements.rbend(
+            fam_name='B',
+            length=2 * le,
+            angle=2 * ang1,
+            angle_in=0,
+            angle_out=0,
+            gap=0,
+            fint_in=0,
+            fint_out=0,
+            polynom_a=[0, 0, 0],
+            polynom_b=[0, k, s],
+        )
         le = sum([s[1] for s in segmodel[9:14]])
         ang2 = sum([s[2] for s in segmodel[9:]]) * d2r
-        k = sum([s[4]*s[1] for s in segmodel[9:]])/le
-        s = sum([s[5]*s[1] for s in segmodel[9:]])/le
+        k = sum([s[4] * s[1] for s in segmodel[9:]]) / le
+        s = sum([s[5] * s[1] for s in segmodel[9:]]) / le
         el_e = _pyaccel.elements.rbend(
-            fam_name='B', length=le, angle=ang2,
-            angle_in=0, angle_out=0*ang2,
-            gap=0, fint_in=0, fint_out=0,
-            polynom_a=[0, 0, 0], polynom_b=[0, k, s])
+            fam_name='B',
+            length=le,
+            angle=ang2,
+            angle_in=0,
+            angle_out=0 * ang2,
+            gap=0,
+            fint_in=0,
+            fint_out=0,
+            polynom_a=[0, 0, 0],
+            polynom_b=[0, k, s],
+        )
         el_b = _pyaccel.elements.rbend(
-            fam_name='B', length=le, angle=ang2,
-            angle_in=0*ang2, angle_out=0,
-            gap=0, fint_in=0, fint_out=0,
-            polynom_a=[0, 0, 0], polynom_b=[0, k, s])
+            fam_name='B',
+            length=le,
+            angle=ang2,
+            angle_in=0 * ang2,
+            angle_out=0,
+            gap=0,
+            fint_in=0,
+            fint_out=0,
+            polynom_a=[0, 0, 0],
+            polynom_b=[0, k, s],
+        )
         l2 = sum([s[1] for s in segmodel[14:]])
         dr = _pyaccel.elements.drift('LBC', l2)
         model = [dr, el_b, el, el_e, dr]
@@ -138,15 +257,29 @@ def septum(strengths, nseg=6):
     seg_ksyl = dip_ksyl / (nseg - 1)
 
     septine = rbend_sirius(
-        fam_name=dip_nam, length=seg_len, angle=seg_ang,
-        angle_in=dip_ang/2, angle_out=0,
-        gap=0, fint_in=0, fint_out=0,
-        polynom_a=polya, polynom_b=polyb)
+        fam_name=dip_nam,
+        length=seg_len,
+        angle=seg_ang,
+        angle_in=dip_ang / 2,
+        angle_out=0,
+        gap=0,
+        fint_in=0,
+        fint_out=0,
+        polynom_a=polya,
+        polynom_b=polyb,
+    )
     septins = rbend_sirius(
-        fam_name=dip_nam, length=seg_len, angle=seg_ang,
-        angle_in=0, angle_out=dip_ang/2,
-        gap=0, fint_in=0, fint_out=0,
-        polynom_a=polya, polynom_b=polyb)
+        fam_name=dip_nam,
+        length=seg_len,
+        angle=seg_ang,
+        angle_in=0,
+        angle_out=dip_ang / 2,
+        gap=0,
+        fint_in=0,
+        fint_out=0,
+        polynom_a=polya,
+        polynom_b=polyb,
+    )
 
     matrix = m66(matrix_name, 0)
     matrix.KxL = seg_kxl
@@ -154,15 +287,24 @@ def septum(strengths, nseg=6):
     matrix.KsxL = seg_ksxl
     matrix.KsyL = seg_ksyl
 
-    segs = [matrix, ]
+    segs = [
+        matrix,
+    ]
     element = rbend_sirius(
-        fam_name=dip_nam, length=seg_len, angle=seg_ang,
-        angle_in=0, angle_out=0,
-        gap=0, fint_in=0, fint_out=0,
-        polynom_a=polya, polynom_b=polyb)
+        fam_name=dip_nam,
+        length=seg_len,
+        angle=seg_ang,
+        angle_in=0,
+        angle_out=0,
+        gap=0,
+        fint_in=0,
+        fint_out=0,
+        polynom_a=polya,
+        polynom_b=polyb,
+    )
 
     if nseg > 2:
-        for _ in range(nseg-2):
+        for _ in range(nseg - 2):
             segs.append(_pyaccel.elements.Element(element))
             segs.append(_pyaccel.elements.Element(matrix))
 

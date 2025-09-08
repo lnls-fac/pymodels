@@ -5,8 +5,12 @@ In this module the lattice of the corresponding accelerator is defined.
 
 import math as _math
 
-from pyaccel import accelerator as _pyacc_acc, elements as _pyacc_ele, \
-    lattice as _pyacc_lat, optics as _pyacc_opt
+from pyaccel import (
+    accelerator as _pyacc_acc,
+    elements as _pyacc_ele,
+    lattice as _pyacc_lat,
+    optics as _pyacc_opt
+)
 
 from . import segmented_models as _segmented_models
 
@@ -20,11 +24,13 @@ class LatticeError(Exception):
 
 
 def create_lattice(
-        optics_mode=default_optics_mode,
-        add_from_li_triplets=default_add_from_li_triplets):
+    optics_mode=default_optics_mode,
+    add_from_li_triplets=default_add_from_li_triplets,
+):
     """Create lattice function."""
-    strengths, twiss_at_start = \
-        get_optics_mode(optics_mode, add_from_li_triplets)
+    strengths, twiss_at_start = get_optics_mode(
+        optics_mode, add_from_li_triplets
+    )
 
     # -- shortcut symbols --
     marker = _pyacc_ele.marker
@@ -98,9 +104,18 @@ def create_lattice(
     dip_ang = -ang * deg_2_rad
     dip_K = 0.0
     dip_S = 0.00
-    spech = rbend_sirius(dip_nam, dip_len/2, dip_ang/2,
-                         0, 0,
-                         0, 0, 0, [0, 0, 0], [0, dip_K, dip_S])
+    spech = rbend_sirius(
+        dip_nam,
+        dip_len / 2,
+        dip_ang / 2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        [0, 0, 0],
+        [0, dip_K, dip_S],
+    )
     spec = [spech, spech]
 
     qd1 = quadrupole('QD1', 0.100, strengths['qd1'])
@@ -124,28 +139,102 @@ def create_lattice(
     s00_1 = [l80, l4, qf2L, l30, l8, qd2L, l30, l8, qf2L, l30, l8, qf3L]
     s00_2 = [l80, l7, bpm, l200, l40, l6, ict, l200, l100, l90, l5]
     s01_1 = [
-        l200, l200, l200, l80, l4, lp2, scrn, l100, l40, lp2, bpm,
-        l100, l2, lp4]
+        l200,
+        l200,
+        l200,
+        l80,
+        l4,
+        lp2,
+        scrn,
+        l100,
+        l40,
+        lp2,
+        bpm,
+        l100,
+        l2,
+        lp4,
+    ]
     s01_2 = [l80, l8, lp4, chv, l200, l90, l1, lp2]
     s01_3 = [
-        l200, l200, l200, l200, l200, l40, l4, slith, l100, l80, scrn,
-        l100, l40, bpm, l100, l90, l9, chv, l100, l90, l3, lp3, slitv,
-        l200, l10, lp4]
+        l200,
+        l200,
+        l200,
+        l200,
+        l200,
+        l40,
+        l4,
+        slith,
+        l100,
+        l80,
+        scrn,
+        l100,
+        l40,
+        bpm,
+        l100,
+        l90,
+        l9,
+        chv,
+        l100,
+        l90,
+        l3,
+        lp3,
+        slitv,
+        l200,
+        l10,
+        lp4,
+    ]
     s02_1 = [l100, l90, l4, lp4, ict, l200, l200, l200, l10, l6]
     s02_2 = [l200, l70]
-    s02_3 = [
-        l200, scrn, l100, l40, bpm, l60, l9, chv] + [l200]*26 + \
-        [l100, l70, l3]
+    s02_3 = (
+        [l200, scrn, l100, l40, bpm, l60, l9, chv]
+        + [l200] * 26
+        + [l100, l70, l3]
+    )
     s02_4 = [l200, l70]
     s02_5 = [
-        l200, scrn, l100, l40, bpm, l60, l8, lp5, chv, l200, l100,
-        l10, l9, lp7]
+        l200,
+        scrn,
+        l100,
+        l40,
+        bpm,
+        l60,
+        l8,
+        lp5,
+        chv,
+        l200,
+        l100,
+        l10,
+        l9,
+        lp7,
+    ]
     s03_1 = [l200] * 10 + [l100, l90, l9, lp6]
     s03_2 = [l200, l6]
     s03_3 = [l100, bpm, l100, l40, l4, scrn, l200, l10, lp4]
     s04_1 = [
-        l200, l70, l2, lp4, chv, l200, l200, l100, l80, lp5, fct,
-        l100, l40, ict, l200, l100, l5, lp7, bpm, l100, l10, l5, lp6]
+        l200,
+        l70,
+        l2,
+        lp4,
+        chv,
+        l200,
+        l200,
+        l100,
+        l80,
+        lp5,
+        fct,
+        l100,
+        l40,
+        ict,
+        l200,
+        l100,
+        l5,
+        lp7,
+        bpm,
+        l100,
+        l10,
+        l5,
+        lp6,
+    ]
     s04_2 = [l200, l10, l6]
     s04_3 = [l100, l70, scrn, l60, l1, lp2, qs, l80, l6, lp6]
 
@@ -157,8 +246,7 @@ def create_lattice(
 
     # TB beamline
     if add_from_li_triplets:
-        ltlb = [
-            start, sector00, sector01, sector02, sector03, sector04, end]
+        ltlb = [start, sector00, sector01, sector02, sector03, sector04, end]
     else:
         ltlb = [start, sector01, sector02, sector03, sector04, end]
     elist = ltlb
@@ -195,33 +283,36 @@ def get_optics_mode(optics_mode, add_from_li_triplets):
         if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[1.45401, 2.47656],
-                alpha=[-1.57249, 0.527312], etax=[0, 0])
+                alpha=[-1.57249, 0.527312],
+                etax=[0, 0],
+            )
         else:
             # propagated from above twiss value
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[1.1654363475785563, 7.3582182762528765],
                 alpha=[0.5607752743579607, -2.9557170327962807],
-                etax=[-0.05857309412506855, 0])
+                etax=[-0.05857309412506855, 0],
+            )
 
         strengths = {
             'qf2l': 12.37,
             'qd2l': -14.85,
             'qf3l': 6.3387,
             'qd1': -8.8224,
-            'qf1':  13.3361,
+            'qf1': 13.3361,
             'qd2a': -10.8698,
             'qf2a': 13.8136,
             'qf2b': 6.9037,
             'qd2b': -6.3496,
-            'qf3':  13.4901,
+            'qf3': 13.4901,
             'qd3': -10.8577,
-            'qf4':  8.1889,
-            'qd4':  0.6693,
+            'qf4': 8.1889,
+            'qd4': 0.6693,
             'injsept_kxl': -0.39475202,
             'injsept_kyl': +0.35823882,
             'injsept_ksxl': -0.04944937,
             'injsept_ksyl': -0.00393883,
-            }
+        }
 
     if optics_mode == 'M2':
         # Initial Conditions from Linac measured parameters on 30/08/2019
@@ -231,12 +322,15 @@ def get_optics_mode(optics_mode, add_from_li_triplets):
         if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[1.45401, 2.47656],
-                alpha=[-1.57249, 0.527312], etax=[0, 0])
+                alpha=[-1.57249, 0.527312],
+                etax=[0, 0],
+            )
         else:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[1.1636775006139601, 7.362467566808375],
                 alpha=[0.5604253077073319, -2.958197325547372],
-                etax=[-0.05857309412506855, 0])
+                etax=[-0.05857309412506855, 0],
+            )
 
         strengths = {
             'qf2l': 12.37,
@@ -256,7 +350,7 @@ def get_optics_mode(optics_mode, add_from_li_triplets):
             'injsept_kyl': 0.3,
             'injsept_ksxl': 0.0,
             'injsept_ksyl': 0.0,
-            }
+        }
 
     if optics_mode == 'M3':
         # Initial Conditions from Linac measured parameters on 16/07/2019
@@ -265,13 +359,16 @@ def get_optics_mode(optics_mode, add_from_li_triplets):
         # (Sem tripleto)
         if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
-                beta=[2.71462, 4.69925], alpha=[-2.34174, 1.04009],
-                etax=[0.0, 0.0])
+                beta=[2.71462, 4.69925],
+                alpha=[-2.34174, 1.04009],
+                etax=[0.0, 0.0],
+            )
         else:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[0.9328309787451605, 9.635141097929187],
                 alpha=[0.877121666572456, -3.059132550219447],
-                etax=[-0.05857309412506855, 0.0])
+                etax=[-0.05857309412506855, 0.0],
+            )
 
         strengths = {
             'qf2l': 12.37,
@@ -299,16 +396,19 @@ def get_optics_mode(optics_mode, add_from_li_triplets):
         # (Sem tripleto)
         if add_from_li_triplets:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
-                beta=[2.71462, 4.69925], alpha=[-2.34174, 1.04009],
-                etax=[0.0, 0.0])
+                beta=[2.71462, 4.69925],
+                alpha=[-2.34174, 1.04009],
+                etax=[0.0, 0.0],
+            )
         else:
             twiss_at_start = _pyacc_opt.Twiss.make_new(
                 beta=[1.7650781208685327, 7.886431240236215],
                 alpha=[1.1103521949355937, -2.139509773304648],
-                etax=[-0.05857309412506855, 0.0])
+                etax=[-0.05857309412506855, 0.0],
+            )
 
         strengths = {
-            'qf2l':  11.78860,
+            'qf2l': 11.78860,
             'qd2l': -14.298290,
             'qf3l': 4.801910,
             'qd1': -8.822256368219,
@@ -327,8 +427,7 @@ def get_optics_mode(optics_mode, add_from_li_triplets):
             'injsept_ksyl': 0.0,
         }
     else:
-        _pyacc_acc.AcceleratorError(
-            'Invalid TB optics mode: ' + optics_mode)
+        _pyacc_acc.AcceleratorError('Invalid TB optics mode: ' + optics_mode)
 
     return strengths, twiss_at_start
 
@@ -339,7 +438,7 @@ def set_num_integ_steps(the_line):
     for i, _ in enumerate(the_line):
         if the_line[i].angle:
             length = the_line[i].length
-            the_line[i].nr_steps = max(10, int(_math.ceil(length/dl)))
+            the_line[i].nr_steps = max(10, int(_math.ceil(length / dl)))
         elif the_line[i].polynom_b[1]:
             the_line[i].nr_steps = 10
         elif the_line[i].polynom_b[2]:
@@ -367,7 +466,7 @@ def set_vacuum_chamber(the_line):
     # -- bo injection septum --
     beg = _pyacc_lat.find_indices(the_line, 'fam_name', 'bInjS')[0]
     end = _pyacc_lat.find_indices(the_line, 'fam_name', 'eInjS')[0]
-    for i in range(beg, end+1):
+    for i in range(beg, end + 1):
         the_line[i].hmin = -0.0075
         the_line[i].hmax = +0.0075
         the_line[i].vmin = -0.0080

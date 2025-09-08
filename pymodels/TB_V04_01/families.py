@@ -1,78 +1,97 @@
 """Element family definitions."""
 
-from siriuspy.namesys import join_name as _join_name
 import pyaccel as _pyaccel
-
+from siriuspy.namesys import join_name as _join_name
 
 _family_segmentation = {
-    'B': 16, 'CH': 1, 'CV': 1, 'CHV': 1, 'QS': 1,
-    'QF2L': 1, 'QD2L': 1, 'QF3L': 1,
-    'QD1': 1, 'QF1': 1, 'QD2A': 1, 'QF2A': 1, 'QF2B': 1, 'QD2B': 1,
-    'QF3': 1, 'QD3': 1, 'QF4': 1, 'QD4': 1,
+    'B': 16,
+    'CH': 1,
+    'CV': 1,
+    'CHV': 1,
+    'QS': 1,
+    'QF2L': 1,
+    'QD2L': 1,
+    'QF3L': 1,
+    'QD1': 1,
+    'QF1': 1,
+    'QD2A': 1,
+    'QF2A': 1,
+    'QF2B': 1,
+    'QD2B': 1,
+    'QF3': 1,
+    'QD3': 1,
+    'QF4': 1,
+    'QD4': 1,
     'InjSept': 6,
-    'ICT': 1, 'FCT': 1, 'SlitH': 1, 'SlitV': 1, 'Scrn': 1, 'BPM': 1
-    }
+    'ICT': 1,
+    'FCT': 1,
+    'SlitH': 1,
+    'SlitV': 1,
+    'Scrn': 1,
+    'BPM': 1,
+}
 
 
 _discipline_mapping = {
-    'B':       'PS',
-    'CHV':     'PS',
-    'CH':      'PS',
-    'CV':      'PS',
-    'QD1':     'PS',
-    'QF1':     'PS',
-    'QD2A':    'PS',
-    'QF2A':    'PS',
-    'QF2B':    'PS',
-    'QD2B':    'PS',
-    'QF3':     'PS',
-    'QD3':     'PS',
-    'QF4':     'PS',
-    'QD4':     'PS',
+    'B': 'PS',
+    'CHV': 'PS',
+    'CH': 'PS',
+    'CV': 'PS',
+    'QD1': 'PS',
+    'QF1': 'PS',
+    'QD2A': 'PS',
+    'QF2A': 'PS',
+    'QF2B': 'PS',
+    'QD2B': 'PS',
+    'QF3': 'PS',
+    'QD3': 'PS',
+    'QF4': 'PS',
+    'QD4': 'PS',
     'InjSept': 'PU',
-    'ICT':     'DI',
-    'FCT':     'DI',
-    'SlitH':   'DI',
-    'SlitV':   'DI',
-    'Scrn':    'DI',
-    'BPM':     'DI'
-    }
+    'ICT': 'DI',
+    'FCT': 'DI',
+    'SlitH': 'DI',
+    'SlitV': 'DI',
+    'Scrn': 'DI',
+    'BPM': 'DI',
+}
 
 
 family_mapping = {
-    'B':       'dipole',
-    'CHV':     'general_corrector',
-    'CH':      'horizontal_corrector',
-    'CV':      'vertical_corrector',
-    'QS':      'skew_quadrupole',
-    'QD1':     'quadrupole',
-    'QF1':     'quadrupole',
-    'QD2A':    'quadrupole',
-    'QF2A':    'quadrupole',
-    'QF2B':    'quadrupole',
-    'QD2B':    'quadrupole',
-    'QF3':     'quadrupole',
-    'QD3':     'quadrupole',
-    'QF4':     'quadrupole',
-    'QD4':     'quadrupole',
+    'B': 'dipole',
+    'CHV': 'general_corrector',
+    'CH': 'horizontal_corrector',
+    'CV': 'vertical_corrector',
+    'QS': 'skew_quadrupole',
+    'QD1': 'quadrupole',
+    'QF1': 'quadrupole',
+    'QD2A': 'quadrupole',
+    'QF2A': 'quadrupole',
+    'QF2B': 'quadrupole',
+    'QD2B': 'quadrupole',
+    'QF3': 'quadrupole',
+    'QD3': 'quadrupole',
+    'QF4': 'quadrupole',
+    'QD4': 'quadrupole',
     'InjSept': 'pulsed_magnet',
-    'ICT':     'beam_current_monitor',
-    'FCT':     'beam_current_monitor',
-    'SlitH':   'horizontal_slit',
-    'SlitV':   'vertical_slit',
-    'Scrn':    'beam_profile_monitor',
-    'BPM':     'bpm',
+    'ICT': 'beam_current_monitor',
+    'FCT': 'beam_current_monitor',
+    'SlitH': 'horizontal_slit',
+    'SlitV': 'vertical_slit',
+    'Scrn': 'beam_profile_monitor',
+    'BPM': 'bpm',
     'Spect': 'spectrometer',  # only when LI sector is included
     'QF2L': 'linac_quadrupole',  # only when LI sector is included
     'QD2L': 'linac_quadrupole',  # only when LI sector is included
     'QF3L': 'linac_quadrupole',  # only when LI sector is included
-    }
+}
 
 
 def _check_li_sector(lattice):
     """."""
     if lattice is None or _pyaccel.lattice.find_indices(
-            lattice, attribute_name='fam_name', value='Spect'):
+        lattice, attribute_name='fam_name', value='Spect'
+    ):
         return True
     else:
         return False
@@ -94,8 +113,17 @@ def families_pulsed_magnets(lattice=None):
 def families_quadrupoles(lattice=None):
     """Return quadrupole families."""
     quads = [
-        'QD1', 'QF1', 'QD2A', 'QF2A', 'QF2B', 'QD2B',
-        'QF3', 'QD3', 'QF4', 'QD4']
+        'QD1',
+        'QF1',
+        'QD2A',
+        'QF2A',
+        'QF2B',
+        'QD2B',
+        'QF3',
+        'QD3',
+        'QF4',
+        'QD4',
+    ]
     if _check_li_sector(lattice):
         return quads + ['QF2L', 'QD2L', 'QF3L']
     else:
@@ -104,12 +132,16 @@ def families_quadrupoles(lattice=None):
 
 def families_horizontal_correctors(lattice=None):
     """Return horizontal corrector families."""
-    return ['CH', ]
+    return [
+        'CH',
+    ]
 
 
 def families_vertical_correctors(lattice=None):
     """Return vertical corrector families."""
-    return ['CV', ]
+    return [
+        'CV',
+    ]
 
 
 def families_sextupoles(lattice=None):
@@ -134,18 +166,18 @@ def families_di(lattice=None):
 
 def get_section_name_mapping(lattice):
     """Return list with section name of each lattice element."""
-    section_map = len(lattice)*['']
+    section_map = len(lattice) * ['']
 
     # find indices important to define the change of the names of the sections
     b = _pyaccel.lattice.find_indices(lattice, 'fam_name', 'B')
-    b_nrsegs = len(b)//3
+    b_nrsegs = len(b) // 3
 
     # names of the sections:
     secs = ['01', '02', '03', '04']
 
     # conditions that define change in section name:
-    relev_inds = [b[b_nrsegs-1], b[2*b_nrsegs-1], b[-1]]
-    relev_inds += [len(lattice)-1]
+    relev_inds = [b[b_nrsegs - 1], b[2 * b_nrsegs - 1], b[-1]]
+    relev_inds += [len(lattice) - 1]
     relev_inds.sort()
     # fill the section_map variable
     ref = 0
@@ -173,7 +205,8 @@ def get_family_data(lattice):
         _family_segmentation_local.update({'Spect': 2})
         _discipline_mapping_local = _discipline_mapping.copy()
         _discipline_mapping_local.update(
-            {'Spect': 'PS', 'QF2L': 'PS', 'QD2L': 'PS', 'QF3L': 'PS'})
+            {'Spect': 'PS', 'QF2L': 'PS', 'QD2L': 'PS', 'QF3L': 'PS'}
+        )
     else:
         _family_segmentation_local = _family_segmentation
         _discipline_mapping_local = _discipline_mapping
@@ -185,7 +218,7 @@ def get_family_data(lattice):
         if nr is None:
             continue
         # create a list of lists for the indexes
-        data[key] = [idx[i*nr:(i+1)*nr] for i in range(len(idx)//nr)]
+        data[key] = [idx[i * nr : (i + 1) * nr] for i in range(len(idx) // nr)]
 
     data['CH'] = list(data['CHV'])
     data['CV'] = list(data['CHV'])
@@ -201,17 +234,17 @@ def get_family_data(lattice):
 
         # find out if there are more than one element per section and
         # attribute a number to it
-        num = len(secs)*['']
+        num = len(secs) * ['']
         if len(secs) > 1:
             j = 1
             if secs[0] == secs[1]:
                 num[0] = '{0:d}'.format(j)
                 j += 1
-            for i in range(1, len(secs)-1):
-                if secs[i] == secs[i+1] or secs[i] == secs[i-1]:
+            for i in range(1, len(secs) - 1):
+                if secs[i] == secs[i + 1] or secs[i] == secs[i - 1]:
                     num[i] = '{0:d}'.format(j)
 
-                if secs[i] == secs[i+1]:
+                if secs[i] == secs[i + 1]:
                     j += 1
                 else:
                     j = 1
@@ -234,7 +267,8 @@ def get_family_data(lattice):
         dev = key[:-1] if key.endswith('L') else key
         for sub, inst in zip(subs, insts):
             devnames.append(
-                _join_name(sec=sec, dis=dis, sub=sub, idx=inst, dev=dev))
+                _join_name(sec=sec, dis=dis, sub=sub, idx=inst, dev=dev)
+            )
         new_data[key]['devnames'] = devnames
 
     return new_data
