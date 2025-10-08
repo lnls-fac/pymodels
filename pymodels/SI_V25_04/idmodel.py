@@ -5,8 +5,10 @@ from pyaccel import elements as _pyacc_ele
 
 class IDModel:
     """ID Model (currently based on Kickmap files)."""
+
     class SUBSECTIONS:
         # See https://wiki-sirius.lnls.br/mediawiki/index.php/Table:Storage_ring_straight_sections_allocations
+        ID05SA = 'ID05SA'
         ID06SB = 'ID06SB'
         ID07SP = 'ID07SP'
         ID08SB = 'ID08SB'
@@ -16,12 +18,26 @@ class IDModel:
         ID14SB = 'ID14SB'
         ID17SA = 'ID17SA'
         ALL = (
-            ID06SB, ID07SP, ID08SB, ID09SA,
-            ID10SB, ID11SP, ID14SB, ID17SA)
+            ID05SA,
+            ID06SB,
+            ID07SP,
+            ID08SB,
+            ID09SA,
+            ID10SB,
+            ID11SP,
+            ID14SB,
+            ID17SA,
+        )
 
-    def __init__(self,
-                 subsec, file_name, fam_name=None,
-                 nr_steps=1, rescale_kicks=1.0, rescale_length=1.0):
+    def __init__(
+        self,
+        subsec,
+        file_name,
+        fam_name=None,
+        nr_steps=1,
+        rescale_kicks=1.0,
+        rescale_length=1.0,
+    ):
         if subsec not in IDModel.SUBSECTIONS.ALL:
             raise ValueError('Invalid subsection definition')
         self._subsec = subsec
@@ -73,7 +89,8 @@ class IDModel:
             kicktable_fname=self._file_name,
             nr_steps=self._nr_steps,
             rescale_kicks=half_rescale_kicks,
-            rescale_length=half_rescale_length)
+            rescale_length=half_rescale_length,
+        )
         return kickmap
 
     def __str__(self):
