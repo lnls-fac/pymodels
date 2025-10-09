@@ -1888,7 +1888,8 @@ def create_id_kickmaps_dict(ids, energy):
     ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
         # HIBISCO
-        'ID05SA': ('CPMU13', 2.000, [-0.002, 0.002, -0.002275, 0.002275], 0),
+        # 'ID05SA': ('CPMU13', 2.000, [-0.020, 0.020, -0.002325, 0.002325], 0),
+        'ID05SA': ('CPMU13', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # CARNAUBA
         'ID06SB': ('VPU29', 1.650, [-0.0038, 0.0038, -0.0065, 0.0065], 2),
         # CATERETE

@@ -706,7 +706,7 @@ def get_family_data(lattice):
         dev = key
         if dev in ('IDCH', 'IDCV', 'IDQS', 'IDBPM'):
             dev = dev[2:]
-        for sub, inst in zip(subs, insts, strict=False):
+        for sub, inst in zip(subs, insts):  # noqa: B905
             devnames.append(
                 _join_name(sec='SI', dis=dis, sub=sub, idx=inst, dev=dev)
             )
@@ -728,6 +728,6 @@ def get_girder_data(lattice):
     gir_end = gir[1::2]
 
     data = []
-    for ini, end in zip(gir_ini, gir_end, strict=False):
+    for ini, end in zip(gir_ini, gir_end):  # noqa: B905
         data.append(list(range(ini, end + 1)))
     return data
