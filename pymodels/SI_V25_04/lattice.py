@@ -93,6 +93,7 @@ def create_lattice(
     L336 = drift('l336', 0.336)
     L350 = drift('l350', 0.350)
     L419 = drift('l419', 0.419)
+    L450 = drift('l450', 0.450)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
     L665 = drift('l665', 0.665)
@@ -838,7 +839,7 @@ def create_lattice(
     IDB_04 = IDB
 
     IDA_05 = [
-        L500,
+        L450,
         LIA,
         L500p,
         MIDA,
@@ -848,7 +849,7 @@ def create_lattice(
         MIDA,
         L500p,
         LIA,
-        L500,
+        L450,
     ]  # high beta ID straight section
 
     IDB_06 = [
@@ -1888,8 +1889,8 @@ def create_id_kickmaps_dict(ids, energy):
     ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
         # HIBISCO
-        # 'ID05SA': ('CPMU13', 2.000, [-0.020, 0.020, -0.002325, 0.002325], 0),
-        'ID05SA': ('CPMU13', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
+        'ID05SA': ('CPMU13', 2.000, [-0.020, 0.020, -0.002325, 0.002325], 0),
+        # 'ID05SA': ('CPMU13', 2.100, [-0.020, 0.020, -0.002175, 0.002175], 0),
         # CARNAUBA
         'ID06SB': ('VPU29', 1.650, [-0.0038, 0.0038, -0.0065, 0.0065], 2),
         # CATERETE
