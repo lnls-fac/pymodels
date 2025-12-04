@@ -5,7 +5,6 @@ In this module the lattice of the corresponding accelerator is defined.
 
 import math as _math
 
-import lnls as _lnls
 import mathphys as _mp
 from pyaccel import accelerator as _pyacc_acc, elements as _pyacc_ele, \
     lattice as _pyacc_lat
@@ -626,7 +625,7 @@ def create_lattice(
 
     anel = [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10,
             S11, S12, S13, S14, S15, S16, S17, S18, S19, S20]
-    anel = _lnls.utils.flatten(anel)
+    anel = _mp.functions.flatten(anel)
 
     the_ring = _pyacc_lat.build(anel)
 
