@@ -53,6 +53,7 @@ def create_lattice(
     L144p = drift('l144p', 0.144 + dcircum_frac)
     L120p = drift('l120p', 0.120 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
+    L467p = drift('l467p', 0.467 + dcircum_frac)
     L600p = drift('l600p', 0.600 + dcircum_frac)
     L800p = drift('l800p', 0.7999)
     L011 = drift('l011', 0.011)
@@ -202,15 +203,16 @@ def create_lattice(
 
     # --- insertion devices (half devices) ---
     kickmaps, ids_vchamber = create_id_kickmaps_dict(ids, energy=energy)
-    ID05Hu, ID05Hd = kickmaps['ID05SA']  # HIBISCO  'SI-05SA:ID-CPMU13'
-    ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA  'SI-06SB:ID-VPU29'
-    ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE  'SI-07SP:ID-VPU29'
-    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA       'SI-08SB:ID-IVU18'
-    ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA    'SI-09SA:ID-APU22'
-    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
-    ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
-    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-IVU18'
-    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
+    ID05Hu, ID05Hd = kickmaps['ID05SA']  # HIBISCO    'SI-05SA:ID-CPMU13'
+    ID06Hu, ID06Hd = kickmaps['ID06SB']  # CARNAUBA   'SI-06SB:ID-VPU29'
+    ID07Hu, ID07Hd = kickmaps['ID07SP']  # CATERETE   'SI-07SP:ID-VPU29'
+    ID08Hu, ID08Hd = kickmaps['ID08SB']  # EMA        'SI-08SB:ID-IVU18'
+    ID09Hu, ID09Hd = kickmaps['ID09SA']  # MANACA     'SI-09SA:ID-APU22'
+    ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA      'SI-10SB:ID-DELTA52'
+    ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE        'SI-11SP:ID-APU58'
+    ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA   'SI-14SB:ID-IVU18'
+    ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA   'SI-17SA:ID-APU22'
+    ID18Hu, ID18Hd = kickmaps['ID18SB']  # QUIRIQUIRI 'SI-18SB:ID-CPMU14'
 
     IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corr
     # IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corr used in PAPU50
@@ -841,13 +843,13 @@ def create_lattice(
     IDA_05 = [
         L450,
         LIA,
-        L500p,
+        L467p,
         MIDA,
         ID05Hu,
         MIA,
         ID05Hd,
         MIDA,
-        L500p,
+        L467p,
         LIA,
         L450,
     ]  # high beta ID straight section
@@ -1034,20 +1036,18 @@ def create_lattice(
     ]  # high beta ID straight section (SAPUCAIA)
 
     IDB_18_TUNEPKUPH = [
-        L500,
+        L450,
         LIB,
-        L500,
+        L467p,
         MIDB,
-        L500,
-        L500p,
+        ID18Hu,
         MIB,
-        L500p,
-        L500,
+        ID18Hd,
         MIDB,
-        L500,
+        L467p,
         TunePkupH,
         LIB,
-        L500,
+        L450,
     ]  # low beta ID straight section
 
     IDB_19_GSL15 = [
@@ -1889,8 +1889,9 @@ def create_id_kickmaps_dict(ids, energy):
     ids_subsec_info = {
         # subsec   idtype   idlen   id_vchamber    vchamber_shape
         # HIBISCO
-        'ID05SA': ('CPMU13', 2.100, [-0.020, 0.020, -0.002325, 0.002325], 0),
-        # 'ID05SA': ('CPMU13', 2.100, [-0.020, 0.020, -0.002175, 0.002175], 0),
+        # 'ID05SA': ('CPMU13', 2.166, [-0.020, 0.020, -0.002325, 0.002325], 0),
+        # 'ID05SA': ('CPMU13', 2.166, [-0.020, 0.020, -0.002225, 0.002225], 0),
+        'ID05SA': ('CPMU13', 2.166, [-0.020, 0.020, -0.006, 0.006], 0),
         # CARNAUBA
         'ID06SB': ('VPU29', 1.650, [-0.0038, 0.0038, -0.0065, 0.0065], 2),
         # CATERETE
@@ -1907,6 +1908,9 @@ def create_id_kickmaps_dict(ids, energy):
         'ID14SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # SAPUCAIA
         'ID17SA': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        # QUIRIQUIRI
+        'ID18SB': ('CPMU14', 2.166, [-0.020, 0.020, -0.001825, 0.001825], 0),
+        # 'ID18SB': ('CPMU14', 2.166, [-0.020, 0.020, -0.006, 0.006], 0),
     }
 
     # build kickmap dict

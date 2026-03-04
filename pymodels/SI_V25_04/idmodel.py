@@ -17,6 +17,7 @@ class IDModel:
         ID11SP = 'ID11SP'
         ID14SB = 'ID14SB'
         ID17SA = 'ID17SA'
+        ID18SB = 'ID18SB'
         ALL = (
             ID05SA,
             ID06SB,
@@ -27,6 +28,7 @@ class IDModel:
             ID11SP,
             ID14SB,
             ID17SA,
+            ID18SB,
         )
 
     def __init__(
