@@ -80,7 +80,6 @@ _family_number_of_elements = {
     'IDC1': 2,
     'IDC4': 4,
     'IDC5': 4,
-    'IDC6': 2,
     'IDQS': 4,
 }
 
@@ -354,7 +353,7 @@ def families_ids():
 
 def families_id_correctors():
     """Return insertion device correctors families."""
-    return ['IDC1', 'IDC4', 'IDC5', 'IDC6']
+    return ['IDC1', 'IDC4', 'IDC5']
 
 
 def families_id_skew_correctors():
@@ -503,7 +502,7 @@ def get_family_data(lattice):
 
     # idch - id horizontal correctors
     idx = []
-    fams = ['IDC1', 'IDC2', 'IDC3', 'IDC6']
+    fams = ['IDC1', 'IDC2', 'IDC3']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -511,7 +510,7 @@ def get_family_data(lattice):
 
     # idcv - id vertical correctors
     idx = []
-    fams = ['IDC1', 'IDC2', 'IDC6']
+    fams = ['IDC1', 'IDC2']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -677,7 +676,7 @@ def get_family_data(lattice):
     for key in new_data:
         if key not in _discipline_mapping:
             continue
-        if key in ('IDC1', 'IDC2', 'IDC3', 'IDC6'):
+        if key in ('IDC1', 'IDC2', 'IDC3'):
             continue
         dis = _discipline_mapping[key]
         dta = new_data[key]
