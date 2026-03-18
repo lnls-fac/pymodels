@@ -93,7 +93,7 @@ def create_lattice(
     L335 = drift('l335', 0.335)
     L336 = drift('l336', 0.336)
     L350 = drift('l350', 0.350)
-    L355 = drift('l355', 0.355)
+    L375 = drift('l375', 0.375)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -217,7 +217,7 @@ def create_lattice(
     # IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corr (only IDCH)
     IDC4 = sextupole('IDC4', 0.045, S=0)  # ID corr IVU18 (CH: 38mm, CV: 49mm)
     IDC5 = sextupole('IDC5', 0.001, S=0, nr_steps=2)  # ID corr VPU29
-    IDC6 = sextupole('IDC6', 0.120, S=0)  # ID corr
+    IDC6 = sextupole('IDC6', 0.100, S=0)  # ID corr
     IDQS = sextupole('IDQS', 0.200, S=0)  # ID corr quadskew
 
     # -- sectors --
@@ -937,7 +937,7 @@ def create_lattice(
         L100p,
         L113,
         IDQS,
-        L355,
+        L375,
         IDC6,
         L500,
         MIDP,
@@ -947,7 +947,7 @@ def create_lattice(
         MIDP,
         L500,
         IDC6,
-        L355,
+        L375,
         IDQS,
         L113,
         L100p,
