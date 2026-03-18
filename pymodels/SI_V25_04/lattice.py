@@ -50,8 +50,8 @@ def create_lattice(
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
     L144p = drift('l144p', 0.144 + dcircum_frac)
+    L100p = drift('l100p', 0.100 + dcircum_frac)
     L120p = drift('l120p', 0.120 + dcircum_frac)
-    L300p = drift('l300p', 0.300 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L600p = drift('l600p', 0.600 + dcircum_frac)
     L800p = drift('l800p', 0.7999)
@@ -66,6 +66,7 @@ def create_lattice(
     L090 = drift('l090', 0.090)
     L100 = drift('l100', 0.100)
     L112 = drift('l112', 0.112)
+    L113 = drift('l113', 0.1129)
     L119 = drift('l119', 0.119)
     L120 = drift('l120', 0.120)
     L125 = drift('l125', 0.125)
@@ -92,9 +93,9 @@ def create_lattice(
     L335 = drift('l335', 0.335)
     L336 = drift('l336', 0.336)
     L350 = drift('l350', 0.350)
+    L355 = drift('l355', 0.355)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
-    L488 = drift('l488', 0.4879)
     L500 = drift('l500', 0.500)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
@@ -216,6 +217,7 @@ def create_lattice(
     # IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corr (only IDCH)
     IDC4 = sextupole('IDC4', 0.045, S=0)  # ID corr IVU18 (CH: 38mm, CV: 49mm)
     IDC5 = sextupole('IDC5', 0.001, S=0, nr_steps=2)  # ID corr VPU29
+    IDC6 = sextupole('IDC6', 0.120, S=0)  # ID corr
     IDQS = sextupole('IDQS', 0.200, S=0)  # ID corr quadskew
 
     # -- sectors --
@@ -774,7 +776,7 @@ def create_lattice(
 
     IDP = [
         L500,
-        L488,
+        LIP,
         L500,
         MIDP,
         L500,
@@ -784,7 +786,7 @@ def create_lattice(
         L500,
         MIDP,
         L500,
-        L488,
+        LIP,
         L500,
     ]  # low beta ID straight section
 
@@ -932,9 +934,11 @@ def create_lattice(
     ]  # low beta (SABIA)
 
     IDP_11 = [
-        L300p,
-        LIP,
-        IDC1,
+        L100p,
+        L113,
+        IDQS,
+        L355,
+        IDC6,
         L500,
         MIDP,
         ID11Hu,
@@ -942,9 +946,11 @@ def create_lattice(
         ID11Hd,
         MIDP,
         L500,
-        IDC1,
-        LIP,
-        L300p,
+        IDC6,
+        L355,
+        IDQS,
+        L113,
+        L100p,
     ]  # low beta ID straight section (IPE)
 
     IDB_12 = [
