@@ -49,6 +49,8 @@ def create_lattice(
     LIP = drift('lip', 1.0879)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
+    L100p = drift('l100p', 0.100 + dcircum_frac)
+    L113p = drift('l113p', 0.1129)
     L144p = drift('l144p', 0.144 + dcircum_frac)
     L120p = drift('l120p', 0.120 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
@@ -91,6 +93,7 @@ def create_lattice(
     L335 = drift('l335', 0.335)
     L336 = drift('l336', 0.336)
     L350 = drift('l350', 0.350)
+    L375 = drift('l375', 0.375)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -214,6 +217,7 @@ def create_lattice(
     # IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corr (only IDCH)
     IDC4 = sextupole('IDC4', 0.045, S=0)  # ID corr IVU18 (CH: 38mm, CV: 49mm)
     IDC5 = sextupole('IDC5', 0.001, S=0, nr_steps=2)  # ID corr VPU29
+    IDC6 = sextupole('IDC6', 0.100, S=0)  # ID corr
     IDQS = sextupole('IDQS', 0.200, S=0)  # ID corr quadskew
 
     # -- sectors --
@@ -930,20 +934,24 @@ def create_lattice(
     ]  # low beta (SABIA)
 
     IDP_11 = [
+        L100p,
+        L113p,
+        IDQS,
+        L375,
+        IDC6,
         L500,
-        LIP,
-        L500,
-        L350p,
         MIDP,
         ID11Hu,
         MIP,
         ID11Hd,
         MIDP,
-        L350p,
         L500,
-        LIP,
-        L500,
-    ]  # low beta ID straight section (IPE) L=1.3m
+        IDC6,
+        L375,
+        IDQS,
+        L113p,
+        L100p,
+    ]  # low beta ID straight section (IPE)
 
     IDB_12 = [
         L500,
@@ -1884,7 +1892,7 @@ def create_id_kickmaps_dict(ids, energy):
         # SABIA
         'ID10SB': ('DELTA52', 1.200, [-0.0065, 0.0065, -0.0038, 0.0038], 2),
         # IPE
-        'ID11SP': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID11SP': ('UE44', 3.400, [-0.0285, 0.0285, -0.00415, 0.00415], 2),
         # PAINEIRA
         'ID14SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # SAPUCAIA

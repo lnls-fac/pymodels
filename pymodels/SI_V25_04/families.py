@@ -76,10 +76,12 @@ _family_number_of_elements = {
     'DELTA52': 1,
     'IVU18': 2,
     'VPU29': 2,
+    'UE44': 1,
     'IDBPM': 2,
     'IDC1': 2,
     'IDC4': 4,
     'IDC5': 4,
+    'IDC6': 2,
     'IDQS': 2,
 }
 
@@ -161,6 +163,7 @@ _discipline_mapping = {
     'PAPU50': 'ID',
     'IVU18': 'ID',
     'VPU29': 'ID',
+    'UE44': 'ID',
 }
 
 
@@ -244,6 +247,7 @@ family_mapping = {
     'PAPU50': 'insertion_device',
     'IVU18': 'insertion_device',
     'VPU29': 'insertion_device',
+    'UE44': 'insertion_device',
 }
 
 
@@ -346,12 +350,12 @@ def families_di():
 
 def families_ids():
     """Return insertion devices families."""
-    return ['APU22', 'APU58', 'DELTA52', 'IVU18', 'VPU29']
+    return ['APU22', 'APU58', 'DELTA52', 'IVU18', 'VPU29', 'UE44']
 
 
 def families_id_correctors():
     """Return insertion device correctors families."""
-    return ['IDC1', 'IDC4', 'IDC5']
+    return ['IDC1', 'IDC4', 'IDC5', 'IDC6']
 
 
 def families_id_skew_correctors():
@@ -500,7 +504,7 @@ def get_family_data(lattice):
 
     # idch - id horizontal correctors
     idx = []
-    fams = ['IDC1', 'IDC2', 'IDC3']
+    fams = ['IDC1', 'IDC2', 'IDC3', 'IDC6']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -508,7 +512,7 @@ def get_family_data(lattice):
 
     # idcv - id vertical correctors
     idx = []
-    fams = ['IDC1', 'IDC2']
+    fams = ['IDC1', 'IDC2', 'IDC6']
     for fam in fams:
         if fam in data:
             idx.extend(data[fam])
@@ -674,7 +678,7 @@ def get_family_data(lattice):
     for key in new_data:
         if key not in _discipline_mapping:
             continue
-        if key in ('IDC1', 'IDC2', 'IDC3'):
+        if key in ('IDC1', 'IDC2', 'IDC3', 'IDC6'):
             continue
         dis = _discipline_mapping[key]
         dta = new_data[key]
