@@ -11,10 +11,12 @@ default_vchamber_on = False
 
 
 def create_accelerator(
-        optics_mode=_lattice.default_optics_mode, simplified=False, ids=None):
+    optics_mode=_lattice.default_optics_mode, simplified=False, ids=None
+):
     """Create accelerator model."""
     lattice = _lattice.create_lattice(
-        optics_mode=optics_mode, simplified=simplified, ids=ids)
+        optics_mode=optics_mode, simplified=simplified, ids=ids
+    )
     accelerator = _pyaccel.accelerator.Accelerator(
         lattice=lattice,
         lattice_version=lattice_version,
@@ -22,7 +24,8 @@ def create_accelerator(
         harmonic_number=_lattice.harmonic_number,
         cavity_on=default_cavity_on,
         radiation_on=default_radiation_on,
-        vchamber_on=default_vchamber_on)
+        vchamber_on=default_vchamber_on,
+    )
     return accelerator
 
 
@@ -34,4 +37,4 @@ accelerator_data['lattice_version'] = lattice_version
 # Measured value, uncertainty: +/- 0.003
 accelerator_data['global_coupling'] = 0.006
 # [s [m], p [mbar]]
-accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8]*2])
+accelerator_data['pressure_profile'] = _np.array([[0, 496.8], [1.5e-8] * 2])

@@ -6,8 +6,11 @@ In this module the lattice of the corresponding accelerator is defined.
 import math as _math
 
 import mathphys as _mp
-from pyaccel import accelerator as _pyacc_acc, elements as _pyacc_ele, \
-    lattice as _pyacc_lat
+from pyaccel import (
+    accelerator as _pyacc_acc,
+    elements as _pyacc_ele,
+    lattice as _pyacc_lat,
+)
 
 from . import segmented_models as _segmented_models
 
@@ -18,7 +21,8 @@ energy = 3e9  # [eV]
 
 
 def create_lattice(
-        optics_mode=default_optics_mode, simplified=False, ids=None):
+    optics_mode=default_optics_mode, simplified=False, ids=None
+):
     """Return lattice object."""
     # -- selection of optics mode --
     strengths = get_optics_mode(optics_mode=optics_mode)
@@ -45,6 +49,8 @@ def create_lattice(
     LIP = drift('lip', 1.0879)
     LPMD = drift('lpmd', 0.4929)
     LID3 = drift('lid3', 1.8679)
+    L100p = drift('l100p', 0.100 + dcircum_frac)
+    L113p = drift('l113p', 0.1129)
     L144p = drift('l144p', 0.144 + dcircum_frac)
     L120p = drift('l120p', 0.120 + dcircum_frac)
     L350p = drift('l350p', 0.350 + dcircum_frac)
@@ -87,6 +93,7 @@ def create_lattice(
     L335 = drift('l335', 0.335)
     L336 = drift('l336', 0.336)
     L350 = drift('l350', 0.350)
+    L375 = drift('l375', 0.375)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
     L500 = drift('l500', 0.500)
@@ -103,15 +110,19 @@ def create_lattice(
     QFA = _segmented_models.quadrupole_q20('QFA', strengths['QFA'], simplified)
     QDA = _segmented_models.quadrupole_q14('QDA', strengths['QDA'], simplified)
     QDB2 = _segmented_models.quadrupole_q14(
-        'QDB2', strengths['QDB2'], simplified)
+        'QDB2', strengths['QDB2'], simplified
+    )
     QFB = _segmented_models.quadrupole_q30('QFB', strengths['QFB'], simplified)
     QDB1 = _segmented_models.quadrupole_q14(
-        'QDB1', strengths['QDB1'], simplified)
+        'QDB1', strengths['QDB1'], simplified
+    )
     QDP2 = _segmented_models.quadrupole_q14(
-        'QDP2', strengths['QDP2'], simplified)
+        'QDP2', strengths['QDP2'], simplified
+    )
     QFP = _segmented_models.quadrupole_q30('QFP', strengths['QFP'], simplified)
     QDP1 = _segmented_models.quadrupole_q14(
-        'QDP1', strengths['QDP1'], simplified)
+        'QDP1', strengths['QDP1'], simplified
+    )
     Q1 = _segmented_models.quadrupole_q20('Q1', strengths['Q1'], simplified)
     Q2 = _segmented_models.quadrupole_q20('Q2', strengths['Q2'], simplified)
     Q3 = _segmented_models.quadrupole_q20('Q3', strengths['Q3'], simplified)
@@ -206,212 +217,865 @@ def create_lattice(
     # IDC3 = sextupole('IDC3', 0.100, S=0)  # ID corr (only IDCH)
     IDC4 = sextupole('IDC4', 0.045, S=0)  # ID corr IVU18 (CH: 38mm, CV: 49mm)
     IDC5 = sextupole('IDC5', 0.001, S=0, nr_steps=2)  # ID corr VPU29
+    IDC6 = sextupole('IDC6', 0.100, S=0)  # ID corr
     IDQS = sextupole('IDQS', 0.200, S=0)  # ID corr quadskew
 
     # -- sectors --
     M1A = [
-        L134, QDA, L150, SDA0, GIR, L074, GIR, FC1, L082, QFA, L150, SFA0,
-        L135, BPM, GIR]  # high beta xxM1 girder (with fast corrector)
+        L134,
+        QDA,
+        L150,
+        SDA0,
+        GIR,
+        L074,
+        GIR,
+        FC1,
+        L082,
+        QFA,
+        L150,
+        SFA0,
+        L135,
+        BPM,
+        GIR,
+    ]  # high beta xxM1 girder (with fast corrector)
     M1AFF = [
-        L134, QDA, L150, SDA0, GIR, L074, GIR, FC1FF, L082, QFA, L150, SFA0,
-        L135, BPM, GIR]  # high beta xxM1 girder (with ff corrector)
+        L134,
+        QDA,
+        L150,
+        SDA0,
+        GIR,
+        L074,
+        GIR,
+        FC1FF,
+        L082,
+        QFA,
+        L150,
+        SFA0,
+        L135,
+        BPM,
+        GIR,
+    ]  # high beta xxM1 girder (with ff corrector)
     M1B = [
-        L134, QDB1, L150, SDB0, GIR, L240, GIR, QFB, L150, SFB0, L049, FC1,
-        L052, QDB2, L140, BPM, GIR]  # low beta xxM1 girder
+        L134,
+        QDB1,
+        L150,
+        SDB0,
+        GIR,
+        L240,
+        GIR,
+        QFB,
+        L150,
+        SFB0,
+        L049,
+        FC1,
+        L052,
+        QDB2,
+        L140,
+        BPM,
+        GIR,
+    ]  # low beta xxM1 girder
     M1P = [
-        L134, QDP1, L150, SDP0, GIR, L240, GIR, QFP, L150, SFP0, L049, FC1,
-        L052, QDP2, L140, BPM, GIR]  # low beta xxM1 girder
+        L134,
+        QDP1,
+        L150,
+        SDP0,
+        GIR,
+        L240,
+        GIR,
+        QFP,
+        L150,
+        SFP0,
+        L049,
+        FC1,
+        L052,
+        QDP2,
+        L140,
+        BPM,
+        GIR,
+    ]  # low beta xxM1 girder
     M2A = M1A[::-1]  # high beta xxM2 girder (with fast correctors)
     M2AFF = M1AFF[::-1]  # high beta xxM2 girder (with ff correctors)
     M2B = M1B[::-1]  # low beta xxM2 girder
     M2P = M1P[::-1]  # low beta xxM2 girder
 
     M2B_BbBPkup = [
-        GIR, BPM, L140, QDB2, L052, FC1, L049, SFB0, L150, QFB, GIR, L120,
-        BbBPkup, L120, GIR, SDB0, L150, QDB1, L134]
+        GIR,
+        BPM,
+        L140,
+        QDB2,
+        L052,
+        FC1,
+        L049,
+        SFB0,
+        L150,
+        QFB,
+        GIR,
+        L120,
+        BbBPkup,
+        L120,
+        GIR,
+        SDB0,
+        L150,
+        QDB1,
+        L134,
+    ]
 
     # arc sector in between B1-B2 (high beta odd-numbered straight sections):
     C1A = [
-        GIR, L474, GIR, SDA1, L170, Q1, L135, BPM, L125, SFA1, L230, Q2, L170,
-        SDA2, GIR, L205, GIR, BPM, L011]
+        GIR,
+        L474,
+        GIR,
+        SDA1,
+        L170,
+        Q1,
+        L135,
+        BPM,
+        L125,
+        SFA1,
+        L230,
+        Q2,
+        L170,
+        SDA2,
+        GIR,
+        L205,
+        GIR,
+        BPM,
+        L011,
+    ]
     # arc sector in between B1-B2 (low beta  even-numbered straight sections):
     C1B = [
-        GIR, L474, GIR, SDB1, L170, Q1, L135, BPM, L125, SFB1, L230, Q2,
-        L170, SDB2, GIR, L205, GIR, BPM, L011]
+        GIR,
+        L474,
+        GIR,
+        SDB1,
+        L170,
+        Q1,
+        L135,
+        BPM,
+        L125,
+        SFB1,
+        L230,
+        Q2,
+        L170,
+        SDB2,
+        GIR,
+        L205,
+        GIR,
+        BPM,
+        L011,
+    ]
     # arc sector in between B1-B2 (low beta even-numbered straight sections):
     C1P = [
-        GIR, L474, GIR, SDP1, L170, Q1, L135, BPM, L125, SFP1, L230, Q2, L170,
-        SDP2, GIR, L205, GIR, BPM, L011]
+        GIR,
+        L474,
+        GIR,
+        SDP1,
+        L170,
+        Q1,
+        L135,
+        BPM,
+        L125,
+        SFP1,
+        L230,
+        Q2,
+        L170,
+        SDP2,
+        GIR,
+        L205,
+        GIR,
+        BPM,
+        L011,
+    ]
 
     # arc sector in between B2-BC (high beta odd-numbered straight sections):
     C2A = [
-        GIR, L336, GIR, SDA3, L170, Q3, L230, SFA2, L260, Q4, L200, CV, GIR,
-        L201, GIR, FC2, L119, BPM, L075]
+        GIR,
+        L336,
+        GIR,
+        SDA3,
+        L170,
+        Q3,
+        L230,
+        SFA2,
+        L260,
+        Q4,
+        L200,
+        CV,
+        GIR,
+        L201,
+        GIR,
+        FC2,
+        L119,
+        BPM,
+        L075,
+    ]
     # arc sector in between B2-BC (low beta even-numbered straight sections):
     C2B = [
-        GIR, L336, GIR, SDB3, L170, Q3, L230, SFB2, L260, Q4, L200, CV, GIR,
-        L201, GIR, FC2, L119, BPM, L075]
+        GIR,
+        L336,
+        GIR,
+        SDB3,
+        L170,
+        Q3,
+        L230,
+        SFB2,
+        L260,
+        Q4,
+        L200,
+        CV,
+        GIR,
+        L201,
+        GIR,
+        FC2,
+        L119,
+        BPM,
+        L075,
+    ]
     # arc sector in between B2-BC (low beta even-numbered straight sections):
     C2P = [
-        GIR, L336, GIR, SDP3, L170, Q3, L230, SFP2, L260, Q4, L200, CV, GIR,
-        L201, GIR, FC2, L119, BPM, L075]
+        GIR,
+        L336,
+        GIR,
+        SDP3,
+        L170,
+        Q3,
+        L230,
+        SFP2,
+        L260,
+        Q4,
+        L200,
+        CV,
+        GIR,
+        L201,
+        GIR,
+        FC2,
+        L119,
+        BPM,
+        L075,
+    ]
 
     # arc sector in between BC-B2 (high beta odd-numbered straight sections):
     C3A = [
-        GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFA2, L056, FC1, L090, Q3,
-        L170, SDA3, GIR, L325, GIR, BPM, L011]
+        GIR,
+        L715,
+        GIR,
+        L112,
+        Q4,
+        L133,
+        BPM,
+        L127,
+        SFA2,
+        L056,
+        FC1,
+        L090,
+        Q3,
+        L170,
+        SDA3,
+        GIR,
+        L325,
+        GIR,
+        BPM,
+        L011,
+    ]
     # arc sector in between BC-B2 (low beta even-numbered straight sections):
     C3B = [
-        GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFB2, L056, FC1, L090, Q3,
-        L170, SDB3, GIR, L325, GIR, BPM, L011]
+        GIR,
+        L715,
+        GIR,
+        L112,
+        Q4,
+        L133,
+        BPM,
+        L127,
+        SFB2,
+        L056,
+        FC1,
+        L090,
+        Q3,
+        L170,
+        SDB3,
+        GIR,
+        L325,
+        GIR,
+        BPM,
+        L011,
+    ]
     # arc sector in between BC-B2 (low beta even-numbered straight sections):
     C3P = [
-        GIR, L715, GIR, L112, Q4, L133, BPM, L127, SFP2, L056, FC1, L090, Q3,
-        L170, SDP3, GIR, L325, GIR, BPM, L011]
+        GIR,
+        L715,
+        GIR,
+        L112,
+        Q4,
+        L133,
+        BPM,
+        L127,
+        SFP2,
+        L056,
+        FC1,
+        L090,
+        Q3,
+        L170,
+        SDP3,
+        GIR,
+        L325,
+        GIR,
+        BPM,
+        L011,
+    ]
 
     # arc sector in between B2-B1 (high beta odd-numbered straight sections):
     C4A = [
-        GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135, Q1, L170,
-        SDA1, GIR, L474, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDA2,
+        L170,
+        Q2,
+        L230,
+        SFA1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDA1,
+        GIR,
+        L474,
+        GIR,
+    ]
     # arc sector in between B2-B1 (high beta odd-numbered straight sections):
     C4A_BbBKckrV = [
-        GIR, L216, GIR, SDA2, L170, Q2, L230, SFA1, L125, BPM, L135, Q1, L170,
-        SDA1, L237, BbBKckrV, GIR, L237, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDA2,
+        L170,
+        Q2,
+        L230,
+        SFA1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDA1,
+        L237,
+        BbBKckrV,
+        GIR,
+        L237,
+        GIR,
+    ]
 
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4B = [
-        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
-        SDB1, GIR, L474, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDB2,
+        L170,
+        Q2,
+        L230,
+        SFB1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDB1,
+        GIR,
+        L474,
+        GIR,
+    ]
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4B_GBPM = [
-        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
-        SDB1, GBPM, GIR, L474, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDB2,
+        L170,
+        Q2,
+        L230,
+        SFB1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDB1,
+        GBPM,
+        GIR,
+        L474,
+        GIR,
+    ]
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4B_DCCT = [
-        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
-        SDB1, L237, DCCT, GIR, L237, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDB2,
+        L170,
+        Q2,
+        L230,
+        SFB1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDB1,
+        L237,
+        DCCT,
+        GIR,
+        L237,
+        GIR,
+    ]
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4B_TunePkupV = [
-        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
-        SDB1, L237, TunePkupV, GIR, L237, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDB2,
+        L170,
+        Q2,
+        L230,
+        SFB1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDB1,
+        L237,
+        TunePkupV,
+        GIR,
+        L237,
+        GIR,
+    ]
     # arc sector in between B2-B1 (low beta even-numbered straight sections)
     C4B_PingV = [
-        GIR, L216, GIR, SDB2, L170, Q2, L230, SFB1, L125, BPM, L135, Q1, L170,
-        SDB1, L135, PingV, GIR, L019, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDB2,
+        L170,
+        Q2,
+        L230,
+        SFB1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDB1,
+        L135,
+        PingV,
+        GIR,
+        L019,
+        GIR,
+    ]
 
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4P = [
-        GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
-        SDP1, GIR, L474, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDP2,
+        L170,
+        Q2,
+        L230,
+        SFP1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDP1,
+        GIR,
+        L474,
+        GIR,
+    ]
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4P_DCCT = [
-        GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
-        SDP1, L237, DCCT, GIR, L237, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDP2,
+        L170,
+        Q2,
+        L230,
+        SFP1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDP1,
+        L237,
+        DCCT,
+        GIR,
+        L237,
+        GIR,
+    ]
     # arc sector in between B2-B1 (low beta even-numbered straight sections):
     C4P_TuneShkrV = [
-        GIR, L216, GIR, SDP2, L170, Q2, L230, SFP1, L125, BPM, L135, Q1, L170,
-        SDP1, L237, TuneShkrV, GIR, L237, GIR]
+        GIR,
+        L216,
+        GIR,
+        SDP2,
+        L170,
+        Q2,
+        L230,
+        SFP1,
+        L125,
+        BPM,
+        L135,
+        Q1,
+        L170,
+        SDP1,
+        L237,
+        TuneShkrV,
+        GIR,
+        L237,
+        GIR,
+    ]
 
     # --- insertion sectors ---
 
     IDA = [
-        L500, LIA, L500, MIDA, L500, L500p, MIA, L500p, L500, MIDA, L500,
-        LIA, L500]  # high beta ID straight section
+        L500,
+        LIA,
+        L500,
+        MIDA,
+        L500,
+        L500p,
+        MIA,
+        L500p,
+        L500,
+        MIDA,
+        L500,
+        LIA,
+        L500,
+    ]  # high beta ID straight section
 
     IDB = [
-        L500, LIB, L500, MIDB, L500, L500p, MIB, L500p, L500, MIDB, L500, LIB,
-        L500]  # low beta ID straight section
+        L500,
+        LIB,
+        L500,
+        MIDB,
+        L500,
+        L500p,
+        MIB,
+        L500p,
+        L500,
+        MIDB,
+        L500,
+        LIB,
+        L500,
+    ]  # low beta ID straight section
 
     IDP = [
-        L500, LIP, L500,
-        MIDP, L500, L500p, MIP, L500p, L500, MIDP,
-        L500, LIP, L500]  # low beta ID straight section
+        L500,
+        LIP,
+        L500,
+        MIDP,
+        L500,
+        L500p,
+        MIP,
+        L500p,
+        L500,
+        MIDP,
+        L500,
+        LIP,
+        L500,
+    ]  # low beta ID straight section
 
     IDA_01_INJ = [
-        SHVC, L156, ScrapH, L156, SHVC, L188, TuneShkrH, LIA, L419, InjSeptF,
-        SI_INJ, LPMD]  # high beta INJ straight section and Scrapers
+        SHVC,
+        L156,
+        ScrapH,
+        L156,
+        SHVC,
+        L188,
+        TuneShkrH,
+        LIA,
+        L419,
+        InjSeptF,
+        SI_INJ,
+        LPMD,
+    ]  # high beta INJ straight section and Scrapers
 
     IDB_02 = [
-        L500, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, HCav, LIB, L500]  # low beta ID straight section
+        L500,
+        LIB,
+        L500,
+        MIDB,
+        L500,
+        L500p,
+        MIB,
+        L500p,
+        L500,
+        MIDB,
+        L500,
+        HCav,
+        LIB,
+        L500,
+    ]  # low beta ID straight section
 
     IDP_03_CAV = [
-        L500, LIP, L500, L500, L500p, MIP, RFC, L500p, L500, L500,
-        LIP, L500]  # low beta RF cavity straight section
+        L500,
+        LIP,
+        L500,
+        L500,
+        L500p,
+        MIP,
+        RFC,
+        L500p,
+        L500,
+        L500,
+        LIP,
+        L500,
+    ]  # low beta RF cavity straight section
 
     IDB_04 = IDB
 
     IDA_05 = IDA
 
     IDB_06 = [
-        L500, LIB, L324, L350p, IDC5,
-        MIDB, ID06Hu, MIB, ID06Hd, MIDB,
-        IDC5, L350p, L324, LIB, L500]  # low beta ID straight section (CARNAUBA)
+        L500,
+        LIB,
+        L324,
+        L350p,
+        IDC5,
+        MIDB,
+        ID06Hu,
+        MIB,
+        ID06Hd,
+        MIDB,
+        IDC5,
+        L350p,
+        L324,
+        LIB,
+        L500,
+    ]  # low beta ID straight section (CARNAUBA)
 
     IDP_07 = [
-        L500, LIP, L324, L350p, IDC5,
-        MIDP, ID07Hu, MIP, ID07Hd, MIDP,
-        IDC5, L350p, L324, LIP, L500]  # low beta ID straight section (CATERETE)
+        L500,
+        LIP,
+        L324,
+        L350p,
+        IDC5,
+        MIDP,
+        ID07Hu,
+        MIP,
+        ID07Hd,
+        MIDP,
+        IDC5,
+        L350p,
+        L324,
+        LIP,
+        L500,
+    ]  # low beta ID straight section (CATERETE)
 
     IDB_08 = [
-        L500, LIB, L120p, IDC4, L335,
-        MIDB, ID08Hu, MIB, ID08Hd, MIDB,
-        L335, IDC4, L120p, LIB, L500]  # low beta ID straight section (EMA)
+        L500,
+        LIB,
+        L120p,
+        IDC4,
+        L335,
+        MIDB,
+        ID08Hu,
+        MIB,
+        ID08Hd,
+        MIDB,
+        L335,
+        IDC4,
+        L120p,
+        LIB,
+        L500,
+    ]  # low beta ID straight section (EMA)
 
     IDA_09 = [
-        L500, LID3, L500p,
-        MIDA, ID09Hu, MIA, ID09Hd, MIDA,
-        L500p, LID3, L500]  # high beta ID straight section (MANACA)
+        L500,
+        LID3,
+        L500p,
+        MIDA,
+        ID09Hu,
+        MIA,
+        ID09Hd,
+        MIDA,
+        L500p,
+        LID3,
+        L500,
+    ]  # high beta ID straight section (MANACA)
 
     IDB_10 = [
-        L839, L800p, IDQS, L270, IDBPM, L135, IDC1, L144p,
-        MIDB, ID10Hu, MIB, ID10Hd, MIDB,
-        L144p, IDC1, L135, IDBPM, L270, IDQS, L800p, L839]  # low beta (SABIA)
+        L839,
+        L800p,
+        IDQS,
+        L270,
+        IDBPM,
+        L135,
+        IDC1,
+        L144p,
+        MIDB,
+        ID10Hu,
+        MIB,
+        ID10Hd,
+        MIDB,
+        L144p,
+        IDC1,
+        L135,
+        IDBPM,
+        L270,
+        IDQS,
+        L800p,
+        L839,
+    ]  # low beta (SABIA)
 
     IDP_11 = [
-        L500, LIP, L500, L350p,
-        MIDP, ID11Hu, MIP, ID11Hd, MIDP,
-        L350p, L500, LIP, L500]  # low beta ID straight section (IPE) L=1.3m
+        L100p,
+        L113p,
+        IDQS,
+        L375,
+        IDC6,
+        L500,
+        MIDP,
+        ID11Hu,
+        MIP,
+        ID11Hd,
+        MIDP,
+        L500,
+        IDC6,
+        L375,
+        IDQS,
+        L113p,
+        L100p,
+    ]  # low beta ID straight section (IPE)
 
     IDB_12 = [
-        L500, LIB, L665, L100, L135,
-        MIDB, L600p, MIB, L600p, MIDB,
-        L135, L100, L665, LIB, L500]  # low beta ID straight section
+        L500,
+        LIB,
+        L665,
+        L100,
+        L135,
+        MIDB,
+        L600p,
+        MIB,
+        L600p,
+        MIDB,
+        L135,
+        L100,
+        L665,
+        LIB,
+        L500,
+    ]  # low beta ID straight section
 
     IDA_13 = IDA
 
     IDB_14 = [
-        L500, LIB, L120p, IDC4, L335,
-        MIDB, ID14Hu, MIB, ID14Hd, MIDB,
-        L335, IDC4, L120p, LIB, L500]  # low beta ID straight section (PAINEIRA)
+        L500,
+        LIB,
+        L120p,
+        IDC4,
+        L335,
+        MIDB,
+        ID14Hu,
+        MIB,
+        ID14Hd,
+        MIDB,
+        L335,
+        IDC4,
+        L120p,
+        LIB,
+        L500,
+    ]  # low beta ID straight section (PAINEIRA)
 
     IDP_15 = IDP
 
     IDB_16 = [
-        L500, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, BbBKckL, LIB, L500]  # low beta ID straight section
+        L500,
+        LIB,
+        L500,
+        MIDB,
+        L500,
+        L500p,
+        MIB,
+        L500p,
+        L500,
+        MIDB,
+        L500,
+        BbBKckL,
+        LIB,
+        L500,
+    ]  # low beta ID straight section
 
     IDA_17 = [
-        L500, LID3, L500p,
-        MIDA, ID17Hu, MIA, ID17Hd, MIDA,
-        L500p, L350, BbBKckrH, LIA, L500]  # high beta ID straight section (SAPUCAIA)
+        L500,
+        LID3,
+        L500p,
+        MIDA,
+        ID17Hu,
+        MIA,
+        ID17Hd,
+        MIDA,
+        L500p,
+        L350,
+        BbBKckrH,
+        LIA,
+        L500,
+    ]  # high beta ID straight section (SAPUCAIA)
 
     IDB_18_TUNEPKUPH = [
-        L500, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, TunePkupH, LIB, L500]  # low beta ID straight section
+        L500,
+        LIB,
+        L500,
+        MIDB,
+        L500,
+        L500p,
+        MIB,
+        L500p,
+        L500,
+        MIDB,
+        L500,
+        TunePkupH,
+        LIB,
+        L500,
+    ]  # low beta ID straight section
 
     IDB_19_GSL15 = [
-        L500, GSL15, LIP, L500,
-        MIDP, L500, L500p, MIP, L500p, L500, MIDP,
-        L500, LIP, L500]  # low beta ID straight section
+        L500,
+        GSL15,
+        LIP,
+        L500,
+        MIDP,
+        L500,
+        L500p,
+        MIP,
+        L500p,
+        L500,
+        MIDP,
+        L500,
+        LIP,
+        L500,
+    ]  # low beta ID straight section
 
     IDB_20_GSL07 = [
-        L500, GSL07, LIB, L500,
-        MIDB, L500, L500p, MIB, L500p, L500, MIDB,
-        L500, LIB, L500]  # low beta ID straight section
+        L500,
+        GSL07,
+        LIB,
+        L500,
+        MIDB,
+        L500,
+        L500p,
+        MIB,
+        L500p,
+        L500,
+        MIDB,
+        L500,
+        LIB,
+        L500,
+    ]  # low beta ID straight section
 
     # -- girders --
 
@@ -563,68 +1227,308 @@ def create_lattice(
 
     # SECTORS # 01..20
     S01 = [
-        M1_S01, SS_S01, M2_S01, B1, C1_S01, B2, C2_S01, BC,
-        C3_S01, B2, C4_S01, B1]
+        M1_S01,
+        SS_S01,
+        M2_S01,
+        B1,
+        C1_S01,
+        B2,
+        C2_S01,
+        BC,
+        C3_S01,
+        B2,
+        C4_S01,
+        B1,
+    ]
     S02 = [
-        M1_S02, SS_S02, M2_S02, B1, C1_S02, B2, C2_S02, BC,
-        C3_S02, B2, C4_S02, B1]
+        M1_S02,
+        SS_S02,
+        M2_S02,
+        B1,
+        C1_S02,
+        B2,
+        C2_S02,
+        BC,
+        C3_S02,
+        B2,
+        C4_S02,
+        B1,
+    ]
     S03 = [
-        M1_S03, SS_S03, M2_S03, B1, C1_S03, B2, C2_S03, BC,
-        C3_S03, B2, C4_S03, B1]
+        M1_S03,
+        SS_S03,
+        M2_S03,
+        B1,
+        C1_S03,
+        B2,
+        C2_S03,
+        BC,
+        C3_S03,
+        B2,
+        C4_S03,
+        B1,
+    ]
     S04 = [
-        M1_S04, SS_S04, M2_S04, B1, C1_S04, B2, C2_S04, BC,
-        C3_S04, B2, C4_S04, B1]
+        M1_S04,
+        SS_S04,
+        M2_S04,
+        B1,
+        C1_S04,
+        B2,
+        C2_S04,
+        BC,
+        C3_S04,
+        B2,
+        C4_S04,
+        B1,
+    ]
     S05 = [
-        M1_S05, SS_S05, M2_S05, B1, C1_S05, B2, C2_S05, BC,
-        C3_S05, B2, C4_S05, B1]
+        M1_S05,
+        SS_S05,
+        M2_S05,
+        B1,
+        C1_S05,
+        B2,
+        C2_S05,
+        BC,
+        C3_S05,
+        B2,
+        C4_S05,
+        B1,
+    ]
     S06 = [
-        M1_S06, SS_S06, M2_S06, B1, C1_S06, B2, C2_S06, BC,
-        C3_S06, B2, C4_S06, B1]
+        M1_S06,
+        SS_S06,
+        M2_S06,
+        B1,
+        C1_S06,
+        B2,
+        C2_S06,
+        BC,
+        C3_S06,
+        B2,
+        C4_S06,
+        B1,
+    ]
     S07 = [
-        M1_S07, SS_S07, M2_S07, B1, C1_S07, B2, C2_S07, BC,
-        C3_S07, B2, C4_S07, B1]
+        M1_S07,
+        SS_S07,
+        M2_S07,
+        B1,
+        C1_S07,
+        B2,
+        C2_S07,
+        BC,
+        C3_S07,
+        B2,
+        C4_S07,
+        B1,
+    ]
     S08 = [
-        M1_S08, SS_S08, M2_S08, B1, C1_S08, B2, C2_S08, BC,
-        C3_S08, B2, C4_S08, B1]
+        M1_S08,
+        SS_S08,
+        M2_S08,
+        B1,
+        C1_S08,
+        B2,
+        C2_S08,
+        BC,
+        C3_S08,
+        B2,
+        C4_S08,
+        B1,
+    ]
     S09 = [
-        M1_S09, SS_S09, M2_S09, B1, C1_S09, B2, C2_S09, BC,
-        C3_S09, B2, C4_S09, B1]
+        M1_S09,
+        SS_S09,
+        M2_S09,
+        B1,
+        C1_S09,
+        B2,
+        C2_S09,
+        BC,
+        C3_S09,
+        B2,
+        C4_S09,
+        B1,
+    ]
     S10 = [
-        M1_S10, SS_S10, M2_S10, B1, C1_S10, B2, C2_S10, BC,
-        C3_S10, B2, C4_S10, B1]
+        M1_S10,
+        SS_S10,
+        M2_S10,
+        B1,
+        C1_S10,
+        B2,
+        C2_S10,
+        BC,
+        C3_S10,
+        B2,
+        C4_S10,
+        B1,
+    ]
     S11 = [
-        M1_S11, SS_S11, M2_S11, B1, C1_S11, B2, C2_S11, BC,
-        C3_S11, B2, C4_S11, B1]
+        M1_S11,
+        SS_S11,
+        M2_S11,
+        B1,
+        C1_S11,
+        B2,
+        C2_S11,
+        BC,
+        C3_S11,
+        B2,
+        C4_S11,
+        B1,
+    ]
     S12 = [
-        M1_S12, SS_S12, M2_S12, B1, C1_S12, B2, C2_S12, BC,
-        C3_S12, B2, C4_S12, B1]
+        M1_S12,
+        SS_S12,
+        M2_S12,
+        B1,
+        C1_S12,
+        B2,
+        C2_S12,
+        BC,
+        C3_S12,
+        B2,
+        C4_S12,
+        B1,
+    ]
     S13 = [
-        M1_S13, SS_S13, M2_S13, B1, C1_S13, B2, C2_S13, BC,
-        C3_S13, B2, C4_S13, B1]
+        M1_S13,
+        SS_S13,
+        M2_S13,
+        B1,
+        C1_S13,
+        B2,
+        C2_S13,
+        BC,
+        C3_S13,
+        B2,
+        C4_S13,
+        B1,
+    ]
     S14 = [
-        M1_S14, SS_S14, M2_S14, B1, C1_S14, B2, C2_S14, BC,
-        C3_S14, B2, C4_S14, B1]
+        M1_S14,
+        SS_S14,
+        M2_S14,
+        B1,
+        C1_S14,
+        B2,
+        C2_S14,
+        BC,
+        C3_S14,
+        B2,
+        C4_S14,
+        B1,
+    ]
     S15 = [
-        M1_S15, SS_S15, M2_S15, B1, C1_S15, B2, C2_S15, BC,
-        C3_S15, B2, C4_S15, B1]
+        M1_S15,
+        SS_S15,
+        M2_S15,
+        B1,
+        C1_S15,
+        B2,
+        C2_S15,
+        BC,
+        C3_S15,
+        B2,
+        C4_S15,
+        B1,
+    ]
     S16 = [
-        M1_S16, SS_S16, M2_S16, B1, C1_S16, B2, C2_S16, BC,
-        C3_S16, B2, C4_S16, B1]
+        M1_S16,
+        SS_S16,
+        M2_S16,
+        B1,
+        C1_S16,
+        B2,
+        C2_S16,
+        BC,
+        C3_S16,
+        B2,
+        C4_S16,
+        B1,
+    ]
     S17 = [
-        M1_S17, SS_S17, M2_S17, B1, C1_S17, B2, C2_S17, BC,
-        C3_S17, B2, C4_S17, B1]
+        M1_S17,
+        SS_S17,
+        M2_S17,
+        B1,
+        C1_S17,
+        B2,
+        C2_S17,
+        BC,
+        C3_S17,
+        B2,
+        C4_S17,
+        B1,
+    ]
     S18 = [
-        M1_S18, SS_S18, M2_S18, B1, C1_S18, B2, C2_S18, BC,
-        C3_S18, B2, C4_S18, B1]
+        M1_S18,
+        SS_S18,
+        M2_S18,
+        B1,
+        C1_S18,
+        B2,
+        C2_S18,
+        BC,
+        C3_S18,
+        B2,
+        C4_S18,
+        B1,
+    ]
     S19 = [
-        M1_S19, SS_S19, M2_S19, B1, C1_S19, B2, C2_S19, BC,
-        C3_S19, B2, C4_S19, B1]
+        M1_S19,
+        SS_S19,
+        M2_S19,
+        B1,
+        C1_S19,
+        B2,
+        C2_S19,
+        BC,
+        C3_S19,
+        B2,
+        C4_S19,
+        B1,
+    ]
     S20 = [
-        M1_S20, SS_S20, M2_S20, B1, C1_S20, B2, C2_S20, BC,
-        C3_S20, B2, C4_S20, B1]
+        M1_S20,
+        SS_S20,
+        M2_S20,
+        B1,
+        C1_S20,
+        B2,
+        C2_S20,
+        BC,
+        C3_S20,
+        B2,
+        C4_S20,
+        B1,
+    ]
 
-    anel = [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10,
-            S11, S12, S13, S14, S15, S16, S17, S18, S19, S20]
+    anel = [
+        S01,
+        S02,
+        S03,
+        S04,
+        S05,
+        S06,
+        S07,
+        S08,
+        S09,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S17,
+        S18,
+        S19,
+        S20,
+    ]
     anel = _mp.functions.flatten(anel)
 
     the_ring = _pyacc_lat.build(anel)
@@ -665,7 +1569,7 @@ def get_injection_sector(inj_sel=None):
     circum_old = 518.3960  # [m]
     dcircum = circum_new - circum_old
     # divide circumference difference in all 20 straight sections
-    dcircum_frac = dcircum/20/2
+    dcircum_frac = dcircum / 20 / 2
 
     L500p = drift('L500p', 0.500 + dcircum_frac)
     LKKp = drift('lkkp', 1.9150 + dcircum_frac)
@@ -689,26 +1593,74 @@ def get_injection_sector(inj_sel=None):
 
     if inj_sel == 'DPK':
         INJ_SEC = [
-            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-            START, MIA, LKKp,
-            ]
+            InjVCb,
+            L399,
+            InjVCb,
+            InjVCs,
+            L182,
+            L500p,
+            END,
+            START,
+            MIA,
+            LKKp,
+        ]
     elif inj_sel == 'DPK_END':
         INJ_SEC = [
-            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-            START, MIA, LKKp, InjDpKckr,
-            ]
+            InjVCb,
+            L399,
+            InjVCb,
+            InjVCs,
+            L182,
+            L500p,
+            END,
+            START,
+            MIA,
+            LKKp,
+            InjDpKckr,
+        ]
     elif inj_sel == 'NLK':
         INJ_SEC = [
-            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-            START, MIA, LKKp, InjDpKckr, InjVCs,
-            SVVC, LPMU, L050, ScrapV, L150, SVVC,
-            ]
+            InjVCb,
+            L399,
+            InjVCb,
+            InjVCs,
+            L182,
+            L500p,
+            END,
+            START,
+            MIA,
+            LKKp,
+            InjDpKckr,
+            InjVCs,
+            SVVC,
+            LPMU,
+            L050,
+            ScrapV,
+            L150,
+            SVVC,
+        ]
     elif inj_sel == 'NLK_END':
         INJ_SEC = [
-            InjVCb, L399, InjVCb, InjVCs, L182, L500p, END,
-            START, MIA, LKKp, InjDpKckr, InjVCs,
-            SVVC, LPMU, L050, ScrapV, L150, SVVC,
-            InjNLKckr]
+            InjVCb,
+            L399,
+            InjVCb,
+            InjVCs,
+            L182,
+            L500p,
+            END,
+            START,
+            MIA,
+            LKKp,
+            InjDpKckr,
+            InjVCs,
+            SVVC,
+            LPMU,
+            L050,
+            ScrapV,
+            L150,
+            SVVC,
+            InjNLKckr,
+        ]
     else:
         raise ValueError('Invalid inj_sel: {}'.format(inj_sel))
     params = dict()
@@ -739,14 +1691,18 @@ def set_num_integ_steps(the_ring):
     len_sexts = 0.015
     for i in range(len(the_ring)):
         if the_ring[i].angle:
-            nr_steps = int(_math.ceil(the_ring[i].length/len_bends))
+            nr_steps = int(_math.ceil(the_ring[i].length / len_bends))
             the_ring[i].nr_steps = nr_steps
         elif the_ring[i].polynom_b[2]:
-            nr_steps = int(_math.ceil(the_ring[i].length/len_sexts))
+            nr_steps = int(_math.ceil(the_ring[i].length / len_sexts))
             the_ring[i].nr_steps = nr_steps
-        elif the_ring[i].polynom_b[1] or the_ring[i].fam_name in \
-                ['FC1', 'FC2', 'InjDpKckr', 'InjNLKckr']:
-            nr_steps = int(_math.ceil(the_ring[i].length/len_quads))
+        elif the_ring[i].polynom_b[1] or the_ring[i].fam_name in [
+            'FC1',
+            'FC2',
+            'InjDpKckr',
+            'InjNLKckr',
+        ]:
+            nr_steps = int(_math.ceil(the_ring[i].length / len_quads))
             the_ring[i].nr_steps = nr_steps
 
 
@@ -767,26 +1723,28 @@ def set_vacuum_chamber(the_ring, ids_vchamber):
 
     # Set scrapper vacuum chambers
     scrapvc = _pyacc_lat.find_indices(the_ring, 'fam_name', 'SVVC')
-    for i in range(scrapvc[0], scrapvc[1]+1):
+    for i in range(scrapvc[0], scrapvc[1] + 1):
         e = the_ring[i]
         e.vchamber = _pyacc_ele.VChamberShape.ellipse
         e.hmin, e.hmax, e.vmin, e.vmax = scrapv_vchamber
     scrapvc = _pyacc_lat.find_indices(the_ring, 'fam_name', 'SHVC')
-    for i in range(scrapvc[0], scrapvc[1]+1):
+    for i in range(scrapvc[0], scrapvc[1] + 1):
         e = the_ring[i]
         e.vchamber = _pyacc_ele.VChamberShape.rectangle
         e.hmin, e.hmax, e.vmin, e.vmax = scraph_vchamber
 
     # Set bigger inj vchamber  (closer to injseptum)
     injva = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjVCb')
-    for i in range(injva[0], injva[1]+1):
+    for i in range(injva[0], injva[1] + 1):
         e = the_ring[i]
         e.vchamber = _pyacc_ele.VChamberShape.rectangle
         e.hmin, e.hmax, e.vmin, e.vmax = injb_vchamber
 
     # Set smaller inj vchamber (farther from injseptum)
     injva = _pyacc_lat.find_indices(the_ring, 'fam_name', 'InjVCs')
-    injva = list(range(injva[-1], len(the_ring))) + list(range(0, injva[0]+1))
+    injva = list(range(injva[-1], len(the_ring))) + list(
+        range(0, injva[0] + 1)
+    )
     for i in injva:
         e = the_ring[i]
         e.vchamber = _pyacc_ele.VChamberShape.rectangle
@@ -824,7 +1782,9 @@ def set_vacuum_chamber_bc(the_ring):
 
     def set_vchamber_transition(elem, dspos, sign):
         elem.vchamber = _pyacc_ele.VChamberShape.ellipse
-        radius = radius1 + (radius2 - radius1)*(dspos - sign * len1/2)/len2
+        radius = (
+            radius1 + (radius2 - radius1) * (dspos - sign * len1 / 2) / len2
+        )
         elem.hmin, elem.hmax = -radius, radius
         elem.vmin, elem.vmax = -radius, radius
 
@@ -833,10 +1793,10 @@ def set_vacuum_chamber_bc(the_ring):
         idx = mci
         while True:
             dspos = abs(spos[idx] - spos[mci])
-            if dspos <= len1/2:
+            if dspos <= len1 / 2:
                 # high field region with restricted radius
                 set_vchamber_transition(the_ring[idx], 0, 0)
-            elif dspos <= len1/2 + len2:
+            elif dspos <= len1 / 2 + len2:
                 # lower field region with transition radius
                 set_vchamber_transition(the_ring[idx], dspos, 1)
                 pass
@@ -866,7 +1826,6 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'Q2': +4.340329381668,
                 'Q3': +3.218430939674,
                 'Q4': +3.950686823494,
-
                 # NOTE: these values need updating after optics
                 # resimetrization with MAD
                 'QDA': -1.619540412181686,
@@ -877,7 +1836,6 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'QDB2': -3.420574744932221,
                 'QDP1': -2.00677456404202,
                 'QDP2': -3.420574744932221,
-
                 #  SEXTUPOLES
                 #  ===========
                 'SDA0': -80.8337,
@@ -886,7 +1844,6 @@ def get_optics_mode(optics_mode=default_optics_mode):
                 'SFA0': +52.5696,
                 'SFB0': +73.7401,
                 'SFP0': +73.7401,
-
                 'SDA1': -163.0062328090773,
                 'SDA2': -88.88255991288263,
                 'SDA3': -139.94153649641189,
@@ -935,7 +1892,7 @@ def create_id_kickmaps_dict(ids, energy):
         # SABIA
         'ID10SB': ('DELTA52', 1.200, [-0.0065, 0.0065, -0.0038, 0.0038], 2),
         # IPE
-        'ID11SP': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        'ID11SP': ('UE44', 3.400, [-0.0285, 0.0285, -0.00415, 0.00415], 2),
         # PAINEIRA
         'ID14SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # SAPUCAIA
@@ -949,12 +1906,13 @@ def create_id_kickmaps_dict(ids, energy):
         if subsec not in idsdict:
             # ID not in passed ID dictionary, return drift for half ID.
             kickmaps[subsec] = (
-                drift(idtype, idlen/2), drift(idtype, idlen/2)
-                )
+                drift(idtype, idlen / 2),
+                drift(idtype, idlen / 2),
+            )
         else:
             # return two kickmaps for half ID
             if brho is None:
-                brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy/1e9)
+                brho, *_ = _mp.beam_optics.beam_rigidity(energy=energy / 1e9)
             # create up and down stream half models
             id_u = idsdict[subsec].get_half_kickmap()
             id_d = idsdict[subsec].get_half_kickmap()
