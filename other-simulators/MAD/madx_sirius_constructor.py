@@ -223,8 +223,8 @@ def bcpstr(segm, cc):
     st = f"BC.p{cc} : {bendtype}, L={segm[1]:.5f}, ANGLE={seg[2]:.5f}*PI/180, "
     st += f"K0:={seg[3]:+.4e}*BC_K0_on, "
     st += f"K1:={seg[4]:+.4e}*BC_K1_on, "
-    st += f"K2:={seg[5]:+.4e}*BC_K2_on, "
-    st += f"K3:={seg[6]:+.4e}*BC_K3_on;"
+    st += f"K2:={seg[5]:+.4e}*BC_K2_on * 2, "
+    st += f"K3:={seg[6]:+.4e}*BC_K3_on * 2 * 3;"
     return st
 
 st = (
@@ -321,8 +321,8 @@ def b1pstr(segm, cc):
     st = f"B1.p{cc} : {bendtype}, L={segm[1]:.5f}, ANGLE={seg[2]:.5f}*PI/180, "
     st += f"K0:={seg[3]:+.4e}*B1_K0_on, "
     st += f"K1:={seg[4]:+.4e}*B1_K1_on, "
-    st += f"K2:={seg[5]:+.4e}*B1_K2_on, "
-    st += f"K3:={seg[6]:+.4e}*B1_K3_on;"
+    st += f"K2:={seg[5]:+.4e}*B1_K2_on * 2, "
+    st += f"K3:={seg[6]:+.4e}*B1_K3_on * 2 * 3;"
     return st
 
 st = (
@@ -445,8 +445,8 @@ def b2pstr(segm, cc):
     st = f"B2.p{cc} : {bendtype}, L={segm[1]:.5f}, ANGLE={seg[2]:.5f}*PI/180, "
     st += f"K0:={seg[3]:+.4e}*B2_K0_on, "
     st += f"K1:={seg[4]:+.4e}*B2_K1_on, "
-    st += f"K2:={seg[5]:+.4e}*B2_K2_on, "
-    st += f"K3:={seg[6]:+.4e}*B2_K3_on;"
+    st += f"K2:={seg[5]:+.4e}*B2_K2_on * 2, "
+    st += f"K3:={seg[6]:+.4e}*B2_K3_on * 2 * 3;"
     return st
 
 st = (
@@ -507,23 +507,23 @@ func_len = {
 }
 strq14 = """!* Q14
 Q14.pB.1 = -4.06e+00;
-Q14.pB.5 = +6.38e+04;
-Q14.pB.9 = -1.45e+13;
-Q14.pB.13 = +2.90e+20;
+Q14.pB.5 = +6.38e+04 * 2 * 3 * 4 * 5;
+Q14.pB.9 = -1.45e+13 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9;
+Q14.pB.13 = +2.90e+20 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10 * 11 * 12 * 13;
 
 """
 strq20 = """!* Q20
 Q20.pB.1 = -4.74e+00;
-Q20.pB.5 = +8.41e+04;
-Q20.pB.9 = -1.83e+13;
-Q20.pB.13 = +3.47e+20;
+Q20.pB.5 = +8.41e+04 * 2 * 3 * 4 * 5;
+Q20.pB.9 = -1.83e+13 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9;
+Q20.pB.13 = +3.47e+20 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10 * 11 * 12 * 13;
 
 """
 strq30 = """!* Q30
 Q30.pB.1 = -4.75e+00;
-Q30.pB.5 = +1.06e+05;
-Q30.pB.9 = -1.95e+13;
-Q30.pB.13 = +3.56e+20;
+Q30.pB.5 = +1.06e+05 * 2 * 3 * 4 * 5;
+Q30.pB.9 = -1.95e+13 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9;
+Q30.pB.13 = +3.56e+20 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10 * 11 * 12 * 13;
 
 """
 
@@ -571,7 +571,7 @@ SEXTUPOLES_on := 1;
 """
 for key in strengs.keys():
     if key.startswith("S"):
-        st = strengs[key]
+        st = strengs[key] * 2
         stri += (
             f"STREN.{key} := {st};\n"
             + f"{key}_on := 1*SEXTUPOLES_on;\n"
