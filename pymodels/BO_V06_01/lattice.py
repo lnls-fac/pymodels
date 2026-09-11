@@ -330,7 +330,7 @@ def get_optics_mode(optics_mode, energy=energy):
         sd_low_en = 10.374355202009147
 
     else:
-        raise _pyacc_acc.AcceleratorException('Optics mode not recognized.')
+        raise _pyacc_acc.AcceleratorError('Optics mode not recognized.')
 
     coeff = (energy-0.15e9)/(3e9-0.15e9)
     strengths = {

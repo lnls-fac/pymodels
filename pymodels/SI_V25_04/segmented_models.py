@@ -113,7 +113,13 @@ def dipole_bc(m_accep_fam_name, simplified=False):
 
 def dipole_b1(m_accep_fam_name, simplified=False):
     """Segmented B1 dipole model."""
-    src_point_angle = 3.2e-3  # [rad] - at SI-01C1:MA-B1 for Carcará.
+    src_point_angle = 3.0e-3  # [rad] - at SI-01C1:MA-B1 for Carcará.
+    # The source point is downstream from the longitudinal center. i.e
+    # it is located at 3.0 mrad after the beginning of the bending field
+    # (following the beam direction).
+
+    # NOTE: A link to a CAD file containing the source
+    #  point angles relative to the bending will be added soon.
 
     segtypes = {
         'B1': ('B1', _pyaccel.elements.rbend),
@@ -146,7 +152,8 @@ def dipole_b1(m_accep_fam_name, simplified=False):
         ['B1', 0.15000, 0.48382, -1.9888e-06, -7.7332e-01, +9.7601e-02, +5.3336e+00, +2.5126e+02, +8.0649e+02, -9.2335e+05],
         ['B1', 0.10000, 0.32247, -2.1025e-06, -7.7271e-01, +1.1969e-01, +5.6811e+00, +2.1496e+02, +5.2023e+03, -6.0518e+05],
         ['B1', 0.05000, 0.16165, -2.1257e-06, -7.7203e-01, +5.6224e-02, +4.5293e+00, +6.3908e+01, +6.1651e+03, +3.4951e+05],
-        ['B1', 0.03400, 0.10509, -1.8623e-06, -7.7144e-01, -1.2160e-01, +9.1976e+00, -5.3231e+01, +9.0360e+03, +7.2783e+05],
+        ['B1', 0.00386, 0.01193, -1.8623e-06, -7.7144e-01, -1.2160e-01, +9.1976e+00, -5.3231e+01, +9.0360e+03, +7.2783e+05],
+        ['B1', 0.03014, 0.09316, -1.8623e-06, -7.7144e-01, -1.2160e-01, +9.1976e+00, -5.3231e+01, +9.0360e+03, +7.2783e+05],
         ['B1_EDGE', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ['B1', 0.01600, 0.03414, -9.6169e-07, -4.5231e-01, -1.8149e+00, +1.9400e+01, -2.2843e+02, +1.6525e+04, -4.0477e+04],
         ['B1', 0.04000, 0.03296, -5.2504e-07, -8.6643e-02, -1.7536e+00, +8.5147e+00, -5.8350e+01, +4.2954e+03, -3.7834e+04],
@@ -188,7 +195,7 @@ def dipole_b1(m_accep_fam_name, simplified=False):
     src_idx = _np.argmin(_np.abs(angles_cumsum - src_point_angle))
     fam_name, element_type = segtypes['B1_SRC']
     src_element = element_type(fam_name=fam_name)
-    # add marker at source point [actually at 3.208 mrad]
+    # add marker at source point
     imodel = imodel[:src_idx+1] + [src_element, ] + imodel[src_idx+1:]
 
     # --- adds additional markers ---
@@ -215,11 +222,20 @@ def dipole_b1(m_accep_fam_name, simplified=False):
 
 def dipole_b2(m_accep_fam_name, simplified=False):
     """Segmented B2 dipole model."""
+    src_point_angle = 20.0e-3  # [rad]
+    # The source point is downstream from the longitudinal center. i.e
+    # it is located at 20.0 mrad after the beginning of the dipole field
+    # (following the beam direction).
+
+    # NOTE: A link to a CAD file containing the source
+    #  point angles relative to the bending will be added soon.
+    
     segtypes = {
         'B2': ('B2', _pyaccel.elements.rbend),
         'B2_EDGE': ('B2_EDGE', _pyaccel.elements.marker),
         'mb2': ('mb2', _pyaccel.elements.marker),
         'm_accep': (m_accep_fam_name, _pyaccel.elements.marker),
+        'B2_SRC': ('B2_SRC', _pyaccel.elements.marker),
     }
 
     #  Average Dipole Model for B2 at current 401p8A
@@ -245,7 +261,8 @@ def dipole_b2(m_accep_fam_name, simplified=False):
         ['B2', 0.00500, 0.01618, +1.7001e-06, -7.5218e-01, -2.1312e-01, +3.8486e-01, -3.9031e+02, +1.2889e+04, +1.7072e+06],
         ['B2', 0.01000, 0.03254, +1.3585e-06, -7.6428e-01, -4.1565e-02, +6.7680e-01, -4.0577e+02, +1.0602e+04, +1.8735e+06],
         ['B2', 0.01000, 0.03269, +2.9027e-07, -7.7165e-01, -8.0002e-03, +1.7812e+00, -3.2568e+02, +8.2067e+03, +1.7365e+06],
-        ['B2', 0.17500, 0.57073, -1.1637e-07, -7.7428e-01, +6.8988e-02, +4.1024e+00, -5.1871e+01, +7.5752e+02, +5.9943e+05],
+        ['B2', 0.04717, 0.15384, -1.1637e-07, -7.7428e-01, +6.8988e-02, +4.1024e+00, -5.1871e+01, +7.5752e+02, +5.9943e+05],
+        ['B2', 0.12783, 0.41689, -1.1637e-07, -7.7428e-01, +6.8988e-02, +4.1024e+00, -5.1871e+01, +7.5752e+02, +5.9943e+05],
         ['B2', 0.17500, 0.57034, -3.3225e-07, -7.7352e-01, +7.8447e-02, +5.4514e+00, +1.9975e+02, +3.3621e+03, -3.1314e+05],
         ['B2', 0.02000, 0.06315, +2.2577e-08, -7.8534e-01, -1.4538e-01, +9.2976e+00, -1.5715e+02, +1.2311e+04, +1.1408e+06],
         ['B2', 0.01000, 0.02719, +8.7645e-08, -6.7626e-01, -3.1354e-01, +1.6050e+01, -3.9938e+02, +1.6288e+04, +8.1085e+05],
@@ -284,10 +301,20 @@ def dipole_b2(m_accep_fam_name, simplified=False):
             element = element_type(fam_name)
         model.append(element)
 
+    # --- add source point marker to half-model ---
+    imodel = model[::-1]
+    angles = _np.array([elem.angle for elem in imodel])
+    angles_cumsum = _np.cumsum(angles)
+    src_idx = _np.argmin(_np.abs(angles_cumsum - src_point_angle))
+    fam_name, element_type = segtypes['B2_SRC']
+    src_element = element_type(fam_name=fam_name)
+    # add marker at source point [20.0 mrad]
+    imodel = imodel[:src_idx+1] + [src_element, ] + imodel[src_idx+1:]
+
     # --- adds additional markers ---
     mb2 = segtypes['mb2'][1](segtypes['mb2'][0])
     maccep = segtypes['m_accep'][1](segtypes['m_accep'][0])
-    model = model[::-1] + [mb2, maccep] + model
+    model = imodel + [mb2, maccep] + model
 
     if simplified:
         le = sum([s[1] for s in segmodel[:15]])

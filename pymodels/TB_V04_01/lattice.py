@@ -4,13 +4,16 @@ In this module the lattice of the corresponding accelerator is defined.
 """
 
 import math as _math
-from pyaccel import lattice as _pyacc_lat, elements as _pyacc_ele, \
-    accelerator as _pyacc_acc, optics as _pyacc_opt
+
+from pyaccel import accelerator as _pyacc_acc, elements as _pyacc_ele, \
+    lattice as _pyacc_lat, optics as _pyacc_opt
+
 from . import segmented_models as _segmented_models
 
 energy = 0.150e9  # [eV]
 default_optics_mode = 'M1'
 default_add_from_li_triplets = True
+
 
 class LatticeError(Exception):
     """LatticeError class."""
@@ -180,7 +183,7 @@ def create_lattice(
     return the_line, twiss_at_start
 
 
-def get_optics_mode(optics_mode ,add_from_li_triplets):
+def get_optics_mode(optics_mode, add_from_li_triplets):
     """Return magnet strengths of a given opics mode."""
     # -- selection of optics mode --
     if optics_mode == 'M1':
@@ -324,7 +327,7 @@ def get_optics_mode(optics_mode ,add_from_li_triplets):
             'injsept_ksyl': 0.0,
         }
     else:
-        _pyacc_acc.AcceleratorException(
+        _pyacc_acc.AcceleratorError(
             'Invalid TB optics mode: ' + optics_mode)
 
     return strengths, twiss_at_start
