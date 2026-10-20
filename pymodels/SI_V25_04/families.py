@@ -71,7 +71,7 @@ _family_number_of_elements = {
     'InjNLKckr': 1,
     'PingH': 1,
     'PingV': 1,
-    'APU22': 4,
+    'APU22': 2,
     'APU58': 1,
     'DELTA52': 1,
     'IVU18': 2,
