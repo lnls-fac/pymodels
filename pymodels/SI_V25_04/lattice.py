@@ -215,6 +215,7 @@ def create_lattice(
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-IVU18'
     ID15Hu, ID15Hd = kickmaps['ID15SP']  # SUSSUARANA  'SI-15SP:ID-S3PW'
+    ID16Hu, ID16Hd = kickmaps['ID16SB']  # SAGUI  'SI-16SB:ID-APU58'
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
 
     IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corr
@@ -1014,24 +1015,24 @@ def create_lattice(
         IDQS,
         L326p,
         L500p,
-    ]
+    ]  # low beta ID straight section (SUSSUARANA)
 
     IDB_16 = [
         L500,
         LIB,
         L500,
+        L350p,
         MIDB,
-        L500,
-        L500p,
+        ID16Hu,
         MIB,
-        L500p,
-        L500,
+        ID16Hd,
         MIDB,
+        L350p,
         L500,
         BbBKckL,
         LIB,
         L500,
-    ]  # low beta ID straight section
+    ]  # low beta ID straight section (SAGUI)
 
     IDA_17 = [
         L500,
@@ -1920,6 +1921,8 @@ def create_id_kickmaps_dict(ids, energy):
         'ID14SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
         # SUSSUARANA
         'ID15SP': ('S3PW', 1.710, [-0.020, 0.020, -0.0035, 0.0035], 0),
+        # SAGUI
+        'ID16SB': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # SAPUCAIA
         'ID17SA': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
     }
