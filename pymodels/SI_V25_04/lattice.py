@@ -53,12 +53,14 @@ def create_lattice(
     L113p = drift('l113p', 0.1129)
     L144p = drift('l144p', 0.144 + dcircum_frac)
     L120p = drift('l120p', 0.120 + dcircum_frac)
+    L326p = drift('l326p', 0.3269)
     L350p = drift('l350p', 0.350 + dcircum_frac)
     L600p = drift('l600p', 0.600 + dcircum_frac)
     L800p = drift('l800p', 0.7999)
     L011 = drift('l011', 0.011)
     L019 = drift('l019', 0.019)
     L049 = drift('l049', 0.049)
+    L050 = drift('l050', 0.050)
     L052 = drift('l052', 0.052)
     L056 = drift('l056', 0.056)
     L074 = drift('l074', 0.074)
@@ -96,10 +98,12 @@ def create_lattice(
     L375 = drift('l375', 0.375)
     L419 = drift('l419', 0.419)
     L474 = drift('l474', 0.474)
+    L495 = drift('l495', 0.495)
     L500 = drift('l500', 0.500)
     L665 = drift('l665', 0.665)
     L715 = drift('l715', 0.715)
     L839 = drift('l839', 0.839)
+    L1056 = drift('l1056', 1.056)
 
     # -- dipoles --
     BC = _segmented_models.dipole_bc(m_accep_fam_name, simplified)
@@ -210,7 +214,10 @@ def create_lattice(
     ID10Hu, ID10Hd = kickmaps['ID10SB']  # SABIA     'SI-10SB:ID-DELTA52'
     ID11Hu, ID11Hd = kickmaps['ID11SP']  # IPE       'SI-11SP:ID-APU58'
     ID14Hu, ID14Hd = kickmaps['ID14SB']  # PAINEIRA  'SI-14SB:ID-IVU18'
+    ID15Hu, ID15Hd = kickmaps['ID15SP']  # SUSSUARANA  'SI-15SP:ID-S3PW'
+    ID16Hu, ID16Hd = kickmaps['ID16SB']  # SAGUI  'SI-16SB:ID-APU58'
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
+    ID20Hu, ID20Hd = kickmaps['ID20SB']  # ARIRANHA  'SI-20SB:ID-APU22'
 
     IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corr
     # IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corr used in PAPU50
@@ -991,24 +998,42 @@ def create_lattice(
         L500,
     ]  # low beta ID straight section (PAINEIRA)
 
-    IDP_15 = IDP
+    IDP_15 = [
+        L500p,
+        L326p,
+        IDQS,
+        L1056,
+        IDC1,
+        L050,
+        MIDP,
+        ID15Hu,
+        MIP,
+        ID15Hd,
+        MIDP,
+        L050,
+        IDC1,
+        L1056,
+        IDQS,
+        L326p,
+        L500p,
+    ]  # low beta ID straight section (SUSSUARANA)
 
     IDB_16 = [
         L500,
         LIB,
         L500,
+        L350p,
         MIDB,
-        L500,
-        L500p,
+        ID16Hu,
         MIB,
-        L500p,
-        L500,
+        ID16Hd,
         MIDB,
+        L350p,
         L500,
         BbBKckL,
         LIB,
         L500,
-    ]  # low beta ID straight section
+    ]  # low beta ID straight section (SAGUI)
 
     IDA_17 = [
         L500,
@@ -1065,13 +1090,13 @@ def create_lattice(
         GSL07,
         LIB,
         L500,
+        L350p,
         MIDB,
-        L500,
-        L500p,
+        ID20Hu,
         MIB,
-        L500p,
-        L500,
+        ID20Hd,
         MIDB,
+        L350p,
         L500,
         LIB,
         L500,
@@ -1895,8 +1920,14 @@ def create_id_kickmaps_dict(ids, energy):
         'ID11SP': ('UE44', 3.400, [-0.0285, 0.0285, -0.00415, 0.00415], 2),
         # PAINEIRA
         'ID14SB': ('IVU18', 2.000, [-0.020, 0.020, -0.002, 0.002], 0),
+        # SUSSUARANA
+        'ID15SP': ('S3PW', 1.710, [-0.020, 0.020, -0.0035, 0.0035], 0),
+        # SAGUI
+        'ID16SB': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # SAPUCAIA
         'ID17SA': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        # ARIRANHA
+        'ID20SB': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
     }
 
     # build kickmap dict
