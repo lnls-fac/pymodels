@@ -217,6 +217,7 @@ def create_lattice(
     ID15Hu, ID15Hd = kickmaps['ID15SP']  # SUSSUARANA  'SI-15SP:ID-S3PW'
     ID16Hu, ID16Hd = kickmaps['ID16SB']  # SAGUI  'SI-16SB:ID-APU58'
     ID17Hu, ID17Hd = kickmaps['ID17SA']  # SAPUCAIA  'SI-17SA:ID-APU22'
+    ID20Hu, ID20Hd = kickmaps['ID20SB']  # ARIRANHA  'SI-20SB:ID-APU22'
 
     IDC1 = sextupole('IDC1', 0.100, S=0)  # ID corr
     # IDC2 = sextupole('IDC2', 0.084, S=0)  # ID corr used in PAPU50
@@ -1089,13 +1090,13 @@ def create_lattice(
         GSL07,
         LIB,
         L500,
+        L350p,
         MIDB,
-        L500,
-        L500p,
+        ID20Hu,
         MIB,
-        L500p,
-        L500,
+        ID20Hd,
         MIDB,
+        L350p,
         L500,
         LIB,
         L500,
@@ -1925,6 +1926,8 @@ def create_id_kickmaps_dict(ids, energy):
         'ID16SB': ('APU58', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
         # SAPUCAIA
         'ID17SA': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
+        # ARIRANHA
+        'ID20SB': ('APU22', 1.300, [-0.020, 0.020, -0.003, 0.003], 2),
     }
 
     # build kickmap dict
