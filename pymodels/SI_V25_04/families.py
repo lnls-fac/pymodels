@@ -83,7 +83,7 @@ _family_number_of_elements = {
     'IDC4': 4,
     'IDC5': 4,
     'IDC6': 2,
-    'IDQS': 4,
+    'IDQS': 6,
 }
 
 
